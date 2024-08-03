@@ -1,12 +1,12 @@
-.login{
-    width: 450px;
-
+.register{
+    width:450px;
 }
-.login-title{
+
+.register-title{
     padding: 10px;
 }
 
-.login-title span{
+.register-title span{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -15,25 +15,24 @@
     font-family: 'Roboto', sans-serif;
 }
 
-.login form{
+.register form{
     display: flex;
     flex-direction: column;
-
 }
 
-.login-form-group{
+.register-form-group{
     margin: 5px 0;
     display: flex;
     flex-direction: column;
 }
 
-.login-form-group label{
+.register-form-group label{
     font-size: 1rem;
     font-weight: bold;
     font-family: 'Roboto', sans-serif;
 }
 
-.login-form-group input{
+.register-form-group input{
     padding: 5px;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -43,24 +42,27 @@
     margin-top: 5px;
 }
 
-.login-form-group input:focus{
+.register-form-group input:focus{
     outline: none;
 }
-.login-form-group input::placeholder{
+
+.register-form-group input::placeholder{
     font-family: 'Roboto', sans-serif;
     color:silver;
 }
-.login-form-group-checkbox label{
+
+.register-form-group-checkbox label{
     font-family: "Roboto", sans-serif;
 }
-.login-form-group-button{
+
+.register-form-group-button{
     margin-top: 40px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.login-form-group-button button{
+.register-form-group-button button{
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
@@ -68,27 +70,12 @@
     color: white;
     font-family: 'Roboto', sans-serif;
     font-size: 1rem;
-    cursor: pointer;
+    font-weight: bold;
 }
 
-.login-form-group-button button:hover{
-    background-color: #0056b3;
-}
-
-.login-forgot-password{
+.register-form-login{
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 5px;
+    margin-top: 20px;
 }
-.line {
-    border-top: 1px solid rgb(134, 123, 123);
-    margin: 10px 0; 
-}
-.login-form-register{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 5px;
-}
-
