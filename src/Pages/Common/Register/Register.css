@@ -1,0 +1,94 @@
+.register{
+    width:400px;
+}
+
+.register-title{
+    padding: 10px;
+}
+
+.register-title span{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    font-family: 'Roboto', sans-serif;
+}
+
+.register form{
+    display: flex;
+    flex-direction: column;
+}
+
+.register-form-group{
+    margin: 5px 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.register-form-group label{
+    font-size: 1rem;
+    font-weight: bold;
+    font-family: 'Roboto', sans-serif;
+}
+
+.register-form-group input{
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    height: 25px;
+    font-family: "Roboto", sans-serif;
+    font-size: 1rem;
+    margin-top: 5px;
+}
+
+.register-form-group input:focus{
+    outline: none;
+}
+
+.register-form-group input::placeholder{
+    font-family: 'Roboto', sans-serif;
+    color:silver;
+}
+
+.register-form-group-checkbox label{
+    font-family: "Roboto", sans-serif;
+}
+
+.register-form-group-button{
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.register-form-group-button button{
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1rem;
+    cursor: pointer;
+}
+.register-form-group-button button:hover{
+    background-color: #0056b3;
+}
+.register-form-login{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.register-form-login a{
+    font-family: 'Roboto', sans-serif;
+    font-size: 1rem;
+    color: #007bff;
+    text-decoration: none;
+}
+
+.register-form-login a:hover{
+    color: #0056b3;
+}

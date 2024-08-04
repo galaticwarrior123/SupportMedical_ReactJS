@@ -1,38 +1,43 @@
-.register{
-    width:450px;
+.fill-email{
+    width: 400px;
 }
 
-.register-title{
+.fill-email-title{
     padding: 10px;
 }
 
-.register-title span{
+.fill-email-title span{
     display: flex;
-    justify-content: center;
+    justify-content: left;
     align-items: center;
     font-size: 1.5rem;
     font-weight: bold;
     font-family: 'Roboto', sans-serif;
 }
 
-.register form{
+.fill-email-des{
+    padding: 5px 0;
+    font-size: 1rem;
+}
+.fill-email form{
     display: flex;
     flex-direction: column;
+
 }
 
-.register-form-group{
+.fill-email-form-group{
     margin: 5px 0;
     display: flex;
     flex-direction: column;
 }
 
-.register-form-group label{
+.fill-email-form-group label{
     font-size: 1rem;
     font-weight: bold;
     font-family: 'Roboto', sans-serif;
 }
 
-.register-form-group input{
+.fill-email-form-group input{
     padding: 5px;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -42,27 +47,23 @@
     margin-top: 5px;
 }
 
-.register-form-group input:focus{
+.fill-email-form-group input:focus{
     outline: none;
 }
 
-.register-form-group input::placeholder{
+.fill-email-form-group input::placeholder{
     font-family: 'Roboto', sans-serif;
     color:silver;
 }
 
-.register-form-group-checkbox label{
-    font-family: "Roboto", sans-serif;
-}
-
-.register-form-group-button{
+.fill-email-form-group-button{
     margin-top: 40px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.register-form-group-button button{
+.fill-email-form-group-button button{
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
@@ -70,12 +71,27 @@
     color: white;
     font-family: 'Roboto', sans-serif;
     font-size: 1rem;
-    font-weight: bold;
+    cursor: pointer;
 }
 
-.register-form-login{
+.fill-email-form-group-button button:hover{
+    background-color: #0056b3;
+}
+
+.fill-email-back{
     display: flex;
     justify-content: center;
     align-items: center;
     margin-top: 20px;
+}
+
+.fill-email-back a{
+    font-family: 'Roboto', sans-serif;
+    font-size: 1rem;
+    color: #007bff;
+    text-decoration: none;
+}
+
+.fill-email-back a:hover{
+    color:#0056b3
 }

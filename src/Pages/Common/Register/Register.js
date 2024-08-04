@@ -1,4 +1,4 @@
-import LoginRegLayout from '../../Layouts/LoginLayout/LoginRegLayout';
+import LoginRegLayout from '../../../Layouts/LoginLayout/LoginRegLayout';
 import './Register.css';
 
 

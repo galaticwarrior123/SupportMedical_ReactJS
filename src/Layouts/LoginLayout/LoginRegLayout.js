@@ -10,14 +10,19 @@ const LoginRegLayout = ({ children }) => {
 
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [nextImageIndex, setNextImageIndex] = useState((currentImageIndex + 1) % images.length);
+    const [fadeIn, setFadeIn] = useState(true);
 
     useEffect(() => {
         const interval = setInterval(() => {
-            setCurrentImageIndex((prev) => {
-                const newIndex = (prev + 1) % images.length;
-                setNextImageIndex((newIndex + 1) % images.length);
-                return newIndex;
-            });
+            setFadeIn(false);
+            setTimeout(() => {
+                setCurrentImageIndex((prev) => {
+                    const newIndex = (prev + 1) % images.length;
+                    setNextImageIndex((newIndex + 1) % images.length);
+                    return newIndex;
+                });
+                setFadeIn(true);
+            }, 300); // Change image after fade-out
         }, 10000); // Change image every 10 seconds
 
         return () => clearInterval(interval);
@@ -26,7 +31,7 @@ const LoginRegLayout = ({ children }) => {
     return (
         <div className="login-reg-layout">
             <div
-                className="login-reg-layout-background"
+                className={`login-reg-layout-background ${fadeIn ? 'fade-in' : ''}`}
                 style={{ backgroundImage: `url(${images[currentImageIndex]})` }}
             />
             <div

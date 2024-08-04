@@ -1,4 +1,4 @@
-import LoginRegLayout from '../../Layouts/LoginLayout/LoginRegLayout';
+import LoginRegLayout from '../../../Layouts/LoginLayout/LoginRegLayout';
 import './Login.css';
 
 const Login = () => {
@@ -26,7 +26,7 @@ const Login = () => {
                     </div>
                 </form>
                 <div className="login-forgot-password">
-                    <a href="/forgot-password">Quên mật khẩu?</a>
+                    <a href="/forgot-password/fill-email">Quên mật khẩu?</a>
                 </div>
                 <div className="login-form-line">
                     <div className="line"></div>

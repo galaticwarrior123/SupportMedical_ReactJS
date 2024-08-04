@@ -1,3 +1,4 @@
+/* LoginRegLayout.css */
 .login-reg-layout {
     position: relative;
     width: 100%;
@@ -22,6 +23,11 @@
     background-position: center center;
     transition: opacity 1s ease-in-out;
     z-index: -2; /* Make sure it is behind the overlay */
+    opacity: 0.5;
+}
+
+.login-reg-layout-background.fade-in {
+    opacity: 1;
 }
 
 .login-reg-layout-overlay {
