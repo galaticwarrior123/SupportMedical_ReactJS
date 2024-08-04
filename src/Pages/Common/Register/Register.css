@@ -56,7 +56,7 @@
 }
 
 .register-form-group-button{
-    margin-top: 40px;
+    margin-top: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -91,4 +91,14 @@
 
 .register-form-login a:hover{
     color: #0056b3;
+}
+
+.register-form-error{
+    color: red;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1rem;
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

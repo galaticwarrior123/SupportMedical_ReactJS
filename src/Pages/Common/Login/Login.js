@@ -10,7 +10,7 @@ const Login = () => {
                 </div>
                 <form>
                     <div className="login-form-group">
-                        <label htmlFor="email">Username hoặc Email</label>
+                        <label htmlFor="email">Email</label>
                         <input type="email" id="email" name="email" placeholder="Nhập email" />
                     </div>
                     <div className="login-form-group">

@@ -11,8 +11,12 @@ const Register = () => {
                 </div>
                 <form>
                     <div className="register-form-group">
-                        <label htmlFor="Username">Username</label>
-                        <input type="text" id="username" name="username" placeholder="Nhập username" />
+                        <label htmlFor="FirstName">Họ và tên lót</label>
+                        <input type="text" id="FirstName" name="FirstName" placeholder="Nhập họ và tên lót" />
+                    </div>
+                    <div className="register-form-group">
+                        <label htmlFor="LastName">Tên</label>
+                        <input type="text" id="LastName" name="LastName" placeholder="Nhập tên" />
                     </div>
                     <div className="register-form-group">
                         <label htmlFor="email">Email</label>
