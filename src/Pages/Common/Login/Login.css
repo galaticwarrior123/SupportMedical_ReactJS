@@ -74,6 +74,48 @@
 .login-form-group-button button:hover{
     background-color: #0056b3;
 }
+.login-form-group-button button:focus{
+    outline: none;
+}
+.password-input-wrapper {
+    position: relative;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-family: "Roboto", sans-serif;
+    font-size: 1rem;
+    margin-top: 5px;
+    height: 35px; /* Match the height with the email input */
+}
+
+.password-input-wrapper input {
+    width: 100%; 
+    padding-right: 40px; /* Add padding-right for the icon */
+    border: none; /* Remove border since the wrapper already has one */
+    box-sizing: border-box; /* Ensure padding is included in the width */
+    height: 100%; /* Make sure the input height matches the wrapper */
+    font-family: "Roboto", sans-serif;
+    font-size: 1rem;
+    position: relative;
+    top: -5px;
+}
+
+.password-input-wrapper input:focus {
+    outline: none;
+}
+
+.password-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #999; /* Optional: Change icon color */
+}
+
+.password-icon:hover {
+    color: #333; /* Optional: Change icon color on hover */
+}
+
 
 .login-forgot-password{
     display: flex;

@@ -1,0 +1,71 @@
+.confirm-user {
+  width:400px;
+}
+
+.confirm-user-title {
+    padding: 10px;
+}
+
+.confirm-user-title span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    font-family: 'Roboto', sans-serif;
+}
+
+.confirm-user form {
+    display: flex;
+    flex-direction: column;
+}
+
+.confirm-user-form-group {
+    margin: 5px 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.confirm-user-form-group label {
+    font-size: 1rem;
+    font-weight: bold;
+    font-family: 'Roboto', sans-serif;
+}
+
+.confirm-user-form-group input {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    height: 25px;
+    font-family: "Roboto", sans-serif;
+    font-size: 1rem;
+    margin-top: 5px;
+}
+
+.confirm-user-form-group input:focus {
+    outline: none;
+}
+
+.confirm-user-form-group input::placeholder {
+    font-family: 'Roboto', sans-serif;
+    color:silver;
+}
+
+.confirm-user-form-group-button {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.confirm-user-form-group-button button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1rem;
+    cursor: pointer;
+}
+

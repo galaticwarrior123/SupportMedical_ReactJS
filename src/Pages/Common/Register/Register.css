@@ -75,6 +75,10 @@
 .register-form-group-button button:hover{
     background-color: #0056b3;
 }
+.register-form-group-button button:focus{
+    outline: none;
+}
+
 .register-form-login{
     display: flex;
     justify-content: center;
@@ -101,4 +105,58 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.register-form-group-radio{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.radio{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+}
+
+
+.password-input-wrapper {
+    position: relative;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-family: "Roboto", sans-serif;
+    font-size: 1rem;
+    margin-top: 5px;
+    height: 35px; /* Match the height with the email input */
+}
+
+.password-input-wrapper input {
+    width: 100%; 
+    padding-right: 40px; /* Add padding-right for the icon */
+    border: none; /* Remove border since the wrapper already has one */
+    box-sizing: border-box; /* Ensure padding is included in the width */
+    height: 100%; /* Make sure the input height matches the wrapper */
+    font-family: "Roboto", sans-serif;
+    font-size: 1rem;
+    position: relative;
+    top: -5px;
+}
+
+.password-input-wrapper input:focus {
+    outline: none;
+}
+
+.password-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #999; /* Optional: Change icon color */
+}
+
+.password-icon:hover {
+    color: #333; /* Optional: Change icon color on hover */
 }

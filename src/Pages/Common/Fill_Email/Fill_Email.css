@@ -77,7 +77,9 @@
 .fill-email-form-group-button button:hover{
     background-color: #0056b3;
 }
-
+.fill-email-form-group-button button:focus{
+    outline: none;
+}
 .fill-email-back{
     display: flex;
     justify-content: center;
@@ -94,4 +96,48 @@
 
 .fill-email-back a:hover{
     color:#0056b3
+}
+
+
+/* fill-email notice */
+.fill-email-notice{
+    width:400px;
+}
+.fill-email-notice-title{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 0;
+}
+
+.fill-email-notice-title span{
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    font-family: 'Roboto', sans-serif;
+}
+
+.fill-email-notice-des{
+    padding: 5px 0;
+    font-size: 1rem;
+}
+
+.fill-email-notice-form-group-button{
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.fill-email-notice-form-group-button button{
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1rem;
+    cursor: pointer;
 }
