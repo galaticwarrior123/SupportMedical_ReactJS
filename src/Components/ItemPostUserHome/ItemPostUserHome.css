@@ -79,25 +79,283 @@
     background-color: #1bc4da;
 }
 
+.center-user-home-post-images {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 15px;
+    margin-bottom: 15px;
+}
+
 .center-user-home-post-image {
-    width: 100%;
-    height: 350px; 
-    background-size: cover;
-    background-position: center;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
+    position: relative;
+    margin: 5px;
+    border-radius: 10px;
+    overflow: hidden;
 }
 
 .center-user-home-post-image img {
     width: 100%;
     height: 100%;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
+    object-fit: cover;
+    border-radius: 10px;
 }
+
+.full-width {
+    width: 100%;
+    height: 400px; /* Adjust as needed */
+}
+
+.half-width {
+    width: calc(50% - 10px);
+    height: 200px; /* Adjust as needed */
+}
+
+.third-width {
+    width: calc(33.33% - 10px);
+    height: 200px; /* Adjust as needed */
+}
+
+.quarter-width {
+    width: calc(50% - 10px);
+    height: 200px; /* Adjust as needed */
+}
+
+.center-user-home-post-image-more {
+    cursor: pointer;
+}
+
+.center-user-home-post-image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    border-radius: 10px;
+}
+
 
 .center-user-home-post-footer {
     padding: 15px;
     text-align: center;
     font-size: 14px;
     color: #666;
+}
+
+.center-user-home-post-footer-infoPost {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.center-user-home-post-footer-infoPost span {
+    display: inline-block;
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+.center-user-home-post-footer-action {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-top: 10px;
+    height:40px;
+}
+.center-user-home-post-footer-action table{
+    width: 100%;
+    height: 100%;
+    border-top: 1px solid silver;
+    border-bottom: 1px solid silver;
+}
+.center-user-home-post-footer-action td{
+    width: 50%;
+    height: 100%;
+}
+
+.center-user-home-post-footer-action button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    background-color: transparent;
+    color: #333;
+    border: none;
+    width:100%;
+    height:100%;
+    font-size: 16px;
+}
+.center-user-home-post-footer-action button:focus {
+    outline: none;
+}
+.center-user-home-post-footer-action button:hover {
+    background-color: #c5cacb;
+    color: #F7EEDD;
+}
+
+
+.center-user-home-post-footer-comment {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    background-color: transparent;
+    color: #333;
+    border: none;
+    font-size: 16px;
+}
+.center-user-home-post-comment-avatar {
+    width: 55px;
+    height: 50px;
+    border-radius: 50%;
+    background-size: cover;
+    margin-right: 10px;
+}
+.center-user-home-post-comment-avatar img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
+
+.center-user-home-post-comment-input {
+    width: 100%;
+    height: 50px;
+    border-radius: 50px;
+    border: none;
+    padding: 0 10px;
+    font-size: 16px;
+    background-color: #F7EEDD;
+    display: flex;
+    align-items: center;
+}
+
+.center-user-home-post-comment-input input{
+    width: 100%;
+    height: 100%;
+    border-radius: 50px;
+    border: none;
+    font-size: 16px;
+    background-color: #F7EEDD;
+}
+.center-user-home-post-comment-input input:focus{
+    outline: none;
+}
+.center-user-home-post-comment-input button {
+    background-color: transparent;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-left: 5px;
+    padding:10px;
+    border-radius: 10px;
+    border: none;
+}
+.center-user-home-post-comment-input button:focus {
+    outline: none;
+}
+.center-user-home-post-comment-input button:hover {
+    background-color: #1bc4da;
+}
+
+
+
+
+
+.center-user-home-post-comment-title {
+    display:flex;
+    justify-content: left;
+    width: 100%;
+    height: 20px;
+    margin-top: 10px;
+}
+.center-user-home-post-comment-title span {
+    font-weight: bold;
+    display: block;
+    margin-left:5px;
+    font-size: 20px;
+    color:#333;
+}
+.center-user-home-post-comment-list {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+.center-user-home-post-comment-list-item {
+    display: flex;
+    margin-bottom: 10px;
+}
+.center-user-home-post-comment-list-item-avatar {
+    background-size: cover;
+    margin-right: 10px;
+    display: flex;
+}
+.center-user-home-post-comment-list-item-avatar img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+.center-user-home-post-comment-list-item-content {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+.center-user-home-post-comment-list-item-content span {
+    font-weight: bold;
+    display: block;
+    margin-left:5px;
+}
+.center-user-home-post-comment-list-item-content span:last-child {
+    font-weight: normal;
+    color: #666;
+}
+.center-user-home-post-comment-list-item-content-user {
+    display: flex;
+    
+}   
+.center-user-home-post-comment-item-content-text {
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #F7EEDD;
+    font-size: 16px;
+    margin-bottom: 10px;
+    width: 100%;
+    display:flex;
+}
+.center-user-home-post-comment-item-content-text span {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.center-user-home-post-comment-item-content-action{
+    display: flex;
+    align-items: center;
+}
+.center-user-home-post-comment-item-content-action button{
+    background-color: transparent;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    border: none;
+}
+
+.center-user-home-post-comment-item-content-action button:focus {
+    outline: none;
+}
+
+.center-user-home-post-comment-item-content-action button:hover {
+    background-color: #1bc4da;
+    color: #F7EEDD;
 }
