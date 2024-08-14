@@ -1,0 +1,5 @@
+.user-home{
+    display: flex;
+    flex-direction: row;
+    background-color: transparent;
+}

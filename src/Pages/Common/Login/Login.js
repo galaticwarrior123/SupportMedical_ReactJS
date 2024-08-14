@@ -34,6 +34,9 @@ const Login = () => {
                     localStorage.setItem('user', JSON.stringify(res.data.user));
                     navigate('/');
                 }
+                else{
+                    toast.error('Đăng nhập thất bại');
+                }
             })
             .catch(err => {
                 toast.error('Đăng nhập thất bại');

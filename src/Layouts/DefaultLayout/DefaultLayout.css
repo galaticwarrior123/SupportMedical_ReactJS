@@ -1,0 +1,13 @@
+.default-layout {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+.content{
+    position: absolute;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    height: calc(100% - 60px);
+    background-color: #41C9E2;
+}

@@ -1,7 +1,7 @@
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import Login from './Pages/Common/Login/Login';
 import './App.css';
-import UserHome from './Pages/User/UserHome';
+import UserHome from './Pages/User/HomePage/UserHome';
 import Register from './Pages/Common/Register/Register';
 import Fill_Email from './Pages/Common/Fill_Email/Fill_Email';
 import ConfirmUser from './Pages/Common/ConfirmUser/ConfirmUser';
