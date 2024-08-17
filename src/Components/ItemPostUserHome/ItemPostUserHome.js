@@ -1,18 +1,21 @@
 import './ItemPostUserHome.css';
+import PostDetail from '../../Pages/User/HomePage/CenterUserHome/PostDetail/PostDetail';
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheck, faThumbsUp, faComment, faPaperPlane } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faThumbsUp, faComment, faPaperPlane, faArrowRight, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 const ItemPostUserHome = () => {
     const [liked, setLiked] = useState(false);
     const [clickComment, setClickComment] = useState(false);
+    const [selectedImageIndex, setSelectedImageIndex] = useState(null);
+    const [showPostDetail, setShowPostDetail] = useState(false);
 
     const images = [
         "https://via.placeholder.com/200",
+        "/images/Avatar.png",
         "https://via.placeholder.com/200",
+        "/images/doctor_picture.jpg",
         "https://via.placeholder.com/200",
-        "https://via.placeholder.com/200",
-        "https://via.placeholder.com/200",
-        "https://via.placeholder.com/200",
+        "/images/pictureDoctor.jpg",
         "https://via.placeholder.com/200",
         "https://via.placeholder.com/200"
     ];
@@ -23,6 +26,31 @@ const ItemPostUserHome = () => {
     const handleComment = () => {
         setClickComment(!clickComment);
     };
+    const handleImageClick = (index) => {
+        console.log(index);
+        setSelectedImageIndex(index);
+    };
+    const handlePrevImage = () => {
+        if (selectedImageIndex > 0) {
+            console.log("prev" + selectedImageIndex);
+            setSelectedImageIndex(selectedImageIndex - 1);
+        }
+    };
+
+    const handleNextImage = () => {
+        if (selectedImageIndex < images.length - 1) {
+            setSelectedImageIndex(selectedImageIndex + 1);
+        }
+    };
+    const closeFullscreen = () => {
+        setSelectedImageIndex(null);
+    };
+    const handleClickSeeDetail = () => {
+        setShowPostDetail(true);
+    };
+    const handleCloseFullScreen = () => {
+        setShowPostDetail(false);
+    }
     return (
         <div className="center-user-home-post">
             <div className="center-user-home-post-header">
@@ -41,55 +69,58 @@ const ItemPostUserHome = () => {
                 </div>
 
             </div>
-            <div className="center-user-home-post-title">Title</div>
+            {showPostDetail && <PostDetail handleCloseFullScreen={handleCloseFullScreen}/>}
+            <div className="center-user-home-post-title">Title
+                <span  onClick={handleClickSeeDetail}>Xem chi tiết...</span>
+            </div>
             <div className="center-user-home-post-categories">
                 <span className="center-user-home-post-category cate1">Cate 1</span>
                 <span className="center-user-home-post-category cate2">Cate 2</span>
             </div>
             <div className="center-user-home-post-images">
                 {images.length === 1 && (
-                    <div className="center-user-home-post-image full-width">
+                    <div className="center-user-home-post-image full-width" onClick={() => handleImageClick(0)}>
                         <img src={images[0]} alt="post-img-1" />
                     </div>
                 )}
                 {images.length === 2 && images.map((image, index) => (
-                    <div key={index} className="center-user-home-post-image half-width">
+                    <div key={index} className="center-user-home-post-image half-width" onClick={() => handleImageClick(index)}>
                         <img src={image} alt={`post-img-${index + 1}`} />
                     </div>
                 ))}
                 {images.length === 3 && (
                     <>
-                        <div className="center-user-home-post-image half-width">
+                        <div className="center-user-home-post-image half-width" onClick={() => handleImageClick(0)}>
                             <img src={images[0]} alt="post-img-1" />
                         </div>
-                        <div className="center-user-home-post-image half-width">
+                        <div className="center-user-home-post-image half-width" onClick={() => handleImageClick(1)}>
                             <img src={images[1]} alt="post-img-2" />
                         </div>
-                        <div className="center-user-home-post-image full-width">
+                        <div className="center-user-home-post-image full-width" onClick={() => handleImageClick(2)}>
                             <img src={images[2]} alt="post-img-3" />
                         </div>
                     </>
                 )}
                 {images.length === 4 && images.map((image, index) => (
-                    <div key={index} className={`center-user-home-post-image quarter-width`}>
+                    <div key={index} className={`center-user-home-post-image quarter-width`} onClick={() => handleImageClick(index)}>
                         <img src={image} alt={`post-img-${index + 1}`} />
                     </div>
                 ))}
                 {images.length >= 5 && (
                     <>
-                        <div className="center-user-home-post-image half-width">
+                        <div className="center-user-home-post-image half-width" onClick={() => handleImageClick(0)}>
                             <img src={images[0]} alt="post-img-1" />
                         </div>
-                        <div className="center-user-home-post-image half-width">
+                        <div className="center-user-home-post-image half-width" onClick={() => handleImageClick(1)}>
                             <img src={images[1]} alt="post-img-2" />
                         </div>
-                        <div className="center-user-home-post-image third-width">
+                        <div className="center-user-home-post-image third-width" onClick={() => handleImageClick(2)}>
                             <img src={images[2]} alt="post-img-3" />
                         </div>
-                        <div className="center-user-home-post-image third-width">
+                        <div className="center-user-home-post-image third-width" onClick={() => handleImageClick(3)}>
                             <img src={images[3]} alt="post-img-4" />
                         </div>
-                        <div className="center-user-home-post-image third-width center-user-home-post-image-more">
+                        <div className="center-user-home-post-image third-width center-user-home-post-image-more" onClick={() => handleImageClick(4)}>
                             <img src={images[4]} alt="post-img-more" />
                             <div className="center-user-home-post-image-overlay">
                                 <span>+{images.length - 5}</span>
@@ -98,6 +129,21 @@ const ItemPostUserHome = () => {
                     </>
                 )}
             </div>
+            {selectedImageIndex !== null && (
+                <div className="fullscreen-overlay" onClick={closeFullscreen}>
+                    <div className="button-transfer-image">
+                        <button className="prev-button" onClick={(e) => { e.stopPropagation(); handlePrevImage(); }}>
+                            <FontAwesomeIcon icon={faArrowLeft} />
+                        </button>
+
+                        <img src={images[selectedImageIndex]} alt="fullscreen-img" className="fullscreen-image" />
+
+                        <button className="next-button" onClick={(e) => { e.stopPropagation(); handleNextImage(); }}>
+                            <FontAwesomeIcon icon={faArrowRight} />
+                        </button>
+                    </div>
+                </div>
+            )}
             <div className="center-user-home-post-footer">
                 <div className="center-user-home-post-footer-infoPost">
                     <span><FontAwesomeIcon icon={faThumbsUp} style={{ color: '#41C9E2', marginRight: '2' }} />
@@ -117,7 +163,7 @@ const ItemPostUserHome = () => {
                             </button></td>
                             <td><button onClick={handleComment}>
                                 <FontAwesomeIcon icon={faComment} style={{ color: 'black', marginRight: '2' }} />
-                                Bình luận</button></td>
+                                Xem bình luận</button></td>
                         </tr>
                     </table>
 

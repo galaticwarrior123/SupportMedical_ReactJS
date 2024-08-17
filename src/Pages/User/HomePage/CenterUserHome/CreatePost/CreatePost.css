@@ -1,0 +1,197 @@
+.create-post{
+    position :fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    overflow: hidden;
+}
+.create-post-body{
+    background-color: #F7EEDD;
+    border-radius: 10px;
+    padding: 20px;
+    overflow: auto;
+}
+.create-post-body-title{
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+.create-post-body-title button{
+    background-color: silver;
+    color: white;
+    border: none;
+    width:30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+.create-post-body-title button:hover{
+    background-color: #b9b9b9;
+}
+.create-post-body-title p{
+    padding:0;
+    margin:0;
+}
+.create-post-body-header{
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.create-post-body-header-avatar{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+.create-post-body-header-avatar img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.create-post-body-header-name{
+    font-size: 20px;
+    font-weight: 600;
+    margin-left: 10px;
+}
+.create-post-body-content{
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+}
+.create-post-body-content input{
+    width: 500px;
+    height: 20px;
+    outline: none;
+    font-size: 16px;
+    border-radius: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+}
+.create-post-body-content textarea{
+    width: 500px;
+    height: 150px;
+    outline: none;
+    resize: none;
+    font-size: 16px;
+    border-radius: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+.create-post-body-content textarea::-webkit-scrollbar {
+    width: 5px;
+}
+.create-post-body-content textarea::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 5px;
+}
+.create-post-body-content textarea::-webkit-scrollbar-track {
+    background-color: #F7EEDD;
+    
+}
+.create-post-body-content textarea::-webkit-scrollbar-thumb:hover {
+    background-color: #aaa;
+    padding:5px 0;
+}
+.create-post-body-listImage{
+    width: 500px;
+    display: flex;
+    flex-direction: column;
+    height:100px;
+    overflow-y: scroll;
+    padding: 0 10px;
+    margin-top: 10px;
+} 
+.create-post-body-listImage::-webkit-scrollbar {
+    width: 5px;
+}
+.create-post-body-listImage::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 5px;
+}
+.create-post-body-listImage::-webkit-scrollbar-track {
+    background-color: #F7EEDD;
+}
+.create-post-body-listImage::-webkit-scrollbar-thumb:hover {
+    background-color: #aaa;
+}
+.image-item{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.create-post-body-listImage button{
+    background-color: rgb(249, 220, 92);
+    color: #333;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.create-post-body-content-listImage-addImage {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Adjust space between elements as needed */
+    margin-top:10px;
+}
+.create-post-body-listImage p{
+    font-size: 16px;
+    font-weight: 600;
+}
+#upload-image {
+    display: none; /* Hide the file input */
+}
+
+.create-post-body-content-listImage-addImage label {
+    cursor: pointer; /* Make sure the label is clickable */
+}
+
+.create-post-body-content-listImage-addImage button {
+    padding: 8px 16px;
+    border: none;
+    background-color: #a9ba5c;
+    color: #333;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.create-post-body-content-listImage-addImage button:focus {
+    outline: none;
+}
+.create-post-body-content button:hover {
+    background-color: #a3b843; /* Darker shade for hover effect */
+}
+.create-post-body-footer{
+    width:100%;
+    display: flex;
+    justify-content:center;
+    height: 50px;
+}
+.create-post-body-footer button{
+    padding: 10px 20px;
+    border: none;
+    background-color: #41C9E2;
+    color: #333;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.create-post-body-footer button:hover{
+    background-color: #658ca1;
+}
+

@@ -9,6 +9,7 @@ const UserHome = () => {
     
     return (
         <DefaultLayout>
+            <div className="container"></div>
             <div className="user-home">
                 <LeftUserHome />
                 <CenterUserHome />
