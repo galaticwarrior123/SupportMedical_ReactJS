@@ -77,6 +77,17 @@ const ItemPostUserHome = ({ itemPost, currentUser }) => {
 
     const formattedTime = formatDistanceToNow(new Date(itemPost.createdAt), { addSuffix: true, locale: vi });
 
+    const renderBadge = () => {
+        if (itemPost.author.roles.includes('DOCTOR')) {
+            return <span className="center-user-home-post-badge"><FontAwesomeIcon icon={faCheck} style={{ color: 'green' }} /> Bác sĩ</span>;
+        } else if (itemPost.author.roles.includes('NURSE')) {
+            return <span className="center-user-home-post-badge"><FontAwesomeIcon icon={faCheck} style={{ color: 'blue' }} /> Y tá</span>;
+        } else if (itemPost.author.roles.includes('CLIENT')) {
+            return <span className="center-user-home-post-badge"><FontAwesomeIcon icon={faCheck} style={{ color: 'gray' }} /> Khách hàng</span>;
+        }
+        return null; // No badge for other roles
+    };
+
     return (
         <div className="center-user-home-post">
             <div className="center-user-home-post-header">
@@ -86,8 +97,10 @@ const ItemPostUserHome = ({ itemPost, currentUser }) => {
                 <div className="center-user-home-post-user-info">
                     <div className="center-user-home-post-user-info-top">
                         <span>{itemPost.author.firstName} {itemPost.author.lastName}</span>
-                        <span className="center-user-home-post-badge">
-                            <FontAwesomeIcon icon={faCheck} style={{ color: 'green' }} /> Bác sĩ</span>
+                        {/* <span className="center-user-home-post-badge">
+                            <FontAwesomeIcon icon={faCheck} style={{ color: 'green' }} /> Bác sĩ
+                        </span> */}
+                        {renderBadge()}
                     </div>
                     <div className="center-user-home-post-date">
                         <span>{formattedTime}</span>
@@ -177,7 +190,7 @@ const ItemPostUserHome = ({ itemPost, currentUser }) => {
             <div className="center-user-home-post-footer">
                 <div className="center-user-home-post-footer-infoPost">
                     <div className='center-user-home-post-footer-infoPost-like' onClick={handleSeeDetailLike}>
-                        <span><FontAwesomeIcon icon={faThumbsUp} style={{ color: '#41C9E2', marginRight: '2' }}  />
+                        <span><FontAwesomeIcon icon={faThumbsUp} style={{ color: '#41C9E2', marginRight: '2' }} />
                             {numberOfLikes} lượt thích
                         </span>
                     </div>
