@@ -10,6 +10,7 @@ const CreatePost = ({ handleCloseFullScreen }) => {
     const [images, setImages] = useState([]);
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
+    const user = JSON.parse(localStorage.getItem('user'));
 
     const handleAddPost = async () => {
         const formData = new FormData();
@@ -64,7 +65,7 @@ const CreatePost = ({ handleCloseFullScreen }) => {
                         <img src="https://via.placeholder.com/50" alt="avatar" />
                     </div>
                     <div className="create-post-body-header-name">
-                        <p>Nguyễn Văn A</p>
+                        <p>{user.firstName} {user.lastName}</p>
                     </div>
                 </div>
                 <div className="create-post-body-content">
