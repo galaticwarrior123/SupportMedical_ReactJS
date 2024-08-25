@@ -1,19 +1,34 @@
 import './UserHome.css';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import DefaultLayout from '../../../Layouts/DefaultLayout/DefaultLayout';
 import LeftUserHome from './LeftUserHome/LeftUserHome';
 import CenterUserHome from './CenterUserHome/CenterUserHome';
 import RightUserHome from './RightUserHome/RightUserHome';
+import DetailDay from './RightUserHome/DetailDay';
 const UserHome = () => {
-    const navigate = useNavigate();
-    
+    const [isDetailDayOpen, setIsDetailDayOpen] = useState(false);
+
+    const handleOpenDetailDay = () => {
+        setIsDetailDayOpen(true);
+    };
+
+    const handleCloseDetailDay = () => {
+        setIsDetailDayOpen(false);
+    };
+
     return (
         <DefaultLayout>
             <div className="container"></div>
             <div className="user-home">
                 <LeftUserHome />
-                <CenterUserHome />
-                <RightUserHome />
+                <CenterUserHome isDetailDayOpen={isDetailDayOpen} />
+                <RightUserHome onOpenDetailDay={handleOpenDetailDay} />
+                {isDetailDayOpen && (
+                    <div className="detail-day-overlay" onClick={handleCloseDetailDay}>
+                        <DetailDay />
+                    </div>
+                )}
             </div>
         </DefaultLayout>
 

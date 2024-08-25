@@ -209,11 +209,15 @@
     justify-content: space-between;
     align-items: center;
 }
-
+.center-user-home-post-footer-infoPost-like{
+    width:auto;
+    height:auto;
+}
 .center-user-home-post-footer-infoPost span {
     display: inline-block;
     margin-right: 10px;
     font-weight: bold;
+    cursor: pointer;
 }
 
 .center-user-home-post-footer-action {

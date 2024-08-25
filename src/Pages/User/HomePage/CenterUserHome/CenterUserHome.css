@@ -54,3 +54,8 @@
     margin-bottom: 20px;
     z-index: 1;
 }
+.center-user-home-no-post span{
+    font-size: 20px;
+    font-weight: 600;
+    color: #020202;
+}

@@ -1,12 +1,14 @@
 import { useState } from 'react';
+import DetailDay from './DetailDay';
 
-const Calendar = () => {
+const Calendar = ({ onOpenDetailDay }) => {
     const [currentDate, setCurrentDate] = useState(new Date());
-
     const startOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
     const endOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
     const startDayOfWeek = startOfMonth.getDay();
     const daysInMonth = endOfMonth.getDate();
+
+   
 
     const previousMonth = () => {
         setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1));
@@ -41,7 +43,7 @@ const Calendar = () => {
                 date.getFullYear() === today.getFullYear();
 
             dates.push(
-                <div key={i} className={`date ${isToday ? 'today' : ''}`}>
+                <div key={i} className={`date ${isToday ? 'today' : ''}`} onClick={onOpenDetailDay}>
                     {i}
                 </div>
             );
@@ -52,6 +54,9 @@ const Calendar = () => {
     const capitalizeFirstLetter = (string) => {
         return string.charAt(0).toUpperCase() + string.slice(1);
     };
+
+    
+
     return (
         <>
             <div className="right-user-home-calendar-header">

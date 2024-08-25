@@ -1,11 +1,11 @@
 import Calendar from './Calendar';
 import './RightUserHome.css';
-const RightUserHome = () => {
+const RightUserHome = ({ onOpenDetailDay }) => {
 
     return (
         <div className="right-user-home">
             <div className="right-user-home-calendar">
-                <Calendar />
+                <Calendar onOpenDetailDay={onOpenDetailDay}/>
             </div>
             <div className="right-user-home-follow">
                 <div className="right-user-home-follow-header">

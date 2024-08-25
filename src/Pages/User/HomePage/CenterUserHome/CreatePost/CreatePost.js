@@ -1,22 +1,43 @@
 import React, { useState } from 'react';
 import './CreatePost.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faClose} from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faClose } from '@fortawesome/free-solid-svg-icons';
+import PostAPI from '../../../../../API/PostAPI';
+import 'react-toastify/dist/ReactToastify.css';
+import { toast, ToastContainer } from 'react-toastify';
 
 const CreatePost = ({ handleCloseFullScreen }) => {
-    const [images, setImages] = useState([
-        // Initial images if any
-        'https://via.placeholder.com/150',
-        'https://via.placeholder.com/150',
-        'https://via.placeholder.com/150',
-    ]);
+    const [images, setImages] = useState([]);
+    const [title, setTitle] = useState('');
+    const [content, setContent] = useState('');
+
+    const handleAddPost = async () => {
+        const formData = new FormData();
+        formData.append('title', title);
+        formData.append('content', content);
+    
+        // Thêm từng tệp tin vào FormData
+        images.forEach((file) => {
+            formData.append('images', file); // 'images' là key trong FormData
+        });
+    
+        try {
+            await PostAPI.createPost(formData)
+            .then((res) => {
+                toast.success('Đăng bài viết thành công!');
+                handleCloseFullScreen();
+            });
+        } catch (error) {
+            toast.error('Đăng bài viết thất bại!');
+        }
+    };
 
     const handleRemoveImage = (indexToRemove) => {
         setImages(images.filter((_, index) => index !== indexToRemove));
     };
 
     const handleAddImages = (event) => {
-        const newImages = Array.from(event.target.files).map(file => URL.createObjectURL(file));
+        const newImages = Array.from(event.target.files);
         setImages([...images, ...newImages]);
     };
 
@@ -24,8 +45,13 @@ const CreatePost = ({ handleCloseFullScreen }) => {
         document.getElementById('upload-image').click();
     }
 
+    
+
+
+
     return (
         <div className="create-post" onClick={handleCloseFullScreen}>
+            <ToastContainer style={{ position: 'absolute', top: 60, right: 40 }} />
             <div className="create-post-body" onClick={(e) => e.stopPropagation()}>
                 <div className="create-post-body-title">
                     <p>Tạo bài viết</p>
@@ -42,13 +68,13 @@ const CreatePost = ({ handleCloseFullScreen }) => {
                     </div>
                 </div>
                 <div className="create-post-body-content">
-                    <input type="text" placeholder="Tiêu đề" />
-                    <textarea placeholder="Nội dung"></textarea>
+                    <input type="text" placeholder="Tiêu đề" onChange={(e) => setTitle(e.target.value)} />
+                    <textarea placeholder="Nội dung" onChange={(e) => setContent(e.target.value)} />
                     <div className="create-post-body-listImage">
                         {images.length === 0 && <p>Chưa có ảnh nào được thêm vào</p>}
                         {images.map((image, index) => (
                             <div key={index} className="image-item">
-                                <span className="image-name">{image}</span>
+                                <span className="image-name">{image.name}</span>
                                 <button
                                     className="delete-button"
                                     onClick={() => handleRemoveImage(index)}
@@ -74,7 +100,7 @@ const CreatePost = ({ handleCloseFullScreen }) => {
                 </div>
                 <div className="create-post-body-footer">
                     <div className="create-post-body-footer-button">
-                        <button>Đăng</button>
+                        <button onClick={handleAddPost}>Đăng</button>
                     </div>
                 </div>
             </div>

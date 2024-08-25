@@ -25,6 +25,7 @@ const Header = () => {
     const handleDirectLogin = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
+        localStorage.removeItem('roles');
         navigate('/login');
     }
     const handleDirectProfile = () => {

@@ -3,22 +3,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faThumbsUp, faComment, faPaperPlane, faArrowRight, faArrowLeft,faClose } from '@fortawesome/free-solid-svg-icons';
 
 import { useState } from 'react';
-const PostDetail = ({ handleCloseFullScreen }) => {
+const PostDetail = ({ handleCloseFullScreen, itemPost }) => {
     const [liked, setLiked] = useState(false);
     const [clickComment, setClickComment] = useState(false);
     const [selectedImageIndex, setSelectedImageIndex] = useState(null);
     const [showPostDetail, setShowPostDetail] = useState(false);
 
-    const images = [
-        "https://via.placeholder.com/200",
-        "/images/Avatar.png",
-        "https://via.placeholder.com/200",
-        "/images/doctor_picture.jpg",
-        "https://via.placeholder.com/200",
-        "/images/pictureDoctor.jpg",
-        "https://via.placeholder.com/200",
-        "https://via.placeholder.com/200"
-    ];
+    const images = itemPost.images;
 
     const handleLike = () => {
         setLiked(!liked);
@@ -49,7 +40,7 @@ const PostDetail = ({ handleCloseFullScreen }) => {
         <div className="post-detail" onClick={ handleCloseFullScreen }>
             <div className="post-detail-container" onClick={(e) => e.stopPropagation()}>
                 <div className="post-detail-nav">
-                    <span>Title</span>
+                    <span>{itemPost.title}</span>
                     <button onClick={handleCloseFullScreen}>
                         <FontAwesomeIcon icon={faClose} />
                     </button>
@@ -60,29 +51,19 @@ const PostDetail = ({ handleCloseFullScreen }) => {
                     </div>
                     <div className="post-detail-user-info">
                         <div className="post-detail-user-info-top">
-                            <span>Username</span>
+                            <span>{itemPost.author.firstName} {itemPost.author.lastName}</span>
                             <span className="post-detail-badge">
                                 <FontAwesomeIcon icon={faCheck} style={{ color: 'green' }} /> Bác sĩ</span>
                         </div>
                         <div className="post-detail-date">
-                            <span>1 giờ trước</span>
+                            <span>{itemPost.createdAt}</span>
                         </div>
                     </div>
 
                 </div>
-                <div className="post-detail-title">Title
+                <div className="post-detail-title">
                     <pr>
-                        Trên Facebook, khi bạn đăng bài trong một nhóm mà bài viết của bạn không được duyệt, thông thường bạn sẽ nhận được một thông báo từ Facebook thông báo rằng bài viết của bạn đã bị từ chối hoặc không được chấp nhận. Nội dung thông báo này thường sẽ bao gồm lý do tại sao bài đăng của bạn không được duyệt, nếu quản trị viên hoặc người kiểm duyệt nhóm đã cung cấp lý do.
-
-                        Thông báo này có thể xuất hiện dưới dạng:
-
-                        Thông báo trong ứng dụng: Bạn sẽ thấy một thông báo trong mục thông báo của bạn trên Facebook, có thể có nội dung như: "Bài viết của bạn trong nhóm [Tên nhóm] đã bị từ chối."
-
-                        Thông báo qua email: Nếu bạn đã bật thông báo qua email cho hoạt động nhóm, bạn có thể nhận được email từ Facebook với thông tin về bài đăng bị từ chối.
-
-                        Tin nhắn trực tiếp từ quản trị viên nhóm: Trong một số trường hợp, quản trị viên hoặc người kiểm duyệt nhóm có thể gửi cho bạn một tin nhắn trực tiếp giải thích lý do bài viết không được duyệt.
-
-                        Nội dung và hình thức của thông báo có thể khác nhau tùy thuộc vào cài đặt nhóm và cách quản trị viên nhóm xử lý bài viết.
+                        {itemPost.content}
                     </pr>
                     <div className="post-detail-categories">
                         <span className="post-detail-category cate1">Cate 1</span>

@@ -27,23 +27,20 @@ const Login = () => {
             email: email,
             password: password
         }
-        AuthAPI.login(data)
-            .then(res => {
-                if (res.status === 200) {
-                    localStorage.setItem('token', res.data.token);
-                    localStorage.setItem('user', JSON.stringify(res.data.user));
-                    navigate('/');
-                }
-                else{
-                    toast.error('Đăng nhập thất bại');
-                }
-            })
-            .catch(err => {
-                toast.error('Đăng nhập thất bại');
-            })
+        try {
+            const response = await AuthAPI.login(data);
+            localStorage.setItem('token', response.data.token);
+            localStorage.setItem('user', JSON.stringify(response.data.user));
+            localStorage.setItem('roles', JSON.stringify(response.data.user.roles));
+            toast.success('Đăng nhập thành công');
+            navigate('/');
+        } catch (error) {
+            toast.error(error.response.data.message);
+        }
 
     }
 
+    
     return (
         <LoginRegLayout>
             <ToastContainer />
