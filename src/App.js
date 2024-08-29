@@ -7,7 +7,7 @@ import Fill_Email from './Pages/Common/Fill_Email/Fill_Email';
 import ConfirmUser from './Pages/Common/ConfirmUser/ConfirmUser';
 import { Navigate } from 'react-router-dom';
 import RequireAuth from './Components/Utils/RequireAuth';
-
+import Chat from './Pages/User/Chat/Chat';
 
 const ROLES = {
   'CLIENT': 'CLIENT',
@@ -15,6 +15,7 @@ const ROLES = {
   'NURSE': 'NURSE',
   'ADMIN': 'ADMIN'
 }
+
 function App() {
 
   return (
@@ -22,6 +23,7 @@ function App() {
       <Routes>
         <Route element={<RequireAuth allowedRoles={ROLES.CLIENT} />}>
           <Route path="/" element={<UserHome />} />
+          <Route path="/chat" element={<Chat/> } />
         </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
