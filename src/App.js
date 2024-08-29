@@ -8,6 +8,7 @@ import ConfirmUser from './Pages/Common/ConfirmUser/ConfirmUser';
 import { Navigate } from 'react-router-dom';
 import RequireAuth from './Components/Utils/RequireAuth';
 import Chat from './Pages/User/Chat/Chat';
+import ProfileUserPage from './Pages/User/ProfileUserPage/ProfileUserPage';
 
 const ROLES = {
   'CLIENT': 'CLIENT',
@@ -24,6 +25,7 @@ function App() {
         <Route element={<RequireAuth allowedRoles={ROLES.CLIENT} />}>
           <Route path="/" element={<UserHome />} />
           <Route path="/chat" element={<Chat/> } />
+          <Route path="/profile" element={<ProfileUserPage />} />
         </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />

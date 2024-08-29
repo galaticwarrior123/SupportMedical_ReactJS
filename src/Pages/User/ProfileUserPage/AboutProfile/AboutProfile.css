@@ -1,0 +1,22 @@
+.about-container-profile {
+    background-color: #fff5e6;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 15px;
+}
+
+.about-container-profile h3 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.about-container-profile p {
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.about-container-profile a {
+    color: #00aaff;
+    text-decoration: none;
+}
