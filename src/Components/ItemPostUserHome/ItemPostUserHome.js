@@ -6,24 +6,66 @@ import { faCheck, faThumbsUp, faComment, faPaperPlane, faArrowRight, faArrowLeft
 import { formatDistanceToNow, set } from 'date-fns';
 import ShowPostDetailLike from './ShowPostDetailLike';
 import { vi } from 'date-fns/locale';
-
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
 import PostAPI from '../../API/PostAPI';
+import CommentAPI from '../../API/CommentAPI';
+import ShowComment from './ShowComment';
+
 const ItemPostUserHome = ({ itemPost, currentUser }) => {
     const [liked, setLiked] = useState(false);
     const [clickComment, setClickComment] = useState(false);
     const [selectedImageIndex, setSelectedImageIndex] = useState(null);
     const [showPostDetail, setShowPostDetail] = useState(false);
     const [numberOfLikes, setNumberOfLikes] = useState(itemPost.likedBy.length);
+    const [numberOfComments, setNumberOfComments] = useState(itemPost.comments.length);
     const [showPostDetailLike, setShowPostDetailLike] = useState(false);
     const [likedByUsers, setLikedByUsers] = useState(itemPost.likedBy);
-
+    const [listComment, setListComment] = useState([]);
+    const [commentContent, setCommentContent] = useState('');
+    const user = JSON.parse(localStorage.getItem('user'));
+    
+    
     const images = itemPost.images || [];
 
     useEffect(() => {
         setLiked(itemPost.likedBy.some(user => user._id === currentUser._id));
         setNumberOfLikes(itemPost.likedBy.length);
         setLikedByUsers(itemPost.likedBy);
+        fetchListComment();
+        
     }, [itemPost.likedBy, currentUser]);
+
+    const fetchListComment = async () => {
+        try {
+            const response = await CommentAPI.getCommentByPostId(itemPost._id);
+            setListComment(response.data);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+    
+    const handlePostComment = async (postId) => {
+        const data = {
+            postId: postId,
+            content: commentContent,
+            userId: user._id
+        };
+        try {
+            const newComment= await CommentAPI.createComment(data);
+            setCommentContent('');
+            setNumberOfComments(numberOfComments + 1);
+
+            setListComment([...listComment, newComment.data]);
+
+
+
+            toast.success('Bình luận thành công');
+        } catch (error) {
+            toast.error('Bình luận thất bại');
+        }
+    };
+
 
     const handleLike = async () => {
         try {
@@ -50,7 +92,6 @@ const ItemPostUserHome = ({ itemPost, currentUser }) => {
     };
     const handlePrevImage = () => {
         if (selectedImageIndex > 0) {
-            console.log("prev" + selectedImageIndex);
             setSelectedImageIndex(selectedImageIndex - 1);
         }
     };
@@ -90,6 +131,7 @@ const ItemPostUserHome = ({ itemPost, currentUser }) => {
 
     return (
         <div className="center-user-home-post">
+            <ToastContainer style={{ position: 'fixed', top: 60, right: 20 }}/>
             <div className="center-user-home-post-header">
                 <div className="center-user-home-post-avatar">
                     <img src="https://via.placeholder.com/50" alt="avatar" />
@@ -97,9 +139,6 @@ const ItemPostUserHome = ({ itemPost, currentUser }) => {
                 <div className="center-user-home-post-user-info">
                     <div className="center-user-home-post-user-info-top">
                         <span>{itemPost.author.firstName} {itemPost.author.lastName}</span>
-                        {/* <span className="center-user-home-post-badge">
-                            <FontAwesomeIcon icon={faCheck} style={{ color: 'green' }} /> Bác sĩ
-                        </span> */}
                         {renderBadge()}
                     </div>
                     <div className="center-user-home-post-date">
@@ -196,7 +235,7 @@ const ItemPostUserHome = ({ itemPost, currentUser }) => {
                     </div>
                     {showPostDetailLike && <ShowPostDetailLike handleCloseFullScreen={handleCloseFullScreen} listUserLiked={likedByUsers} />}
                     <span><FontAwesomeIcon icon={faComment} style={{ color: '#41C9E2', marginRight: '2' }} />
-                        10 bình luận</span>
+                        {numberOfComments} bình luận</span>
                 </div>
                 <div className="center-user-home-post-footer-action">
                     <table>
@@ -219,8 +258,8 @@ const ItemPostUserHome = ({ itemPost, currentUser }) => {
                         <img src="https://via.placeholder.com/50" alt="avatar" />
                     </div>
                     <div className="center-user-home-post-comment-input">
-                        <input type="text" placeholder="Viết bình luận..." />
-                        <button>
+                        <input type="text" placeholder="Viết bình luận..." value={commentContent} onChange={(e)=> setCommentContent(e.target.value)} />
+                        <button onClick={()=> handlePostComment(itemPost._id)}>
                             <FontAwesomeIcon icon={faPaperPlane} style={{ color: 'silver' }} />
                         </button>
 
@@ -233,36 +272,14 @@ const ItemPostUserHome = ({ itemPost, currentUser }) => {
                             <span>Danh sách bình luận</span>
                         </div>
                         <div className="center-user-home-post-comment-list">
-                            <div className="center-user-home-post-comment-list-item">
-                                <div className="center-user-home-post-comment-list-item-avatar">
-                                    <img src="https://via.placeholder.com/50" alt="avatar" />
+                            {listComment.length > 0 ? (
+                                <ShowComment listComment={listComment} />
+                            ) : (
+                                <div className="center-user-home-post-comment-list-item">
+                                    <span>Không có bình luận nào</span>
                                 </div>
-                                <div className="center-user-home-post-comment-list-item-content">
-                                    <div className="center-user-home-post-comment-list-item-content-user">
-                                        <span>Username</span>
-                                        <span>1 giờ trước</span>
-                                    </div>
-                                    <div className="center-user-home-post-comment-item-content-text">
-                                        <pr>
-                                            Trên Facebook, khi bạn đăng bài trong một nhóm mà bài viết của bạn không được duyệt, thông thường bạn sẽ nhận được một thông báo từ Facebook thông báo rằng bài viết của bạn đã bị từ chối hoặc không được chấp nhận. Nội dung thông báo này thường sẽ bao gồm lý do tại sao bài đăng của bạn không được duyệt, nếu quản trị viên hoặc người kiểm duyệt nhóm đã cung cấp lý do.
+                            )}
 
-                                            Thông báo này có thể xuất hiện dưới dạng:
-
-                                            Thông báo trong ứng dụng: Bạn sẽ thấy một thông báo trong mục thông báo của bạn trên Facebook, có thể có nội dung như: "Bài viết của bạn trong nhóm [Tên nhóm] đã bị từ chối."
-
-                                            Thông báo qua email: Nếu bạn đã bật thông báo qua email cho hoạt động nhóm, bạn có thể nhận được email từ Facebook với thông tin về bài đăng bị từ chối.
-
-                                            Tin nhắn trực tiếp từ quản trị viên nhóm: Trong một số trường hợp, quản trị viên hoặc người kiểm duyệt nhóm có thể gửi cho bạn một tin nhắn trực tiếp giải thích lý do bài viết không được duyệt.
-
-                                            Nội dung và hình thức của thông báo có thể khác nhau tùy thuộc vào cài đặt nhóm và cách quản trị viên nhóm xử lý bài viết.
-                                        </pr>
-                                    </div>
-                                    <div className="center-user-home-post-comment-item-content-action">
-                                        <button>Thích</button>
-                                        <button>Trả lời</button>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </>
 

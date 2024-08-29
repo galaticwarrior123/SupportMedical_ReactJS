@@ -296,7 +296,7 @@
     border: none;
     padding: 0 10px;
     font-size: 16px;
-    background-color: #F7EEDD;
+    background-color: #f8f8f8;
     display: flex;
     align-items: center;
 }
@@ -307,7 +307,7 @@
     border-radius: 50px;
     border: none;
     font-size: 16px;
-    background-color: #F7EEDD;
+    background-color: #f8f8f8;
 }
 .center-user-home-post-comment-input input:focus{
     outline: none;
@@ -355,6 +355,7 @@
 .center-user-home-post-comment-list-item {
     display: flex;
     margin-bottom: 10px;
+    
 }
 .center-user-home-post-comment-list-item-avatar {
     background-size: cover;

@@ -35,7 +35,7 @@ const CenterUserHome = ({ isDetailDayOpen }) => {
 
     return (
         <div className="center-user-home" style={{ zIndex: isDetailDayOpen ? 0 : 2 }}>
-            <ToastContainer style={{ position: 'absolute', top: 60, right: 40 }} />
+            <ToastContainer style={{ position: 'fixed', top: 60, right: 20 }} />
             <div className="center-user-home-activity">
                 <img src="https://via.placeholder.com/50" alt="avatar" />
                 <div className="center-user-home-activity-input" onClick={handleCreatePost}>

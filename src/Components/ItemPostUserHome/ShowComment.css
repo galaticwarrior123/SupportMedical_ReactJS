@@ -1,0 +1,179 @@
+.center-user-home-post-comment-item-action-seeMore {
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    margin-top: 4px;
+}
+.center-user-home-post-comment-item-action-seeMore button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    outline: none;
+}
+.center-user-home-post-comment-item-action-seeMore button:hover {
+    color: #1bc4da;
+}
+
+.center-user-home-post-comment-list-item {
+    display: flex;
+    align-items: flex-start;
+    padding: 10px 0;
+    border-bottom: 1px solid #eaeaea;
+}
+
+.center-user-home-post-comment-list-item-avatar img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.center-user-home-post-comment-list-item-content {
+    margin-left: 10px;
+    flex: 1;
+}
+
+.center-user-home-post-comment-list-item-content-user {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.center-user-home-post-comment-item-content-text pr {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.center-user-home-post-comment-item-content-action button {
+    margin-right: 10px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.center-user-home-post-comment-item-content-action button:hover {
+    text-decoration: underline;
+}
+/* Reply section styling */
+.center-user-home-post-comment-item-content-action-reply {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #eaeaea;
+    
+    /* Hidden state */
+    max-height: 0;
+    opacity: 0;
+    transform: translateY(-10px);
+    overflow: hidden;
+    transition: max-height 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
+}
+
+.center-user-home-post-comment-item-content-action-reply.show {
+    /* Visible state */
+    max-height: 100px; /* Adjust this based on the expected height of the reply input */
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.center-user-home-post-comment-item-content-action-reply-avatar {
+    margin-right: 10px;
+}
+
+.center-user-home-post-comment-item-content-action-reply-avatar img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.center-user-home-post-comment-item-content-action-reply-input {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    border: 1px solid #eaeaea;
+    border-radius: 20px;
+    padding: 5px 10px;
+    background-color: #f9f9f9;
+}
+
+.center-user-home-post-comment-item-content-action-reply-input input {
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 5px 10px;
+    font-size: 14px;
+    border-radius: 20px;
+    background-color: #f9f9f9;
+}
+
+.center-user-home-post-comment-item-content-action-reply-input button {
+    background: none;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    outline: none;
+    border-radius: 5px;
+}
+
+.center-user-home-post-comment-item-content-action-reply-input button:hover {
+    background-color: #41C9E2;
+}
+
+/* Child comments (replies) styling */
+.center-user-home-post-comment-list-item-child {
+    margin-left: 20px; /* Indent to indicate a reply */
+    padding: 10px 0;
+    border-left: 2px solid #eaeaea;
+    margin-top: -10px;
+
+}
+
+.center-user-home-post-comment-list-item-child-item {
+    display: flex;
+    align-items: flex-start;
+    padding: 5px 0;
+}
+
+.center-user-home-post-comment-list-item-child-item-avatar img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.center-user-home-post-comment-list-item-child-item-content {
+    margin-left: 10px;
+    flex: 1;
+}
+.center-user-home-post-comment-list-item-content-user {
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+.center-user-home-post-comment-item-content-text pr {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.center-user-home-post-comment-item-content-action button {
+    margin-right: 10px;
+    background-color: transparent;
+    border: none;
+   
+    cursor: pointer;
+}
+
+.center-user-home-post-comment-item-content-action button:hover {
+    text-decoration: underline;
+    outline: none;
+}
+
+.liked {
+    color: #0532fb; /* Change to your desired color */
+}

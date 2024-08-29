@@ -33,6 +33,8 @@ const Login = () => {
             localStorage.setItem('user', JSON.stringify(response.data.user));
             localStorage.setItem('roles', JSON.stringify(response.data.user.roles));
             toast.success('Đăng nhập thành công');
+            setEmail('');
+            setPassword('');
             navigate('/');
         } catch (error) {
             toast.error(error.response.data.message);
@@ -52,6 +54,7 @@ const Login = () => {
                     <div className="login-form-group">
                         <label htmlFor="email">Email</label>
                         <input type="email" id="email" name="email" placeholder="Nhập email" required
+                            value={email}
                             onChange={(e) => setEmail(e.target.value)} />
                     </div>
                     <div className="login-form-group ">
@@ -64,6 +67,7 @@ const Login = () => {
                                 name="password"
                                 placeholder="Nhập mật khẩu"
                                 required
+                                value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                             />
                             <FontAwesomeIcon
