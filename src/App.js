@@ -9,6 +9,8 @@ import { Navigate } from 'react-router-dom';
 import RequireAuth from './Components/Utils/RequireAuth';
 import Chat from './Pages/User/Chat/Chat';
 import ProfileUserPage from './Pages/User/ProfileUserPage/ProfileUserPage';
+import CategoryManage from './Pages/Admin/CategoryManage/CategoryManage';
+
 
 const ROLES = {
   'CLIENT': 'CLIENT',
@@ -24,13 +26,15 @@ function App() {
       <Routes>
         <Route element={<RequireAuth allowedRoles={ROLES.CLIENT} />}>
           <Route path="/" element={<UserHome />} />
-          <Route path="/chat" element={<Chat/> } />
+          <Route path="/chat" element={<Chat />} />
           <Route path="/profile" element={<ProfileUserPage />} />
         </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/register/confirm-user" element={<ConfirmUser />} />
         <Route path="/forgot-password" element={<Fill_Email />} />
+
+        <Route path="/admin/categories" element={<CategoryManage />} />
       </Routes>
     </BrowserRouter>
   )
