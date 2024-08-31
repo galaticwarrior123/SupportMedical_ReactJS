@@ -33,6 +33,14 @@ const CenterUserHome = ({ isDetailDayOpen }) => {
         fetchListPost();
     };
 
+    const updatePostInList = (updatedPost) => {
+        setListPost((prevList) => {
+            return prevList.map((post) =>
+                post._id === updatedPost._id ? updatedPost : post
+            );
+        });
+    };
+
     return (
         <div className="center-user-home" style={{ zIndex: isDetailDayOpen ? 0 : 2 }}>
             <ToastContainer style={{ position: 'fixed', top: 60, right: 20 }} />
@@ -48,7 +56,7 @@ const CenterUserHome = ({ isDetailDayOpen }) => {
             <div className="center-user-home-listPost">
                 {listPost.length > 0 ? (
                     listPost.map((post) => (
-                        <ItemPostUserHome key={post._id} itemPost={post} currentUser={user} />
+                        <ItemPostUserHome key={post._id} itemPost={post} currentUser={user}/>
                     ))
                 ) : (
                     <div className="center-user-home-no-post">

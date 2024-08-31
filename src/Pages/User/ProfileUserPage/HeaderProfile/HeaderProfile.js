@@ -11,7 +11,7 @@ const HeaderProfile = ({ user }) => {
                     <img src="./images/Avatar.png" alt="Avatar" />
                 </div>
                 <div className="profile-header-text">
-                    <h2 className="profile-username">Username</h2>
+                    <h2 className="profile-username">{user.firstName} {user.lastName}</h2>
                     <p className="profile-followers">100 người theo dõi · 100 đang theo dõi</p>
                 </div>
                 <div className="profile-header-actions" style={{ marginLeft: 'auto' }}>

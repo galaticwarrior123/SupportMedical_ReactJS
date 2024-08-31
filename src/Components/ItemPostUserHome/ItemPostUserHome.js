@@ -1,40 +1,46 @@
 import './ItemPostUserHome.css';
 import PostDetail from '../../Pages/User/HomePage/CenterUserHome/PostDetail/PostDetail';
 import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheck, faThumbsUp, faComment, faPaperPlane, faArrowRight, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faThumbsUp, faComment, faPaperPlane, faArrowRight, faArrowLeft, faEarth, faEllipsis } from '@fortawesome/free-solid-svg-icons';
 import { formatDistanceToNow, set } from 'date-fns';
 import ShowPostDetailLike from './ShowPostDetailLike';
-import { vi } from 'date-fns/locale';
+import { se, vi } from 'date-fns/locale';
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 import PostAPI from '../../API/PostAPI';
 import CommentAPI from '../../API/CommentAPI';
 import ShowComment from './ShowComment';
+import ShowMore from './ShowMore';
 
-const ItemPostUserHome = ({ itemPost, currentUser }) => {
+const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelete }) => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    const [post, setPost] = useState({});
     const [liked, setLiked] = useState(false);
     const [clickComment, setClickComment] = useState(false);
     const [selectedImageIndex, setSelectedImageIndex] = useState(null);
     const [showPostDetail, setShowPostDetail] = useState(false);
-    const [numberOfLikes, setNumberOfLikes] = useState(itemPost.likedBy.length);
-    const [numberOfComments, setNumberOfComments] = useState(itemPost.comments.length);
+    const [numberOfLikes, setNumberOfLikes] = useState(itemPost?.likedBy?.length || 0);
+    const [numberOfComments, setNumberOfComments] = useState(itemPost?.comments?.length || 0);
     const [showPostDetailLike, setShowPostDetailLike] = useState(false);
     const [likedByUsers, setLikedByUsers] = useState(itemPost.likedBy);
     const [listComment, setListComment] = useState([]);
     const [commentContent, setCommentContent] = useState('');
-    const user = JSON.parse(localStorage.getItem('user'));
-    
-    
+    const location = useLocation();
+    const [showMore, setShowMore] = useState(false);
+
+
     const images = itemPost.images || [];
 
     useEffect(() => {
-        setLiked(itemPost.likedBy.some(user => user._id === currentUser._id));
         setNumberOfLikes(itemPost.likedBy.length);
         setLikedByUsers(itemPost.likedBy);
         fetchListComment();
-        
-    }, [itemPost.likedBy, currentUser]);
+        fetchPost();
+        setLiked(itemPost.likedBy.some(user => user._id === currentUser._id));
+
+    }, [itemPost]);
 
     const fetchListComment = async () => {
         try {
@@ -44,7 +50,19 @@ const ItemPostUserHome = ({ itemPost, currentUser }) => {
             console.log(error);
         }
     };
-    
+
+    const fetchPost = async () => {
+        try {
+            const response = await PostAPI.getPostById(itemPost._id);
+            setPost(response.data[0]);
+            setLiked(response.data[0].likedBy.some(user => user._id === currentUser._id));
+            setNumberOfLikes(response.data[0].likedBy.length);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+
     const handlePostComment = async (postId) => {
         const data = {
             postId: postId,
@@ -52,14 +70,17 @@ const ItemPostUserHome = ({ itemPost, currentUser }) => {
             userId: user._id
         };
         try {
-            const newComment= await CommentAPI.createComment(data);
+            const newComment = await CommentAPI.createComment(data);
             setCommentContent('');
             setNumberOfComments(numberOfComments + 1);
-
-            setListComment([...listComment, newComment.data]);
-
-
-
+            // Update listComment directly with the new comment
+            if (clickComment) {
+                // Insert the new comment at the start of the list
+                setListComment(prevList => [newComment.data, ...prevList]);
+            } else {
+                // Update listComment for the case when comments are not shown
+                setListComment(prevList => [...prevList, newComment.data]);
+            }
             toast.success('Bình luận thành công');
         } catch (error) {
             toast.error('Bình luận thất bại');
@@ -78,14 +99,26 @@ const ItemPostUserHome = ({ itemPost, currentUser }) => {
                 setNumberOfLikes(numberOfLikes + 1);
                 setLikedByUsers([...likedByUsers, currentUser]);
             }
+
             setLiked(!liked);
+
+
+
+
         } catch (error) {
             console.log(error);
         }
     };
 
+
+
     const handleComment = () => {
         setClickComment(!clickComment);
+
+        // nếu mà gủi bình luận ở chế độ show hết comment sau khi gửi phải hiện liền ngay bình luận mới nhất lên
+        if (clickComment) {
+            setListComment([...listComment].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
+        }
     };
     const handleImageClick = (index) => {
         setSelectedImageIndex(index);
@@ -103,20 +136,37 @@ const ItemPostUserHome = ({ itemPost, currentUser }) => {
     };
     const closeFullscreen = () => {
         setSelectedImageIndex(null);
+
+
     };
     const handleClickSeeDetail = () => {
         setShowPostDetail(true);
+        fetchPost();
+
     };
     const handleCloseFullScreen = () => {
         setShowPostDetail(false);
         setShowPostDetailLike(false);
+        fetchPost();
     }
 
     const handleSeeDetailLike = () => {
         setShowPostDetailLike(true);
     }
 
-    const formattedTime = formatDistanceToNow(new Date(itemPost.createdAt), { addSuffix: true, locale: vi });
+    const handleShowMore = () => {
+        setShowMore(!showMore);
+    }
+
+    const formattedTime = (() => {
+        // Kiểm tra xem itemPost.createdAt có phải là chuỗi ngày hợp lệ không
+        const date = new Date(itemPost.createdAt);
+        // Kiểm tra xem đối tượng Date có hợp lệ không
+        if (isNaN(date.getTime())) {
+            return 'Ngày không hợp lệ';
+        }
+        return formatDistanceToNow(date, { addSuffix: true, locale: vi });
+    })();
 
     const renderBadge = () => {
         if (itemPost.author.roles.includes('DOCTOR')) {
@@ -131,25 +181,51 @@ const ItemPostUserHome = ({ itemPost, currentUser }) => {
 
     return (
         <div className="center-user-home-post">
-            <ToastContainer style={{ position: 'fixed', top: 60, right: 20 }}/>
+
             <div className="center-user-home-post-header">
                 <div className="center-user-home-post-avatar">
                     <img src="https://via.placeholder.com/50" alt="avatar" />
                 </div>
                 <div className="center-user-home-post-user-info">
                     <div className="center-user-home-post-user-info-top">
-                        <span>{itemPost.author.firstName} {itemPost.author.lastName}</span>
-                        {renderBadge()}
+                        <div className="center-user-home-post-user-info-top-name">
+                            <span>{itemPost.author.firstName} {itemPost.author.lastName}</span>
+                            {renderBadge()}
+                        </div>
+                        <div>
+                            {location.pathname === '/profile' && (
+                                <>
+                                    <div className="center-user-home-post-user-info-top-action">
+                                        <button onClick={handleShowMore}><FontAwesomeIcon icon={faEllipsis} style={{ color: 'gray' }} /></button>
+
+                                    </div>
+                                    {showMore && <ShowMore itemPost={itemPost} onDelete={onDelete}/>}
+                                </>
+                            )}
+                        </div>
                     </div>
                     <div className="center-user-home-post-date">
                         <span>{formattedTime}</span>
+                        {location.pathname === '/profile' && (
+                            <span className="center-user-home-post-privacy"><FontAwesomeIcon icon={faEarth} style={{ color: 'gray' }} /> Công khai</span>
+                        )}
                     </div>
                 </div>
 
             </div>
-            {showPostDetail && <PostDetail handleCloseFullScreen={handleCloseFullScreen} itemPost={itemPost} />}
-            <div className="center-user-home-post-title">{itemPost.title}
-                <span onClick={handleClickSeeDetail}>Xem chi tiết...</span>
+            {showPostDetail && <PostDetail handleCloseFullScreen={handleCloseFullScreen} itemPost={post} />}
+            <div className="center-user-home-post-title">
+                {isPostDetail ? (
+                    <>
+                        {itemPost.content}
+                    </>
+
+                ) : (
+                    <>
+                        {itemPost.title}
+                        <span onClick={() => handleClickSeeDetail()}>Xem chi tiết...</span>
+                    </>
+                )}
             </div>
             <div className="center-user-home-post-categories">
                 <span className="center-user-home-post-category cate1">Cate 1</span>
@@ -258,8 +334,8 @@ const ItemPostUserHome = ({ itemPost, currentUser }) => {
                         <img src="https://via.placeholder.com/50" alt="avatar" />
                     </div>
                     <div className="center-user-home-post-comment-input">
-                        <input type="text" placeholder="Viết bình luận..." value={commentContent} onChange={(e)=> setCommentContent(e.target.value)} />
-                        <button onClick={()=> handlePostComment(itemPost._id)}>
+                        <input type="text" placeholder="Viết bình luận..." value={commentContent} onChange={(e) => setCommentContent(e.target.value)} />
+                        <button onClick={() => handlePostComment(itemPost._id)}>
                             <FontAwesomeIcon icon={faPaperPlane} style={{ color: 'silver' }} />
                         </button>
 

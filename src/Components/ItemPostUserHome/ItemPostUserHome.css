@@ -28,6 +28,7 @@
 .center-user-home-post-user-info {
     display: flex;
     flex-direction: column;
+    width: 100%;
 }
 .center-user-home-post-user-info span {
     font-weight: bold;
@@ -36,6 +37,25 @@
 .center-user-home-post-user-info-top {
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+.center-user-home-post-user-info-top-name {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+}
+.center-user-home-post-user-info-top-action button {
+    background-color: transparent;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    color: #333;
+}
+
+.center-user-home-post-user-info-top-action button:focus {
+    outline: none;
 }
 .center-user-home-post-badge {
     background-color: #ffe159;
@@ -45,9 +65,17 @@
     font-size: 12px;
     margin-left: 5px;
 }
+.center-user-home-post-date {
+    display: flex;
+}
 .center-user-home-post-date span {
     font-size: 12px;
     color: #666;
+}
+.center-user-home-post-privacy {
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
 }
 .center-user-home-post-title {
     padding: 0 15px;
