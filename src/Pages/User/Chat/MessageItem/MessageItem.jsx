@@ -13,16 +13,14 @@ const MessageItem = ({ message }) => {
             </div>
         </div>
     ) : (
-        // <div className={`message-item ${message.sender !== user._id ? '' : 'message-item-right'}`}>
-        
         <div className={`message-item`}>
             <div className="message-item-avatar">
                 <img src="https://via.placeholder.com/150" alt="avatar" />
             </div>
             <div className="message-item-content">
-                <div className="message-item-content-title">
+                {/* <div className="message-item-content-title">
                     <span>Nguyễn Văn A</span>
-                </div>
+                </div> */}
                 <div className="message-item-content-text">
                     <pre>{message.content}</pre>
                 </div>
