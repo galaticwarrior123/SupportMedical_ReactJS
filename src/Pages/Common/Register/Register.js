@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
+import { set } from 'date-fns';
 
 const Register = () => {
     const [firstName, setFirstName] = useState('');
@@ -69,14 +70,21 @@ const Register = () => {
                 .then(res => {
                     if (res.data.isActive === false) {
                         localStorage.setItem('email', email);
+                        setFirstName('');
+                        setLastName('');
+                        setEmail('');
+                        setDob('');
+                        setGender('');
+                        setPassword('');
+                        setRePassword('');
                         navigate('/register/confirm-user');
                     } else {
-                        alert('Đăng ký thất bại');
+                        toast.error('Đăng ký thất bại');
                     }
 
                 })
         } catch (error) {
-            alert('Đăng ký thất bại 1');
+            toast.error('Đăng ký thất bại');
         }
     }
     return (
@@ -90,16 +98,19 @@ const Register = () => {
                     <div className="register-form-group">
                         <label htmlFor="FirstName">Họ và tên lót</label>
                         <input type="text" id="FirstName" name="FirstName" placeholder="Nhập họ và tên lót" required
+                            value={firstName}
                             onChange={(e) => setFirstName(e.target.value)} />
                     </div>
                     <div className="register-form-group">
                         <label htmlFor="LastName">Tên</label>
                         <input type="text" id="LastName" name="LastName" placeholder="Nhập tên" required
+                            value={lastName}
                             onChange={(e) => setLastName(e.target.value)} />
                     </div>
                     <div className="register-form-group">
                         <label htmlFor="email">Email</label>
                         <input type="email" id="email" name="email" placeholder="Nhập email" required
+                            value={email}
                             onChange={(e) => setEmail(e.target.value)} />
                     </div>
                     <div className="register-form-group">
@@ -130,6 +141,7 @@ const Register = () => {
                     <div className="register-form-group">
                         <label htmlFor="date">Ngày sinh</label>
                         <input type="date" id="date" name="date" max={maxDate} required
+                            value={dob}
                             onChange={(e) => setDob(e.target.value)} />
                     </div>
                     <div className="register-form-group">
@@ -141,6 +153,7 @@ const Register = () => {
                                 name="password"
                                 placeholder="Nhập mật khẩu"
                                 required
+                                value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                             />
                             <FontAwesomeIcon
@@ -159,6 +172,7 @@ const Register = () => {
                                 name="re-password"
                                 placeholder="Nhập lại mật khẩu"
                                 required
+                                value={rePassword}
                                 onChange={(e) => setRePassword(e.target.value)}
                             />
                             <FontAwesomeIcon

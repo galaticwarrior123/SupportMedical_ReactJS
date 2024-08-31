@@ -20,6 +20,7 @@ const ConfirmUser = () => {
                 if (res.status === 201) {
                     toast.success('Xác nhận thành công');
                     localStorage.removeItem('email');
+                    setCode('');
                     navigate('/login');
                 } else {
                     toast.error('Xác nhận thất bại');
@@ -41,6 +42,7 @@ const ConfirmUser = () => {
                     <div className="confirm-user-form-group">
                         <label htmlFor="code">Mã xác nhận</label>
                         <input type="text" id="code" name="code" placeholder="Nhập mã xác nhận" required
+                            value={code}
                             onChange={(e) => setCode(e.target.value)} />
                     </div>
                     <div className="confirm-user-form-group-button">

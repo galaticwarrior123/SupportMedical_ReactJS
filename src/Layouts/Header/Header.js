@@ -1,11 +1,12 @@
 import './Header.css';
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isMobileView, setMobileView] = useState(false);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const navigate = useNavigate();
+    const location = useLocation();
 
     const user = JSON.parse(localStorage.getItem('user'));
 
@@ -62,7 +63,13 @@ const Header = () => {
         return null;
     }
 
+    const handleNavigate = (path) => {
+        navigate(path);
+    };
 
+    const isActive = (path) => {
+        return location.pathname === path;
+    };
 
     return (
         <div className="header">
@@ -74,11 +81,11 @@ const Header = () => {
 
                 <div className={`header-nav-action-item ${isMenuOpen ? 'open' : ''}`}>
                     <ul>
-                        <li><img src="/images/home.png" alt="home" /></li>
-                        <li><img src="/images/rocketchat.png" alt="rocketchat" /></li>
-                        <li><img src="/images/calendar-alt.png" alt="calendar-alt" /></li>
-                        <li><img src="/images/search.png" alt="search" /></li>
-                        <li><img src="/images/bell.png" alt="bell" /></li>
+                        <li onClick={() => handleNavigate('/')} className={isActive('/') ? 'active-button' : ''}><img src="/images/home.png" alt="home"/></li>
+                        <li onClick={() => handleNavigate('/chat')} className={isActive('/chat') ? 'active-button' : ''}><img src="/images/rocketchat.png" alt="rocketchat" /></li>
+                        <li onClick={() => handleNavigate('/calendar')} className={isActive('/calendar') ? 'active-button' : ''}><img src="/images/calendar-alt.png" alt="calendar-alt" /></li>
+                        <li onClick={() => handleNavigate('/search')} className={isActive('/search') ? 'active-button' : ''}><img src="/images/search.png" alt="search" /></li>
+                        <li onClick={() => handleNavigate('/notifications')} className={isActive('/notifications') ? 'active-button' : ''}><img src="/images/bell.png" alt="bell" /></li>
                     </ul>
                 </div>
 

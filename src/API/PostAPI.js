@@ -13,9 +13,20 @@ class PostAPI {
     }
 
     static async getAllPost() {
-        const url = '/post';
+        const url = '/post/search';
         return axiosClient.get(url);
     }
+
+    static async getPostById(id) {
+        const url = `/post/search?postId=${id}`;
+        return axiosClient.get(url);
+    }
+
+    static async getPostByUserId(id) {
+        const url = `/post/search?userId=${id}`;
+        return axiosClient.get(url);
+    }
+    
 
     static async likePost(id) {
         const url = `/post/like/${id}`;
@@ -28,7 +39,7 @@ class PostAPI {
     }
 
     static async deletePost(id) {
-        const url = `/posts/${id}`;
+        const url = `/post/${id}`;
         return axiosPrivate.delete(url);
     }
 }
