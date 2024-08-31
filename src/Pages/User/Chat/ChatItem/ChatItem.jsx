@@ -1,7 +1,7 @@
 import { formatMessageTime } from '../../../../Common/DatetimeUtils';
 import './ChatItem.css';
 
-const ChatItem = ({ item }) => {
+const ChatItem = ({ item, onClick }) => {
     let friend = null;
     if (!item.isGroup) {
         const userId = JSON.parse(localStorage.getItem('user'))._id;
@@ -9,7 +9,7 @@ const ChatItem = ({ item }) => {
     }
 
     return (
-            <div className="chat-item">
+            <div onClick={onClick} className="chat-item">
                 <div className="chat-item-avatar">
                     <img src={friend.avatar} alt="avatar" />
                 </div>
