@@ -15,7 +15,7 @@ const CategoryManage = () => {
     const [itemsPerPage, setItemsPerPage] = useState(10);
     const [currentPage, setCurrentPage] = useState(1);
     const [paginatedData, setPaginatedData] = useState([]);
-    
+    const [newCategrory, setNewCategory] = useState('');
 
     // Calculate data to display based on pagination
     useEffect(() => {
@@ -27,6 +27,17 @@ const CategoryManage = () => {
     // Handle page change
     const handlePageChange = (newPage) => {
         setCurrentPage(newPage);
+    };
+
+    const handleAddNewCategory = () => {
+        if (newCategrory) {
+            const newCategory = {
+                id: `DPT ${allData.length + 1}`,
+                name: newCategrory
+            };
+            allData.push(newCategory);
+            setNewCategory('');
+        }
     };
 
     // Handle items per page change
@@ -94,8 +105,8 @@ const CategoryManage = () => {
                 <div className="top-section">
                     <div className="search-section">
                         <div className="input-group">
-                            <input type="text" className="input-field" placeholder="Nhập tên khoa" />
-                            <button className="add-button">+ Thêm mới</button>
+                            <input type="text" className="input-field" placeholder="Nhập tên khoa" value={newCategrory} onChange={(e) => setNewCategory(e.target.value)} />
+                            <button className="add-button" onClick={handleAddNewCategory}>+ Thêm mới</button>
                         </div>
                         <div className="input-group">
                             <div className='input-group-body'>

@@ -43,8 +43,8 @@ const Fill_Email = () => {
 
     }
 
-    const handleBackLogin = () => {
-        navigate('/login');
+    const handleFillNewPassword = () => {
+        navigate('/reset-password');
     }
     
     const renderNotice = () => {
@@ -54,11 +54,11 @@ const Fill_Email = () => {
                     <span>Thông báo</span>
                 </div>
                 <div className="fill-email-notice-des">
-                    <span>Mật khẩu tạm thời đã được gửi đến email của bạn</span>
+                    <span>Mã xác nhận đã gửi đến email của bạn</span>
                 </div>
                 <form>
                     <div className="fill-email-notice-form-group-button">
-                        <button onClick={handleBackLogin}>Trở về</button>
+                        <button onClick={handleFillNewPassword}>Tiếp tục</button>
                     </div>
                 </form>
             </div>

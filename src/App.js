@@ -10,7 +10,7 @@ import RequireAuth from './Components/Utils/RequireAuth';
 import Chat from './Pages/User/Chat/Chat';
 import ProfileUserPage from './Pages/User/ProfileUserPage/ProfileUserPage';
 import CategoryManage from './Pages/Admin/CategoryManage/CategoryManage';
-
+import Fill_NewPassword from './Pages/Common/Fill_NewPassword/Fill_NewPassword';
 
 const ROLES = {
   'CLIENT': 'CLIENT',
@@ -33,6 +33,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/register/confirm-user" element={<ConfirmUser />} />
         <Route path="/forgot-password" element={<Fill_Email />} />
+        <Route path="/reset-password" element={<Fill_NewPassword />} />
 
         <Route path="/admin/categories" element={<CategoryManage />} />
       </Routes>

@@ -1,4 +1,4 @@
-import axiosClient, {axiosPrivate} from "./AxiosClient";
+import axiosClient, { axiosPrivate } from "./AxiosClient";
 
 class AuthAPI {
     static async login(data) {
@@ -18,6 +18,11 @@ class AuthAPI {
 
     static async forgotPassword(data) {
         const url = '/auth/forgot-password';
+        return axiosClient.post(url, data);
+    }
+
+    static async resetPassword(data) {
+        const url = '/auth/reset-password';
         return axiosClient.post(url, data);
     }
     
