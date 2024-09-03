@@ -1,26 +1,37 @@
 import './DefaultLayoutAdmin.css';
-import { useState } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { useLocation } from 'react-router-dom';
 import SidebarAdmin from './SidebarAdmin';
 import { faBell } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-const DefaultLayoutAdmin = ({children}) => {
-    const [isCollapsed, setIsCollapse] = useState(false);
+import { SidebarContext } from './SidebarContext';
+
+const DefaultLayoutAdmin = ({ children }) => {
+    const location = useLocation();
+    const {isCollapsed} = useContext(SidebarContext);
     const [activeMenu, setActiveMenu] = useState('Quản lý danh mục');
 
-    const toggleSidebar = () => {
-        setIsCollapse(!isCollapsed);
-    }
 
-    const handleMenuClick = (text) => {
-        setActiveMenu(text);
-    }
+    // Map paths to menu names
+    const menuNames = {
+        '/admin/categories': 'Quản lý danh mục',
+        '/admin/browse-post': 'Duyệt bài viết',
+        '/admin/dashboard': 'Thống kê',
+        // Add more paths and their corresponding names as needed
+    };
+
+    // Update activeMenu based on the current path
+    useEffect(() => {
+        const currentPath = location.pathname;
+        setActiveMenu(menuNames[currentPath] || 'Quản lý danh mục'); // Default to 'Quản lý danh mục' if path is unknown
+    }, [location.pathname]);
+
     return (
         <div className={`adminContainer ${isCollapsed ? 'collapsed' : ''}`}>
             <SidebarAdmin 
-                    isCollapsed={isCollapsed} 
-                    toggleSidebar={toggleSidebar} 
-                    onMenuClick={handleMenuClick} 
-                    activeMenu={activeMenu} />
+                onMenuClick={setActiveMenu} 
+                activeMenu={activeMenu} 
+            />
             <main className="mainContentAdmin">
                 <header className="headerAdmin">
                     <div className="labelAdmin">

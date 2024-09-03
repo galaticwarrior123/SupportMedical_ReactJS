@@ -1,11 +1,12 @@
 import './SidebarAdmin.css';
 import { faList, faComments, faChartBar, faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useContext } from 'react';
+import { Link } from 'react-router-dom';
+import { SidebarContext } from './SidebarContext';
 
-
-const SidebarAdmin = ({ isCollapsed, toggleSidebar, onMenuClick, activeMenu }) => {
-
-
+const SidebarAdmin = ({ onMenuClick, activeMenu }) => {
+    const { isCollapsed, toggleSidebar } = useContext(SidebarContext);
     return (
         <aside className={`sidebarAdmin ${isCollapsed ? 'collapsed' : ''}`}>
             <div className="logoAdmin">
@@ -17,39 +18,40 @@ const SidebarAdmin = ({ isCollapsed, toggleSidebar, onMenuClick, activeMenu }) =
                         <FontAwesomeIcon icon={isCollapsed ? faArrowRight : faArrowLeft} />
                     </button>
                 </div>
-
             </div>
             <nav className="menuAdmin">
                 <ul>
                     <li>
-                        <button
+                        <Link
+                            to='/admin/categories'
                             className={`menuItemAdmin ${activeMenu === 'Quản lý danh mục' ? 'active' : ''}`}
                             onClick={() => onMenuClick('Quản lý danh mục')}>
                             <FontAwesomeIcon icon={faList} />
                             <span>Quản lý danh mục</span>
-                        </button>
+                        </Link>
                     </li>
                     <li>
-                        <button
-                            className={`menuItemAdmin ${activeMenu === 'Duyệt hồ sơ' ? 'active' : ''}`}
-                            onClick={() => onMenuClick('Duyệt hồ sơ')}>
+                        <Link
+                            to='/admin/browse-post'
+                            className={`menuItemAdmin ${activeMenu === 'Duyệt bài viết' ? 'active' : ''}`}
+                            onClick={() => onMenuClick('Duyệt bài viết')}>
                             <FontAwesomeIcon icon={faComments} />
-                            <span>Duyệt hồ sơ</span>
-                        </button>
+                            <span>Duyệt bài viết</span>
+                        </Link>
                     </li>
                     <li>
-                        <button
+                        <Link
+                            to='/admin/dashboard'
                             className={`menuItemAdmin ${activeMenu === 'Thống kê' ? 'active' : ''}`}
                             onClick={() => onMenuClick('Thống kê')}>
                             <FontAwesomeIcon icon={faChartBar} />
                             <span>Thống kê</span>
-                        </button>
+                        </Link>
                     </li>
                 </ul>
             </nav>
         </aside>
-
-    )
+    );
 }
 
 export default SidebarAdmin;

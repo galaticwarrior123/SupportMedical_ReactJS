@@ -24,21 +24,24 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
     const [numberOfLikes, setNumberOfLikes] = useState(itemPost?.likedBy?.length || 0);
     const [numberOfComments, setNumberOfComments] = useState(itemPost?.comments?.length || 0);
     const [showPostDetailLike, setShowPostDetailLike] = useState(false);
-    const [likedByUsers, setLikedByUsers] = useState(itemPost.likedBy);
+    const [likedByUsers, setLikedByUsers] = useState(itemPost?.likedBy|| []);
     const [listComment, setListComment] = useState([]);
     const [commentContent, setCommentContent] = useState('');
     const location = useLocation();
     const [showMore, setShowMore] = useState(false);
 
 
-    const images = itemPost.images || [];
+    const images = itemPost?.images || [];
 
     useEffect(() => {
         setNumberOfLikes(itemPost.likedBy.length);
         setLikedByUsers(itemPost.likedBy);
         fetchListComment();
         fetchPost();
-        setLiked(itemPost.likedBy.some(user => user._id === currentUser._id));
+        
+        if(currentUser){
+            setLiked(itemPost.likedBy.some(user => user._id === currentUser._id));
+        }
 
     }, [itemPost]);
 
@@ -55,8 +58,10 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
         try {
             const response = await PostAPI.getPostById(itemPost._id);
             setPost(response.data[0]);
-            setLiked(response.data[0].likedBy.some(user => user._id === currentUser._id));
             setNumberOfLikes(response.data[0].likedBy.length);
+            if(currentUser){
+                setLiked(response.data[0].likedBy.some(user => user._id === currentUser._id));
+            }
         } catch (error) {
             console.log(error);
         }
@@ -199,7 +204,7 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
                                         <button onClick={handleShowMore}><FontAwesomeIcon icon={faEllipsis} style={{ color: 'gray' }} /></button>
 
                                     </div>
-                                    {showMore && <ShowMore itemPost={itemPost} onDelete={onDelete}/>}
+                                    {showMore && <ShowMore itemPost={itemPost} onDelete={onDelete} />}
                                 </>
                             )}
                         </div>
@@ -302,65 +307,87 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
                     </div>
                 </div>
             )}
-            <div className="center-user-home-post-footer">
-                <div className="center-user-home-post-footer-infoPost">
-                    <div className='center-user-home-post-footer-infoPost-like' onClick={handleSeeDetailLike}>
-                        <span><FontAwesomeIcon icon={faThumbsUp} style={{ color: '#41C9E2', marginRight: '2' }} />
-                            {numberOfLikes} lượt thích
-                        </span>
-                    </div>
-                    {showPostDetailLike && <ShowPostDetailLike handleCloseFullScreen={handleCloseFullScreen} listUserLiked={likedByUsers} />}
-                    <span><FontAwesomeIcon icon={faComment} style={{ color: '#41C9E2', marginRight: '2' }} />
-                        {numberOfComments} bình luận</span>
-                </div>
-                <div className="center-user-home-post-footer-action">
-                    <table>
-                        <tr>
-                            <td>
-                                <button onClick={handleLike}>
-                                    <FontAwesomeIcon icon={faThumbsUp} style={{ color: liked ? 'blue' : 'black', marginRight: '2' }} />
-                                    <span style={{ color: liked ? 'blue' : 'black' }}>Thích</span>
-                                </button>
-                            </td>
-                            <td><button onClick={handleComment}>
-                                <FontAwesomeIcon icon={faComment} style={{ color: 'black', marginRight: '2' }} />
-                                Xem bình luận</button></td>
-                        </tr>
-                    </table>
 
-                </div>
-                <div className="center-user-home-post-footer-comment">
-                    <div className="center-user-home-post-comment-avatar">
-                        <img src="https://via.placeholder.com/50" alt="avatar" />
-                    </div>
-                    <div className="center-user-home-post-comment-input">
-                        <input type="text" placeholder="Viết bình luận..." value={commentContent} onChange={(e) => setCommentContent(e.target.value)} />
-                        <button onClick={() => handlePostComment(itemPost._id)}>
-                            <FontAwesomeIcon icon={faPaperPlane} style={{ color: 'silver' }} />
-                        </button>
-
-                    </div>
-                </div>
-
-                {clickComment && (
-                    <>
-                        <div className="center-user-home-post-comment-title">
-                            <span>Danh sách bình luận</span>
+            {(location.pathname === '/profile' || location.pathname === '/' ) ? (
+                <div className="center-user-home-post-footer">
+                    <div className="center-user-home-post-footer-infoPost">
+                        <div className='center-user-home-post-footer-infoPost-like' onClick={handleSeeDetailLike}>
+                            <span><FontAwesomeIcon icon={faThumbsUp} style={{ color: '#41C9E2', marginRight: '2' }} />
+                                {numberOfLikes} lượt thích
+                            </span>
                         </div>
-                        <div className="center-user-home-post-comment-list">
-                            {listComment.length > 0 ? (
-                                <ShowComment listComment={listComment} />
-                            ) : (
-                                <div className="center-user-home-post-comment-list-item">
-                                    <span>Không có bình luận nào</span>
-                                </div>
-                            )}
+                        {showPostDetailLike && <ShowPostDetailLike handleCloseFullScreen={handleCloseFullScreen} listUserLiked={likedByUsers} />}
+                        <span><FontAwesomeIcon icon={faComment} style={{ color: '#41C9E2', marginRight: '2' }} />
+                            {numberOfComments} bình luận</span>
+                    </div>
+                    <div className="center-user-home-post-footer-action">
+                        <table>
+                            <tr>
+                                <td>
+                                    <button onClick={handleLike}>
+                                        <FontAwesomeIcon icon={faThumbsUp} style={{ color: liked ? 'blue' : 'black', marginRight: '2' }} />
+                                        <span style={{ color: liked ? 'blue' : 'black' }}>Thích</span>
+                                    </button>
+                                </td>
+                                <td><button onClick={handleComment}>
+                                    <FontAwesomeIcon icon={faComment} style={{ color: 'black', marginRight: '2' }} />
+                                    Xem bình luận</button></td>
+                            </tr>
+                        </table>
+
+                    </div>
+                    <div className="center-user-home-post-footer-comment">
+                        <div className="center-user-home-post-comment-avatar">
+                            <img src="https://via.placeholder.com/50" alt="avatar" />
+                        </div>
+                        <div className="center-user-home-post-comment-input">
+                            <input type="text" placeholder="Viết bình luận..." value={commentContent} onChange={(e) => setCommentContent(e.target.value)} />
+                            <button onClick={() => handlePostComment(itemPost._id)}>
+                                <FontAwesomeIcon icon={faPaperPlane} style={{ color: 'silver' }} />
+                            </button>
 
                         </div>
-                    </>
+                    </div>
 
-                )}
-            </div>
+                    {clickComment && (
+                        <>
+                            <div className="center-user-home-post-comment-title">
+                                <span>Danh sách bình luận</span>
+                            </div>
+                            <div className="center-user-home-post-comment-list">
+                                {listComment.length > 0 ? (
+                                    <ShowComment listComment={listComment} />
+                                ) : (
+                                    <div className="center-user-home-post-comment-list-item">
+                                        <span>Không có bình luận nào</span>
+                                    </div>
+                                )}
+
+                            </div>
+                        </>
+
+                    )}
+                </div>
+            ) : (
+                <div className="center-user-home-post-footer-browser">
+                    <div className="center-user-home-post-footer-browser-body">
+                        <table>
+                            <tr>
+                                <td>
+                                    <button className="center-user-home-post-footer-browser-body-button-acess">
+                                        <span>Phê duyệt</span>
+                                    </button>
+                                </td>
+                                <td>
+                                    <button className='center-user-home-post-footer-browser-body-button-deny'>
+                                        <span>Từ chối</span>
+                                    </button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            )}
         </div>
     )
 }

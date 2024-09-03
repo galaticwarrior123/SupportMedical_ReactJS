@@ -448,3 +448,58 @@
     background-color: #1bc4da;
     color: #F7EEDD;
 }
+
+.center-user-home-post-footer-browser {
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    background-color: transparent;
+    color: #333;
+    border: none;
+    font-size: 16px;
+}
+.center-user-home-post-footer-browser-body {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+.center-user-home-post-footer-browser-body table{
+    width: 100%;
+    height: 100%;
+    border-top: 1px solid silver;
+    border-bottom: 1px solid silver;
+}
+.center-user-home-post-footer-browser-body td{
+    width: 50%;
+    height: 100%;
+}
+.center-user-home-post-footer-browser-body button{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    background-color: transparent;
+    color: #333;
+    border: none;
+    font-size: 16px;
+}
+.center-user-home-post-footer-browser-body-button-acess{
+    background-color: #1bc4da !important;
+}
+.center-user-home-post-footer-browser-body-button-deny{
+    background-color: #b8b8b8 !important;
+}
+.center-user-home-post-footer-browser-body button:focus {
+    outline: none;
+}
+.center-user-home-post-footer-browser-body button:hover {
+    background-color: #c5cacb;
+    color: #F7EEDD;
+}
+

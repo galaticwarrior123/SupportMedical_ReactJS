@@ -11,6 +11,8 @@ import Chat from './Pages/User/Chat/Chat';
 import ProfileUserPage from './Pages/User/ProfileUserPage/ProfileUserPage';
 import CategoryManage from './Pages/Admin/CategoryManage/CategoryManage';
 import Fill_NewPassword from './Pages/Common/Fill_NewPassword/Fill_NewPassword';
+import Dashboard from './Pages/Admin/Dashboard/Dashboard';
+import BrowsePost from './Pages/Admin/BrowsePost/BrowsePost';
 
 const ROLES = {
   'CLIENT': 'CLIENT',
@@ -35,7 +37,12 @@ function App() {
         <Route path="/forgot-password" element={<Fill_Email />} />
         <Route path="/reset-password" element={<Fill_NewPassword />} />
 
-        <Route path="/admin/categories" element={<CategoryManage />} />
+        <Route path="/admin">
+          <Route path="categories" element={<CategoryManage />} />
+          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="browse-post" element={<BrowsePost />} />
+          {/* Thêm các route khác */}
+        </Route>
       </Routes>
     </BrowserRouter>
   )

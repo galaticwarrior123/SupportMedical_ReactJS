@@ -65,7 +65,10 @@
     margin-left: 10px;
     transition: opacity 0.3s ease;
 }
-
+.menuAdmin a {
+    text-decoration: none;
+    color: black;
+}
 .menuItemAdmin:hover {
     background-color: #FFCC80;
 }

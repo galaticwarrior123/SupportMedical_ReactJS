@@ -1,16 +1,17 @@
 .post-detail{
     position :fixed;
-    top: 35px;
+    top:0;
     left: 0;
     width: 100%;
-    height: 100%;
+    /* height: 100%; */
+    height: auto;
     bottom:0;
     background-color: rgba(0, 0, 0, 0.5);
-    z-index: 100;
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 10px 20px;
+    z-index: 1001;
 }
 
 
@@ -25,6 +26,7 @@
     flex-direction: column;
     overflow-y: scroll;
     overflow-x: auto;
+    margin-top:65px;
 }
 .post-detail-container::-webkit-scrollbar {
     width: 10px;
