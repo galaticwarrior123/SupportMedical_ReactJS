@@ -8,20 +8,19 @@ import 'react-toastify/dist/ReactToastify.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 const Fill_NewPassword = () => {
-    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [activeCode, setActiveCode] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
 
     const handleSubmit = () => {
-        if (!email || !password || !activeCode) {
+        if (!password || !activeCode) {
             alert('Vui lòng nhập đầy đủ thông tin');
             return;
         }
 
         const data = {
-            email: email,
+            email: localStorage.getItem('email'),
             password: password,
             activeCode: activeCode
         }
@@ -56,10 +55,7 @@ const Fill_NewPassword = () => {
                     <span>Hãy nhập mật khẩu mới của bạn</span>
                 </div>
                 <form>
-                    <div className="fill-new-password-form-group">
-                        <label htmlFor="email">Email</label>
-                        <input type="email" id="email" name="email" placeholder="Nhập email" value={email} onChange={(e) => setEmail(e.target.value)} />
-                    </div>
+                    
                     <div className="fill-new-password-form-group">
                         <label htmlFor="password">Nhập mật khẩu mới</label>
                         <div className='fill-new-password-wrapper'>

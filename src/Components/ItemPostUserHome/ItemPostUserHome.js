@@ -164,13 +164,19 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
     }
 
     const formattedTime = (() => {
-        // Kiểm tra xem itemPost.createdAt có phải là chuỗi ngày hợp lệ không
         const date = new Date(itemPost.createdAt);
-        // Kiểm tra xem đối tượng Date có hợp lệ không
         if (isNaN(date.getTime())) {
             return 'Ngày không hợp lệ';
         }
-        return formatDistanceToNow(date, { addSuffix: true, locale: vi });
+    
+        const now = new Date();
+        const diffInDays = Math.floor((now - date) / (1000 * 60 * 60 * 24));
+    
+        if (diffInDays <= 5) {
+            return formatDistanceToNow(date, { addSuffix: true, locale: vi });
+        } else {
+            return date.toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' });
+        }
     })();
 
     const renderBadge = () => {
