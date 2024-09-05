@@ -3,7 +3,7 @@ import PostDetail from '../../Pages/User/HomePage/CenterUserHome/PostDetail/Post
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheck, faThumbsUp, faComment, faPaperPlane, faArrowRight, faArrowLeft, faEarth, faEllipsis } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faThumbsUp, faComment, faPaperPlane, faArrowRight, faArrowLeft, faEarth, faEllipsis, faHeart, faSurprise } from '@fortawesome/free-solid-svg-icons';
 import { formatDistanceToNow, set } from 'date-fns';
 import ShowPostDetailLike from './ShowPostDetailLike';
 import { se, vi } from 'date-fns/locale';
@@ -13,24 +13,31 @@ import PostAPI from '../../API/PostAPI';
 import CommentAPI from '../../API/CommentAPI';
 import ShowComment from './ShowComment';
 import ShowMore from './ShowMore';
+import ReactionMenu from './ReactionMenu';
 
 const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelete }) => {
     const user = JSON.parse(localStorage.getItem('user'));
     const [post, setPost] = useState({});
     const [liked, setLiked] = useState(false);
+    const [loved, setLoved] = useState(false);
+    const [surprised, setSurprised] = useState(false);
+    const [showReactions, setShowReactions] = useState(false);
     const [clickComment, setClickComment] = useState(false);
     const [selectedImageIndex, setSelectedImageIndex] = useState(null);
     const [showPostDetail, setShowPostDetail] = useState(false);
     const [numberOfLikes, setNumberOfLikes] = useState(itemPost?.likedBy?.length || 0);
     const [numberOfComments, setNumberOfComments] = useState(itemPost?.comments?.length || 0);
     const [showPostDetailLike, setShowPostDetailLike] = useState(false);
-    const [likedByUsers, setLikedByUsers] = useState(itemPost?.likedBy|| []);
+    const [likedByUsers, setLikedByUsers] = useState(itemPost?.likedBy || []);
+    const [lovedByUsers, setLovedByUsers] = useState(itemPost?.lovedBy || []);
+    const [surprisedByUsers, setSurprisedByUsers] = useState(itemPost?.surprisedBy || []);
     const [listComment, setListComment] = useState([]);
     const [commentContent, setCommentContent] = useState('');
     const location = useLocation();
     const [showMore, setShowMore] = useState(false);
-
-
+    const [longPressTimeout, setLongPressTimeout] = useState(null);
+    const [currentReaction, setCurrentReaction] = useState(null);
+    const [longPressActive, setLongPressActive] = useState(false);
     const images = itemPost?.images || [];
 
     useEffect(() => {
@@ -38,12 +45,15 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
         setLikedByUsers(itemPost.likedBy);
         fetchListComment();
         fetchPost();
-        
-        if(currentUser){
-            setLiked(itemPost.likedBy.some(user => user._id === currentUser._id));
+
+    }, [itemPost._id]);
+
+    useEffect(() => {
+        if (currentReaction !== null) {
+            handleReaction();
         }
 
-    }, [itemPost]);
+    }, [currentReaction]);
 
     const fetchListComment = async () => {
         try {
@@ -57,10 +67,20 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
     const fetchPost = async () => {
         try {
             const response = await PostAPI.getPostById(itemPost._id);
+            const postData = response.data[0];
             setPost(response.data[0]);
             setNumberOfLikes(response.data[0].likedBy.length);
-            if(currentUser){
-                setLiked(response.data[0].likedBy.some(user => user._id === currentUser._id));
+            setLikedByUsers(response.data[0].likedBy);
+            setLovedByUsers(response.data[0].lovedBy);
+            setSurprisedByUsers(response.data[0].surprisedBy);
+            setNumberOfComments(response.data[0].comments.length);
+
+
+
+            if (currentUser) {
+                setLiked(postData.likedBy.some(user => user._id === currentUser._id));
+                setLoved(postData.lovedBy.some(user => user._id === currentUser._id));
+                setSurprised(postData.surprisedBy.some(user => user._id === currentUser._id));
             }
         } catch (error) {
             console.log(error);
@@ -93,26 +113,95 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
     };
 
 
-    const handleLike = async () => {
+    const handleReaction = async () => {
+        const reaction = currentReaction; // This could be 'like', 'love', or 'surprise'
+
+        let data = {
+            type: reaction, // This can be 'like', 'love', 'surprise', or null
+        };
+        console.log("data", data);
         try {
-            if (liked) {
-                await PostAPI.unlikePost(itemPost._id);
-                setNumberOfLikes(numberOfLikes - 1);
-                setLikedByUsers(likedByUsers.filter(user => user._id !== currentUser._id));
+            // Check if user clicked the current reaction to remove it
+            if (reaction === 'love' && loved) {
+                // If "love" is already selected, remove it by sending null as the type
+                data = { type: null };
+                setLoved(false);
+                setLovedByUsers(prev => prev.filter(user => user._id !== currentUser._id));
+            } else if (reaction === 'like' && liked) {
+                // If "like" is already selected, remove it by sending null as the type
+                data = { type: null };
+                setLiked(false);
+                setNumberOfLikes(prev => prev - 1);
+                setLikedByUsers(prev => prev.filter(user => user._id !== currentUser._id));
+            } else if (reaction === 'surprise' && surprised) {
+                // If "surprise" is already selected, remove it by sending null as the type
+                data = { type: null };
+                setSurprised(false);
+                setSurprisedByUsers(prev => prev.filter(user => user._id !== currentUser._id));
             } else {
-                await PostAPI.likePost(itemPost._id);
-                setNumberOfLikes(numberOfLikes + 1);
-                setLikedByUsers([...likedByUsers, currentUser]);
+                // Add the reaction if it is not already selected
+                await PostAPI.reactPost(itemPost._id, data);
+
+                if (reaction === 'like') {
+                    setLiked(true);
+                    setNumberOfLikes(prev => prev + 1);
+                    setLikedByUsers(prev => [...prev, currentUser]);
+                    setLoved(false);
+                    setSurprised(false);
+                } else if (reaction === 'love') {
+                    setLoved(true);
+                    setLovedByUsers(prev => [...prev, currentUser]);
+                    setLiked(false);
+                    setSurprised(false);
+                } else if (reaction === 'surprise') {
+                    setSurprised(true);
+                    setSurprisedByUsers(prev => [...prev, currentUser]);
+                    setLiked(false);
+                    setLoved(false);
+                }
             }
 
-            setLiked(!liked);
-
-
-
+            // Send the reaction (or removal) to the API
+            await PostAPI.reactPost(itemPost._id, data);
 
         } catch (error) {
-            console.log(error);
+            console.error(error);
         }
+    };
+
+
+    const handleReactionSelect = (newReaction) => {
+        setCurrentReaction(newReaction);
+        setShowReactions(false);
+    };
+
+    const handleMouseDown = () => {
+        // Set longPressActive to false initially
+        setLongPressActive(false);
+    
+        // Set a timeout for long press (500ms)
+        const timeout = setTimeout(() => {
+            setShowReactions(true); // Show reactions menu after long press
+            setLongPressActive(true); // Indicate long press is active
+        }, 500);
+        setLongPressTimeout(timeout);
+    };
+    
+    const handleMouseUp = () => {
+        // Clear long press timeout when mouse is released
+        clearTimeout(longPressTimeout);
+    
+        // If long press is not active, proceed with the normal reaction button click
+        if (!longPressActive) {
+            handleReaction();
+        }
+    
+        
+    };
+    
+
+    const handleCloseReactionMenu = () => {
+        setShowReactions(false);
     };
 
 
@@ -168,10 +257,10 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
         if (isNaN(date.getTime())) {
             return 'Ngày không hợp lệ';
         }
-    
+
         const now = new Date();
         const diffInDays = Math.floor((now - date) / (1000 * 60 * 60 * 24));
-    
+
         if (diffInDays <= 5) {
             return formatDistanceToNow(date, { addSuffix: true, locale: vi });
         } else {
@@ -188,6 +277,60 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
             return <span className="center-user-home-post-badge"><FontAwesomeIcon icon={faCheck} style={{ color: 'gray' }} /> Khách hàng</span>;
         }
         return null; // No badge for other roles
+    };
+
+
+    const renderButtonReaction = () => {
+        let reactionButton;
+        if (liked) {
+            reactionButton = (
+                <button
+                    onMouseDown={handleMouseDown}
+                    onMouseUp={handleMouseUp}
+                    onClick={() => handleReactionSelect('like')}
+                    style={{ color: 'blue' }}>
+                    <FontAwesomeIcon icon={faThumbsUp} style={{ color: 'blue', marginRight: '2' }} />
+                    <span>Thích</span>
+                </button>
+            );
+        }
+        else if (loved) {
+            reactionButton = (
+                <button
+                    onMouseDown={handleMouseDown}
+                    onMouseUp={handleMouseUp}
+                    onClick={() => handleReactionSelect('love')}
+                    style={{ color: 'red' }}>
+                    <FontAwesomeIcon icon={faHeart} style={{ color: 'red', marginRight: '2' }} />
+                    <span>Yêu</span>
+                </button>
+            );
+        }
+        else if (surprised) {
+            reactionButton = (
+                <button
+                    onMouseDown={handleMouseDown}
+                    onMouseUp={handleMouseUp}
+                    onClick={() => handleReactionSelect('surprise')}
+                    style={{ color: 'orange' }}>
+                    <FontAwesomeIcon icon={faSurprise} style={{ color: 'orange', marginRight: '2' }} />
+                    <span>Ngạc nhiên</span>
+                </button>
+            );
+        }
+        else {
+            reactionButton = (
+                <button
+                    onMouseDown={handleMouseDown}
+                    onMouseUp={handleMouseUp}
+                    onClick={() => handleReactionSelect('like')}>
+                    <FontAwesomeIcon icon={faThumbsUp} style={{ color: 'black', marginRight: '2' }} />
+                    <span>Thích</span>
+                </button>
+            );
+        }
+
+        return reactionButton;
     };
 
     return (
@@ -313,28 +456,31 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
                     </div>
                 </div>
             )}
-
-            {(location.pathname === '/profile' || location.pathname === '/' ) ? (
+            {showReactions && <ReactionMenu onSelectReaction={handleReactionSelect} onClose={handleCloseReactionMenu} />}
+            {(location.pathname === '/profile' || location.pathname === '/') ? (
                 <div className="center-user-home-post-footer">
+
                     <div className="center-user-home-post-footer-infoPost">
                         <div className='center-user-home-post-footer-infoPost-like' onClick={handleSeeDetailLike}>
                             <span><FontAwesomeIcon icon={faThumbsUp} style={{ color: '#41C9E2', marginRight: '2' }} />
                                 {numberOfLikes} lượt thích
                             </span>
                         </div>
-                        {showPostDetailLike && <ShowPostDetailLike handleCloseFullScreen={handleCloseFullScreen} listUserLiked={likedByUsers} />}
+                        {showPostDetailLike && <ShowPostDetailLike handleCloseFullScreen={handleCloseFullScreen} itemPost={post}/>}
                         <span><FontAwesomeIcon icon={faComment} style={{ color: '#41C9E2', marginRight: '2' }} />
                             {numberOfComments} bình luận</span>
                     </div>
+
                     <div className="center-user-home-post-footer-action">
+
                         <table>
+
                             <tr>
                                 <td>
-                                    <button onClick={handleLike}>
-                                        <FontAwesomeIcon icon={faThumbsUp} style={{ color: liked ? 'blue' : 'black', marginRight: '2' }} />
-                                        <span style={{ color: liked ? 'blue' : 'black' }}>Thích</span>
-                                    </button>
+                                    {renderButtonReaction()}
+
                                 </td>
+
                                 <td><button onClick={handleComment}>
                                     <FontAwesomeIcon icon={faComment} style={{ color: 'black', marginRight: '2' }} />
                                     Xem bình luận</button></td>
@@ -393,8 +539,9 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
                         </table>
                     </div>
                 </div>
-            )}
-        </div>
+            )
+            }
+        </div >
     )
 }
 

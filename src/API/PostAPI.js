@@ -28,14 +28,19 @@ class PostAPI {
     }
     
 
-    static async likePost(id) {
-        const url = `/post/like/${id}`;
-        return axiosPrivate.put(url);
-    }
+    // static async likePost(id) {
+    //     const url = `/post/like/${id}`;
+    //     return axiosPrivate.put(url);
+    // }
 
-    static async unlikePost(id) {
-        const url = `/post/unlike/${id}`;
-        return axiosPrivate.put(url);
+    // static async unlikePost(id) {
+    //     const url = `/post/unlike/${id}`;
+    //     return axiosPrivate.put(url);
+    // }
+
+    static async reactPost(id, data) {
+        const url = `/post/reaction/${id}`;
+        return axiosPrivate.put(url, data);
     }
 
     static async deletePost(id) {
