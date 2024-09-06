@@ -1,5 +1,5 @@
 import './SidebarAdmin.css';
-import { faList, faComments, faChartBar, faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { faList, faComments, faChartBar, faArrowLeft, faArrowRight, faUserDoctor } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useContext } from 'react';
 import { Link } from 'react-router-dom';
@@ -28,6 +28,15 @@ const SidebarAdmin = ({ onMenuClick, activeMenu }) => {
                             onClick={() => onMenuClick('Quản lý danh mục')}>
                             <FontAwesomeIcon icon={faList} />
                             <span>Quản lý danh mục</span>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link
+                            to='/admin/browse-post'
+                            className={`menuItemAdmin ${activeMenu === 'Duyệt bài viết' ? 'active' : ''}`}
+                            onClick={() => onMenuClick('Duyệt bài viết')}>
+                            <FontAwesomeIcon icon={faUserDoctor} />
+                            <span>Quản lý bác sĩ</span>
                         </Link>
                     </li>
                     <li>
