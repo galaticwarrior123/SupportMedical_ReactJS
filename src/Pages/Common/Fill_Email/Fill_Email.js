@@ -34,6 +34,7 @@ const Fill_Email = () => {
                 }
                 else {
                     setNotice(true);
+                    localStorage.setItem('email', email);
                     setShowEmailForm(false);
                 }
             })

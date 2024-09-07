@@ -2,7 +2,7 @@ import './Header.css';
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 const Header = () => {
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isMenuOpen, setIsMenuOpen] = useState(true);
     const [isMobileView, setMobileView] = useState(false);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const navigate = useNavigate();
@@ -71,12 +71,19 @@ const Header = () => {
         return location.pathname === path;
     };
 
+    const handleClickLogo = () => {
+        if (isMobileView) {
+            return toggleMenu;
+        }
+        return () => handleNavigate('/');
+    };
+
     return (
         <div className="header">
             <div className="header-container">
                 <div className="header-logo">
-                    <img src={isMobileView ? "/images/Menu.png" : "/images/Logo.png"} alt="logo"
-                        onClick={isMobileView ? toggleMenu : null} />
+                    <img src={isMobileView ? "/images/menu.png" : "/images/Logo.png"} alt="logo"
+                        onClick={isMobileView ? toggleMenu : handleClickLogo()} />
                 </div>
 
                 <div className={`header-nav-action-item ${isMenuOpen ? 'open' : ''}`}>

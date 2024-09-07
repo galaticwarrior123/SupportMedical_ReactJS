@@ -1,0 +1,81 @@
+.reaction-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 10px;
+    
+    border-radius: 5px;
+    background-color: transparent;
+    border:none;
+    color: #333;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: transform 0.3s ease;
+}
+.reaction-button svg {
+    height: 20px;
+    width: 20px;
+}
+
+.reaction-button:hover {
+    transform: translateY(-5px);
+}
+
+/* CSS cho Reaction Menu */
+.reaction-menu {
+    display: flex;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    padding: 10px;
+    width:160px;
+    justify-content: space-evenly;
+    position: absolute;
+    margin-left:28%;
+    transform: translateX(-50%) translateY(20px); /* Bắt đầu từ dưới */
+    opacity: 0; /* Ẩn menu khi không hiển thị */
+    transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+}
+
+.reaction-menu.show {
+    transform: translateX(-50%) translateY(0); /* Đưa menu lên vị trí mong muốn */
+    opacity: 1; /* Hiển thị menu */
+}
+
+/* CSS cho Reaction Menu Item */
+.reaction-menu-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0 5px;
+
+}
+
+.reaction-menu-item:hover {
+    background-color: #f0f0f0;
+}
+
+
+
+/* Optional: Specific styles for reaction types */
+.reaction-like {
+    color: #007bff; /* Blue for Like */
+}
+
+.reaction-love {
+    color: #e83e8c; /* Pink for Love */
+    transition: color 0.3s;
+}
+
+.reaction-surprise {
+    color: #ffc107; /* Yellow for Surprise */
+    transition: color 0.3s;
+}
+
