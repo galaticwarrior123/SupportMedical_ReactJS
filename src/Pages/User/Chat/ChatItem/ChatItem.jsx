@@ -1,3 +1,4 @@
+import { MessageType } from '../../../../API/ChatAPI';
 import { formatMessageTime } from '../../../../Common/DatetimeUtils';
 import './ChatItem.css';
 
@@ -18,7 +19,8 @@ const ChatItem = ({ item, onClick }) => {
                         <span>{friend.firstName} {friend.lastName}</span>
                     </div>
                     <div className="chat-item-content-last-message">
-                        <span>{item.lastMessage.content}</span>
+                        {item.lastMessage.type === MessageType.TEXT && <span className="chat-item-content-type">{item.lastMessage.content}</span>}
+                        {item.lastMessage.type === MessageType.IMAGE && <span className="chat-item-content-type">{"🖼️"}</span>}
                         <span className="chat-item-content-time">{" · " + formatMessageTime(item.lastMessage.createdAt)}
                         </span>
                     </div>

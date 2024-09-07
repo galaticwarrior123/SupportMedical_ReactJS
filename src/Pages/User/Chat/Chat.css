@@ -82,8 +82,8 @@
 
 .chat-footer {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    justify-content: space-around;
+    align-items:center;
     border-top: 1px solid #e0e0e0;
     height: 40px;
 }
@@ -97,11 +97,13 @@
     align-self: center;
     width: 100%;
     max-height: 60px;
+    height: 30px;
     resize: none;
     border-radius: 18px;
     border: none;
     margin-top: 10px;
     padding: 4px 18px; 
+    box-sizing: border-box;
 }
 
 .chat-box .chat-body {
@@ -116,4 +118,42 @@
     display: flex;
     flex-direction: column-reverse;
     
+}
+
+.btn-send {
+    background-color: #008DDA;
+    color: white;
+    border: none;
+    border-radius: 18px;
+    padding: 0px 14px;
+    height: 100%;
+    cursor: pointer;
+    margin-top: 5px;
+}
+
+.btn-send:hover {
+    background-color: #005f8b;
+}
+
+.btn-send svg {
+    font-size: 18px;
+}
+
+.btn-attachment {
+    background-color: transparent;
+    color: #008DDA;
+    border: none;
+    border-radius: 18px;
+    padding: 2px 16px;
+    height: 100%;
+    cursor: pointer;
+    margin-top: 5px;
+}
+
+.btn-attachment:hover {
+    background-color: #f5f5f5;
+}
+
+.btn-attachment svg {
+    font-size: 24px;
 }

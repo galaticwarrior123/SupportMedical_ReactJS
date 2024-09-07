@@ -4,11 +4,14 @@ import './Chat.css';
 import { useEffect, useState, useRef } from 'react';
 import { socket } from '../../../API/Socket';
 import MessageItem from './MessageItem/MessageItem';
-import { ChatAPI } from '../../../API/ChatAPI';
+import { ChatAPI, MessageType } from '../../../API/ChatAPI';
 import { UserAPI } from '../../../API/UserAPI';
 import SearchItem from './ChatItem/SearchItem';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faImage, faPaperPlane } from '@fortawesome/free-solid-svg-icons';
+import imageCompression from 'browser-image-compression';
 
-const Chat = () => {    
+const Chat = () => {
     const messageEndRef = useRef(null);
     const textAreaRef = useRef(null);
 
@@ -28,15 +31,15 @@ const Chat = () => {
 
     // get list chat on mount
     useEffect(() => {
-        socket.on('list-chats', (data) => {
-            setChats(data);
-            setSelectedChat(data[0]);
-        });
+        async function getChats() {
+            const response = await ChatAPI.getChats();
+            if (response.data) {
+                setChats(response.data);
+                setSelectedChat(response.data[0]);
+            }
 
-        // Clean up
-        return () => {
-            socket.off('list-chats');
         }
+        getChats();
     }, []);
 
     // get messages of selected chat
@@ -48,7 +51,7 @@ const Chat = () => {
             }
         }
         getMessages();
-        
+
     }, [selectedChat]);
 
     useEffect(() => {
@@ -56,13 +59,12 @@ const Chat = () => {
             if (message.chat === selectedChat?._id) {
                 const newMessages = [message, ...messages];
                 setMessages(newMessages);
-            } else { // if the message is not in the selected chat
-                // get the new chat and put it on top, remove the old one if exists
-                const newChat = (await ChatAPI.getChatById(message.chat)).data;
-                console.log(newChat);
-                const newChats = [newChat, ...chats.filter((chat) => chat._id !== message.chat)];
-                setChats(newChats);
             }
+            // get the new chat and put it on top, remove the old one if exists
+            const newChat = (await ChatAPI.getChatById(message.chat)).data;
+            console.log(newChat);
+            const newChats = [newChat, ...chats.filter((chat) => chat._id !== message.chat)];
+            setChats(newChats);
         });
         // scroll to bottom
         messageEndRef.current.scrollIntoView({ behavior: "smooth" });
@@ -95,12 +97,13 @@ const Chat = () => {
 
 
     const handleSendMessage = () => {
-        if (!newMessage.trim()) return;
-        socket.emit('send-message', {
-            chat: selectedChat._id,
-            content: newMessage.trim(),
-            type: 'text'
-        });
+        if (newMessage.trim()) {
+            socket.emit('send-message', {
+                chat: selectedChat._id,
+                content: newMessage.trim(),
+                type: MessageType.TEXT,
+            });
+        }
         setNewMessage('');
         textAreaRef.current.style.height = 'auto'; // reset height
     }
@@ -129,6 +132,30 @@ const Chat = () => {
         setSelectedChat(item);
     }
 
+    const handleSendImage = () => {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = 'image/*';
+        input.multiple = true;
+        input.onchange = async (e) => {
+            const files = Object.values(e.target.files);
+            console.log(files);
+            const compressedFiles = await Promise.all(files.map(async (file) => {
+                return await imageCompression(file, {
+                    maxSizeMB: 2,
+                    maxWidthOrHeight: 1080,
+                    useWebWorker: true,
+                });
+            }));
+            socket.emit('send-message', {
+                chat: selectedChat._id,
+                content: compressedFiles,
+                type: MessageType.IMAGE,
+            });
+        }
+        input.click();
+    }
+
     return (
         <DefaultLayout>
             <div className="chat-page">
@@ -137,16 +164,16 @@ const Chat = () => {
                         <span>Cuộc trò chuyện</span>
                     </div>
                     <div className="search-chat">
-                        <input 
+                        <input
                             onChange={
                                 (e) => setSearch(e.target.value)
                             }
-                            value={search} className="search-chat" 
+                            value={search} className="search-chat"
                             type="text" placeholder="Tìm kiếm..." />
                     </div>
 
                     <div className="chat-list">
-                        {searchResult && searchResult.length > 0 ? 
+                        {searchResult && searchResult.length > 0 ?
                             searchResult.map((friend) => (
                                 <SearchItem onClick={
                                     () => handleSearchItemClicked(friend)
@@ -156,7 +183,7 @@ const Chat = () => {
                                 <ChatItem onClick={
                                     () => handleChatItemClicked(chat)
                                 } key={chat._id} item={chat} />
-                            ))) 
+                            )))
                         }
                     </div>
                 </div>
@@ -193,19 +220,22 @@ const Chat = () => {
                                 )
                             }
                             {
-                            messages?.map((message) => (
-                                <MessageItem key={message._id} message={message} />
-                            ))}
-                            
+                                messages?.map((message) => (
+                                    <MessageItem key={message._id} message={message} />
+                                ))}
+
                         </div>
 
                     </div>
 
                     <div className="chat-footer">
+                        <button onClick={handleSendImage} className="btn-attachment">
+                            <FontAwesomeIcon icon={faImage} />
+                        </button>
                         <div className="message-input">
-                            <textarea 
+                            <textarea
                                 ref={textAreaRef}
-                                onChange={handleNewMessageChange} 
+                                onChange={handleNewMessageChange}
                                 rows="1"
                                 value={newMessage} type="text" placeholder="Nhập tin nhắn..."
                                 onKeyDown={(e) => {
@@ -219,7 +249,9 @@ const Chat = () => {
                                 }}
                             />
                         </div>
-                        <button onClick={handleSendMessage}>Gửi</button>
+                        <button className="btn-send" onClick={handleSendMessage}>
+                            <FontAwesomeIcon icon={faPaperPlane} />
+                        </button>
                     </div>
                 </div>
             </div>
