@@ -25,3 +25,10 @@ export const formatMessageTime = (time) => {
     return date.getDay() + ' thg ' + date.getMonth(); // Định dạng ngày/tháng theo tiếng Việt
   }
 }
+
+export const formatFullDatetime = (time) => {
+  const date = new Date(time);
+  const dateStr = date.toLocaleDateString('vi-VN', { year: 'numeric', month: '2-digit', day: '2-digit' });
+  const timeStr = date.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
+  return `${dateStr} ${timeStr}`;
+}
