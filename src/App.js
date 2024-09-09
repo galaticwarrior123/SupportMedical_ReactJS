@@ -13,6 +13,7 @@ import CategoryManage from './Pages/Admin/CategoryManage/CategoryManage';
 import Fill_NewPassword from './Pages/Common/Fill_NewPassword/Fill_NewPassword';
 import Dashboard from './Pages/Admin/Dashboard/Dashboard';
 import BrowsePost from './Pages/Admin/BrowsePost/BrowsePost';
+import DoctorManage from './Pages/Admin/DoctorManage/DoctorManage';
 
 const ROLES = {
   'CLIENT': 'CLIENT',
@@ -41,6 +42,7 @@ function App() {
           <Route path="categories" element={<CategoryManage />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="browse-post" element={<BrowsePost />} />
+          <Route path="doctors" element={<DoctorManage />} />
           {/* Thêm các route khác */}
         </Route>
       </Routes>

@@ -1,0 +1,136 @@
+.doctor-manage-add-person {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    z-index: 1002;
+}
+.doctor-manage-add-person-overlay {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.doctor-manage-add-person-close{
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
+    position: relative;
+    top: -30px;
+}
+.doctor-manage-add-person-close button{
+    background-color: #fbfbfb;
+    border: none;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 50%;
+    padding: 5px 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+.doctor-manage-add-person-close button:hover{
+    background-color: #f1f1f1;
+}
+.doctor-manage-add-person-header{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.doctor-manage-add-person-header span {
+    font-size: 24px;
+    font-weight: bold;
+    font-family: 'Poppins', sans-serif;
+}
+.doctor-manage-add-person-body {
+    background-color: white;
+    width: auto;
+    padding: 20px;
+    border-radius: 5px;
+    height:auto;
+}
+.doctor-manage-add-person-body-containter{
+    display: flex;
+    flex-direction: row;
+    height:100%;
+}
+.doctormanage-add-person-body-containter-form{
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+}
+.doctor-manage-add-person-input {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+.doctor-manage-add-person-input input {
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-top: 10px;
+}
+.doctor-manage-add-person-input select {
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-top: 10px;
+}
+.doctor-manage-add-person-input select option {
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-top: 10px;
+}
+
+.doctor-manage-add-person-input label{
+    font-size: 16px;
+    color: #555;
+    font-weight: 500;
+    margin-right: 10px;
+}
+
+.doctor-manage-add-person-load-image {
+    width: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.doctor-manage-add-person-load-image-header {
+    margin-bottom: 10px;
+}
+.doctor-manage-add-person-load-image-header span{
+    font-size: 16px;
+    color: #555;
+    font-weight: 500;
+    
+}
+.doctor-manage-add-person-load-image-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.doctor-manage-add-person-load-image-body-placeholder {
+    width: 150px;
+    height: 200px;
+    background-color: #ddd;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    margin-bottom: 20px;
+}
+
+.doctor-manage-add-person-load-image-body-placeholder img {
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+    object-fit: cover;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}

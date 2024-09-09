@@ -32,9 +32,9 @@ const SidebarAdmin = ({ onMenuClick, activeMenu }) => {
                     </li>
                     <li>
                         <Link
-                            to='/admin/browse-post'
-                            className={`menuItemAdmin ${activeMenu === 'Duyệt bài viết' ? 'active' : ''}`}
-                            onClick={() => onMenuClick('Duyệt bài viết')}>
+                            to='/admin/doctors'
+                            className={`menuItemAdmin ${activeMenu === 'Quản lý bác sĩ' ? 'active' : ''}`}
+                            onClick={() => onMenuClick('Quản lý bác sĩ')}>
                             <FontAwesomeIcon icon={faUserDoctor} />
                             <span>Quản lý bác sĩ</span>
                         </Link>
