@@ -4,12 +4,13 @@ import './Chat.css';
 import { useEffect, useState, useRef } from 'react';
 import { socket } from '../../../API/Socket';
 import MessageItem from './MessageItem/MessageItem';
-import { ChatAPI, MessageType } from '../../../API/ChatAPI';
+import { AppointmentStatus, ChatAPI, MessageType } from '../../../API/ChatAPI';
 import { UserAPI } from '../../../API/UserAPI';
 import SearchItem from './ChatItem/SearchItem';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faImage, faPaperPlane } from '@fortawesome/free-solid-svg-icons';
+import { faCalendarDays, faImage, faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import imageCompression from 'browser-image-compression';
+import CreateApptFormModal from './CreateApptFormModal/CreateApptFormModal';
 
 const Chat = () => {
     const messageEndRef = useRef(null);
@@ -24,6 +25,8 @@ const Chat = () => {
     const [search, setSearch] = useState('');
     const [debounceSearch, setDebounceSearch] = useState('');
     const [searchResult, setSearchResult] = useState(null);
+
+    const [showCreateApptFormModal, setShowCreateApptFormModal] = useState(false);
 
 
     const user = JSON.parse(localStorage.getItem('user'));
@@ -54,6 +57,7 @@ const Chat = () => {
 
     }, [selectedChat]);
 
+    // listen for new messages or updated messages
     useEffect(() => {
         socket.on('receive-message', async (message) => {
             if (message.chat === selectedChat?._id) {
@@ -69,8 +73,21 @@ const Chat = () => {
         // scroll to bottom
         messageEndRef.current.scrollIntoView({ behavior: "smooth" });
 
+        socket.on('update-message', async (message) => {
+            if (message.chat === selectedChat?._id) {
+                const newMessages = messages.map((msg) => {
+                    if (msg._id === message._id) {
+                        return message;
+                    }
+                    return msg;
+                });
+                setMessages(newMessages);
+            }
+        });
+
         return () => {
             socket.off('receive-message');
+            socket.off('update-message');
         }
     }, [messages, selectedChat, chats]);
 
@@ -85,6 +102,7 @@ const Chat = () => {
         }
     }, [search]);
 
+    // search for user by email
     useEffect(() => {
         if (debounceSearch) {
             UserAPI.findUserByEmail(debounceSearch).then((response) => {
@@ -156,9 +174,39 @@ const Chat = () => {
         input.click();
     }
 
+    const handleSendAppt = (appt) => {
+        socket.emit('send-message', {
+            chat: selectedChat._id,
+            content: appt,
+            type: MessageType.APPOINTMENT,
+        });
+        setShowCreateApptFormModal(false);
+    };
+
+    const handleAcceptApt = (e, messageId) => {
+        e.stopPropagation();
+        socket.emit('update-appt-message-status', {
+            messageId,
+            status: AppointmentStatus.ACCEPTED,
+        });
+    }
+
+    const handleCancelApt = (e, messageId) => {
+        e.stopPropagation();
+        socket.emit('update-appt-message-status', {
+            messageId,
+            status: AppointmentStatus.CANCELLED,
+        });
+    }
+
     return (
         <DefaultLayout>
             <div className="chat-page">
+            <CreateApptFormModal 
+                handleSendAppt={handleSendAppt}
+                show={showCreateApptFormModal} 
+                handleClose={ () => setShowCreateApptFormModal(false)} 
+            />
                 <div className="card chat-list-card">
                     <div className="card-title">
                         <span>Cuộc trò chuyện</span>
@@ -221,8 +269,12 @@ const Chat = () => {
                             }
                             {
                                 messages?.map((message) => (
-                                    <MessageItem key={message._id} message={message} />
-                                ))}
+                                    <MessageItem 
+                                        onAcceptApt={handleAcceptApt}
+                                        onCancelApt={handleCancelApt}
+                                        key={message._id} message={message} />
+                                ))
+                            }
 
                         </div>
 
@@ -231,6 +283,9 @@ const Chat = () => {
                     <div className="chat-footer">
                         <button onClick={handleSendImage} className="btn-attachment">
                             <FontAwesomeIcon icon={faImage} />
+                        </button>
+                        <button onClick={() => setShowCreateApptFormModal(true)} className="btn-attachment">
+                            <FontAwesomeIcon icon={faCalendarDays} />
                         </button>
                         <div className="message-input">
                             <textarea

@@ -1,92 +1,133 @@
 import { useState } from 'react';
-import { MessageType } from '../../../../API/ChatAPI';
-import { formatFullDatetime, formatMessageTime } from '../../../../Common/DatetimeUtils';
+import { AppointmentStatus, AppointmentStatusText, MessageType } from '../../../../API/ChatAPI';
+import { formatFullDatetime } from '../../../../Common/DatetimeUtils';
 import './MessageItem.css';
+import { format } from 'date-fns';
+import CreateApptFormModal, { ApptFormModalView } from '../CreateApptFormModal/CreateApptFormModal';
 
-const MessageItem = ({ message }) => {
+const MessageItem = ({ message, onAcceptApt, onCancelApt }) => {
     const [showDate, setShowDate] = useState(false);
+    const [showApptFormModal, setShowApptFormModal] = useState(false);
     const user = JSON.parse(localStorage.getItem('user'));
-    const byUser = message.sender === user._id;
+    const byUser = message.sender._id === user._id;
 
     return (
-        <div className={'message-item' + (byUser ? ' message-item-right' : '')}>
-            {
-                byUser ||
-                <div className="message-item-avatar">
-                    <img src="https://via.placeholder.com/150" alt="avatar" />
-                </div>
+        <>
+            {message.type === MessageType.APPOINTMENT &&
+                <CreateApptFormModal 
+                    show={showApptFormModal}
+                    handleClose={() => setShowApptFormModal(false)}
+                    appt={message.content} 
+                    view={ApptFormModalView.VIEW} />
             }
-            {
-                message.type === MessageType.TEXT && (
-                    <>
-                        <div onClick={
-                            () => setShowDate(!showDate)
-                        } className="message-item-content">
+            <div className={'message-item' + (byUser ? ' message-item-right' : '')}>
+                {
+                    byUser ||
+                    <div className="message-item-avatar">
+                        <img src="https://via.placeholder.com/150" alt="avatar" />
+                    </div>
+                }
+                <div onClick={
+                    () => setShowDate(!showDate)
+                } className="message-item-content">
+                    {
+                        message.type === MessageType.TEXT && (
                             <div className="message-item-content-text">
                                 <pre>{message.content}</pre>
                             </div>
-                            <div className="message-item-date">
-                                <span>{showDate ? formatFullDatetime(message.createdAt) : ''}</span>
+                        )
+                    }
+                    {
+                        message.type === MessageType.IMAGE && (
+                            <>
+                                {message.content.length === 1 && (
+                                    <div className="message-item-content-image">
+                                        <img src={message.content[0]} alt="image-message" />
+                                    </div>
+                                )}
+                                {message.content.length === 2 && (
+                                    <div className="message-item-content-images">
+                                        <div className="message-item-content-image half-width">
+                                            <img src={message.content[0]} alt="image-message" />
+                                        </div>
+                                        <div className="message-item-content-image half-width">
+                                            <img src={message.content[1]} alt="image-message" />
+                                        </div>
+                                    </div>
+                                )}
+                                {message.content.length === 3 && (
+                                    <div className="message-item-content-images">
+                                        <div className="message-item-content-image half-width">
+                                            <img src={message.content[0]} alt="image-message" />
+                                        </div>
+                                        <div className="message-item-content-image half-width">
+                                            <img src={message.content[1]} alt="image-message" />
+                                        </div>
+                                        <div className="message-item-content-image">
+                                            <img src={message.content[2]} alt="image-message" />
+                                        </div>
+                                    </div>
+                                )}
+                                {message.content.length > 3 && (
+                                    <div className="message-item-content-images">
+                                        <div className="message-item-content-image half-width">
+                                            <img src={message.content[0]} alt="image-message" />
+                                        </div>
+                                        <div className="message-item-content-image half-width">
+                                            <img src={message.content[1]} alt="image-message" />
+                                        </div>
+                                        <div className="message-item-content-image">
+                                            <img src={message.content[2]} alt="image-message" />
+                                        </div>
+                                        <div className="message-item-content-image">
+                                            <span>+{message.content.length - 3} ảnh khác</span>
+                                        </div>
+                                    </div>
+                                )}
+                            </>
+                        )
+                    }
+                    {
+                        message.type === MessageType.APPOINTMENT && (
+                            <div className="message-item-content-appointment">
+                                <div className="message-item-content-appointment-title">
+                                    {`[${AppointmentStatusText[message.content.apptStatus]}] `}
+                                    {(byUser ? 'Bạn' : message.sender.lastName) + ' đã đề xuất cuộc hẹn '}
+                                         <span className="appointment-title">{message.content.title}</span>
+                                    {' vào lúc:'}   
+                                </div>
+                                <div className="message-item-content-appointment-date">
+                                    <span className="appointment-time">
+                                        {format(new Date(message.content.date), 'HH:mm')}
+                                    </span>
+                                    <span className="appointment-date">
+                                        {format(new Date(message.content.date), "dd 'thg' MM',' yyyy")}
+                                    </span>
+                                </div>
+                                <div className="message-item-content-appointment-btn">
+                                    <button onClick={(e) => {
+                                        e.stopPropagation();
+                                        setShowApptFormModal(true);
+                                    }} className="btn-detail">Xem chi tiết</button>
+                                {
+                                    !byUser && message.content.apptStatus === AppointmentStatus.PENDING && 
+                                    <button onClick={(e) => onAcceptApt(e, message._id)} className="btn-accept">Chấp nhận</button>
+                                }
+                                {
+                                    !byUser && message.content.apptStatus === AppointmentStatus.ACCEPTED &&
+                                    <button onClick={(e) => onCancelApt(e, message._id)} className="btn-cancel">Huỷ</button>
+                                }
+                                </div>
                             </div>
-                        </div>
-
-
-                    </>
-                )
-            }
-            {
-                message.type === MessageType.IMAGE && (
-                    <div className="message-item-content">
-                        {message.content.length === 1 && (
-                            <div className="message-item-content-image">
-                                <img src={message.content[0]} alt="image" />
-                            </div>
-                        )}
-                        {message.content.length === 2 && (
-                            <div className="message-item-content-images">
-                                <div className="message-item-content-image half-width">
-                                    <img src={message.content[0]} alt="image" />
-                                </div>
-                                <div className="message-item-content-image half-width">
-                                    <img src={message.content[1]} alt="image" />
-                                </div>
-                            </div>
-                        )}
-                        {message.content.length === 3 && (
-                            <div className="message-item-content-images">
-                                <div className="message-item-content-image half-width">
-                                    <img src={message.content[0]} alt="image" />
-                                </div>
-                                <div className="message-item-content-image half-width">
-                                    <img src={message.content[1]} alt="image" />
-                                </div>
-                                <div className="message-item-content-image">
-                                    <img src={message.content[2]} alt="image" />
-                                </div>
-                            </div>
-                        )}
-                        {message.content.length > 3 && (
-                            <div className="message-item-content-images">
-                                <div className="message-item-content-image half-width">
-                                    <img src={message.content[0]} alt="image" />
-                                </div>
-                                <div className="message-item-content-image half-width">
-                                    <img src={message.content[1]} alt="image" />
-                                </div>
-                                <div className="message-item-content-image">
-                                    <img src={message.content[2]} alt="image" />
-                                </div>
-                                <div className="message-item-content-image">
-                                    <span>+{message.content.length - 3} ảnh khác</span>
-                                </div>
-                            </div>
-                        )}
-
+                        )
+                    }
+                    <div className="message-item-date">
+                        <span>{showDate ? formatFullDatetime(message.createdAt) : ''}</span>
                     </div>
-                )
-            }
-
-        </div>
+                </div>
+    
+            </div>
+        </>
     )
 }
 

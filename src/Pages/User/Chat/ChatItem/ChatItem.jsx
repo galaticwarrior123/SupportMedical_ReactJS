@@ -21,6 +21,7 @@ const ChatItem = ({ item, onClick }) => {
                     <div className="chat-item-content-last-message">
                         {item.lastMessage.type === MessageType.TEXT && <span className="chat-item-content-type">{item.lastMessage.content}</span>}
                         {item.lastMessage.type === MessageType.IMAGE && <span className="chat-item-content-type">{"🖼️"}</span>}
+                        {item.lastMessage.type === MessageType.APPOINTMENT && <span className="chat-item-content-type">{"📅"}</span>}
                         <span className="chat-item-content-time">{" · " + formatMessageTime(item.lastMessage.createdAt)}
                         </span>
                     </div>

@@ -19,6 +19,20 @@ export class ChatAPI {
     }
 }
 
+export const AppointmentStatus = {
+    PENDING: 'pending',
+    ACCEPTED: 'accepted',
+    REJECTED: 'rejected',
+    CANCELLED: 'cancelled',
+}
+
+export const AppointmentStatusText = {
+    [AppointmentStatus.PENDING]: 'Đang chờ xác nhận',
+    [AppointmentStatus.ACCEPTED]: 'Đã chấp nhận',
+    [AppointmentStatus.REJECTED]: 'Đã từ chối',
+    [AppointmentStatus.CANCELLED]: 'Đã hủy',
+}
+
 export const MessageType = {
     TEXT: 'text',
     IMAGE: 'image',
