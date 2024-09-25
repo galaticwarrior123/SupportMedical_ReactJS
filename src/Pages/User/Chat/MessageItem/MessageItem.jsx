@@ -4,15 +4,33 @@ import { formatFullDatetime } from '../../../../Common/DatetimeUtils';
 import './MessageItem.css';
 import { format } from 'date-fns';
 import CreateApptFormModal, { ApptFormModalView } from '../CreateApptFormModal/CreateApptFormModal';
+import YesNoDialog from '../../../../Components/YesNoDialog/YesNoDialog';
+import { socket } from '../../../../API/Socket';
 
-const MessageItem = ({ message, onAcceptApt, onCancelApt }) => {
+const MessageItem = ({ message, onAcceptApt }) => {
     const [showDate, setShowDate] = useState(false);
     const [showApptFormModal, setShowApptFormModal] = useState(false);
+    const [showConfirmCancelModal, setShowConfirmCancelModal] = useState(false);
     const user = JSON.parse(localStorage.getItem('user'));
     const byUser = message.sender._id === user._id;
 
     return (
         <>
+            <YesNoDialog
+                isOpen={showConfirmCancelModal}
+                onCancel={() => setShowConfirmCancelModal(false)}
+                onConfirm={() => {
+                    socket.emit('update-appt-message-status', {
+                        messageId: message._id,
+                        status: AppointmentStatus.CANCELLED,
+                    });
+                    setShowConfirmCancelModal(false);
+                }}
+                yesText='Đồng ý'
+                noText='Hủy'
+                title='Xác nhận hủy cuộc hẹn'
+                message='Thao tác này không thể hoàn tác, bạn có chắc chắn muốn hủy cuộc hẹn này không?'
+            />
             {message.type === MessageType.APPOINTMENT &&
                 <CreateApptFormModal 
                     show={showApptFormModal}
@@ -114,8 +132,14 @@ const MessageItem = ({ message, onAcceptApt, onCancelApt }) => {
                                     <button onClick={(e) => onAcceptApt(e, message._id)} className="btn-accept">Chấp nhận</button>
                                 }
                                 {
-                                    !byUser && message.content.apptStatus === AppointmentStatus.ACCEPTED &&
-                                    <button onClick={(e) => onCancelApt(e, message._id)} className="btn-cancel">Huỷ</button>
+                                   ((!byUser && message.content.apptStatus === AppointmentStatus.ACCEPTED)
+                                    || (byUser && message.content.apptStatus === AppointmentStatus.PENDING))
+                                    
+                                    &&
+                                    <button onClick={(e) => {
+                                        e.stopPropagation();
+                                        setShowConfirmCancelModal(true);
+                                    }} className="btn-cancel">Huỷ</button>
                                 }
                                 </div>
                             </div>

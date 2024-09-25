@@ -90,7 +90,7 @@ const Header = () => {
                     <ul>
                         <li onClick={() => handleNavigate('/')} className={isActive('/') ? 'active-button' : ''}><img src="/images/home.png" alt="home"/></li>
                         <li onClick={() => handleNavigate('/chat')} className={isActive('/chat') ? 'active-button' : ''}><img src="/images/rocketchat.png" alt="rocketchat" /></li>
-                        <li onClick={() => handleNavigate('/calendar')} className={isActive('/calendar') ? 'active-button' : ''}><img src="/images/calendar-alt.png" alt="calendar-alt" /></li>
+                        <li onClick={() => handleNavigate('/appointment')} className={isActive('/appointment') ? 'active-button' : ''}><img src="/images/calendar-alt.png" alt="calendar-alt" /></li>
                         <li onClick={() => handleNavigate('/search')} className={isActive('/search') ? 'active-button' : ''}><img src="/images/search.png" alt="search" /></li>
                         <li onClick={() => handleNavigate('/notifications')} className={isActive('/notifications') ? 'active-button' : ''}><img src="/images/bell.png" alt="bell" /></li>
                     </ul>

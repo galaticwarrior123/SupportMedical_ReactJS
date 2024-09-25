@@ -191,14 +191,6 @@ const Chat = () => {
         });
     }
 
-    const handleCancelApt = (e, messageId) => {
-        e.stopPropagation();
-        socket.emit('update-appt-message-status', {
-            messageId,
-            status: AppointmentStatus.CANCELLED,
-        });
-    }
-
     return (
         <DefaultLayout>
             <div className="chat-page">
@@ -271,7 +263,6 @@ const Chat = () => {
                                 messages?.map((message) => (
                                     <MessageItem 
                                         onAcceptApt={handleAcceptApt}
-                                        onCancelApt={handleCancelApt}
                                         key={message._id} message={message} />
                                 ))
                             }
