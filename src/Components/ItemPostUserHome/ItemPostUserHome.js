@@ -25,7 +25,7 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
     const [clickComment, setClickComment] = useState(false);
     const [selectedImageIndex, setSelectedImageIndex] = useState(null);
     const [showPostDetail, setShowPostDetail] = useState(false);
-    const [numberOfLikes, setNumberOfLikes] = useState(itemPost?.likedBy?.length || 0);
+    const [numberOfInteracts, setNumberOfInteracts] = useState(itemPost?.likedBy?.length + itemPost?.lovedBy?.length + itemPost?.surprisedBy?.length || 0);
     const [numberOfComments, setNumberOfComments] = useState(itemPost?.comments?.length || 0);
     const [showPostDetailLike, setShowPostDetailLike] = useState(false);
     const [likedByUsers, setLikedByUsers] = useState(itemPost?.likedBy || []);
@@ -41,7 +41,8 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
     const images = itemPost?.images || [];
 
     useEffect(() => {
-        setNumberOfLikes(itemPost.likedBy.length);
+        const numberOfInteracts = likedByUsers.length + lovedByUsers.length + surprisedByUsers.length;
+        setNumberOfInteracts(numberOfInteracts);
         setLikedByUsers(itemPost.likedBy);
         fetchListComment();
         fetchPost();
@@ -69,7 +70,7 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
             const response = await PostAPI.getPostById(itemPost._id);
             const postData = response.data[0];
             setPost(response.data[0]);
-            setNumberOfLikes(response.data[0].likedBy.length);
+            setNumberOfInteracts(postData.likedBy.length + postData.lovedBy.length + postData.surprisedBy.length);
             setLikedByUsers(response.data[0].likedBy);
             setLovedByUsers(response.data[0].lovedBy);
             setSurprisedByUsers(response.data[0].surprisedBy);
@@ -119,7 +120,6 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
         let data = {
             type: reaction, // This can be 'like', 'love', 'surprise', or null
         };
-        console.log("data", data);
         try {
             // Check if user clicked the current reaction to remove it
             if (reaction === 'love' && loved) {
@@ -131,7 +131,7 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
                 // If "like" is already selected, remove it by sending null as the type
                 data = { type: null };
                 setLiked(false);
-                setNumberOfLikes(prev => prev - 1);
+                setNumberOfInteracts(numberOfInteracts - 1);
                 setLikedByUsers(prev => prev.filter(user => user._id !== currentUser._id));
             } else if (reaction === 'surprise' && surprised) {
                 // If "surprise" is already selected, remove it by sending null as the type
@@ -140,28 +140,32 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
                 setSurprisedByUsers(prev => prev.filter(user => user._id !== currentUser._id));
             } else {
                 // Add the reaction if it is not already selected
-                await PostAPI.reactPost(itemPost._id, data);
+                
 
                 if (reaction === 'like') {
                     setLiked(true);
-                    setNumberOfLikes(prev => prev + 1);
                     setLikedByUsers(prev => [...prev, currentUser]);
                     setLoved(false);
                     setSurprised(false);
+                    data = { type: 'like' };
                 } else if (reaction === 'love') {
                     setLoved(true);
                     setLovedByUsers(prev => [...prev, currentUser]);
                     setLiked(false);
                     setSurprised(false);
+                    data = { type: 'love' };
                 } else if (reaction === 'surprise') {
                     setSurprised(true);
                     setSurprisedByUsers(prev => [...prev, currentUser]);
                     setLiked(false);
                     setLoved(false);
-                }
+                    data = { type: 'surprise' };
+                }  
+                setNumberOfInteracts(numberOfInteracts + 1);
             }
 
             // Send the reaction (or removal) to the API
+            console.log(data);
             await PostAPI.reactPost(itemPost._id, data);
 
         } catch (error) {
@@ -462,8 +466,11 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
 
                     <div className="center-user-home-post-footer-infoPost">
                         <div className='center-user-home-post-footer-infoPost-like' onClick={handleSeeDetailLike}>
-                            <span><FontAwesomeIcon icon={faThumbsUp} style={{ color: '#41C9E2', marginRight: '2' }} />
-                                {numberOfLikes} lượt thích
+                            <span>
+                                <FontAwesomeIcon icon={faThumbsUp} style={{ color: '#41C9E2', marginRight: '2' }} />
+                                <FontAwesomeIcon icon={faHeart} style={{color: '#FF0000'}}/>
+                                <FontAwesomeIcon icon={faSurprise} style={{color: '#FFCC33'}}/>
+                                <span style={{marginLeft:5}}>{numberOfInteracts} </span>
                             </span>
                         </div>
                         {showPostDetailLike && <ShowPostDetailLike handleCloseFullScreen={handleCloseFullScreen} itemPost={post}/>}

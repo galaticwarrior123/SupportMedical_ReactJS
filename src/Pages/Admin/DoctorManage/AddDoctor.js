@@ -2,7 +2,7 @@ import './AddDoctor.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faX } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
-const AddDoctor = ({handleCloseIsAddDoctor}) => {
+const AddDoctor = ({ handleCloseIsAddDoctor }) => {
     const [selectedImage, setSelectedImage] = useState(null);
 
     // Hàm xử lý khi người dùng chọn ảnh
@@ -28,12 +28,48 @@ const AddDoctor = ({handleCloseIsAddDoctor}) => {
                     <div className='doctor-manage-add-person-body-containter'>
                         <div className='doctormanage-add-person-body-containter-form'>
                             <div className="doctor-manage-add-person-input">
-                                <label>Họ và tên</label>
-                                <input type="text" placeholder="Họ và tên" />
+                                <label>Họ và tên lót</label>
+                                <input type="text" placeholder="Họ và tên lót" />
+                            </div>
+                            <div className="doctor-manage-add-person-input">
+                                <label>Tên</label>
+                                <input type="text" placeholder="Tên" />
+                            </div>
+                            <div className="doctor-manage-add-person-input">
+                                <label>Số điện thoại</label>
+                                <input type="text" placeholder="Số điện thoại" />
+                            </div>
+                            <div className="doctor-manage-add-person-input">
+                                <label>Email</label>
+                                <input type="email" placeholder="Email" />
                             </div>
                             <div className="doctor-manage-add-person-input">
                                 <label>Ngày sinh</label>
                                 <input type="date" placeholder="Ngày sinh" />
+                            </div>
+                            <div className="doctor-manage-add-person-input">
+                                <label>Giới tính</label>
+                                <div className="doctor-manage-add-person-group-radio">
+                                    <div className="radio">
+                                        <input
+                                            type="radio"
+                                            name="gender"
+                                            value="Male"
+                                        // onChange={(e) => setGender(e.target.value)}
+                                        />
+                                        <label htmlFor="Male">Nam</label>
+                                    </div>
+
+                                    <div className="radio">
+                                        <input
+                                            type="radio"
+                                            name="gender"
+                                            value="Female"
+                                        // onChange={(e) => setGender(e.target.value)}
+                                        />
+                                        <label htmlFor="Female">Nữ</label>
+                                    </div>
+                                </div>
                             </div>
                             <div className="doctor-manage-add-person-input">
                                 <label>Chuyên khoa</label>
@@ -53,10 +89,6 @@ const AddDoctor = ({handleCloseIsAddDoctor}) => {
                                     <option value="Chuyên gia">Chuyên gia</option>
                                 </select>
                             </div>
-                            <div className="doctor-manage-add-person-input">
-                                <label>Số điện thoại</label>
-                                <input type="text" placeholder="Số điện thoại" />
-                            </div>
                         </div>
                         <div className="doctor-manage-add-person-load-image">
                             <div className="doctor-manage-add-person-load-image-body">
@@ -64,32 +96,32 @@ const AddDoctor = ({handleCloseIsAddDoctor}) => {
                                     <span>Chọn ảnh đại diện</span>
                                 </div>
                                 <div className="doctor-manage-add-person-load-image-body-placeholder">
-                                        <img 
-                                            src={selectedImage || "https://picsum.photos/200/200"} 
-                                            alt="avatar" 
-                                            className="preview-image" 
-                                        />
-                                    </div>
-                                    <div className="doctor-manage-add-person-load-image-body-button">
-                                        <label htmlFor="fileInput" className="add-button">Chọn ảnh  </label>
-                                        <input 
-                                            id="fileInput" 
-                                            type="file" 
-                                            accept="image/*" 
-                                            onChange={handleImageChange} 
-                                            style={{ display: 'none' }} 
-                                        />
-                                    </div>
+                                    <img
+                                        src={selectedImage || "https://picsum.photos/200/200"}
+                                        alt="avatar"
+                                        className="preview-image"
+                                    />
+                                </div>
+                                <div className="doctor-manage-add-person-load-image-body-button">
+                                    <label htmlFor="fileInput" className="add-button">Chọn ảnh  </label>
+                                    <input
+                                        id="fileInput"
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={handleImageChange}
+                                        style={{ display: 'none' }}
+                                    />
+                                </div>
                             </div>
-
                         </div>
                     </div>
-                    <div className="doctor-manage-add-person-input">
+                    <div className="doctor-manage-add-person-button-action">
                         <button className="add-button">Thêm</button>
                     </div>
                 </div>
 
             </div>
+
         </div>
     )
 
