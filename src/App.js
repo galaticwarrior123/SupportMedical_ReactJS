@@ -14,6 +14,7 @@ import Fill_NewPassword from './Pages/Common/Fill_NewPassword/Fill_NewPassword';
 import Dashboard from './Pages/Admin/Dashboard/Dashboard';
 import BrowsePost from './Pages/Admin/BrowsePost/BrowsePost';
 import DoctorManage from './Pages/Admin/DoctorManage/DoctorManage';
+import Appointment from './Pages/User/Appointment/Appointment';
 
 const ROLES = {
   'CLIENT': 'CLIENT',
@@ -31,6 +32,7 @@ function App() {
           <Route path="/" element={<UserHome />} />
           <Route path="/chat" element={<Chat />} />
           <Route path="/profile" element={<ProfileUserPage />} />
+          <Route path="/appointment" element={<Appointment/>} />
         </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />

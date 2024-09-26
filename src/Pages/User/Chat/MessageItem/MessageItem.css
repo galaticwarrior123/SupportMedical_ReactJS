@@ -27,7 +27,7 @@
 }
 
 .message-item-content-text {
-    background-color:#d9d9d9;
+    background-color: #d9d9d9;
     padding: 10px;
     border-radius: 20px;
     width: fit-content;
@@ -49,28 +49,34 @@
     border-bottom-right-radius: 5px;
     align-self: flex-end;
 }
+
 .message-item-content-images {
     display: flex;
     flex-wrap: wrap;
     margin-top: 5px;
 }
+
 .message-item-content-image {
     margin: 2px;
 }
+
 .message-item-content-image.half-width {
     width: 49%;
 }
+
 .message-item-content-image img {
     width: 100%;
     height: 100%;
-    object-fit:cover;
+    object-fit: cover;
     border-radius: 10px;
 }
+
 .message-item-content-image span {
     font-size: 12px;
     color: #7b7b7b;
     margin-left: 10px;
 }
+
 .message-item-content-image span:hover {
     color: #008DDA;
     cursor: pointer;
@@ -80,4 +86,92 @@
     font-size: 12px;
     color: #7b7b7b;
     margin-left: 10px;
+}
+
+/* appointment message*/
+.message-item-content-appointment {
+    background-color: #E0E0E0;
+    /* Màu nền giống trong ảnh */
+    padding: 10px;
+    border-radius: 18px;
+    display: inline-block;
+    max-width: 300px;
+    font-family: Arial, sans-serif;
+}
+
+.message-item-right .message-item-content-appointment {
+    border-bottom-right-radius: 5px;
+}
+
+.message-item-content-appointment-title {
+    margin-bottom: 10px;
+}
+
+.appointment-title {
+    font-weight: bold;
+}
+
+.message-item-content-appointment-date {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.appointment-time {
+    font-size: 24px;
+    font-weight: bold;
+    display: block;
+    color: #000000;
+    /* Màu đen cho giờ */
+}
+
+.appointment-date {
+    font-size: 18px;
+    display: block;
+    color: #000000;
+    /* Màu đen cho ngày */
+}
+
+.message-item-content-appointment-btn {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 10px;
+}
+
+.message-item-content-appointment-btn button {
+    width: 45%;
+    padding: 5px 0;
+    border-radius: 5px;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: inherit;
+}
+
+.message-item-content-appointment-btn button:hover {
+    background-color: #008DDA;
+    color: white;
+}
+
+.message-item-right .message-item-content-appointment-btn button {
+    background-color: #008DDA;
+    color: white;
+}
+
+.message-item-right .message-item-content-appointment-btn button:hover {
+    background-color: #005F8B;
+}
+
+.btn-cancel {
+    color: #FF0000 !important;
+    /* Màu đỏ */
+}
+
+.message-item-right .message-item-content-appointment {
+    background-color: #008DDA;
+    /* Màu nền xanh */
+    color: white;
+}
+
+.message-item-right .appointment-time, .message-item-right .appointment-date {
+    color: white;
 }
