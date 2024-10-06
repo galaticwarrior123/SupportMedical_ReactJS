@@ -133,7 +133,7 @@ const MessageItem = ({ message, onAcceptApt }) => {
                                 }
                                 {
                                    ((!byUser && message.content.apptStatus === AppointmentStatus.ACCEPTED)
-                                    || (byUser && message.content.apptStatus === AppointmentStatus.PENDING))
+                                    || (byUser))
                                     
                                     &&
                                     <button onClick={(e) => {

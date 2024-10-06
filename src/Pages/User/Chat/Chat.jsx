@@ -8,7 +8,7 @@ import { AppointmentStatus, ChatAPI, MessageType } from '../../../API/ChatAPI';
 import { UserAPI } from '../../../API/UserAPI';
 import SearchItem from './ChatItem/SearchItem';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCalendarDays, faImage, faPaperPlane } from '@fortawesome/free-solid-svg-icons';
+import { faCalendarDays, faCircleInfo, faImage, faPaperPlane, faVideo } from '@fortawesome/free-solid-svg-icons';
 import imageCompression from 'browser-image-compression';
 import CreateApptFormModal from './CreateApptFormModal/CreateApptFormModal';
 
@@ -30,7 +30,7 @@ const Chat = () => {
 
 
     const user = JSON.parse(localStorage.getItem('user'));
-    var otherUser = selectedChat?.participants.find((participant) => participant._id !== user._id);
+    const otherUser = selectedChat?.participants.find((participant) => participant._id !== user._id);
 
     // get list chat on mount
     useEffect(() => {
@@ -245,6 +245,16 @@ const Chat = () => {
                         </div>
 
                         <div className="chat-header-right">
+                            <button 
+                                onClick={() => {
+                                    const callWindow = window.open(`/call/${otherUser._id}`, 'VideoCallWindow', 'width=800,height=600');
+                                }}
+                                className="btn-attachment">
+                                <FontAwesomeIcon icon={faVideo} />
+                            </button>
+                            <button className="btn-attachment">
+                                <FontAwesomeIcon icon={faCircleInfo} />
+                            </button>
 
                         </div>
                     </div>
