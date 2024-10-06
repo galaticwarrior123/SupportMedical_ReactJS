@@ -6,9 +6,6 @@ import ReactPlayer from "react-player";
 const Call = () => {
     const { to } = useParams();
     const from = JSON.parse(localStorage.getItem('user'))._id;
-    const localVideoRef = useRef(null);
-    const remoteVideoRef = useRef(null);
-    const peerConnectionRef = useRef(null);
     const [localStream, setLocalStream] = useState(null);
     const [remoteStream, setRemoteStream] = useState(null);
     useEffect(() => {
@@ -17,8 +14,6 @@ const Call = () => {
                 { urls: "stun:stun.l.google.com:19302" }
             ]
         });
-
-        peerConnectionRef.current = peerConnection;
 
         navigator.mediaDevices.getUserMedia({ video: true, audio: true })
             .then((stream) => {
@@ -29,11 +24,6 @@ const Call = () => {
                 });
             });
 
-        // peerConnection.ontrack = (event) => {
-        //     // remoteVideoRef.current.srcObject = event.streams[0];
-        //     console.log(event.streams[0]);
-        //     setRemoteStream(event.streams[0]);
-        // }
         peerConnection.addEventListener('track', (event) => {
             console.log(event.streams[0]);
             setRemoteStream(event.streams[0]);
@@ -45,13 +35,6 @@ const Call = () => {
             await peerConnection.setLocalDescription(new RTCSessionDescription(offer));
             socket.emit('nego-needed', { to, from, offer });
         }
-
-        // peerConnection.onicecandidate = (event) => {
-        //     if (event.candidate) {
-        //         console.log('Sending ice candidate');
-        //         socket.emit('ice-candidate', { candidate: event.candidate, to });
-        //     }
-        // };
 
         peerConnection.createOffer().then((offer) => {
             return peerConnection.setLocalDescription(new RTCSessionDescription(offer));
@@ -73,10 +56,6 @@ const Call = () => {
             console.log(data.answer);
             peerConnection.setRemoteDescription(new RTCSessionDescription(data.answer));
         });
-
-        // socket.on('ice-candidate', (data) => {
-        //     peerConnection.addIceCandidate(new RTCIceCandidate(data.candidate));
-        // });
 
         socket.on('nego-needed', async (data) => {
             await peerConnection.setRemoteDescription(new RTCSessionDescription(data.offer));
