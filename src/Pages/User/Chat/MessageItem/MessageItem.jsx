@@ -5,9 +5,10 @@ import './MessageItem.css';
 import { format } from 'date-fns';
 import CreateApptFormModal, { ApptFormModalView } from '../CreateApptFormModal/CreateApptFormModal';
 import YesNoDialog from '../../../../Components/YesNoDialog/YesNoDialog';
-import { socket } from '../../../../API/Socket';
+import { useSocket } from '../../../../context/SocketProvider';
 
 const MessageItem = ({ message, onAcceptApt }) => {
+    const socket = useSocket();
     const [showDate, setShowDate] = useState(false);
     const [showApptFormModal, setShowApptFormModal] = useState(false);
     const [showConfirmCancelModal, setShowConfirmCancelModal] = useState(false);

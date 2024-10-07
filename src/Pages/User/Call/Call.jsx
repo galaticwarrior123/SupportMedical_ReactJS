@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState } from "react";
-import { socket } from "../../../API/Socket";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import ReactPlayer from "react-player";
+import { useSocket } from "../../../context/SocketProvider";
 
 const Call = () => {
     const { to } = useParams();
+    const socket = useSocket();
     const from = JSON.parse(localStorage.getItem('user'))._id;
     const [localStream, setLocalStream] = useState(null);
     const [remoteStream, setRemoteStream] = useState(null);
@@ -76,7 +77,7 @@ const Call = () => {
             socket.off('nego-needed');
             socket.off('nego-answer');
         }
-    }, [from, to]);
+    }, [from, to, socket]);
 
     return (
         <div>

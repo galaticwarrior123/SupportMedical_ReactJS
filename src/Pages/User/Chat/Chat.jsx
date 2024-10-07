@@ -2,7 +2,6 @@ import ChatItem from './ChatItem/ChatItem';
 import DefaultLayout from '../../../Layouts/DefaultLayout/DefaultLayout';
 import './Chat.css';
 import { useEffect, useState, useRef } from 'react';
-import { socket } from '../../../API/Socket';
 import MessageItem from './MessageItem/MessageItem';
 import { AppointmentStatus, ChatAPI, MessageType } from '../../../API/ChatAPI';
 import { UserAPI } from '../../../API/UserAPI';
@@ -11,8 +10,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarDays, faCircleInfo, faImage, faPaperPlane, faVideo } from '@fortawesome/free-solid-svg-icons';
 import imageCompression from 'browser-image-compression';
 import CreateApptFormModal from './CreateApptFormModal/CreateApptFormModal';
+import { useSocket } from '../../../context/SocketProvider';
 
 const Chat = () => {
+    const socket = useSocket();
     const messageEndRef = useRef(null);
     const textAreaRef = useRef(null);
 
@@ -89,7 +90,7 @@ const Chat = () => {
             socket.off('receive-message');
             socket.off('update-message');
         }
-    }, [messages, selectedChat, chats]);
+    }, [messages, selectedChat, chats, socket]);
 
     // debounce search for performance
     useEffect(() => {
