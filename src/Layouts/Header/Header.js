@@ -30,7 +30,7 @@ const Header = () => {
         navigate('/login');
     }
     const handleDirectProfile = () => {
-        navigate('/profile');
+        navigate('/profile/' + user._id);
     }
     useEffect(() => {
         window.addEventListener('resize', handleResize);
@@ -45,7 +45,7 @@ const Header = () => {
             return (
                 <div className="header-avatar-dropdown">
                     <div className="header-avatar-dropdown-info">
-                        <img src="/images/Avatar.png" alt="avatar" />
+                        <img src={JSON.parse(localStorage.getItem('user')).avatar} alt="avatar" />
                         <div>
                             <p>{user.firstName} {user.lastName}</p>
                         </div>
@@ -97,7 +97,7 @@ const Header = () => {
                 </div>
 
                 <div className="header-avatar">
-                    <img src="/images/Avatar.png" alt="avatar"
+                    <img src={JSON.parse(localStorage.getItem('user')).avatar} alt="avatar"
                         onClick={handleDropdown} />
                     {renderDropdown()}
                 </div>
