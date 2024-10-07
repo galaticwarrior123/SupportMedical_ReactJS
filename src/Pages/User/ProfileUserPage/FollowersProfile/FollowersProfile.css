@@ -5,7 +5,10 @@
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     margin-bottom: 15px;
 }
-
+.followers-container-profile h3 {
+    margin:0;
+    font-size: 18px;
+}
 .followers-list-profile {
     display: flex;
     flex-direction: column;

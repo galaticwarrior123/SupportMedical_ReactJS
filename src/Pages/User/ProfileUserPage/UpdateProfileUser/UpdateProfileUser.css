@@ -1,0 +1,161 @@
+.update-profile-user{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    z-index: 1002;
+}
+.update-profile-user-overlay {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+.update-profile-user-close{
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
+    position: relative;
+    top: -30px;
+}
+.update-profile-user-close button{
+    background-color: #fbfbfb;
+    border: none;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 50%;
+    padding: 5px 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+.update-profile-user-close button:hover{
+    background-color: #f1f1f1;
+}
+.update-profile-user-header{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.update-profile-user-header span {
+    font-size: 24px;
+    font-weight: bold;
+    font-family: 'Poppins', sans-serif;
+}
+.update-profile-user-body {
+    background-color: white;
+    width: auto;
+    padding: 20px;
+    border-radius: 5px;
+    height: 600px;
+    overflow: hidden;
+    overflow-y: scroll;
+}
+.update-profile-user-body::-webkit-scrollbar {
+    width: 5px;
+}
+.update-profile-user-body::-webkit-scrollbar-thumb {
+    background-color: #4f4f4f;
+    border-radius: 5px;
+}
+.update-profile-user-body-containter{
+    display: flex;
+    flex-direction: row;
+}
+.doctormanage-add-body-containter-form{
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+}
+.update-profile-user-input {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+.update-profile-user-input input {
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-top: 10px;
+}
+.update-profile-user-input select {
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-top: 10px;
+}
+.update-profile-user-input select option {
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-top: 10px;
+}
+
+.update-profile-user-input label{
+    font-size: 16px;
+    color: #555;
+    font-weight: 500;
+    margin-right: 10px;
+}
+
+.update-profile-user-load-image {
+    width: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.update-profile-user-load-image-header {
+    margin-bottom: 10px;
+}
+.update-profile-user-load-image-header span{
+    font-size: 16px;
+    color: #555;
+    font-weight: 500;
+    
+}
+.update-profile-user-load-image-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.update-profile-user-load-image-body-placeholder {
+    width: 150px;
+    height: 200px;
+    background-color: #ddd;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    margin-bottom: 20px;
+}
+
+.update-profile-user-load-image-body-placeholder img {
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+    object-fit: cover;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.update-profile-user-group-radio{
+    display: flex;
+    flex-direction: row;
+    margin-top: 10px;
+}
+
+.update-profile-user-button-action{
+    width:100%;
+    height:50px;
+}
+
+.update-profile-user-button-action button{
+    width: 100%;
+    height:100%;
+}

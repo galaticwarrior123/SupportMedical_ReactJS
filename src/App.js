@@ -31,7 +31,7 @@ function App() {
         <Route element={<RequireAuth allowedRoles={ROLES.CLIENT} />}>
           <Route path="/" element={<UserHome />} />
           <Route path="/chat" element={<Chat />} />
-          <Route path="/profile" element={<ProfileUserPage />} />
+          <Route path="/profile/:id" element={<ProfileUserPage />} />
           <Route path="/appointment" element={<Appointment/>} />
         </Route>
         <Route path="/login" element={<Login />} />
