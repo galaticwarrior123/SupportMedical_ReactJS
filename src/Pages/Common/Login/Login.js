@@ -7,8 +7,10 @@ import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { useAuth } from '../../../context/AuthProvider';
 
 const Login = () => {
+    const { updateUser, updateToken } = useAuth();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
@@ -29,8 +31,10 @@ const Login = () => {
         }
         try {
             const response = await AuthAPI.login(data);
-            localStorage.setItem('token', response.data.token);
-            localStorage.setItem('user', JSON.stringify(response.data.user));
+            // localStorage.setItem('token', response.data.token);
+            // localStorage.setItem('user', JSON.stringify(response.data.user));
+            updateUser(response.data.user);
+            updateToken(response.data.token);
             localStorage.setItem('roles', JSON.stringify(response.data.user.roles));
             toast.success('Đăng nhập thành công');
             setEmail('');

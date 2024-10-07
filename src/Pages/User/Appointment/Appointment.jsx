@@ -7,11 +7,12 @@ import { AppointmentAPI } from '../../../API/AppointmentAPI';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import YesNoDialog from '../../../Components/YesNoDialog/YesNoDialog';
-import { socket } from '../../../API/Socket';
 import { AppointmentStatus } from '../../../API/ChatAPI';
+import { useSocket } from '../../../context/SocketProvider';
 
 
 const Appointment = () => {
+    const socket = useSocket();
     const [showModal, setShowModal] = useState(false);
     const [selectedAppt, setSelectedAppt] = useState(null);
     const [apptList, setApptList] = useState([]);

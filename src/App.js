@@ -15,6 +15,7 @@ import Dashboard from './Pages/Admin/Dashboard/Dashboard';
 import BrowsePost from './Pages/Admin/BrowsePost/BrowsePost';
 import DoctorManage from './Pages/Admin/DoctorManage/DoctorManage';
 import Appointment from './Pages/User/Appointment/Appointment';
+import Call from './Pages/User/Call/Call';
 
 const ROLES = {
   'CLIENT': 'CLIENT',
@@ -33,6 +34,7 @@ function App() {
           <Route path="/chat" element={<Chat />} />
           <Route path="/profile/:id" element={<ProfileUserPage />} />
           <Route path="/appointment" element={<Appointment/>} />
+          <Route path="/call/:to" element={<Call />} />
         </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
