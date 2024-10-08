@@ -101,7 +101,16 @@
     background-color: #f8e6d2; /* Light background for headers */
     font-weight: bold;
 }
-
+.data-table input {
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    width: 50%;
+}
+.data-table input:focus {
+    outline: none;
+}   
 .edit-button,
 .delete-button {
     background-color: transparent;
