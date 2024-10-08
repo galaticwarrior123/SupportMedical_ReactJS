@@ -2,6 +2,8 @@ import Calendar from './Calendar';
 import './RightUserHome.css';
 import { UserAPI } from '../../../../API/UserAPI';
 import { useEffect, useState } from 'react';
+import { all } from 'axios';
+import { Link } from 'react-router-dom';
 
 const RightUserHome = ({ onOpenDetailDay }) => {
     const [allFollowUser, setAllFollowUser] = useState([]);
@@ -13,70 +15,54 @@ const RightUserHome = ({ onOpenDetailDay }) => {
         try {
             const response = await UserAPI.getAll();
             if (response.status === 200) {
-                // liệt kê tất cả các user mà bản thân đang theo dõi
-                for (let i = 0; i < response.data.length; i++) {
-                    if (response.data[i].following.length > 0) {
-                        for (let j = 0; j < response.data[i].following.length; j++) {
-                            if(response.data[i]._id === JSON.parse(localStorage.getItem('user'))._id){
-                                setAllFollowUser(response.data[i]);
+                const currentUser = JSON.parse(localStorage.getItem('user'))._id;
+                let followedUsers = [];
+
+                // Iterate through all users
+                response.data.forEach((user) => {
+                    // Check if the user has a following list
+                    if (user.following.length > 0) {
+
+                        // Check if the current user is being followed
+                        user.following.forEach((followedUser) => {
+                            if (followedUser._id === currentUser) {
+                                followedUsers.push(user);
                             }
-                        }
+                        });
                     }
-                } 
+                });
+
+                // Set all followed users at once
+                setAllFollowUser(followedUsers);
             }
         } catch (error) {
             console.log(error);
         }
-    }
+    };
 
 
     return (
         <div className="right-user-home">
             <div className="right-user-home-calendar">
-                <Calendar onOpenDetailDay={onOpenDetailDay}/>
+                <Calendar onOpenDetailDay={onOpenDetailDay} />
             </div>
             <div className="right-user-home-follow">
                 <div className="right-user-home-follow-header">
                     <span>Đang theo dõi</span>
                 </div>
                 <div className="right-user-home-follow-body">
-                    {allFollowUser.following && allFollowUser.following.length > 0 ? allFollowUser.following.map((user) => (
+                    {allFollowUser && allFollowUser.length > 0 ? allFollowUser.map((user) => (
                         <div key={user._id} className="right-user-home-follow-item">
                             <img src={user.avatar} alt="" />
-                            <span>{user.firstName} {user.lastName}</span>
+                            <Link to={`/profile/${user._id}`}>
+                                <span>{user.firstName} {user.lastName}</span>
+                            </Link>
                         </div>
                     )) : <div className="right-user-home-follow-item">
-                        <span>Chưa theo dõi ai cả</span>
+                        <span>Chưa theo dõi </span>
                     </div>}
+
                     
-                    {/* <div className="right-user-home-follow-item">
-                        <img src="https://picsum.photos/200/200" alt="" />
-                        <span>Nguyễn Văn A</span>
-                    </div>
-                    <div className="right-user-home-follow-item">
-                        <img src="https://picsum.photos/200/200" alt="" />
-                        <span>Nguyễn Văn B</span>
-                    </div>
-                    <div className="right-user-home-follow-item">
-                        <img src="https://picsum.photos/200/200" alt="" />
-                        <span>Nguyễn Văn C</span>
-                    </div>
-                    <div className="right-user-home-follow-item">
-                        <img src="https://picsum.photos/200/200" alt="" />
-                        <span>Nguyễn Văn C</span>
-                    </div>
-                    <div className="right-user-home-follow-item">
-                        <img src="https://picsum.photos/200/200" alt="" />
-                        <span>Nguyễn Văn C</span>
-                    </div>
-                    <div className="right-user-home-follow-item">
-                        <img src="https://picsum.photos/200/200" alt="" />
-                        <span>Nguyễn Văn C</span>
-                    </div>
-                    <div className="right-user-home-follow-item">
-                        <img src="https://picsum.photos/200/200" alt="" />
-                        <span>Nguyễn Văn C</span>
-                    </div> */}
 
                 </div>
             </div>
