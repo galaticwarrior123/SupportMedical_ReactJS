@@ -42,7 +42,7 @@ const DefaultLayoutAdmin = ({ children }) => {
                         <button className="notification">
                             <FontAwesomeIcon icon={faBell} />
                         </button>
-                        <img src="https://via.placeholder.com/30" alt="User" className="avatarAdmin" />
+                        <img src={JSON.parse(localStorage.getItem('user')).avatar}  alt="User" className="avatarAdmin" />
                     </div>
                 </header>
                 <section className="contentAdmin">
