@@ -1,21 +1,19 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import ReactPlayer from "react-player";
 import { useSocket } from "../../../context/SocketProvider";
+import { peerConnection } from "../../../Common/PeerConnection";
 
 const Call = () => {
     const { to } = useParams();
+    const [searchParams] = useSearchParams();
+    const isAnswer = searchParams.get('answer');
+    console.log(isAnswer);
     const socket = useSocket();
     const from = JSON.parse(localStorage.getItem('user'))._id;
     const [localStream, setLocalStream] = useState(null);
     const [remoteStream, setRemoteStream] = useState(null);
     useEffect(() => {
-        const peerConnection = new RTCPeerConnection({
-            iceServers: [
-                { urls: "stun:stun.l.google.com:19302" }
-            ]
-        });
-
         navigator.mediaDevices.getUserMedia({ video: true, audio: true })
             .then((stream) => {
                 setLocalStream(stream);
@@ -37,20 +35,30 @@ const Call = () => {
             socket.emit('nego-needed', { to, from, offer });
         }
 
-        peerConnection.createOffer().then((offer) => {
-            return peerConnection.setLocalDescription(new RTCSessionDescription(offer));
-        }).then(() => {
-            socket.emit('call', { to, from, offer: peerConnection.localDescription });
-        });
+        peerConnection.onicecandidate = (event) => {
+            if (event.candidate) {
+                console.log('Sending ice candidate');
+                socket.emit('ice-candidate', { candidate: event.candidate, to });
+            }
+        };
 
+        if (!isAnswer) {
+            peerConnection.createOffer().then((offer) => {
+                return peerConnection.setLocalDescription(new RTCSessionDescription(offer));
+            }).then(() => {
+                socket.emit('call', { to, from, offer: peerConnection.localDescription });
+            });
+        }
 
+        // socket.on('call', async (data) => {
+        //     await peerConnection.setRemoteDescription(new RTCSessionDescription(data.offer));
+        //     const answer = await peerConnection.createAnswer();
+        //     await peerConnection.setLocalDescription(new RTCSessionDescription(answer));
+        //     socket.emit('answer', { to: data.from, answer: peerConnection.localDescription });
+        // });
 
-        socket.on('call', async (data) => {
-            console.log(data.offer);
-            await peerConnection.setRemoteDescription(new RTCSessionDescription(data.offer));
-            const answer = await peerConnection.createAnswer();
-            await peerConnection.setLocalDescription(new RTCSessionDescription(answer));
-            socket.emit('answer', { to: data.from, answer: peerConnection.localDescription });
+        socket.on('ice-candidate', (data) => {
+            peerConnection.addIceCandidate(new RTCIceCandidate(data.candidate));
         });
 
         socket.on('answer', (data) => {
@@ -63,10 +71,14 @@ const Call = () => {
             const answer = await peerConnection.createAnswer();
             await peerConnection.setLocalDescription(new RTCSessionDescription(answer));
             socket.emit('nego-answer', { to: data.from, answer });
+            console.log(peerConnection.localDescription);
+            console.log(peerConnection.remoteDescription);
         });
 
         socket.on('nego-answer', async (data) => {
             await peerConnection.setRemoteDescription(new RTCSessionDescription(data.answer));
+            console.log(peerConnection.localDescription);
+            console.log(peerConnection.remoteDescription);
         });
 
         return () => {
@@ -77,7 +89,7 @@ const Call = () => {
             socket.off('nego-needed');
             socket.off('nego-answer');
         }
-    }, [from, to, socket]);
+    }, [from, to, socket, isAnswer]);
 
     return (
         <div>
