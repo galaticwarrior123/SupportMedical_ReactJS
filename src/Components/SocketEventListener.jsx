@@ -45,7 +45,7 @@ const SocketEventListener = () => {
 
     const handleReceiveCall = async (data) => {
         const { from } = data;
-        const callUser = (await UserAPI.findUserById(from)).data;
+        const callUser = (await UserAPI.getUserById(from)).data;
         setCaller(callUser);
         setOffer(data.offer);
         setShowCallModal(true);
