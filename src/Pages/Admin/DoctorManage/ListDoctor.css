@@ -1,0 +1,131 @@
+.list-doctor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.list-doctor-overlay {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.list-doctor-overlay-body {
+    background-color: white;
+    width: 100%;
+    border-radius: 5px;
+}
+
+.list-doctor-header {
+    background-color: #007bff;
+    color: white;
+    padding: 15px;
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.list-doctor-body {
+    height: 500px;
+    padding: 15px;
+    overflow: hidden;
+    overflow-y: scroll;
+}
+.list-doctor-body::-webkit-scrollbar {
+    width: 5px;
+}
+.list-doctor-body::-webkit-scrollbar-thumb {
+    background-color: #007bff;
+    border-radius: 5px;
+}
+.doctor-item-card {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+    margin: 10px;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    transition: transform 0.3s ease-in-out;
+}
+
+.doctor-item-card:hover {
+    transform: scale(1.02);
+}
+
+.doctor-item-info {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.avatar-item-placeholder {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-right: 20px;
+}
+
+.avatar-item-placeholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.doctor-item-details {
+    flex-grow: 1;
+}
+
+.doctor-item-details p {
+    margin: 5px 0;
+    font-size: 1rem;
+    color: #333;
+}
+
+.doctor-item-details p strong {
+    font-weight: bold;
+}
+
+.doctor-item-specialty span {
+    display: inline-block;
+    margin-right: 5px;
+    background-color: #007bff;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+}
+
+.doctor-item-approve-button {
+    margin-left: auto;
+}
+
+.approve-item-button {
+    padding: 10px 15px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.approve-item-button.remove {
+    background-color: #5ac0e2;
+}
+
+.approve-item-button:hover {
+    background-color: #218838;
+}
+
+.approve-item-button.remove:hover {
+    background-color: #164dce;
+}
