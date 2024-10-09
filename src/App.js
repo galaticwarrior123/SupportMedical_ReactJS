@@ -32,8 +32,8 @@ function App() {
         <Route element={<RequireAuth allowedRoles={ROLES.CLIENT} />}>
           <Route path="/" element={<UserHome />} />
           <Route path="/chat" element={<Chat />} />
-          <Route path="/profile" element={<ProfileUserPage />} />
-          <Route path="/appointment" element={<Appointment/>} />
+          <Route path="/profile/:id" element={<ProfileUserPage />} />
+          <Route path="/appointment" element={<Appointment />} />
           <Route path="/call/:to" element={<Call />} />
         </Route>
         <Route path="/login" element={<Login />} />
@@ -42,12 +42,23 @@ function App() {
         <Route path="/forgot-password" element={<Fill_Email />} />
         <Route path="/reset-password" element={<Fill_NewPassword />} />
 
-        <Route path="/admin">
-          <Route path="categories" element={<CategoryManage />} />
-          <Route path="dashboard" element={<Dashboard />} />
-          <Route path="browse-post" element={<BrowsePost />} />
-          <Route path="doctors" element={<DoctorManage />} />
-          {/* Thêm các route khác */}
+        <Route>
+          {/* Route cha cho tất cả các trang quản trị */}
+          <Route path="/admin">
+
+            {/* Route mặc định khi vào /admin */}
+
+            {/* Route quản lý category */}
+            <Route index="categories" element={<CategoryManage />} />
+
+            {/* Các route khác */}
+            <Route path="categories" element={<CategoryManage />} />
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="browse-post" element={<BrowsePost />} />
+            <Route path="doctors" element={<DoctorManage />} />
+
+            {/* Thêm các route khác nếu cần */}
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>

@@ -2,7 +2,7 @@ import './ShowPostDetailLike.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClose, faHeart, faSurprise, faThumbsUp } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState } from 'react';
-
+import PostAPI from '../../API/PostAPI';
 
 const ShowPostDetailLike = ({ handleCloseFullScreen, itemPost }) => {
     const [allUserLiked, setAllUserLiked] = useState([]);
@@ -11,11 +11,26 @@ const ShowPostDetailLike = ({ handleCloseFullScreen, itemPost }) => {
     const [activeReaction, setActiveReaction] = useState('all');
 
     useEffect(() => {
-        setAllUserLiked(itemPost.likedBy);
-        setAllUserLoved(itemPost.lovedBy);
-        setAllUserSurprised(itemPost.surprisedBy);
-    }, [itemPost.likedBy]);
+        fetchPost(itemPost._id);
+        // setAllUserLiked(itemPost.likedBy);
+        // setAllUserLoved(itemPost.lovedBy);
+        // setAllUserSurprised(itemPost.surprisedBy);
+    }, [itemPost]);
 
+    const fetchPost = async (id) => {
+        try {
+            const response = await PostAPI.getPostById(id);
+            if (response.status === 200) {
+                setAllUserLiked(response.data[0].likedBy);
+                setAllUserLoved(response.data[0].lovedBy);
+                setAllUserSurprised(response.data[0].surprisedBy);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    
     const renderUserList = () => {
         if (activeReaction === 'like') {
             return allUserLiked.length > 0 ? allUserLiked.map((user) => (

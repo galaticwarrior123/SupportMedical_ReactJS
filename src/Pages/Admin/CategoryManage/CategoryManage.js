@@ -1,44 +1,68 @@
 import React, { useState, useEffect } from 'react';
 import DefaultLayoutAdmin from '../../../Layouts/DefaultLayoutAdmin/DefaultLayoutAdmin';
 import './CategoryManage.css';
-import { faSearch, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faSearch, faEdit, faTrash, faTimes, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { SidebarProvider } from '../../../Layouts/DefaultLayoutAdmin/SidebarContext';
-
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { DepartmentAPI } from '../../../API/DepartmentAPI';
 const CategoryManage = () => {
     // Sample data for demonstration
-    const allData = Array.from({ length: 150 }, (_, index) => ({
-        id: `DPT ${index + 1}`,
-        name: `Khoa ${index + 1}`
-    }));
-
+    const [allData, setAllData] = useState([]);
+    const [newDepartment, setNewDepartment] = useState('');
     // State management
     const [itemsPerPage, setItemsPerPage] = useState(10);
     const [currentPage, setCurrentPage] = useState(1);
     const [paginatedData, setPaginatedData] = useState([]);
-    const [newCategrory, setNewCategory] = useState('');
+    const [searchTerm, setSearchTerm] = useState('');
+    const [editId, setEditId] = useState(null);
+    const [editName, setEditName] = useState('');
 
+    useEffect(() => {
+        fetchAllSpeciality();
+    }, []);
     // Calculate data to display based on pagination
     useEffect(() => {
+        const filteredData = allData.filter((item) =>
+            item.name.toLowerCase().includes(searchTerm.toLowerCase())
+        );
         const startIndex = (currentPage - 1) * itemsPerPage;
         const endIndex = startIndex + itemsPerPage;
-        setPaginatedData(allData.slice(startIndex, endIndex));
-    }, [currentPage, itemsPerPage]);
+        setPaginatedData(filteredData.slice(startIndex, endIndex));
+    }, [currentPage, itemsPerPage, allData, searchTerm]);
+
+    const fetchAllSpeciality = async () => {
+        try {
+            const response = await DepartmentAPI.getAll();
+            if (response.status === 200) {
+                setAllData(response.data);
+            }
+        } catch (error) {
+            toast.error('Lỗi tải dữ liệu');
+        }
+    };
 
     // Handle page change
     const handlePageChange = (newPage) => {
         setCurrentPage(newPage);
     };
 
-    const handleAddNewCategory = () => {
-        if (newCategrory) {
-            const newCategory = {
-                id: `DPT ${allData.length + 1}`,
-                name: newCategrory
-            };
-            allData.push(newCategory);
-            setNewCategory('');
+    const handleAddNewDeparment = () => {
+        if (newDepartment === '') {
+            toast.error('Vui lòng nhập tên khoa');
+            return;
         }
+        const newCategory = {
+            name: newDepartment
+        };
+        DepartmentAPI.createDepartment(newCategory).then((response) => {
+            setNewDepartment('');
+            fetchAllSpeciality();
+            toast.success('Thêm mới khoa thành công');
+        }).catch((error) => {
+            toast.error('Lỗi thêm mới khoa');
+        });
     };
 
     // Handle items per page change
@@ -99,27 +123,59 @@ const CategoryManage = () => {
             </button>
         ));
     };
+    const handleEdit = (item) => {
+        setEditId(item._id);
+        setEditName(item.name);
+    };
 
+    const handleUpdateDeparment = (id) => {
+        const updatedCategory = {
+            name: editName
+        };
+        DepartmentAPI.updateDepartment(id, updatedCategory).then((response) => {
+            setEditId(null);
+            fetchAllSpeciality();
+        }).catch((error) => {
+            console.log(error);
+        });
+    };
+
+    const handleCancelEdit = () => {
+        setEditId(null);
+    };
+
+    const handleDeleteDeparment = (id) => {
+        DepartmentAPI.deleteDepartment(id).then((response) => {
+            fetchAllSpeciality();
+        }).catch((error) => {
+            console.log(error);
+        });
+    }
     return (
         <SidebarProvider>
             <DefaultLayoutAdmin>
+                <ToastContainer />
                 <div className="category-manage">
                     <div className="top-section">
                         <div className="search-section">
                             <div className="input-group">
-                                <input type="text" className="input-field" placeholder="Nhập tên khoa" value={newCategrory} onChange={(e) => setNewCategory(e.target.value)} />
-                                <button className="add-button" onClick={handleAddNewCategory}>+ Thêm mới</button>
+                                <input type="text" className="input-field" placeholder="Nhập tên khoa" value={newDepartment} onChange={(e) => setNewDepartment(e.target.value)} />
+                                <button className="add-button" onClick={handleAddNewDeparment}>+ Thêm mới</button>
                             </div>
                             <div className="input-group">
                                 <div className='input-group-body'>
-                                    <div className="input-group-item">
-                                        <input type="text" className="input-search" placeholder="Tìm kiếm" />
-                                    </div>
-                                    <div className="input-group-item-icon">
+                                    <input
+                                        type="text"
+                                        className="input-search"
+                                        placeholder="Tìm kiếm tên khoa"
+                                        value={searchTerm}
+                                        onChange={(e) => setSearchTerm(e.target.value)} // Cập nhật từ khóa tìm kiếm
+                                    />
+                                    {/* <div className="input-group-item-icon">
                                         <button className="search-button">
                                             <FontAwesomeIcon icon={faSearch} />
                                         </button>
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
                         </div>
@@ -127,26 +183,60 @@ const CategoryManage = () => {
                     <table className="data-table">
                         <thead>
                             <tr>
-                                <th>Mã tên</th>
+                                <th>STT</th>
                                 <th>Tên khoa</th>
                                 <th>Chức năng</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {paginatedData.map(item => (
-                                <tr key={item.id}>
-                                    <td>{item.id}</td>
-                                    <td>{item.name}</td>
+                            {paginatedData.length>0 ? (paginatedData.map((item, index) => (
+                                <tr key={item._id}>
+                                    <td>{index + 1}</td>
                                     <td>
-                                        <button className="edit-button">
+                                        {editId === item._id ? (
+                                            <input
+                                                type="text"
+                                                value={editName}
+                                                onChange={(e) => setEditName(e.target.value)}
+
+                                            />
+                                        ) : (
+                                            item.name
+                                        )}
+                                    </td>
+                                    <td>
+                                        {editId === item._id ? (
+                                            <>
+                                                <button className="edit-button" onClick={() => handleUpdateDeparment(item._id)}>
+                                                    <FontAwesomeIcon icon={faCheck} />
+                                                </button>
+                                                <button className="delete-button" onClick={handleCancelEdit}>
+                                                    <FontAwesomeIcon icon={faTimes} />
+                                                </button>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <button className="edit-button" onClick={() => handleEdit(item)}>
+                                                    <FontAwesomeIcon icon={faEdit} />
+                                                </button>
+                                                <button className="delete-button" onClick={() => handleDeleteDeparment(item._id)}>
+                                                    <FontAwesomeIcon icon={faTrash} />
+                                                </button>
+                                            </>
+                                        )}
+                                        {/* <button className="edit-button">
                                             <FontAwesomeIcon icon={faEdit} />
                                         </button>
-                                        <button className="delete-button">
+                                        <button className="delete-button" onClick={() => handleDeleteDeparment(item._id)}>
                                             <FontAwesomeIcon icon={faTrash} />
-                                        </button>
+                                        </button> */}
                                     </td>
                                 </tr>
-                            ))}
+                            ))) : (
+                                <tr>
+                                    <td colSpan="3">Không có dữ liệu</td>
+                                </tr>
+                            )}
                         </tbody>
                     </table>
                     <div className="pagination">

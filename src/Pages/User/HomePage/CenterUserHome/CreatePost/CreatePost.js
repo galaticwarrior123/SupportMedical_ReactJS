@@ -16,12 +16,11 @@ const CreatePost = ({ handleCloseFullScreen }) => {
         const formData = new FormData();
         formData.append('title', title);
         formData.append('content', content);
-    
+        console.log(images);
         // Thêm từng tệp tin vào FormData
         images.forEach((file) => {
             formData.append('images', file); // 'images' là key trong FormData
         });
-    
         try {
             await PostAPI.createPost(formData)
             .then((res) => {

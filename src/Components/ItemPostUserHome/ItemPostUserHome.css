@@ -198,6 +198,7 @@
 .fullscreen-image {
     max-width: 90%;
     max-height: 90%;
+    margin-top: 60px;
 }
 .button-transfer-image {
     width:100%;

@@ -1,7 +1,7 @@
 import './ItemPostUserHome.css';
 import PostDetail from '../../Pages/User/HomePage/CenterUserHome/PostDetail/PostDetail';
 import { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faThumbsUp, faComment, faPaperPlane, faArrowRight, faArrowLeft, faEarth, faEllipsis, faHeart, faSurprise } from '@fortawesome/free-solid-svg-icons';
 import { formatDistanceToNow, set } from 'date-fns';
@@ -25,7 +25,7 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
     const [clickComment, setClickComment] = useState(false);
     const [selectedImageIndex, setSelectedImageIndex] = useState(null);
     const [showPostDetail, setShowPostDetail] = useState(false);
-    const [numberOfLikes, setNumberOfLikes] = useState(itemPost?.likedBy?.length || 0);
+    const [numberOfInteracts, setNumberOfInteracts] = useState(itemPost?.likedBy?.length + itemPost?.lovedBy?.length + itemPost?.surprisedBy?.length || 0);
     const [numberOfComments, setNumberOfComments] = useState(itemPost?.comments?.length || 0);
     const [showPostDetailLike, setShowPostDetailLike] = useState(false);
     const [likedByUsers, setLikedByUsers] = useState(itemPost?.likedBy || []);
@@ -41,7 +41,8 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
     const images = itemPost?.images || [];
 
     useEffect(() => {
-        setNumberOfLikes(itemPost.likedBy.length);
+        const numberOfInteracts = likedByUsers.length + lovedByUsers.length + surprisedByUsers.length;
+        setNumberOfInteracts(numberOfInteracts);
         setLikedByUsers(itemPost.likedBy);
         fetchListComment();
         fetchPost();
@@ -69,7 +70,7 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
             const response = await PostAPI.getPostById(itemPost._id);
             const postData = response.data[0];
             setPost(response.data[0]);
-            setNumberOfLikes(response.data[0].likedBy.length);
+            setNumberOfInteracts(postData.likedBy.length + postData.lovedBy.length + postData.surprisedBy.length);
             setLikedByUsers(response.data[0].likedBy);
             setLovedByUsers(response.data[0].lovedBy);
             setSurprisedByUsers(response.data[0].surprisedBy);
@@ -114,60 +115,73 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
 
 
     const handleReaction = async () => {
-        const reaction = currentReaction; // This could be 'like', 'love', or 'surprise'
+        const reaction = currentReaction; // Có thể là 'like', 'love', hoặc 'surprise'
+        // nếu trường hợp là
+        let data = { type: reaction };
+        let interactChange = 0; // Biến này theo dõi sự thay đổi số lượng tương tác
 
-        let data = {
-            type: reaction, // This can be 'like', 'love', 'surprise', or null
-        };
-        console.log("data", data);
         try {
-            // Check if user clicked the current reaction to remove it
+            // Nếu người dùng đã tương tác với bài viết (like, love, surprise)
             if (reaction === 'love' && loved) {
-                // If "love" is already selected, remove it by sending null as the type
-                data = { type: null };
-                setLoved(false);
-                setLovedByUsers(prev => prev.filter(user => user._id !== currentUser._id));
+                data = { type: null }; // Xóa tương tác
+                setLoved(false); // Xóa trạng thái yêu
+                setLiked(false); // Trả về nút like nguyên bản
+                setSurprised(false); // Xóa trạng thái ngạc nhiên
+                setLovedByUsers(prev => prev.filter(user => user._id !== currentUser._id)); // Xóa user khỏi danh sách loved
+                interactChange = -1; // Giảm số lượng tương tác
             } else if (reaction === 'like' && liked) {
-                // If "like" is already selected, remove it by sending null as the type
-                data = { type: null };
-                setLiked(false);
-                setNumberOfLikes(prev => prev - 1);
-                setLikedByUsers(prev => prev.filter(user => user._id !== currentUser._id));
+                data = { type: null }; // Xóa tương tác
+                setLiked(false); // Trả về nút like nguyên bản
+                setLoved(false); // Xóa trạng thái yêu
+                setSurprised(false); // Xóa trạng thái ngạc nhiên
+                setLikedByUsers(prev => prev.filter(user => user._id !== currentUser._id)); // Xóa user khỏi danh sách liked
+                interactChange = -1;
             } else if (reaction === 'surprise' && surprised) {
-                // If "surprise" is already selected, remove it by sending null as the type
-                data = { type: null };
-                setSurprised(false);
-                setSurprisedByUsers(prev => prev.filter(user => user._id !== currentUser._id));
+                data = { type: null }; // Xóa tương tác
+                setSurprised(false); // Xóa trạng thái ngạc nhiên
+                setLiked(false); // Trả về nút like nguyên bản
+                setLoved(false); // Xóa trạng thái yêu
+                setSurprisedByUsers(prev => prev.filter(user => user._id !== currentUser._id)); // Xóa user khỏi danh sách surprised
+                interactChange = -1;
             } else {
-                // Add the reaction if it is not already selected
-                await PostAPI.reactPost(itemPost._id, data);
-
+                // Nếu chưa có tương tác nào, thêm tương tác mới
                 if (reaction === 'like') {
-                    setLiked(true);
-                    setNumberOfLikes(prev => prev + 1);
-                    setLikedByUsers(prev => [...prev, currentUser]);
-                    setLoved(false);
-                    setSurprised(false);
+                    setLiked(true); // Thiết lập trạng thái like
+                    setLikedByUsers(prev => [...prev, currentUser]); // Thêm user vào danh sách liked
+                    interactChange = loved || surprised ? 0 : 1; // Nếu trước đó đã có love hoặc surprise, không tăng số tương tác
+                    setLoved(false); // Xóa trạng thái yêu
+                    setSurprised(false); // Xóa trạng thái ngạc nhiên
                 } else if (reaction === 'love') {
-                    setLoved(true);
-                    setLovedByUsers(prev => [...prev, currentUser]);
-                    setLiked(false);
-                    setSurprised(false);
+                    setLoved(true); // Thiết lập trạng thái love
+                    setLovedByUsers(prev => [...prev, currentUser]); // Thêm user vào danh sách loved
+                    interactChange = liked || surprised ? 0 : 1;
+                    setLiked(false); // Xóa trạng thái like
+                    setSurprised(false); // Xóa trạng thái ngạc nhiên
                 } else if (reaction === 'surprise') {
-                    setSurprised(true);
-                    setSurprisedByUsers(prev => [...prev, currentUser]);
-                    setLiked(false);
-                    setLoved(false);
+                    setSurprised(true); // Thiết lập trạng thái surprise
+                    setSurprisedByUsers(prev => [...prev, currentUser]); // Thêm user vào danh sách surprised
+                    interactChange = liked || loved ? 0 : 1;
+                    setLiked(false); // Xóa trạng thái like
+                    setLoved(false); // Xóa trạng thái yêu
                 }
             }
 
-            // Send the reaction (or removal) to the API
+            // Cập nhật số lượng tương tác trực tiếp ngay khi có thay đổi
+            if (interactChange !== 0) {
+                setNumberOfInteracts(numberOfInteracts + interactChange);
+            }
+
+            // Gửi yêu cầu cập nhật lên server
             await PostAPI.reactPost(itemPost._id, data);
+
 
         } catch (error) {
             console.error(error);
         }
     };
+
+
+
 
 
     const handleReactionSelect = (newReaction) => {
@@ -178,27 +192,47 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
     const handleMouseDown = () => {
         // Set longPressActive to false initially
         setLongPressActive(false);
-    
+
         // Set a timeout for long press (500ms)
         const timeout = setTimeout(() => {
             setShowReactions(true); // Show reactions menu after long press
             setLongPressActive(true); // Indicate long press is active
         }, 500);
         setLongPressTimeout(timeout);
+
+
     };
-    
-    const handleMouseUp = () => {
+
+    const handleMouseUp = async () => {
         // Clear long press timeout when mouse is released
         clearTimeout(longPressTimeout);
-    
+
         // If long press is not active, proceed with the normal reaction button click
         if (!longPressActive) {
-            handleReaction();
+
+            //handleReaction();
+
+            // nếu đó là lần đầu tiên thì nếu chưa thả cảm xúc thì sẽ là nút like màu xanh dương còn nếu đã thả cảm xúc rồi thì sẽ là nút like màu đen và cập nhật lại số lượng cảm xúc
+            if (liked) {
+                setLiked(false);
+                setNumberOfInteracts(numberOfInteracts - 1);
+                await PostAPI.reactPost(itemPost._id, { type: null });
+            } else if (loved) {
+                setLoved(false);
+                setNumberOfInteracts(numberOfInteracts - 1);
+                await PostAPI.reactPost(itemPost._id, { type: null });
+            } else if (surprised) {
+                setSurprised(false);
+                setNumberOfInteracts(numberOfInteracts - 1);
+                await PostAPI.reactPost(itemPost._id, { type: null });
+            } else {
+                setLiked(true);
+                setNumberOfInteracts(numberOfInteracts + 1);
+                await PostAPI.reactPost(itemPost._id, { type: 'like' });
+            }
         }
-    
-        
     };
-    
+
 
     const handleCloseReactionMenu = () => {
         setShowReactions(false);
@@ -246,6 +280,8 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
 
     const handleSeeDetailLike = () => {
         setShowPostDetailLike(true);
+
+
     }
 
     const handleShowMore = () => {
@@ -287,7 +323,6 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
                 <button
                     onMouseDown={handleMouseDown}
                     onMouseUp={handleMouseUp}
-                    onClick={() => handleReactionSelect('like')}
                     style={{ color: 'blue' }}>
                     <FontAwesomeIcon icon={faThumbsUp} style={{ color: 'blue', marginRight: '2' }} />
                     <span>Thích</span>
@@ -299,7 +334,6 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
                 <button
                     onMouseDown={handleMouseDown}
                     onMouseUp={handleMouseUp}
-                    onClick={() => handleReactionSelect('love')}
                     style={{ color: 'red' }}>
                     <FontAwesomeIcon icon={faHeart} style={{ color: 'red', marginRight: '2' }} />
                     <span>Yêu</span>
@@ -311,7 +345,6 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
                 <button
                     onMouseDown={handleMouseDown}
                     onMouseUp={handleMouseUp}
-                    onClick={() => handleReactionSelect('surprise')}
                     style={{ color: 'orange' }}>
                     <FontAwesomeIcon icon={faSurprise} style={{ color: 'orange', marginRight: '2' }} />
                     <span>Ngạc nhiên</span>
@@ -323,7 +356,7 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
                 <button
                     onMouseDown={handleMouseDown}
                     onMouseUp={handleMouseUp}
-                    onClick={() => handleReactionSelect('like')}>
+                >
                     <FontAwesomeIcon icon={faThumbsUp} style={{ color: 'black', marginRight: '2' }} />
                     <span>Thích</span>
                 </button>
@@ -338,12 +371,14 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
 
             <div className="center-user-home-post-header">
                 <div className="center-user-home-post-avatar">
-                    <img src="https://via.placeholder.com/50" alt="avatar" />
+                    <img src={itemPost.author.avatar} alt="avatar" />
                 </div>
                 <div className="center-user-home-post-user-info">
                     <div className="center-user-home-post-user-info-top">
                         <div className="center-user-home-post-user-info-top-name">
-                            <span>{itemPost.author.firstName} {itemPost.author.lastName}</span>
+                            <Link to={`/profile/${itemPost.author._id}`}>
+                                <span>{itemPost.author.firstName} {itemPost.author.lastName}</span>
+                            </Link>
                             {renderBadge()}
                         </div>
                         <div>
@@ -457,16 +492,19 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
                 </div>
             )}
             {showReactions && <ReactionMenu onSelectReaction={handleReactionSelect} onClose={handleCloseReactionMenu} />}
-            {(location.pathname === '/profile' || location.pathname === '/') ? (
+            {(location.pathname === '/profile/'+itemPost.author._id) || (location.pathname === '/') ? (
                 <div className="center-user-home-post-footer">
 
                     <div className="center-user-home-post-footer-infoPost">
                         <div className='center-user-home-post-footer-infoPost-like' onClick={handleSeeDetailLike}>
-                            <span><FontAwesomeIcon icon={faThumbsUp} style={{ color: '#41C9E2', marginRight: '2' }} />
-                                {numberOfLikes} lượt thích
+                            <span>
+                                <FontAwesomeIcon icon={faThumbsUp} style={{ color: '#41C9E2', marginRight: '2' }} />
+                                <FontAwesomeIcon icon={faHeart} style={{ color: '#FF0000' }} />
+                                <FontAwesomeIcon icon={faSurprise} style={{ color: '#FFCC33' }} />
+                                <span style={{ marginLeft: 5 }}>{numberOfInteracts} </span>
                             </span>
                         </div>
-                        {showPostDetailLike && <ShowPostDetailLike handleCloseFullScreen={handleCloseFullScreen} itemPost={post}/>}
+                        {showPostDetailLike && <ShowPostDetailLike handleCloseFullScreen={handleCloseFullScreen} itemPost={post} />}
                         <span><FontAwesomeIcon icon={faComment} style={{ color: '#41C9E2', marginRight: '2' }} />
                             {numberOfComments} bình luận</span>
                     </div>
@@ -474,23 +512,26 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
                     <div className="center-user-home-post-footer-action">
 
                         <table>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        {renderButtonReaction()}
 
-                            <tr>
-                                <td>
-                                    {renderButtonReaction()}
+                                    </td>
 
-                                </td>
+                                    <td><button onClick={handleComment}>
+                                        <FontAwesomeIcon icon={faComment} style={{ color: 'black', marginRight: '2' }} />
+                                        Xem bình luận</button></td>
+                                </tr>
 
-                                <td><button onClick={handleComment}>
-                                    <FontAwesomeIcon icon={faComment} style={{ color: 'black', marginRight: '2' }} />
-                                    Xem bình luận</button></td>
-                            </tr>
+                            </tbody>
+
                         </table>
 
                     </div>
                     <div className="center-user-home-post-footer-comment">
                         <div className="center-user-home-post-comment-avatar">
-                            <img src="https://via.placeholder.com/50" alt="avatar" />
+                            <img src={JSON.parse(localStorage.getItem('user')).avatar} alt="avatar" />
                         </div>
                         <div className="center-user-home-post-comment-input">
                             <input type="text" placeholder="Viết bình luận..." value={commentContent} onChange={(e) => setCommentContent(e.target.value)} />
@@ -520,7 +561,7 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
 
                     )}
                 </div>
-            ) : (
+            ) : ( location.pathname === '/admin/browse-post' ) && (
                 <div className="center-user-home-post-footer-browser">
                     <div className="center-user-home-post-footer-browser-body">
                         <table>
