@@ -1,38 +1,52 @@
 import './DoctorManage.css';
 import DefaultLayoutAdmin from '../../../Layouts/DefaultLayoutAdmin/DefaultLayoutAdmin';
 import { SidebarProvider } from '../../../Layouts/DefaultLayoutAdmin/SidebarContext';
-import { faSearch} from '@fortawesome/free-solid-svg-icons';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState, useEffect } from 'react';
 import AddDoctor from './AddDoctor';
-
+import { DoctorAPI } from '../../../API/DoctorAPI';
+import ListDoctor from './ListDoctor';
+import { set } from 'date-fns';
 const DoctorManage = () => {
-    const doctors = [
-        {
-            name: 'Nguyễn Đức Phú',
-            dob: '01/01/2003',
-            specialty: 'Răng - Hàm - Mặt',
-            position: 'Bác sĩ',
-            phone: '0923423523'
-        },
-        {
-            name: 'Nguyễn Đức Phú',
-            dob: '01/01/2003',
-            specialty: 'Răng - Hàm - Mặt',
-            position: 'Bác sĩ',
-            phone: '0923423523'
-        },
-        {
-            name: 'Nguyễn Đức Phú',
-            dob: '01/01/2003',
-            specialty: 'Răng - Hàm - Mặt',
-            position: 'Bác sĩ',
-            phone: '0923423523'
-        }
-        // Có thể thêm nhiều bác sĩ khác
-    ];
+    const [doctors, setDoctors] = useState([])
+    const [filteredDoctors, setFilteredDoctors] = useState([]);
+    const [searchDoctor, setSearchDoctor] = useState('');
 
     const [isAddDoctor, setIsAddDoctor] = useState(false);
+    const [isAddPermission, setIsAddPermission] = useState(false);
+
+    useEffect(() => {
+        const fetchDoctors = async () => {
+            try {
+                const response = await DoctorAPI.getDoctors();
+                if (response.status === 200) {
+                    setDoctors(response.data);
+                    setFilteredDoctors(response.data);
+                }
+            }
+            catch (error) {
+                console.error(error);
+            }
+        }
+        fetchDoctors();
+    }, []);
+
+    useEffect(() => {
+        const filterDoctors = () => {
+            const lowercasedSearch = searchDoctor.toLowerCase();
+            const filtered = doctors.filter(doctor => {
+                const fullName = `${doctor.lastName} ${doctor.firstName}`.toLowerCase();
+                return (
+                    doctor.doctorInfo.isPermission === true &&
+                    fullName.includes(lowercasedSearch)
+                );
+            });
+            setFilteredDoctors(filtered);
+        };
+
+        filterDoctors();
+    }, [searchDoctor, doctors]);
 
     const handleClickAddDoctor = () => {
         setIsAddDoctor(true);
@@ -41,51 +55,73 @@ const DoctorManage = () => {
         setIsAddDoctor(false);
     }
 
+    const handleRemovePermission = async (doctorId) => {
+        const data = {
+            doctorId: doctorId,
+            isPermission: false
+        };
+        try {
+            const response = await DoctorAPI.permissionDoctor(data);
+            if (response.status === 200) {
+                setDoctors(doctors.map(doctor => doctor._id === doctorId ? { ...doctor, doctorInfo: { ...doctor.doctorInfo, isPermission: false } } : doctor));
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    const handleClickAddPermission = () => {
+        setIsAddPermission(true);
+    }
+
     return (
         <SidebarProvider>
             <DefaultLayoutAdmin>
                 <div className="doctor-manage-body" >
                     <div className="doctor-manage-add">
+                        <button className="add-button-doctor" onClick={handleClickAddPermission}>+ Thêm bác sĩ phê duyệt</button>
                         <button className="add-button-doctor" onClick={handleClickAddDoctor}>+ Thêm bác sĩ</button>
                     </div>
+                    {isAddPermission && (
+                        <ListDoctor doctors={doctors} />
+                    )}
                     {isAddDoctor && (
                         <AddDoctor handleCloseIsAddDoctor={handleCloseIsAddDoctor} />
+
+
                     )}
 
 
                     <div className="search-bar">
                         <div className='search-bar-input'>
-                            <input type="text" placeholder="Tìm kiếm" />
-                        </div>
-                        <div className='search-bar-button-submit'>
-                            <button className='search-bar-button'>
-                                <FontAwesomeIcon icon={faSearch} />
-                            </button>
+                            <input type="text" placeholder="Tìm kiếm bác sĩ" value={searchDoctor} onChange={(e) => setSearchDoctor(e.target.value)} />
                         </div>
                     </div>
                     <div className="doctor-list">
-                        {doctors.map((doctor, index) => (
-                            <div key={index} className="doctor-card">
-                                <div className="doctor-info">
-                                    <div className="avatar-placeholder">
-                                        <img src="https://picsum.photos/200/200" alt="avatar" />
+                        {filteredDoctors.length > 0 ? (
+                            filteredDoctors.map((doctor, index) => (
+                                <div key={index} className="doctor-card">
+                                    <div className="doctor-info">
+                                        <div className="avatar-placeholder">
+                                            <img src={doctor.avatar} alt="avatar" />
+                                        </div>
+                                        <div className="doctor-details">
+                                            <p><strong>Họ và tên:</strong> {doctor.lastName} {doctor.firstName}</p>
+                                            <p><strong>Ngày sinh:</strong> {new Date(doctor.dob).toLocaleDateString()}</p>
+                                            <p><strong>Chuyên khoa:</strong> {doctor.doctorInfo.specialities.map((speciality, index) => (
+                                                <span key={index}>{speciality.name}</span>
+                                            ))}</p>
+                                            <p><strong>Số điện thoại:</strong> {doctor.doctorInfo.phone}</p>
+                                        </div>
                                     </div>
-                                    <div className="doctor-details">
-                                        <p><strong>Họ và tên:</strong> {doctor.name}</p>
-                                        <p><strong>Ngày sinh:</strong> {doctor.dob}</p>
-                                        <p><strong>Chuyên khoa:</strong> {doctor.specialty}</p>
-                                        <p><strong>Chức danh:</strong> {doctor.position}</p>
-                                        <p><strong>Số điện thoại:</strong> {doctor.phone}</p>
+                                    <div className="doctor-approve-button">
+                                        <button className="approve-button remove" onClick={() => handleRemovePermission(doctor._id)}>Xóa quyền phê duyệt</button>
                                     </div>
                                 </div>
-                                <div className='doctor-approve-button'>
-                                    <button className="approve-button">Cấp quyền phê duyệt</button>
-                                    <button className="approve-button edit">Chỉnh sửa thông tin</button>
-                                    <button className="approve-button remove">Xóa</button>
-                                </div>
-
-                            </div>
-                        ))}
+                            ))
+                        ) : (
+                            <p>Không có bác sĩ nào được cấp quyền kiểm duyệt</p>
+                        )}
                     </div>
                 </div>
             </DefaultLayoutAdmin>
