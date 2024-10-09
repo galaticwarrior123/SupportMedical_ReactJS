@@ -1,0 +1,66 @@
+.call-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+    width: 100%;
+}
+
+.remote-stream {
+    flex: 1;
+    /* Chiếm phần lớn không gian */
+    height: 80% !important;
+    width: 80% !important;
+    align-content: center;
+}
+
+.remote-stream video {
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+}
+
+.local-stream {
+    position: absolute;
+    bottom: 68px;
+    right: 40px;
+    width: 200px !important;
+    height: auto !important;
+    border-radius: 5px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+}
+
+.local-stream video {
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+}
+
+.controls {
+    display: flex;
+    justify-content: space-around;
+    padding: 10px;
+    gap: 10px;
+}
+
+.controls button {
+    background-color: #f0f0f0;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+    width: 50px;
+    height: 50px;
+}
+
+.controls button:hover {
+    background-color: #e0e0e0;
+}
+
+.end-call {
+    background-color: #f44336 !important;
+    color: white;
+}
+.end-call:hover {
+    background-color: #d32f2f !important;
+}

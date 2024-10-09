@@ -3,6 +3,9 @@ import { useParams, useSearchParams } from "react-router-dom";
 import ReactPlayer from "react-player";
 import { useSocket } from "../../../context/SocketProvider";
 import { peerConnection } from "../../../Common/PeerConnection";
+import './Call.css';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMicrophone, faMicrophoneSlash, faPhoneSlash, faVideo, faVideoSlash } from "@fortawesome/free-solid-svg-icons";
 
 const Call = () => {
     const { to } = useParams();
@@ -13,11 +16,13 @@ const Call = () => {
     const from = JSON.parse(localStorage.getItem('user'))._id;
     const [localStream, setLocalStream] = useState(null);
     const [remoteStream, setRemoteStream] = useState(null);
+    const [isMicOn, setIsMicOn] = useState(true);
+    const [isCameraOn, setIsCameraOn] = useState(true);
+
     useEffect(() => {
         navigator.mediaDevices.getUserMedia({ video: true, audio: true })
             .then((stream) => {
                 setLocalStream(stream);
-                // localVideoRef.current.srcObject = stream;
                 stream.getTracks().forEach(track => {
                     peerConnection.addTrack(track, stream);
                 });
@@ -50,13 +55,6 @@ const Call = () => {
             });
         }
 
-        // socket.on('call', async (data) => {
-        //     await peerConnection.setRemoteDescription(new RTCSessionDescription(data.offer));
-        //     const answer = await peerConnection.createAnswer();
-        //     await peerConnection.setLocalDescription(new RTCSessionDescription(answer));
-        //     socket.emit('answer', { to: data.from, answer: peerConnection.localDescription });
-        // });
-
         socket.on('ice-candidate', (data) => {
             peerConnection.addIceCandidate(new RTCIceCandidate(data.candidate));
         });
@@ -83,21 +81,43 @@ const Call = () => {
 
         return () => {
             peerConnection.close();
-            socket.off('call');
             socket.off('answer');
             socket.off('ice-candidate');
             socket.off('nego-needed');
             socket.off('nego-answer');
+            socket.off('ice-candidate');
         }
     }, [from, to, socket, isAnswer]);
 
+    const handleToggleMic = () => {
+        localStream.getAudioTracks().forEach(track => {
+            track.enabled = !track.enabled;
+            setIsMicOn(track.enabled);
+        });
+    }
+
+    const handleToggleCam = () => {
+        localStream.getVideoTracks().forEach(track => {
+            track.enabled = !track.enabled;
+            setIsCameraOn(track.enabled);
+        });
+    }
+
     return (
-        <div>
-            <h1>Call</h1>
-            {/* <video ref={localVideoRef} autoPlay muted></video> */}
-            <ReactPlayer url={localStream} playing muted />
-            {/* <video ref={remoteVideoRef} autoPlay></video> */}
-            {remoteStream && <ReactPlayer url={remoteStream} playing />}
+        <div className="call-container">
+            {localStream && <ReactPlayer className="local-stream" url={localStream} playing muted />}
+            {remoteStream && <ReactPlayer className="remote-stream" url={remoteStream} playing />}
+            <div className="controls">
+                <button onClick={handleToggleMic}>
+                    {isMicOn ? <FontAwesomeIcon icon={faMicrophone} /> : <FontAwesomeIcon icon={faMicrophoneSlash} />}
+                </button>
+                <button onClick={handleToggleCam}>
+                    {isCameraOn ? <FontAwesomeIcon icon={faVideo} /> : <FontAwesomeIcon icon={faVideoSlash} />}
+                </button>
+                <button className="end-call">
+                <   FontAwesomeIcon icon={faPhoneSlash} />
+                </button>
+            </div>
         </div>
     );
 };
