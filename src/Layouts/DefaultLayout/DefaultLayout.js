@@ -1,23 +1,14 @@
 import './DefaultLayout.css';
 import Header from '../Header/Header';
-import { useSocket } from '../../context/SocketProvider';
-import { useEffect } from 'react';
+import NotificationRequest from '../../Components/NotificationRequest';
+import SocketEventListener from '../../Components/SocketEventListener';
+
 const DefaultLayout = ({ children }) => {
-    // listen socket event
-    const socket = useSocket();
-    useEffect(() => {
-        if (!socket) return;
-
-        socket.on('receive-message', (message) => {
-            
-        });
-
-        return (() => {
-            socket.off('receive-message');
-        });
-    }, [socket]);
+    
     return (
         <div className="default-layout">
+            <NotificationRequest />
+            <SocketEventListener />
             <Header />
             <div className="content">
                 {children}
