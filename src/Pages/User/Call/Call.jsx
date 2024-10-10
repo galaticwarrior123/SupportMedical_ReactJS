@@ -6,6 +6,7 @@ import { peerConnection } from "../../../Common/PeerConnection";
 import './Call.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMicrophone, faMicrophoneSlash, faPhoneSlash, faVideo, faVideoSlash } from "@fortawesome/free-solid-svg-icons";
+import InformDialog from "../../../Components/InformDialog/InformDialog";
 
 const Call = () => {
     const { to } = useParams();
@@ -18,6 +19,7 @@ const Call = () => {
     const [remoteStream, setRemoteStream] = useState(null);
     const [isMicOn, setIsMicOn] = useState(true);
     const [isCameraOn, setIsCameraOn] = useState(true);
+    const [showCallEnded, setShowCallEnded] = useState(false);
 
     useEffect(() => {
         navigator.mediaDevices.getUserMedia({ video: true, audio: true })
@@ -79,6 +81,14 @@ const Call = () => {
             console.log(peerConnection.remoteDescription);
         });
 
+        socket.on('end-call', () => {
+            peerConnection.close();
+            setShowCallEnded(true);
+        });
+
+        window.onbeforeunload = handleEndCall;
+
+
         return () => {
             peerConnection.close();
             socket.off('answer');
@@ -103,10 +113,22 @@ const Call = () => {
         });
     }
 
+    const handleEndCall = () => {
+        socket.emit('end-call', { from,to });
+        setShowCallEnded(true);
+    }
+
     return (
         <div className="call-container">
+            <InformDialog 
+                title="Cuộc gọi đã kết thúc" 
+                message="Cuộc gọi đã kết thúc, cửa sổ này sẽ đóng." 
+                isOpen={showCallEnded}
+                okText="Đóng"
+                onOk={() => window.close()}
+            />
             {localStream && <ReactPlayer className="local-stream" url={localStream} playing muted />}
-            {remoteStream && <ReactPlayer className="remote-stream" url={remoteStream} playing />}
+            {<ReactPlayer className="remote-stream" url={remoteStream} playing />}
             <div className="controls">
                 <button onClick={handleToggleMic}>
                     {isMicOn ? <FontAwesomeIcon icon={faMicrophone} /> : <FontAwesomeIcon icon={faMicrophoneSlash} />}
@@ -114,7 +136,7 @@ const Call = () => {
                 <button onClick={handleToggleCam}>
                     {isCameraOn ? <FontAwesomeIcon icon={faVideo} /> : <FontAwesomeIcon icon={faVideoSlash} />}
                 </button>
-                <button className="end-call">
+                <button onClick={handleEndCall} className="end-call">
                 <   FontAwesomeIcon icon={faPhoneSlash} />
                 </button>
             </div>

@@ -56,6 +56,9 @@ const SocketEventListener = () => {
 
         socket.on('receive-message', (message) => handleReceiveMessage(message));
         socket.on('call', (data) => handleReceiveCall(data));
+        socket.on('end-call', (data) => {
+            setShowCallModal(false);
+        });
 
 
         return (() => {
@@ -67,7 +70,10 @@ const SocketEventListener = () => {
     return (
         <YesNoDialog
             isOpen={showCallModal}
-            onCancel={() => setShowCallModal(false)}
+            onCancel={() => {
+                setShowCallModal(false);
+                socket.emit('end-call', { to: caller._id });
+            }}
             onConfirm={async () => {
                 setShowCallModal(false);
                 await peerConnection.setRemoteDescription(new RTCSessionDescription(offer));
