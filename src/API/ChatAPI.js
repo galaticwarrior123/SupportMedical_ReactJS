@@ -17,6 +17,12 @@ export class ChatAPI {
     static async getChats() {
         return axiosPrivate.get('/chat');
     }
+
+    static async getMessagesPagination(chatId, page, limit) {
+        return axiosPrivate.get(`/chat/${chatId}/messages`, {
+            params: { page, pageSize: limit }
+        });
+    }
 }
 
 export const AppointmentStatus = {

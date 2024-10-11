@@ -6,17 +6,33 @@ import { format } from 'date-fns';
 import CreateApptFormModal, { ApptFormModalView } from '../CreateApptFormModal/CreateApptFormModal';
 import YesNoDialog from '../../../../Components/YesNoDialog/YesNoDialog';
 import { useSocket } from '../../../../context/SocketProvider';
+import ImageViewer from "react-simple-image-viewer";
 
 const MessageItem = ({ message, onAcceptApt }) => {
     const socket = useSocket();
     const [showDate, setShowDate] = useState(false);
     const [showApptFormModal, setShowApptFormModal] = useState(false);
     const [showConfirmCancelModal, setShowConfirmCancelModal] = useState(false);
+    const [imageIndex, setImageIndex] = useState(null);
     const user = JSON.parse(localStorage.getItem('user'));
     const byUser = message.sender._id === user._id;
 
     return (
         <>
+            {
+                imageIndex !== null && (
+                    <ImageViewer
+                        src={message.content}
+                        currentIndex={imageIndex}
+                        onClose={() => setImageIndex(null)}
+                        closeOnClickOutside={true}
+                        disableScroll={true}
+                        backgroundStyle={{
+                            backgroundColor: 'rgba(0, 0, 0, 0.9)'
+                        }}
+                    />
+                )
+            }
             <YesNoDialog
                 isOpen={showConfirmCancelModal}
                 onCancel={() => setShowConfirmCancelModal(false)}
@@ -33,17 +49,17 @@ const MessageItem = ({ message, onAcceptApt }) => {
                 message='Thao tác này không thể hoàn tác, bạn có chắc chắn muốn hủy cuộc hẹn này không?'
             />
             {message.type === MessageType.APPOINTMENT &&
-                <CreateApptFormModal 
+                <CreateApptFormModal
                     show={showApptFormModal}
                     handleClose={() => setShowApptFormModal(false)}
-                    appt={message.content} 
+                    appt={message.content}
                     view={ApptFormModalView.VIEW} />
             }
             <div className={'message-item' + (byUser ? ' message-item-right' : '')}>
                 {
                     byUser ||
                     <div className="message-item-avatar">
-                        <img src="https://via.placeholder.com/150" alt="avatar" />
+                        <img src={message.sender.avatar} alt="avatar" />
                     </div>
                 }
                 <div onClick={
@@ -60,47 +76,19 @@ const MessageItem = ({ message, onAcceptApt }) => {
                         message.type === MessageType.IMAGE && (
                             <>
                                 {message.content.length === 1 && (
-                                    <div className="message-item-content-image">
+                                    <div onClick={() => setImageIndex(0)} className="message-item-content-image">
                                         <img src={message.content[0]} alt="image-message" />
                                     </div>
                                 )}
-                                {message.content.length === 2 && (
+                                {message.content.length >= 2 && (
                                     <div className="message-item-content-images">
-                                        <div className="message-item-content-image half-width">
-                                            <img src={message.content[0]} alt="image-message" />
-                                        </div>
-                                        <div className="message-item-content-image half-width">
-                                            <img src={message.content[1]} alt="image-message" />
-                                        </div>
-                                    </div>
-                                )}
-                                {message.content.length === 3 && (
-                                    <div className="message-item-content-images">
-                                        <div className="message-item-content-image half-width">
-                                            <img src={message.content[0]} alt="image-message" />
-                                        </div>
-                                        <div className="message-item-content-image half-width">
-                                            <img src={message.content[1]} alt="image-message" />
-                                        </div>
-                                        <div className="message-item-content-image">
-                                            <img src={message.content[2]} alt="image-message" />
-                                        </div>
-                                    </div>
-                                )}
-                                {message.content.length > 3 && (
-                                    <div className="message-item-content-images">
-                                        <div className="message-item-content-image half-width">
-                                            <img src={message.content[0]} alt="image-message" />
-                                        </div>
-                                        <div className="message-item-content-image half-width">
-                                            <img src={message.content[1]} alt="image-message" />
-                                        </div>
-                                        <div className="message-item-content-image">
-                                            <img src={message.content[2]} alt="image-message" />
-                                        </div>
-                                        <div className="message-item-content-image">
-                                            <span>+{message.content.length - 3} ảnh khác</span>
-                                        </div>
+                                        {
+                                            message.content.map((img, index) => (
+                                                <div onClick={() => setImageIndex(index)} key={index} className={`message-item-content-image ${message.content.length === 2 ? 'full-width' : 'half-width'}`}>
+                                                    <img src={img} alt="image-message" />
+                                                </div>
+                                            ))
+                                        }
                                     </div>
                                 )}
                             </>
@@ -112,8 +100,8 @@ const MessageItem = ({ message, onAcceptApt }) => {
                                 <div className="message-item-content-appointment-title">
                                     {`[${AppointmentStatusText[message.content.apptStatus]}] `}
                                     {(byUser ? 'Bạn' : message.sender.lastName) + ' đã đề xuất cuộc hẹn '}
-                                         <span className="appointment-title">{message.content.title}</span>
-                                    {' vào lúc:'}   
+                                    <span className="appointment-title">{message.content.title}</span>
+                                    {' vào lúc:'}
                                 </div>
                                 <div className="message-item-content-appointment-date">
                                     <span className="appointment-time">
@@ -128,20 +116,20 @@ const MessageItem = ({ message, onAcceptApt }) => {
                                         e.stopPropagation();
                                         setShowApptFormModal(true);
                                     }} className="btn-detail">Xem chi tiết</button>
-                                {
-                                    !byUser && message.content.apptStatus === AppointmentStatus.PENDING && 
-                                    <button onClick={(e) => onAcceptApt(e, message._id)} className="btn-accept">Chấp nhận</button>
-                                }
-                                {
-                                   ((!byUser && message.content.apptStatus === AppointmentStatus.ACCEPTED)
-                                    || (byUser))
-                                    
-                                    &&
-                                    <button onClick={(e) => {
-                                        e.stopPropagation();
-                                        setShowConfirmCancelModal(true);
-                                    }} className="btn-cancel">Huỷ</button>
-                                }
+                                    {
+                                        !byUser && message.content.apptStatus === AppointmentStatus.PENDING &&
+                                        <button onClick={(e) => onAcceptApt(e, message._id)} className="btn-accept">Chấp nhận</button>
+                                    }
+                                    {
+                                        ((!byUser && message.content.apptStatus === AppointmentStatus.ACCEPTED)
+                                            || (byUser))
+
+                                        &&
+                                        <button onClick={(e) => {
+                                            e.stopPropagation();
+                                            setShowConfirmCancelModal(true);
+                                        }} className="btn-cancel">Huỷ</button>
+                                    }
                                 </div>
                             </div>
                         )
@@ -150,7 +138,7 @@ const MessageItem = ({ message, onAcceptApt }) => {
                         <span>{showDate ? formatFullDatetime(message.createdAt) : ''}</span>
                     </div>
                 </div>
-    
+
             </div>
         </>
     )

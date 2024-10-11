@@ -11,6 +11,7 @@ import { faCalendarDays, faCircleInfo, faImage, faPaperPlane, faVideo } from '@f
 import imageCompression from 'browser-image-compression';
 import CreateApptFormModal from './CreateApptFormModal/CreateApptFormModal';
 import { useSocket } from '../../../context/SocketProvider';
+import ReactLoading from 'react-loading';
 
 const Chat = () => {
     const socket = useSocket();
@@ -29,6 +30,13 @@ const Chat = () => {
 
     const [showCreateApptFormModal, setShowCreateApptFormModal] = useState(false);
 
+    const messageListRef = useRef(null);
+    const [page, setPage] = useState(1);
+    const [loading, setLoading] = useState(false);
+    const [hasMore, setHasMore] = useState(true);
+
+    const LIMIT = 4;
+
 
     const user = JSON.parse(localStorage.getItem('user'));
     const otherUser = selectedChat?.participants.find((participant) => participant._id !== user._id);
@@ -46,17 +54,45 @@ const Chat = () => {
         getChats();
     }, []);
 
+    const getMessages = async () => {
+        setLoading(true);
+        try {
+            const response = await ChatAPI.getMessagesPagination(selectedChat._id, page, LIMIT);
+            setMessages([...messages, ...response.data]);
+            if (page === 1) {
+                scrollToBottom();
+            }
+            if (response.data.length < LIMIT) {
+                setHasMore(false);
+            }
+        } catch (error) {
+            console.error(error);
+        }
+        setLoading(false);
+    };
+
     // get messages of selected chat
     useEffect(() => {
-        async function getMessages() {
-            if (selectedChat) {
-                const response = await ChatAPI.getMessages(selectedChat._id);
-                setMessages(response.data);
-            }
-        }
         getMessages();
 
-    }, [selectedChat]);
+    }, [selectedChat, page]);
+
+    const handleLoadMore = () => {
+        if (hasMore && !loading) {
+            setPage(prevPage => prevPage + 1);
+        }
+    }
+
+    const handleScroll = () => {
+        const messageList = messageListRef.current;
+        if (messageList.scrollTop === 0) {
+            console.log('load more');
+            handleLoadMore();
+        }
+    }
+    const scrollToBottom = () => {
+        messageEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
 
     // listen for new messages or updated messages
     useEffect(() => {
@@ -70,9 +106,11 @@ const Chat = () => {
             console.log(newChat);
             const newChats = [newChat, ...chats.filter((chat) => chat._id !== message.chat)];
             setChats(newChats);
+
+            // scroll to bottom
+            scrollToBottom();
         });
-        // scroll to bottom
-        messageEndRef.current.scrollIntoView({ behavior: "smooth" });
+        
 
         socket.on('update-message', async (message) => {
             if (message.chat === selectedChat?._id) {
@@ -141,6 +179,9 @@ const Chat = () => {
         console.log(response);
         if (response.data) {
             setSelectedChat(response.data);
+            setMessages([]);
+            setPage(1);
+            setHasMore(true);
         } else {
             setMessages([]);
             setSelectedChat(null);
@@ -148,7 +189,12 @@ const Chat = () => {
     }
 
     const handleChatItemClicked = (item) => {
-        setSelectedChat(item);
+        if (item._id !== selectedChat._id) {
+            setSelectedChat(item);
+            setMessages([]);
+            setPage(1);
+            setHasMore(true);
+        }
     }
 
     const handleSendImage = () => {
@@ -233,7 +279,7 @@ const Chat = () => {
                     <div className="chat-header">
                         <div className="chat-header-left">
                             <div className="chat-header-avatar">
-                                <img src="https://via.placeholder.com/150" alt="avatar" />
+                                <img src={otherUser?.avatar} alt="avatar" />
                             </div>
                             <div className="chat-header-content">
                                 <div className="chat-header-content-title">
@@ -260,7 +306,7 @@ const Chat = () => {
                         </div>
                     </div>
 
-                    <div className="chat-body">
+                    <div onScroll={handleScroll} ref={messageListRef} className="chat-body">
                         <div className="chat-body-message">
                             <div ref={messageEndRef}></div>
                             {
@@ -277,6 +323,14 @@ const Chat = () => {
                                         key={message._id} message={message} />
                                 ))
                             }
+                            {loading && 
+                            <div style={{
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                            }}>
+                                <ReactLoading type="spin" color="#007bff" height={40} width={40} />
+                            </div>}
 
                         </div>
 
