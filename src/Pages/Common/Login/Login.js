@@ -39,7 +39,11 @@ const Login = () => {
             toast.success('Đăng nhập thành công');
             setEmail('');
             setPassword('');
-            navigate('/');
+            if (response.data.user.roles.includes('ADMIN')) {
+                navigate('/admin');
+            } else {
+                navigate('/');
+            }
         } catch (error) {
             toast.error(error.response.data.message);
         }

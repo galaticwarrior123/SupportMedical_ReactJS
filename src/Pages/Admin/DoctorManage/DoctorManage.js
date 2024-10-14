@@ -115,6 +115,7 @@ const DoctorManage = () => {
                                         </div>
                                     </div>
                                     <div className="doctor-approve-button">
+                                        <button className="approve-button">Xem chi tiết</button>
                                         <button className="approve-button remove" onClick={() => handleRemovePermission(doctor._id)}>Xóa quyền phê duyệt</button>
                                     </div>
                                 </div>

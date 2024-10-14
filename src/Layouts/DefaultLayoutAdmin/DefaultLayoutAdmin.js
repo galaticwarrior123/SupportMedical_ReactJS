@@ -5,12 +5,17 @@ import SidebarAdmin from './SidebarAdmin';
 import { faBell } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { SidebarContext } from './SidebarContext';
+import ShowProfileOption from './ShowProfileOption';
 
 const DefaultLayoutAdmin = ({ children }) => {
     const location = useLocation();
     const {isCollapsed} = useContext(SidebarContext);
     const [activeMenu, setActiveMenu] = useState('Quản lý danh mục');
+    const [showProfile, setShowProfile] = useState(false);
 
+    const handleShowProfile = () => {
+        setShowProfile(!showProfile);
+    }
 
     // Map paths to menu names
     const menuNames = {
@@ -42,7 +47,10 @@ const DefaultLayoutAdmin = ({ children }) => {
                         <button className="notification">
                             <FontAwesomeIcon icon={faBell} />
                         </button>
-                        <img src={JSON.parse(localStorage.getItem('user')).avatar}  alt="User" className="avatarAdmin" />
+                        <img src={JSON.parse(localStorage.getItem('user')).avatar}  alt="User" className="avatarAdmin" onClick={handleShowProfile} />
+                        {showProfile && (
+                            <ShowProfileOption handleCloseShowProfile={handleShowProfile} />
+                        )}
                     </div>
                 </header>
                 <section className="contentAdmin">

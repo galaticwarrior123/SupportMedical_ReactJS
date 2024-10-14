@@ -17,6 +17,17 @@
     border-radius: 10px;
     padding: 20px;
     overflow: auto;
+    height:500px;
+}
+.create-post-body::-webkit-scrollbar {
+    width: 5px;
+}
+.create-post-body::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 5px;
+}
+.create-post-body::-webkit-scrollbar-track {
+    background-color: #F7EEDD;
 }
 .create-post-body-title{
     font-size: 24px;
@@ -103,6 +114,37 @@
     background-color: #aaa;
     padding:5px 0;
 }
+
+.create-post-body-content-checkbox {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.create-post-body-content-checkbox p {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.checkbox-columns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: space-between;
+}
+
+.checkbox-item {
+    flex: 1 1 calc(50% - 10px); /* Chia làm 2 cột, với khoảng cách giữa các checkbox */
+    display: flex;
+}
+
+.checkbox-item input[type="checkbox"] {
+    margin-right: 10px;
+    width: 20px;
+    height: 20px;
+}
+
 .create-post-body-listImage{
     width: 500px;
     display: flex;

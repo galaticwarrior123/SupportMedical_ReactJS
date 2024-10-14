@@ -42,15 +42,10 @@ function App() {
         <Route path="/forgot-password" element={<Fill_Email />} />
         <Route path="/reset-password" element={<Fill_NewPassword />} />
 
-        <Route>
+        <Route element={<RequireAuth allowedRoles={ROLES.ADMIN} />}>
           {/* Route cha cho tất cả các trang quản trị */}
           <Route path="/admin">
-
-            {/* Route mặc định khi vào /admin */}
-
-            {/* Route quản lý category */}
             <Route index="categories" element={<CategoryManage />} />
-
             {/* Các route khác */}
             <Route path="categories" element={<CategoryManage />} />
             <Route path="dashboard" element={<Dashboard />} />

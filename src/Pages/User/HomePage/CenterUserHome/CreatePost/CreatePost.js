@@ -1,16 +1,30 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './CreatePost.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faClose } from '@fortawesome/free-solid-svg-icons';
 import PostAPI from '../../../../../API/PostAPI';
 import 'react-toastify/dist/ReactToastify.css';
 import { toast, ToastContainer } from 'react-toastify';
-
+import { DepartmentAPI } from '../../../../../API/DepartmentAPI';
 const CreatePost = ({ handleCloseFullScreen }) => {
     const [images, setImages] = useState([]);
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const user = JSON.parse(localStorage.getItem('user'));
+    const [departments, setDepartments] = useState([]);
+    const [selectedDepartments, setSelectedDepartments] = useState([]);
+
+    useEffect(() => {
+        const fetchDepartments = async () => {
+            try {
+                const response = await DepartmentAPI.getAll();
+                setDepartments(response.data);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        fetchDepartments();
+    }, []);
 
     const handleAddPost = async () => {
         const formData = new FormData();
@@ -23,15 +37,23 @@ const CreatePost = ({ handleCloseFullScreen }) => {
         });
         try {
             await PostAPI.createPost(formData)
-            .then((res) => {
-                toast.success('Đăng bài viết thành công!');
-                handleCloseFullScreen();
-            });
+                .then((res) => {
+                    toast.success('Đăng bài viết thành công!');
+                    handleCloseFullScreen();
+                });
         } catch (error) {
             toast.error('Đăng bài viết thất bại!');
         }
     };
 
+    const handleCheckboxChange = (e, departmentId) => {
+        if (e.target.checked) {
+            setSelectedDepartments((prev) => [...prev, departmentId]);
+        } else {
+            setSelectedDepartments((prev) => prev.filter((id) => id !== departmentId));
+        }
+    };
+    
     const handleRemoveImage = (indexToRemove) => {
         setImages(images.filter((_, index) => index !== indexToRemove));
     };
@@ -45,7 +67,7 @@ const CreatePost = ({ handleCloseFullScreen }) => {
         document.getElementById('upload-image').click();
     }
 
-    
+
 
 
 
@@ -61,7 +83,7 @@ const CreatePost = ({ handleCloseFullScreen }) => {
                 </div>
                 <div className="create-post-body-header">
                     <div className="create-post-body-header-avatar">
-                        <img src="https://via.placeholder.com/50" alt="avatar" />
+                        <img src={JSON.parse(localStorage.getItem('user')).avatar} alt="avatar" />
                     </div>
                     <div className="create-post-body-header-name">
                         <p>{user.firstName} {user.lastName}</p>
@@ -70,6 +92,22 @@ const CreatePost = ({ handleCloseFullScreen }) => {
                 <div className="create-post-body-content">
                     <input type="text" placeholder="Tiêu đề" onChange={(e) => setTitle(e.target.value)} />
                     <textarea placeholder="Nội dung" onChange={(e) => setContent(e.target.value)} />
+                    <div className="create-post-body-content-checkbox">
+                        <p>Chọn chủ đề:</p>
+                        <div className="checkbox-columns">
+                            {departments.map((department) => (
+                                <label key={department._id} className="checkbox-item">
+                                    <input
+                                        type="checkbox"
+                                        value={department._id}
+                                        onChange={(e) => handleCheckboxChange(e, department._id)}
+                                    />
+                                    {department.name}
+                                </label>
+                            ))}
+                        </div>
+                    </div>
+                    <p>Thêm ảnh:</p>
                     <div className="create-post-body-listImage">
                         {images.length === 0 && <p>Chưa có ảnh nào được thêm vào</p>}
                         {images.map((image, index) => (

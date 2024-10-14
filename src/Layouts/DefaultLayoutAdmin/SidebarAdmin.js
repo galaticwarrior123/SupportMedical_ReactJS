@@ -36,7 +36,7 @@ const SidebarAdmin = ({ onMenuClick, activeMenu }) => {
                             className={`menuItemAdmin ${activeMenu === 'Quản lý bác sĩ' ? 'active' : ''}`}
                             onClick={() => onMenuClick('Quản lý bác sĩ')}>
                             <FontAwesomeIcon icon={faUserDoctor} />
-                            <span>Quản lý bác sĩ</span>
+                            <span>Cấp quyền phê duyệt</span>
                         </Link>
                     </li>
                     <li>

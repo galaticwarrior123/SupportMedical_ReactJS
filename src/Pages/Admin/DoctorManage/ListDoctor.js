@@ -96,6 +96,7 @@ const ListDoctor = ({ doctors }) => {
                                         </div>
 
                                         <div className='doctor-item-approve-button'>
+                                            
                                             {/* <button className="approve-button">Cấp quyền phê duyệt</button> */}
                                             {doctor.doctorInfo.isPermission === false ? (
                                                 <button className="approve-button" onClick={() => handlePermission(doctor._id)}>Cấp quyền phê duyệt</button>

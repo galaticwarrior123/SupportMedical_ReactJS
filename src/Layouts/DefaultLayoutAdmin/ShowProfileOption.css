@@ -1,0 +1,50 @@
+.show-profile-option{
+    position: absolute;
+    top: 45px;
+    right: 0;
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background-color: #FFF7E1;
+    border-radius: 5px;
+    padding: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+
+}
+
+.show-profile-option-info{
+    width:100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 10px;
+}
+.show-profile-option-info img{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.show-profile-option-info span{
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #333;
+}
+
+.show-profile-option button{
+    background-color: #FFC107;
+    color: #333;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: all 0.3s;
+}
