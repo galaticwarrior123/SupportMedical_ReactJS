@@ -54,6 +54,12 @@
     scale: 1.1;
 }
 
+.header-avatar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
 .header-avatar img{
     width: 40px;
     height: 40px;

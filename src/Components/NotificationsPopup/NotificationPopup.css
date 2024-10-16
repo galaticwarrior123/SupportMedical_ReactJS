@@ -1,0 +1,51 @@
+.notification-popup {
+    position: absolute;
+    top: 50px;
+    right: 14%;
+    width: 300px;
+    background-color: #F7EEDD;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    z-index: 100;
+}
+
+.notification-popup h3 {
+    margin: 0;
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+.notification-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 5px 0;
+    cursor: pointer;
+    color: black;
+}
+
+.notification-item:hover {
+    background-color: #f0f0f0;
+    transition: background-color 0.3s ease;
+}
+
+.notification-item:last-child {
+    margin-bottom: 0;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.notification-item div {
+    font-size: 14px;
+}
+
+.notification-item strong {
+    font-weight: bold;
+}

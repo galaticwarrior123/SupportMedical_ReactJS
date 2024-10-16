@@ -19,7 +19,6 @@ export const SocketProvider = (props) => {
             token: token
         }
     }), [token]);
-    console.log('token', token);
 
     return (
         <SocketContext.Provider value={socket}>
