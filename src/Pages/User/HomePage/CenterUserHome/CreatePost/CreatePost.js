@@ -30,8 +30,7 @@ const CreatePost = ({ handleCloseFullScreen }) => {
         const formData = new FormData();
         formData.append('title', title);
         formData.append('content', content);
-        console.log(images);
-        // Thêm từng tệp tin vào FormData
+        formData.append('tags', selectedDepartments);
         images.forEach((file) => {
             formData.append('images', file); // 'images' là key trong FormData
         });
@@ -46,11 +45,11 @@ const CreatePost = ({ handleCloseFullScreen }) => {
         }
     };
 
-    const handleCheckboxChange = (e, departmentId) => {
+    const handleCheckboxChange = (e, department) => {
         if (e.target.checked) {
-            setSelectedDepartments((prev) => [...prev, departmentId]);
+            setSelectedDepartments((prev) => [...prev, department._id]);
         } else {
-            setSelectedDepartments((prev) => prev.filter((id) => id !== departmentId));
+            setSelectedDepartments((prev) => prev.filter((id) => id !== department._id));
         }
     };
     
@@ -95,12 +94,20 @@ const CreatePost = ({ handleCloseFullScreen }) => {
                     <div className="create-post-body-content-checkbox">
                         <p>Chọn chủ đề:</p>
                         <div className="checkbox-columns">
+                            <label className="checkbox-item">
+                                <input
+                                    type="checkbox"
+                                    value="all"
+                                    onChange={(e) => handleCheckboxChange(e, 'all')}
+                                />
+                                Tất cả
+                            </label>
                             {departments.map((department) => (
                                 <label key={department._id} className="checkbox-item">
                                     <input
                                         type="checkbox"
-                                        value={department._id}
-                                        onChange={(e) => handleCheckboxChange(e, department._id)}
+                                        value={department}
+                                        onChange={(e) => handleCheckboxChange(e, department)}
                                     />
                                     {department.name}
                                 </label>

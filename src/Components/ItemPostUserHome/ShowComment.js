@@ -123,7 +123,7 @@ const ShowComment = ({ listComment }) => {
                 <>
                     <div className="center-user-home-post-comment-list-item-child-item" key={reply._id}>
                         <div className="center-user-home-post-comment-list-item-child-item-avatar">
-                            <img src="https://via.placeholder.com/50" alt="avatar" />
+                            <img src={reply.author.avatar} alt="avatar" />
                         </div>
                         <div className="center-user-home-post-comment-list-item-child-item-content">
                             <div className="center-user-home-post-comment-list-item-content-user">
@@ -199,7 +199,7 @@ const ShowComment = ({ listComment }) => {
                     <div className="center-user-home-post-comment-list-item" key={comment._id}>
                         
                         <div className="center-user-home-post-comment-list-item-avatar">
-                            <img src="https://via.placeholder.com/50" alt="avatar" />
+                            <img src={comment.author.avatar} alt="avatar" />
                         </div>
                         <div className="center-user-home-post-comment-list-item-content">
                             <div className="center-user-home-post-comment-list-item-content-user">

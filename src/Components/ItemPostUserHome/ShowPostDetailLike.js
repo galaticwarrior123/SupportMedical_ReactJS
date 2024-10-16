@@ -35,7 +35,7 @@ const ShowPostDetailLike = ({ handleCloseFullScreen, itemPost }) => {
         if (activeReaction === 'like') {
             return allUserLiked.length > 0 ? allUserLiked.map((user) => (
                 <div key={user._id} className="show-post-detail-like-body-list-item">
-                    <img src="https://via.placeholder.com/50" alt="avatar" />
+                    <img src={user.avatar} alt="avatar" />
                     <span>{user.firstName} {user.lastName}</span>
                 </div>
             )) : <div className="show-post-detail-like-body-list-item">
@@ -44,7 +44,7 @@ const ShowPostDetailLike = ({ handleCloseFullScreen, itemPost }) => {
         } else if (activeReaction === 'love') {
             return allUserLoved.length > 0 ? allUserLoved.map((user) => (
                 <div key={user._id} className="show-post-detail-like-body-list-item">
-                    <img src="https://via.placeholder.com/50" alt="avatar" />
+                    <img src={user.avatar}  alt="avatar" />
                     <span>{user.firstName} {user.lastName}</span>
                 </div>
             )) : <div className="show-post-detail-like-body-list-item">
@@ -53,7 +53,7 @@ const ShowPostDetailLike = ({ handleCloseFullScreen, itemPost }) => {
         } else if (activeReaction === 'surprise') {
             return allUserSurprised.length > 0 ? allUserSurprised.map((user) => (
                 <div key={user._id} className="show-post-detail-like-body-list-item">
-                    <img src="https://via.placeholder.com/50" alt="avatar" />
+                    <img src={user.avatar}  alt="avatar" />
                     <span>{user.firstName} {user.lastName}</span>
                 </div>
             )) : <div className="show-post-detail-like-body-list-item">
@@ -63,7 +63,7 @@ const ShowPostDetailLike = ({ handleCloseFullScreen, itemPost }) => {
             return [...allUserLiked, ...allUserLoved, ...allUserSurprised].length > 0 ? (
                 [...allUserLiked, ...allUserLoved, ...allUserSurprised].map((user) => (
                     <div key={user._id} className="show-post-detail-like-body-list-item">
-                        <img src="https://via.placeholder.com/50" alt="avatar" />
+                        <img src={user.avatar}  alt="avatar" />
                         <span>{user.firstName} {user.lastName}</span>
                     </div>
                 ))
