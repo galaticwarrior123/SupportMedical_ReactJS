@@ -1,10 +1,14 @@
 import './Header.css';
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import NotificationPopup from '../../Components/NotificationsPopup/NotificationPopup';
+
 const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(true);
     const [isMobileView, setMobileView] = useState(false);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [isNotificationOpen, setIsNotificationOpen] = useState(false);
+
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -78,9 +82,18 @@ const Header = () => {
         return () => handleNavigate('/');
     };
 
+    const toggleNotification = () => {
+        setIsNotificationOpen(!isNotificationOpen);
+    }
+
     return (
         <div className="header">
             <div className="header-container">
+                {
+                    isNotificationOpen && (
+                        <NotificationPopup />
+                    )
+                }
                 <div className="header-logo">
                     <img src={isMobileView ? "/images/menu.png" : "/images/Logo.png"} alt="logo"
                         onClick={isMobileView ? toggleMenu : handleClickLogo()} />
@@ -88,15 +101,16 @@ const Header = () => {
 
                 <div className={`header-nav-action-item ${isMenuOpen ? 'open' : ''}`}>
                     <ul>
-                        <li onClick={() => handleNavigate('/')} className={isActive('/') ? 'active-button' : ''}><img src="/images/home.png" alt="home"/></li>
+                        <li onClick={() => handleNavigate('/')} className={isActive('/') ? 'active-button' : ''}><img src="/images/home.png" alt="home" /></li>
                         <li onClick={() => handleNavigate('/chat')} className={isActive('/chat') ? 'active-button' : ''}><img src="/images/rocketchat.png" alt="rocketchat" /></li>
                         <li onClick={() => handleNavigate('/appointment')} className={isActive('/appointment') ? 'active-button' : ''}><img src="/images/calendar-alt.png" alt="calendar-alt" /></li>
                         <li onClick={() => handleNavigate('/search')} className={isActive('/search') ? 'active-button' : ''}><img src="/images/search.png" alt="search" /></li>
-                        <li onClick={() => handleNavigate('/notifications')} className={isActive('/notifications') ? 'active-button' : ''}><img src="/images/bell.png" alt="bell" /></li>
+                        {/* <li onClick={() => toggleNotification()} className={isActive('/notifications') ? 'active-button' : ''}><img src="/images/bell.png" alt="bell" /></li> */}
                     </ul>
                 </div>
 
                 <div className="header-avatar">
+                    <div onClick={() => toggleNotification()} className={isNotificationOpen ? 'active-button' : ''}><img src="/images/bell.png" alt="bell" /></div>
                     <img src={JSON.parse(localStorage.getItem('user')).avatar} alt="avatar"
                         onClick={handleDropdown} />
                     {renderDropdown()}

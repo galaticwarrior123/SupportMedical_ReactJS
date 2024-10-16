@@ -15,9 +15,6 @@ const SocketEventListener = () => {
     const [offer, setOffer] = useState(null);
 
     const handleReceiveMessage = (message) => {
-        console.log('receive-message default layout');
-
-        // send notification
         const title = `Bạn có tin nhắn mới từ ${message.sender.lastName}`;
         let body;
         if (message.type === MessageType.TEXT) {
@@ -33,8 +30,7 @@ const SocketEventListener = () => {
             vibrate: [200, 100, 200],
         };
 
-        toast.info(title, {
-            body: body,
+        toast.info(body, {
             autoClose: 5000,
         });
 
@@ -51,10 +47,28 @@ const SocketEventListener = () => {
         setShowCallModal(true);
     }
 
+    const handleNewNotification = (notification) => {
+        const title = 'Thông báo mới';
+        const body = notification.content;
+        const options = {
+            body: body,
+            vibrate: [200, 100, 200],
+        };
+
+        toast.info(body, {
+            autoClose: 5000,
+        });
+
+        if (Notification.permission === 'granted') {
+            new Notification(title, options);
+        }
+    }
+
     useEffect(() => {
         if (!socket) return;
 
         socket.on('receive-message', (message) => handleReceiveMessage(message));
+        socket.on('new-notification', (notification) => handleNewNotification(notification));
         socket.on('call', (data) => handleReceiveCall(data));
         socket.on('end-call', (data) => {
             setShowCallModal(false);
@@ -64,6 +78,8 @@ const SocketEventListener = () => {
         return (() => {
             socket.off('receive-message');
             socket.off('call');
+            socket.off('end-call');
+            socket.off('new-notification');
         });
     }, [socket]);
 
