@@ -30,7 +30,9 @@ const CreatePost = ({ handleCloseFullScreen }) => {
         const formData = new FormData();
         formData.append('title', title);
         formData.append('content', content);
-        formData.append('tags', selectedDepartments);
+        selectedDepartments.forEach((department) => {
+            formData.append('tags', department);
+        });
         images.forEach((file) => {
             formData.append('images', file); // 'images' là key trong FormData
         });
