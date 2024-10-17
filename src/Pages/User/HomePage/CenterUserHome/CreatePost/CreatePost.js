@@ -40,7 +40,12 @@ const CreatePost = ({ handleCloseFullScreen }) => {
             await PostAPI.createPost(formData)
                 .then((res) => {
                     toast.success('Đăng bài viết thành công!');
+                    setSelectedDepartments([]);
+                    setImages([]);
+                    setTitle('');
+                    setContent('');
                     handleCloseFullScreen();
+                    
                 });
         } catch (error) {
             toast.error('Đăng bài viết thất bại!');
