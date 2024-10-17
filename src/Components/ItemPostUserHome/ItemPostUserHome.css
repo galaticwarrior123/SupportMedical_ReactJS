@@ -45,6 +45,15 @@
     align-items: center;
     flex-direction: row;
 }
+.center-user-home-post-user-info-top-name a{
+    font-size: 20px;
+    color: #333;
+    font-weight: bold;
+    text-decoration: none;
+}
+.center-user-home-post-user-info-top-name a:hover{
+    color:#1bc4da;
+}
 .center-user-home-post-user-info-top-action button {
     background-color: transparent;
     font-size: 16px;
@@ -108,7 +117,8 @@
 }
 
 .cate1 {
-    background-color: #ff4b4b;
+    background-color: #aadb55 !important;
+    color:black !important;
 }
 
 .cate2 {

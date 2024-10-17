@@ -39,6 +39,7 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
     const [currentReaction, setCurrentReaction] = useState(null);
     const [longPressActive, setLongPressActive] = useState(false);
     const images = itemPost?.images || [];
+    const [tags, setTags] = useState(itemPost?.tags || []);
 
     useEffect(() => {
         const numberOfInteracts = likedByUsers.length + lovedByUsers.length + surprisedByUsers.length;
@@ -417,8 +418,11 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
                 )}
             </div>
             <div className="center-user-home-post-categories">
-                <span className="center-user-home-post-category cate1">Cate 1</span>
-                <span className="center-user-home-post-category cate2">Cate 2</span>
+                {tags.map((tag, index) => (
+                    <span key={index} className="center-user-home-post-category cate1">{tag.name}</span>
+                ))}
+                {/* <span className="center-user-home-post-category cate1">Cate 1</span>
+                <span className="center-user-home-post-category cate2">Cate 2</span> */}
             </div>
             <div className="center-user-home-post-images">
                 {images.length > 0 && (
@@ -492,7 +496,7 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
                 </div>
             )}
             {showReactions && <ReactionMenu onSelectReaction={handleReactionSelect} onClose={handleCloseReactionMenu} />}
-            {(location.pathname === '/profile/'+itemPost.author._id) || (location.pathname === '/') ? (
+            {(location.pathname === '/profile/' + itemPost.author._id) || (location.pathname === '/') ? (
                 <div className="center-user-home-post-footer">
 
                     <div className="center-user-home-post-footer-infoPost">
@@ -561,7 +565,7 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
 
                     )}
                 </div>
-            ) : ( location.pathname === '/admin/browse-post' ) && (
+            ) : (location.pathname === '/admin/browse-post') && (
                 <div className="center-user-home-post-footer-browser">
                     <div className="center-user-home-post-footer-browser-body">
                         <table>

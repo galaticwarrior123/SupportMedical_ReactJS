@@ -19,7 +19,16 @@
     display: flex;
     align-items: center;
 }
-
+.follower-profile a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+}
+.follower-profile a:hover {
+    color: #1bc4da;
+}
 .follower-picture-profile {
     border-radius: 50%;
     width: 40px;
