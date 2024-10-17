@@ -2,9 +2,11 @@ import './HeaderProfile.css'
 import { UserAPI } from '../../../../API/UserAPI';
 import { useEffect, useState } from 'react';
 import { is } from 'date-fns/locale';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import UpdateProfileUser from '../UpdateProfileUser/UpdateProfileUser';
+import { ChatAPI } from '../../../../API/ChatAPI';
 const HeaderProfile = ({ user, onUserUpdate, onFollowToggle }) => {
+    const navigate = useNavigate();
     const [isFollowed, setIsFollowed] = useState(false);
     const [isMe, setIsMe] = useState(false);
     const [isProfileUpdate, setIsProfileUpdate] = useState(false);
@@ -77,6 +79,11 @@ const HeaderProfile = ({ user, onUserUpdate, onFollowToggle }) => {
         onUserUpdate(updatedUser); 
         fetchUserById();
     }
+
+    const handlePrivateChat = async () => {
+        const response = await ChatAPI.getPrivateChat(user._id);
+        navigate(`/chat/${response.data._id}`);
+    }
     return (
         <div className="profile-header-container">
             <div className="profile-header-banner-profile">
@@ -100,7 +107,7 @@ const HeaderProfile = ({ user, onUserUpdate, onFollowToggle }) => {
                         <button className="profile-follow-button" onClick={handleUpdateProfileUser}>Cập nhật thông tin</button>
                     ) : (
                         <>
-                            <button className="profile-message-button">Nhắn tin</button>
+                            <button onClick={handlePrivateChat} className="profile-message-button">Nhắn tin</button>
                             {isFollowed ? (
                                 <>
                                     <button className="profile-follow-button" onClick={handleFollowUser}>Hủy theo dõi</button>
