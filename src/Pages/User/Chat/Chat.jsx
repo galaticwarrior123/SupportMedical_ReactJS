@@ -12,14 +12,17 @@ import imageCompression from 'browser-image-compression';
 import CreateApptFormModal from './CreateApptFormModal/CreateApptFormModal';
 import { useSocket } from '../../../context/SocketProvider';
 import ReactLoading from 'react-loading';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const Chat = () => {
+    const navigate = useNavigate();
     const socket = useSocket();
     const messageEndRef = useRef(null);
     const textAreaRef = useRef(null);
 
     const [chats, setChats] = useState([]);
-    const [selectedChat, setSelectedChat] = useState(null);
+    const { id } = useParams();
+    const [selectedChat, setSelectedChat] = useState();
 
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState('');
@@ -35,7 +38,7 @@ const Chat = () => {
     const [loading, setLoading] = useState(false);
     const [hasMore, setHasMore] = useState(true);
 
-    const LIMIT = 4;
+    const LIMIT = 10;
 
 
     const user = JSON.parse(localStorage.getItem('user'));
@@ -47,12 +50,33 @@ const Chat = () => {
             const response = await ChatAPI.getChats();
             if (response.data) {
                 setChats(response.data);
-                setSelectedChat(response.data[0]);
+                // setSelectedChat(response.data[0]);
+                if (!id) 
+                    navigate(`/chat/${response.data[0]._id}`);
             }
-
         }
         getChats();
     }, []);
+
+    useEffect(() => {
+        async function getChatById() {
+            const response = await ChatAPI.getChatById(id);
+            console.log(response.data);
+            console.log(id);
+            if (response.data) {
+                setSelectedChat(response.data);
+            } else {
+                navigate('/chat');
+            }
+        }
+        if (id) {
+            // reinitialize messages
+            setMessages([]);
+            setPage(1);
+            setHasMore(true);
+            getChatById();
+        }
+    }, [id]);
 
     const getMessages = async () => {
         setLoading(true);
@@ -176,12 +200,8 @@ const Chat = () => {
     const handleSearchItemClicked = async (item) => {
         // find chat by participants
         const response = await ChatAPI.getPrivateChat(item._id);
-        console.log(response);
         if (response.data) {
-            setSelectedChat(response.data);
-            setMessages([]);
-            setPage(1);
-            setHasMore(true);
+            navigate(`/chat/${response.data._id}`);
         } else {
             setMessages([]);
             setSelectedChat(null);
@@ -190,10 +210,7 @@ const Chat = () => {
 
     const handleChatItemClicked = (item) => {
         if (item._id !== selectedChat._id) {
-            setSelectedChat(item);
-            setMessages([]);
-            setPage(1);
-            setHasMore(true);
+            navigate(`/chat/${item._id}`);
         }
     }
 
