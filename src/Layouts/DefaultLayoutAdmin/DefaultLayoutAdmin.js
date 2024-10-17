@@ -19,7 +19,7 @@ const DefaultLayoutAdmin = ({ children }) => {
 
     // Map paths to menu names
     const menuNames = {
-        '/admin/categories': 'Quản lý danh mục',
+        '/admin/categories': 'Quản lý khoa',
         '/admin/doctors': 'Quản lý bác sĩ',
         '/admin/browse-post': 'Duyệt bài viết',
         '/admin/dashboard': 'Thống kê',
@@ -29,7 +29,7 @@ const DefaultLayoutAdmin = ({ children }) => {
     // Update activeMenu based on the current path
     useEffect(() => {
         const currentPath = location.pathname;
-        setActiveMenu(menuNames[currentPath] || 'Quản lý danh mục'); // Default to 'Quản lý danh mục' if path is unknown
+        setActiveMenu(menuNames[currentPath] || 'Quản lý khoa'); // Default to 'Quản lý danh mục' if path is unknown
     }, [location.pathname]);
 
     return (

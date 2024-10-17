@@ -23,7 +23,7 @@ const BrowsePost = () => {
             <DefaultLayoutAdmin>
                 <div className="browsePost">
 
-                    <div className="browsePost__list">
+                    <div className="browsePost_list">
                         {
                             posts.map((post, index) => (
                                 <ItemPostUserHome key={index} itemPost={post} />

@@ -18,7 +18,7 @@ class PostAPI {
     }
 
     static async getPostById(id) {
-        const url = `/post/search?postId=${id}`;
+        const url = '/post/search?postId=' + id;
         return axiosClient.get(url);
     }
 

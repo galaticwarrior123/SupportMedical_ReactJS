@@ -16,7 +16,7 @@ import BrowsePost from './Pages/Admin/BrowsePost/BrowsePost';
 import DoctorManage from './Pages/Admin/DoctorManage/DoctorManage';
 import Appointment from './Pages/User/Appointment/Appointment';
 import Call from './Pages/User/Call/Call';
-
+import Post from './Pages/User/Post/Post';
 const ROLES = {
   'CLIENT': 'CLIENT',
   'DOCTOR': 'DOCTOR',
@@ -31,6 +31,7 @@ function App() {
       <Routes>
         <Route element={<RequireAuth allowedRoles={ROLES.CLIENT} />}>
           <Route path="/" element={<UserHome />} />
+          <Route path="/post/:id" element={<Post />} />
           <Route path="/chat" element={<Chat />} />
           <Route path="/profile/:id" element={<ProfileUserPage />} />
           <Route path="/appointment" element={<Appointment />} />

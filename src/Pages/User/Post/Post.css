@@ -1,0 +1,17 @@
+.post-container{
+    width:100%;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    background-color: #41C9E2;
+}
+
+.post-container-body{
+    overflow: auto;
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 20px;
+}
