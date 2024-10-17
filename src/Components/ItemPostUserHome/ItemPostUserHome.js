@@ -1,6 +1,6 @@
 import './ItemPostUserHome.css';
 import PostDetail from '../../Pages/User/HomePage/CenterUserHome/PostDetail/PostDetail';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faThumbsUp, faComment, faPaperPlane, faArrowRight, faArrowLeft, faEarth, faEllipsis, faHeart, faSurprise } from '@fortawesome/free-solid-svg-icons';
@@ -40,6 +40,7 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
     const [longPressActive, setLongPressActive] = useState(false);
     const images = itemPost?.images || [];
     const [tags, setTags] = useState(itemPost?.tags || []);
+    const reactionsMenuRef = useRef(null);
 
     useEffect(() => {
         const numberOfInteracts = likedByUsers.length + lovedByUsers.length + surprisedByUsers.length;
@@ -56,6 +57,24 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
         }
 
     }, [currentReaction]);
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (reactionsMenuRef.current && !reactionsMenuRef.current.contains(event.target)) {
+                setShowReactions(false);
+            }
+        };
+
+        if (showReactions) {
+            document.addEventListener('mousedown', handleClickOutside);
+        } else {
+            document.removeEventListener('mousedown', handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [showReactions]);
 
     const fetchListComment = async () => {
         try {
@@ -495,7 +514,10 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
                     </div>
                 </div>
             )}
-            {showReactions && <ReactionMenu onSelectReaction={handleReactionSelect} onClose={handleCloseReactionMenu} />}
+            {showReactions &&
+                <div className="center-user-home-post-reaction-menu" ref={reactionsMenuRef}>
+                    <ReactionMenu onReactionSelect={handleReactionSelect} />
+                </div>}
             {(location.pathname === '/profile/' + itemPost.author._id) || (location.pathname === '/') ? (
                 <div className="center-user-home-post-footer">
 
