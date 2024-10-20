@@ -6,3 +6,11 @@
     margin-top: 50px;
     height: 100%;
 }
+
+.browsePost_list{
+    display:flex;
+    flex-direction: column;
+    max-width: 700px;
+    justify-content: center;
+    align-items: center;
+}

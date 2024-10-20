@@ -518,7 +518,7 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
                 <div className="center-user-home-post-reaction-menu" ref={reactionsMenuRef}>
                     <ReactionMenu onReactionSelect={handleReactionSelect} />
                 </div>}
-            {(location.pathname === '/profile/' + itemPost.author._id) || (location.pathname === '/') ? (
+            {(location.pathname === '/profile/' + itemPost.author._id) || (location.pathname === '/') || (location.pathname === '/post/' + itemPost._id) ? (
                 <div className="center-user-home-post-footer">
 
                     <div className="center-user-home-post-footer-infoPost">
