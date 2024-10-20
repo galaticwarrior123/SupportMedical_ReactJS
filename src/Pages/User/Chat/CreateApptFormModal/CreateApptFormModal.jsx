@@ -14,6 +14,37 @@ const CreateApptFormModal = ({ show, handleClose, handleSendAppt, appt, view = A
     const [title, setTitle] = useState(appt?.title || "");
     const [content, setContent] = useState(appt?.content || "");
 
+    const INIT_ERROR = {
+        title: "",
+        content: "",
+        date: ""
+    };
+
+    const [error, setError] = useState(INIT_ERROR);
+
+    const handleCreateAppt = () => {
+        const newError = { ...INIT_ERROR };
+
+        const dateConverted = new Date(date);
+        if (dateConverted < new Date()) {
+            newError.date = "Thời gian không hợp lệ";
+        }
+        if (!title) {
+            newError.title = "Tiêu đề không được để trống";
+        }
+        if (!content) {
+            newError.content = "Nội dung không được để trống";
+        }
+
+        if (newError.title || newError.content || newError.date) {
+            setError(newError);
+            return;
+        }
+
+        handleSendAppt({ title, content, date, apptStatus: AppointmentStatus.PENDING });
+        handleClose();
+    }
+
     return (
         show &&
         <div className="modal-overlay">
@@ -30,6 +61,7 @@ const CreateApptFormModal = ({ show, handleClose, handleSendAppt, appt, view = A
                             readOnly={view === ApptFormModalView.VIEW}
                             onChange={(e) => setTitle(e.target.value)}
                             type="text" placeholder="Nhập tiêu đề" />
+                        {error.title && <span className="error">{error.title}</span>}
                     </div>
 
                     <div>
@@ -38,6 +70,7 @@ const CreateApptFormModal = ({ show, handleClose, handleSendAppt, appt, view = A
                             readOnly={view === ApptFormModalView.VIEW}
                             onChange={(e) => setContent(e.target.value)}
                             placeholder="Nhập nội dung mới" rows="6"></textarea>
+                        {error.content && <span className="error">{error.content}</span>}
                     </div>
 
                     <div>
@@ -46,6 +79,7 @@ const CreateApptFormModal = ({ show, handleClose, handleSendAppt, appt, view = A
                             readOnly={view === ApptFormModalView.VIEW || view === ApptFormModalView.EDIT}
                             onChange={(e) => setDate(e.target.value)}
                             type="datetime-local" placeholder="Chọn thời gian" />
+                        {error.date && <span className="error">{error.date}</span>}
                     </div>
                 </div>
                 <div className="modal-footer">
@@ -55,12 +89,7 @@ const CreateApptFormModal = ({ show, handleClose, handleSendAppt, appt, view = A
                     }} >Đóng</button>
 
                     
-                    {view === ApptFormModalView.CREATE && <button onClick={() => handleSendAppt({
-                        title,
-                        content,
-                        date,
-                        apptStatus: AppointmentStatus.PENDING
-                    })} className="confirm-btn">Tạo lịch hẹn</button>}
+                    {view === ApptFormModalView.CREATE && <button onClick={handleCreateAppt} className="confirm-btn">Tạo lịch hẹn</button>}
                 </div>
             </div>
         </div>
