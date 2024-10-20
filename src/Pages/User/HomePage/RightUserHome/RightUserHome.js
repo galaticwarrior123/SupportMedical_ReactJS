@@ -2,14 +2,28 @@ import Calendar from './Calendar';
 import './RightUserHome.css';
 import { UserAPI } from '../../../../API/UserAPI';
 import { useEffect, useState } from 'react';
-import { all } from 'axios';
 import { Link } from 'react-router-dom';
+import { AppointmentAPI } from '../../../../API/AppointmentAPI';
 
 const RightUserHome = ({ onOpenDetailDay }) => {
     const [allFollowUser, setAllFollowUser] = useState([]);
+    const [listAppt, setListAppt] = useState([]);
+
     useEffect(() => {
         fetchAllFollowUser();
+        fetchAllAppt();
     }, []);
+
+    const fetchAllAppt = async () => {
+        try {
+            const response = await AppointmentAPI.getAppointmentList();
+            if (response.status === 200) {
+                setListAppt(response.data);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     const fetchAllFollowUser = async () => {
         try {
@@ -44,7 +58,7 @@ const RightUserHome = ({ onOpenDetailDay }) => {
     return (
         <div className="right-user-home">
             <div className="right-user-home-calendar">
-                <Calendar onOpenDetailDay={onOpenDetailDay} />
+                <Calendar onOpenDetailDay={onOpenDetailDay} listAppt={listAppt} />
             </div>
             <div className="right-user-home-follow">
                 <div className="right-user-home-follow-header">

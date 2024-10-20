@@ -1,7 +1,6 @@
 import { useState } from 'react';
-import DetailDay from './DetailDay';
 
-const Calendar = ({ onOpenDetailDay }) => {
+const Calendar = ({ onOpenDetailDay, listAppt }) => {
     const [currentDate, setCurrentDate] = useState(new Date());
     const startOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
     const endOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
@@ -27,6 +26,18 @@ const Calendar = ({ onOpenDetailDay }) => {
         ));
     };
 
+    const getApptsByDate = (date) => {
+        const appts = listAppt.filter((appt) => {
+            const apptDate = new Date(appt.date);
+            return (
+                apptDate.getDate() === date.getDate() &&
+                apptDate.getMonth() === date.getMonth() &&
+                apptDate.getFullYear() === date.getFullYear()
+            );
+        });
+        return appts;
+    }
+
     const renderDates = () => {
         const today = new Date();
         const dates = [];
@@ -42,8 +53,12 @@ const Calendar = ({ onOpenDetailDay }) => {
                 date.getMonth() === today.getMonth() &&
                 date.getFullYear() === today.getFullYear();
 
+            const appts = getApptsByDate(date);
+            const hasAppt = appts.length > 0;
+
             dates.push(
-                <div key={i} className={`date ${isToday ? 'today' : ''}`} onClick={onOpenDetailDay}>
+                <div key={i} className={`date ${isToday ? 'today' : ''} ${hasAppt ? 'has-appt' : ''}`} 
+                    onClick={hasAppt ? () => onOpenDetailDay(appts) : null}>
                     {i}
                 </div>
             );

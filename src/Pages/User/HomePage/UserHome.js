@@ -8,9 +8,11 @@ import RightUserHome from './RightUserHome/RightUserHome';
 import DetailDay from './RightUserHome/DetailDay';
 const UserHome = () => {
     const [isDetailDayOpen, setIsDetailDayOpen] = useState(false);
+    const [apptList, setApptList] = useState([]);
 
-    const handleOpenDetailDay = () => {
+    const handleOpenDetailDay = (apptList) => {
         setIsDetailDayOpen(true);
+        setApptList(apptList);
     };
 
     const handleCloseDetailDay = () => {
@@ -26,7 +28,7 @@ const UserHome = () => {
                 <RightUserHome onOpenDetailDay={handleOpenDetailDay} />
                 {isDetailDayOpen && (
                     <div className="detail-day-overlay" onClick={handleCloseDetailDay}>
-                        <DetailDay />
+                        <DetailDay apptList={apptList} />
                     </div>
                 )}
             </div>

@@ -71,8 +71,12 @@ const Header = () => {
         navigate(path);
     };
 
-    const isActive = (path) => {
-        return location.pathname === path;
+    const isActive = (path, exact = true) => {
+        if (exact) {
+            return location.pathname === path;
+        } else {
+            return location.pathname.includes(path);
+        }
     };
 
     const handleClickLogo = () => {
@@ -102,8 +106,8 @@ const Header = () => {
                 <div className={`header-nav-action-item ${isMenuOpen ? 'open' : ''}`}>
                     <ul>
                         <li onClick={() => handleNavigate('/')} className={isActive('/') ? 'active-button' : ''}><img src="/images/home.png" alt="home" /></li>
-                        <li onClick={() => handleNavigate('/chat')} className={isActive('/chat') ? 'active-button' : ''}><img src="/images/rocketchat.png" alt="rocketchat" /></li>
-                        <li onClick={() => handleNavigate('/appointment')} className={isActive('/appointment') ? 'active-button' : ''}><img src="/images/calendar-alt.png" alt="calendar-alt" /></li>
+                        <li onClick={() => handleNavigate('/chat')} className={isActive('/chat', false) ? 'active-button' : ''}><img src="/images/rocketchat.png" alt="rocketchat" /></li>
+                        <li onClick={() => handleNavigate('/appointment')} className={isActive('/appointment', false) ? 'active-button' : ''}><img src="/images/calendar-alt.png" alt="calendar-alt" /></li>
                         <li onClick={() => handleNavigate('/search')} className={isActive('/search') ? 'active-button' : ''}><img src="/images/search.png" alt="search" /></li>
                         {/* <li onClick={() => toggleNotification()} className={isActive('/notifications') ? 'active-button' : ''}><img src="/images/bell.png" alt="bell" /></li> */}
                     </ul>
