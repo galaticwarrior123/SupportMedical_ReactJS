@@ -4,7 +4,7 @@ import { faThumbsUp, faHeart, faSurprise } from '@fortawesome/free-solid-svg-ico
 import './ReactionMenu.css';
 
 
-const ReactionMenu = ({ onSelectReaction, onClose }) => {
+const ReactionMenu = ({ onReactionSelect, onClose }) => {
     const [isVisible, setIsVisible] = useState(true);
     const menuRef = useRef(null);
     let timeoutId = useRef(null);
@@ -26,7 +26,7 @@ const ReactionMenu = ({ onSelectReaction, onClose }) => {
                 <button
                     key={reaction.id}
                     className="reaction-button"
-                    onClick={() => onSelectReaction(reaction.id)}
+                    onClick={() => onReactionSelect(reaction.id)}
                     style={{ color: reaction.textColor }} // Add text color here
                 >
                     <FontAwesomeIcon icon={reaction.icon} style={{ color: reaction.color, marginRight: '2' }} />
