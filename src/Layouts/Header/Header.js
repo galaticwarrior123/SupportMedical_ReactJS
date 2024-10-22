@@ -90,6 +90,8 @@ const Header = () => {
         setIsNotificationOpen(!isNotificationOpen);
     }
 
+    const unreadCount = 1;
+
     return (
         <div className="header">
             <div className="header-container">
@@ -114,7 +116,15 @@ const Header = () => {
                 </div>
 
                 <div className="header-avatar">
-                    <div onClick={() => toggleNotification()} className={isNotificationOpen ? 'active-button' : ''}><img src="/images/bell.png" alt="bell" /></div>
+                    <div
+                        onClick={() => toggleNotification()}
+                        className={`noti-icon ${isNotificationOpen ? 'active-button' : ''}`}
+                    >
+                        <img src="/images/bell.png" alt="bell" />
+                        {unreadCount > 0 && (
+                            <span className="badge">{unreadCount}</span>
+                        )}
+                    </div>
                     <img src={JSON.parse(localStorage.getItem('user')).avatar} alt="avatar"
                         onClick={handleDropdown} />
                     {renderDropdown()}
