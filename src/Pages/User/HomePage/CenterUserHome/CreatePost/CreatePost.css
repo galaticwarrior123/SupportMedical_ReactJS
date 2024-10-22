@@ -134,16 +134,48 @@
     justify-content: space-between;
 }
 
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-toggle {
+    background-color: #41C9E2;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    text-align: left;
+}
+
+.dropdown-toggle:hover {
+    background-color: #36a6b9;
+}
+
+.dropdown-menu {
+    position: absolute;
+    z-index: 100;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 5px;
+    width: 100%;
+}
+
 .checkbox-item {
-    flex: 1 1 calc(50% - 10px); /* Chia làm 2 cột, với khoảng cách giữa các checkbox */
     display: flex;
+    align-items: center;
+    margin: 5px 0;
 }
 
 .checkbox-item input[type="checkbox"] {
     margin-right: 10px;
-    width: 20px;
-    height: 20px;
 }
+
 
 .create-post-body-listImage{
     width: 500px;

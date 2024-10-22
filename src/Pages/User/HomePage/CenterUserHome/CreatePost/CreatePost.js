@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import './CreatePost.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faClose } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faClose, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import PostAPI from '../../../../../API/PostAPI';
 import 'react-toastify/dist/ReactToastify.css';
 import { toast, ToastContainer } from 'react-toastify';
 import { DepartmentAPI } from '../../../../../API/DepartmentAPI';
+
 const CreatePost = ({ handleCloseFullScreen }) => {
     const [images, setImages] = useState([]);
     const [title, setTitle] = useState('');
@@ -13,6 +14,7 @@ const CreatePost = ({ handleCloseFullScreen }) => {
     const user = JSON.parse(localStorage.getItem('user'));
     const [departments, setDepartments] = useState([]);
     const [selectedDepartments, setSelectedDepartments] = useState([]);
+    const [dropdownOpen, setDropdownOpen] = useState(false);
 
     useEffect(() => {
         const fetchDepartments = async () => {
@@ -34,19 +36,16 @@ const CreatePost = ({ handleCloseFullScreen }) => {
             formData.append('tags', department);
         });
         images.forEach((file) => {
-            formData.append('images', file); // 'images' là key trong FormData
+            formData.append('images', file);
         });
         try {
-            await PostAPI.createPost(formData)
-                .then((res) => {
-                    toast.success('Đăng bài viết thành công!');
-                    setSelectedDepartments([]);
-                    setImages([]);
-                    setTitle('');
-                    setContent('');
-                    handleCloseFullScreen();
-                    
-                });
+            await PostAPI.createPost(formData);
+            toast.success('Đăng bài viết thành công!');
+            setSelectedDepartments([]);
+            setImages([]);
+            setTitle('');
+            setContent('');
+            handleCloseFullScreen();
         } catch (error) {
             toast.error('Đăng bài viết thất bại!');
         }
@@ -59,7 +58,7 @@ const CreatePost = ({ handleCloseFullScreen }) => {
             setSelectedDepartments((prev) => prev.filter((id) => id !== department._id));
         }
     };
-    
+
     const handleRemoveImage = (indexToRemove) => {
         setImages(images.filter((_, index) => index !== indexToRemove));
     };
@@ -71,11 +70,7 @@ const CreatePost = ({ handleCloseFullScreen }) => {
 
     const handleAddImage = () => {
         document.getElementById('upload-image').click();
-    }
-
-
-
-
+    };
 
     return (
         <div className="create-post" onClick={handleCloseFullScreen}>
@@ -89,7 +84,7 @@ const CreatePost = ({ handleCloseFullScreen }) => {
                 </div>
                 <div className="create-post-body-header">
                     <div className="create-post-body-header-avatar">
-                        <img src={JSON.parse(localStorage.getItem('user')).avatar} alt="avatar" />
+                        <img src={user.avatar} alt="avatar" />
                     </div>
                     <div className="create-post-body-header-name">
                         <p>{user.firstName} {user.lastName}</p>
@@ -98,29 +93,30 @@ const CreatePost = ({ handleCloseFullScreen }) => {
                 <div className="create-post-body-content">
                     <input type="text" placeholder="Tiêu đề" onChange={(e) => setTitle(e.target.value)} />
                     <textarea placeholder="Nội dung" onChange={(e) => setContent(e.target.value)} />
+                    
                     <div className="create-post-body-content-checkbox">
                         <p>Chọn chủ đề:</p>
-                        <div className="checkbox-columns">
-                            <label className="checkbox-item">
-                                <input
-                                    type="checkbox"
-                                    value="all"
-                                    onChange={(e) => handleCheckboxChange(e, 'all')}
-                                />
-                                Tất cả
-                            </label>
-                            {departments.map((department) => (
-                                <label key={department._id} className="checkbox-item">
-                                    <input
-                                        type="checkbox"
-                                        value={department}
-                                        onChange={(e) => handleCheckboxChange(e, department)}
-                                    />
-                                    {department.name}
-                                </label>
-                            ))}
+                        <div className="dropdown">
+                            <button className="dropdown-toggle" onClick={() => setDropdownOpen(!dropdownOpen)}>
+                                Chọn chủ đề <FontAwesomeIcon icon={faChevronDown} />
+                            </button>
+                            {dropdownOpen && (
+                                <div className="dropdown-menu">
+                                    {departments.map((department) => (
+                                        <label key={department._id} className="checkbox-item">
+                                            <input
+                                                type="checkbox"
+                                                checked={selectedDepartments.includes(department._id)}
+                                                onChange={(e) => handleCheckboxChange(e, department)}
+                                            />
+                                            {department.name}
+                                        </label>
+                                    ))}
+                                </div>
+                            )}
                         </div>
                     </div>
+
                     <p>Thêm ảnh:</p>
                     <div className="create-post-body-listImage">
                         {images.length === 0 && <p>Chưa có ảnh nào được thêm vào</p>}
@@ -143,7 +139,7 @@ const CreatePost = ({ handleCloseFullScreen }) => {
                             multiple
                             onChange={handleAddImages}
                             id="upload-image"
-                            style={{ display: 'none' }} // Hide the actual input
+                            style={{ display: 'none' }}
                         />
                         <label htmlFor="upload-image">
                             <button type="button" onClick={handleAddImage}>Thêm ảnh</button>

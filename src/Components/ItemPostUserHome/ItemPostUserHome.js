@@ -327,11 +327,12 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
     const renderBadge = () => {
         if (itemPost.author.roles.includes('DOCTOR')) {
             return <span className="center-user-home-post-badge"><FontAwesomeIcon icon={faCheck} style={{ color: 'green' }} /> Bác sĩ</span>;
-        } else if (itemPost.author.roles.includes('NURSE')) {
-            return <span className="center-user-home-post-badge"><FontAwesomeIcon icon={faCheck} style={{ color: 'blue' }} /> Y tá</span>;
-        } else if (itemPost.author.roles.includes('CLIENT')) {
-            return <span className="center-user-home-post-badge"><FontAwesomeIcon icon={faCheck} style={{ color: 'gray' }} /> Khách hàng</span>;
-        }
+        } 
+        // else if (itemPost.author.roles.includes('NURSE')) {
+        //     return <span className="center-user-home-post-badge"><FontAwesomeIcon icon={faCheck} style={{ color: 'blue' }} /> Y tá</span>;
+        // } else if (itemPost.author.roles.includes('CLIENT')) {
+        //     return <span className="center-user-home-post-badge"><FontAwesomeIcon icon={faCheck} style={{ color: 'gray' }} /> Khách hàng</span>;
+        // }
         return null; // No badge for other roles
     };
 
