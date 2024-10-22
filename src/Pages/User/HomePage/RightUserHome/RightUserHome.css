@@ -98,6 +98,11 @@
     background-color: red;
     color: white;
   }
+
+.has-appt {
+    background-color: #dbff58;
+    color: black;
+}
 .right-user-home-follow{
     width: 100%;
     height: 60%;

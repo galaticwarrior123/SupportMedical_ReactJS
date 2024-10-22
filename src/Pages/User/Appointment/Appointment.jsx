@@ -1,7 +1,7 @@
 import DefaultLayout from '../../../Layouts/DefaultLayout/DefaultLayout';
 import './Appointment.css';
 import { formatDate } from "date-fns";
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import ApptItem from './ApptItem/ApptItem';
 import { AppointmentAPI } from '../../../API/AppointmentAPI';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -9,10 +9,13 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import YesNoDialog from '../../../Components/YesNoDialog/YesNoDialog';
 import { AppointmentStatus } from '../../../API/ChatAPI';
 import { useSocket } from '../../../context/SocketProvider';
+import { useNavigate, useParams } from 'react-router-dom';
 
 
 const Appointment = () => {
     const socket = useSocket();
+    const { id } = useParams();
+    const navigate = useNavigate();
     const [showModal, setShowModal] = useState(false);
     const [selectedAppt, setSelectedAppt] = useState(null);
     const [apptList, setApptList] = useState([]);
@@ -41,14 +44,18 @@ const Appointment = () => {
         setApptList(response.data);
     }
 
-    const getAppointmentList = async () => {
+    const getAppointmentList = useCallback(async () => {
         const response = await AppointmentAPI.getAppointmentList(filter);
         setApptList(response.data);
         setSelectedAppt(response.data[0]);
-    }
+    }, [filter]);
+
     useEffect(() => {
         getAppointmentList();
-    }, []);
+        if (id) {
+            setSelectedAppt(apptList.find(appt => appt._id === id));
+        }
+    }, [id, apptList, getAppointmentList]);
 
     const onFilterChange = (e) => {
         const { name, value } = e.target;
@@ -117,7 +124,7 @@ const Appointment = () => {
                     <div className="appt-list">
                         {
                             apptList.map((appt, index) => {
-                                return <ApptItem onClick={() => setSelectedAppt(appt)} key={index} appt={appt} />
+                                return <ApptItem onClick={() => navigate(`/appointment/${appt._id}`)} key={index} appt={appt} />
                             })
                         }
                         {

@@ -12,7 +12,6 @@ const Call = () => {
     const { to } = useParams();
     const [searchParams] = useSearchParams();
     const isAnswer = searchParams.get('answer');
-    console.log(isAnswer);
     const socket = useSocket();
     const from = JSON.parse(localStorage.getItem('user'))._id;
     const [localStream, setLocalStream] = useState(null);
