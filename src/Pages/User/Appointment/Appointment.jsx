@@ -25,6 +25,9 @@ const Appointment = () => {
         year: new Date().getFullYear()
     });
 
+    // use this variable to render month separator
+    let lastMonth = null;
+
     const months = Array.from({ length: 12 }, (_, i) => {
         return {
             value: i + 1,
@@ -52,10 +55,13 @@ const Appointment = () => {
 
     useEffect(() => {
         getAppointmentList();
+    }, [getAppointmentList]);
+
+    useEffect(() => {
         if (id) {
             setSelectedAppt(apptList.find(appt => appt._id === id));
         }
-    }, [id, apptList, getAppointmentList]);
+    }, [id, apptList]);
 
     const onFilterChange = (e) => {
         const { name, value } = e.target;
@@ -124,7 +130,26 @@ const Appointment = () => {
                     <div className="appt-list">
                         {
                             apptList.map((appt, index) => {
-                                return <ApptItem onClick={() => navigate(`/appointment/${appt._id}`)} key={index} appt={appt} />
+                                const date = new Date(appt.date);
+                                const month = date.getMonth();
+                                let monthLabel = '';
+                                if (lastMonth !== month) {
+                                    monthLabel = `Tháng ${month + 1}`;
+                                    lastMonth = month;
+                                }
+                                console.log(filter.month, month);
+                                return (
+                                    <div key={index}>
+                                        {
+                                            monthLabel && (
+                                                <div className="month-separator">
+                                                    <span>{monthLabel}</span>
+                                                </div>
+                                            )
+                                        }
+                                        <ApptItem onClick={() => navigate(`/appointment/${appt._id}`)} key={index} appt={appt} />
+                                    </div>
+                                )
                             })
                         }
                         {

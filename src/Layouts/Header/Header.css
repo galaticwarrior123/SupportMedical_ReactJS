@@ -60,6 +60,21 @@
     gap: 10px;
 }
 
+.noti-icon {
+    position: relative;
+    cursor: pointer;
+}
+.noti-icon .badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    padding: 4px 8px;
+    border-radius: 50%;
+    background-color: red;
+    color: white;
+    font-size: 12px;
+  }
+
 .header-avatar img{
     width: 40px;
     height: 40px;
