@@ -21,7 +21,6 @@ const DefaultLayoutAdmin = ({ children }) => {
     const menuNames = {
         '/admin/categories': 'Quản lý khoa',
         '/admin/doctors': 'Quản lý bác sĩ',
-        '/admin/browse-post': 'Duyệt bài viết',
         '/admin/dashboard': 'Thống kê',
         // Add more paths and their corresponding names as needed
     };

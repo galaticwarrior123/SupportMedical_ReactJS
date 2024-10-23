@@ -12,11 +12,11 @@ import ProfileUserPage from './Pages/User/ProfileUserPage/ProfileUserPage';
 import CategoryManage from './Pages/Admin/CategoryManage/CategoryManage';
 import Fill_NewPassword from './Pages/Common/Fill_NewPassword/Fill_NewPassword';
 import Dashboard from './Pages/Admin/Dashboard/Dashboard';
-import BrowsePost from './Pages/Admin/BrowsePost/BrowsePost';
 import DoctorManage from './Pages/Admin/DoctorManage/DoctorManage';
 import Appointment from './Pages/User/Appointment/Appointment';
 import Call from './Pages/User/Call/Call';
 import Post from './Pages/User/Post/Post';
+import BrowsePost from './Pages/User/HomePage/CenterUserHome/BrowsePost/BrowsePost';
 const ROLES = {
   'CLIENT': 'CLIENT',
   'DOCTOR': 'DOCTOR',
@@ -37,6 +37,9 @@ function App() {
           <Route path="/profile/:id" element={<ProfileUserPage />} />
           <Route path="/appointment/:id?" element={<Appointment />} />
           <Route path="/call/:to" element={<Call />} />
+          <Route element={<RequireAuth allowedRoles={[ROLES.DOCTOR]} />}>
+            <Route path="permission" element={<BrowsePost />} />
+          </Route>
         </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
@@ -44,14 +47,13 @@ function App() {
         <Route path="/forgot-password" element={<Fill_Email />} />
         <Route path="/reset-password" element={<Fill_NewPassword />} />
 
-        <Route element={<RequireAuth allowedRoles={[ROLES.ADMIN, ROLES.DOCTOR]} />}>
+        <Route element={<RequireAuth allowedRoles={[ROLES.ADMIN]} />}>
           {/* Route cha cho tất cả các trang quản trị */}
           <Route path="/admin">
             <Route index="categories" element={<CategoryManage />} />
             {/* Các route khác */}
             <Route path="categories" element={<CategoryManage />} />
             <Route path="dashboard" element={<Dashboard />} />
-            <Route path="browse-post" element={<BrowsePost />} />
             <Route path="doctors" element={<DoctorManage />} />
 
             {/* Thêm các route khác nếu cần */}

@@ -388,15 +388,21 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
     };
 
 
-    const handlePublishPost = async (postId) => {
+    const handlePublishPost = async (postId, status) => {
         try {
-            await PostAPI.updatePost(postId, { isPublished: true })
+            await PostAPI.updatePost(postId, { status: status })
                 .then(() => {
-                    toast.success('Phê duyệt bài viết thành công');
+                    if (status === 'PUBLISHED') {
+                        toast.success('Phê duyệt bài viết thành công');
+                        onDelete(postId);
+                    } else {
+                        toast.success('Từ chối bài viết thành công');
+                        onDelete(postId);
+                    }
                     fetchPost();
                 });
         } catch (error) {
-            toast.error('Phê duyệt bài viết thất bại');
+            toast.error('Cấp quyền bài viết thất bại');
         }
     };
     return (
@@ -599,18 +605,18 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
 
                     )}
                 </div>
-            ) : (location.pathname === '/admin/browse-post') && (
+            ) : (location.pathname === '/permission') && (
                 <div className="center-user-home-post-footer-browser">
                     <div className="center-user-home-post-footer-browser-body">
                         <table>
                             <tr>
                                 <td>
-                                    <button className="center-user-home-post-footer-browser-body-button-acess" onClick={() => handlePublishPost(itemPost._id)}>
+                                    <button className="center-user-home-post-footer-browser-body-button-acess" onClick={() => handlePublishPost(itemPost._id,"PUBLISHED")}>
                                         <span>Phê duyệt</span>
                                     </button>
                                 </td>
                                 <td>
-                                    <button className='center-user-home-post-footer-browser-body-button-deny'>
+                                    <button className='center-user-home-post-footer-browser-body-button-deny' onClick={() => handlePublishPost(itemPost._id,"REJECTED")}>
                                         <span>Từ chối</span>
                                     </button>
                                 </td>

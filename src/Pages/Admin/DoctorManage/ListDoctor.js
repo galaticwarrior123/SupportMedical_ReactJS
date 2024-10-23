@@ -6,7 +6,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { set } from 'date-fns';
 import { useState, useEffect } from 'react';
-const ListDoctor = ({ doctors }) => {
+const ListDoctor = ({ doctors, handleCloseListDoctors  }) => {
     const [listDoctor, setListDoctor] = useState(doctors);
     const [searchDoctor, setSearchDoctor] = useState('');
     const [filteredDoctors, setFilteredDoctors] = useState(doctors);
@@ -52,9 +52,7 @@ const ListDoctor = ({ doctors }) => {
             toast.error('Xóa quyền thất bại');
         }
     }
-    const handleCloseIsAddDoctor = () => {  
-        window.location.reload();
-    }
+    
     return (
         <div className="list-doctor">
             <ToastContainer />
@@ -63,7 +61,7 @@ const ListDoctor = ({ doctors }) => {
                     <div className="list-doctor-header">
                         <span>Danh sách bác sĩ</span>
                         <div className="list-doctor-close">
-                            <button className="close-button" onClick={handleCloseIsAddDoctor}>
+                            <button className="close-button" onClick={handleCloseListDoctors}>
                                 <FontAwesomeIcon icon={faX} />
                             </button>
                         </div>

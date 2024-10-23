@@ -174,7 +174,7 @@ const AddDoctor = ({ handleCloseIsAddDoctor }) => {
                                 </div>
                                 <div className="doctor-manage-add-person-load-image-body-placeholder">
                                     <img
-                                        src={selectedImage || "https://picsum.photos/200/200"}
+                                        src={selectedImage || "https://via.placeholder.com/150"}
                                         alt="avatar"
                                         className="preview-image"
                                     />
