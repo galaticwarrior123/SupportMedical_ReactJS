@@ -22,9 +22,9 @@ const ShowMore = ({ itemPost, onDelete }) => {
         <div className="show-more">
             <div className="show-more-container">
                 <div className="show-more-container-body">
-                    <div className="show-more-container-body-item">
+                    {/* <div className="show-more-container-body-item">
                         <span>Chỉnh sửa bài viết</span>
-                    </div>
+                    </div> */}
                     <div className="show-more-container-body-item">
                         <button className='button-delete-post'
                                 onClick={()=>handleDeletePost(itemPost._id)}>Xóa bài viết</button>

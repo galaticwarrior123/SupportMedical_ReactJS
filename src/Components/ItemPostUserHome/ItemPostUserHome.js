@@ -387,9 +387,20 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
         return reactionButton;
     };
 
+
+    const handlePublishPost = async (postId) => {
+        try {
+            await PostAPI.updatePost(postId, { isPublished: true })
+                .then(() => {
+                    toast.success('Phê duyệt bài viết thành công');
+                    fetchPost();
+                });
+        } catch (error) {
+            toast.error('Phê duyệt bài viết thất bại');
+        }
+    };
     return (
         <div className="center-user-home-post">
-
             <div className="center-user-home-post-header">
                 <div className="center-user-home-post-avatar">
                     <img src={itemPost.author.avatar} alt="avatar" />
@@ -403,7 +414,7 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
                             {renderBadge()}
                         </div>
                         <div>
-                            {location.pathname === '/profile' && (
+                            {location.pathname === '/profile/' + user._id && (
                                 <>
                                     <div className="center-user-home-post-user-info-top-action">
                                         <button onClick={handleShowMore}><FontAwesomeIcon icon={faEllipsis} style={{ color: 'gray' }} /></button>
@@ -594,7 +605,7 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
                         <table>
                             <tr>
                                 <td>
-                                    <button className="center-user-home-post-footer-browser-body-button-acess">
+                                    <button className="center-user-home-post-footer-browser-body-button-acess" onClick={() => handlePublishPost(itemPost._id)}>
                                         <span>Phê duyệt</span>
                                     </button>
                                 </td>

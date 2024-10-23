@@ -47,7 +47,12 @@
     display: block;
     margin-bottom: 10px;
 }
-
+.center-user-home-post-comment-item-content-action{
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    padding-top: 10px;
+}
 .center-user-home-post-comment-item-content-action button {
     margin-right: 10px;
     background-color: transparent;
@@ -123,7 +128,17 @@
 .center-user-home-post-comment-item-content-action-reply-input button:hover {
     background-color: #41C9E2;
 }
-
+.center-user-home-post-comment-item-content-action-reply-count{
+    margin-left: 60px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    width: 30px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
 /* Child comments (replies) styling */
 .center-user-home-post-comment-list-item-child {
     margin-left: 20px; /* Indent to indicate a reply */
