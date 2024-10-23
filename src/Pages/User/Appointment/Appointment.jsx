@@ -147,7 +147,11 @@ const Appointment = () => {
                                                 </div>
                                             )
                                         }
-                                        <ApptItem onClick={() => navigate(`/appointment/${appt._id}`)} key={index} appt={appt} />
+                                        <ApptItem 
+                                            onClick={() => navigate(`/appointment/${appt._id}`)} 
+                                            key={index} appt={appt} 
+                                            selected={id === appt._id} 
+                                        />
                                     </div>
                                 )
                             })

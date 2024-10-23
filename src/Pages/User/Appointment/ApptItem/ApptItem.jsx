@@ -1,13 +1,13 @@
 import React from 'react';
 import './ApptItem.css';
 
-const ApptItem = ({ appt, onClick }) => {
+const ApptItem = ({ appt, onClick, selected }) => {
     const user = JSON.parse(localStorage.getItem('user'));
 
     const other = (appt.sender._id === user._id ? appt.recipient : appt.sender);
 
     return (
-        <div onClick={onClick} className="appointment-card">
+        <div onClick={onClick} className={`appointment-card ${selected ? 'selected' : ''}`}>
             <div className="date-section">
                 <div className="label">Ngày</div>
                 <div className="day">
