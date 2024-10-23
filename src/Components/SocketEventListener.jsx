@@ -6,8 +6,11 @@ import YesNoDialog from './YesNoDialog/YesNoDialog';
 import { UserAPI } from '../API/UserAPI';
 import { MessageType } from '../API/ChatAPI';
 import { peerConnection } from '../Common/PeerConnection';
+import { useDispatch } from 'react-redux';
+import { addNotification, fetchNotifications } from '../redux/slices/notificationSlice';
 
 const SocketEventListener = () => {
+    const dispatch = useDispatch();
     // listen socket event
     const socket = useSocket();
     const [showCallModal, setShowCallModal] = useState(false);
@@ -62,6 +65,9 @@ const SocketEventListener = () => {
         if (Notification.permission === 'granted') {
             new Notification(title, options);
         }
+
+        // fetch notification again on new notification
+        dispatch(fetchNotifications());
     }
 
     useEffect(() => {

@@ -2,12 +2,18 @@ import './Header.css';
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import NotificationPopup from '../../Components/NotificationsPopup/NotificationPopup';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchNotifications } from '../../redux/slices/notificationSlice';
 
 const Header = () => {
+    const dispatch = useDispatch();
     const [isMenuOpen, setIsMenuOpen] = useState(true);
     const [isMobileView, setMobileView] = useState(false);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [isNotificationOpen, setIsNotificationOpen] = useState(false);
+
+    // unread notification count
+    const { unreadCount } = useSelector((state) => state.notification);
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -39,6 +45,8 @@ const Header = () => {
     useEffect(() => {
         window.addEventListener('resize', handleResize);
         handleResize(); // Check initial screen size
+
+        dispatch(fetchNotifications());
 
         return () => {
             window.removeEventListener('resize', handleResize);
@@ -88,9 +96,7 @@ const Header = () => {
 
     const toggleNotification = () => {
         setIsNotificationOpen(!isNotificationOpen);
-    }
-
-    const unreadCount = 1;
+    };
 
     return (
         <div className="header">

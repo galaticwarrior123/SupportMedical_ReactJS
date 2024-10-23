@@ -5,12 +5,16 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { AuthProvider } from './context/AuthProvider';
 import { SocketProvider } from './context/SocketProvider';
+import { Provider } from 'react-redux';
+import { store } from './redux/store';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-    <AuthProvider>
-        <SocketProvider><App /></SocketProvider>
-    </AuthProvider>
+    <Provider store={store}>
+        <AuthProvider>
+            <SocketProvider><App /></SocketProvider>
+        </AuthProvider>
+    </Provider>
 );
 
 // If you want to start measuring performance in your app, pass a function

@@ -1,30 +1,41 @@
 import { Link } from 'react-router-dom';
 import './NotificationPopup.css';
 import { useEffect, useState } from 'react';
-import { NoticationAPI } from '../../API/NotificatoinAPI';
+import { NotificationAPI } from '../../API/NotificatoinAPI';
+import { fetchNotifications, markAsRead } from '../../redux/slices/notificationSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 const NotificationPopup = () => {
-    const [notifications, setNotifications] = useState([]);
+    const dispatch = useDispatch();
+    const { notifications } = useSelector((state) => state.notification);
 
     useEffect(() => {
-        const fetchNotifications = async () => {
-            NoticationAPI.getNotifications().then((response) => {
-                setNotifications(response.data);
-            });
+        const markAsReadAll = async () => {
+            const notificationIds = notifications.filter((notification) => !notification.isRead).map((notification) => notification._id);
+            if (notificationIds.length > 0) {
+                dispatch(markAsRead(notificationIds));
+            }
         }
-        fetchNotifications();
+
+        // mark as read all on unmount
+        return () => {
+            markAsReadAll();
+        };
     }, []);
+
     return (
         <div className="notification-popup">
             <h3>Thông báo</h3>
             {notifications.map((notification) => (
-                <Link to={notification.actionUrl} style={{ textDecoration: 'none' }}>
-                    <div key={notification._id} className="notification-item">
-                        <img src={notification.imageUrl} alt="Avatar" className="avatar" />
-                        <div>
-                            {/* <strong>{notification.username}</strong> {notification.message} */}
-                            <span>{notification.content}</span>
-                        </div>
+                <Link 
+                    key={notification._id} 
+                    className={`notification-item ${notification.isRead ? '' : 'unread'}`} 
+                    to={notification.actionUrl} style={{ textDecoration: 'none' }}
+                >
+                    <img src={notification.imageUrl} alt="Avatar" className="avatar" />
+                    <div>
+                        {/* <strong>{notification.username}</strong> {notification.message} */}
+                        <span>{notification.content}</span>
                     </div>
                 </Link>
             ))}
