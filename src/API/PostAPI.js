@@ -43,6 +43,11 @@ class PostAPI {
         return axiosPrivate.put(url, data);
     }
 
+    static async updatePost(id, data) {
+        const url = `/post/${id}`;
+        return axiosPrivate.put(url, data);
+    }
+
     static async deletePost(id) {
         const url = `/post/${id}`;
         return axiosPrivate.delete(url);

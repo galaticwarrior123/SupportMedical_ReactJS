@@ -2,7 +2,7 @@ import './ShowComment.css';
 import { formatDistanceToNow, set } from 'date-fns';
 import { vi } from 'date-fns/locale';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
+import { faPaperPlane, faThumbsUp } from '@fortawesome/free-solid-svg-icons';
 import { useState, useEffect } from 'react';
 import CommentAPI from '../../API/CommentAPI';
 import { ToastContainer, toast } from 'react-toastify'
@@ -13,6 +13,7 @@ const ShowComment = ({ listComment }) => {
     const [commentValue, setCommentValue] = useState('');
     const [commentReplyValue, setCommentReplyValue] = useState('');
     const [replyCount, setReplyCount] = useState({});
+    const [commentLikeCount, setCommentLikeCount] = useState({});
     const [allComment, setAllComment] = useState([...listComment]);
 
     const user = JSON.parse(localStorage.getItem('user'));
@@ -23,6 +24,10 @@ const ShowComment = ({ listComment }) => {
             replyCount[comment._id] = comment.replies.length;
         });
         setReplyCount(replyCount);
+        setCommentLikeCount(allComment.reduce((acc, comment) => {
+            acc[comment._id] = comment.likedBy.length;
+            return acc;
+        }, {}));
     }, [allComment]);
 
 
@@ -46,7 +51,7 @@ const ShowComment = ({ listComment }) => {
         try {
             const newComment = await CommentAPI.createComment(data);
             isReply ? setCommentReplyValue('') : setCommentValue('');
-            
+
 
             const updateComments = (comments) => {
                 return comments.map((comment) => {
@@ -67,7 +72,7 @@ const ShowComment = ({ listComment }) => {
             };
 
             setAllComment(updateComments(allComment));
-            
+
 
             toast.success('Bình luận thành công');
 
@@ -136,18 +141,28 @@ const ShowComment = ({ listComment }) => {
                                 </pr>
                             </div>
                             <div className="center-user-home-post-comment-item-content-action">
-                                <button
-                                    className={isLikedByUser(reply.likedBy) ? 'liked' : ''}
-                                    onClick={() => handleLikeComment(reply._id)}
-                                >
-                                    Thích
-                                </button>
-                                <button onClick={() => handleShowReplyMainComment(reply._id)}>Trả lời</button>
+                                <div className="center-user-home-post-comment-item-content-action-interact">
+                                    <button
+                                        className={isLikedByUser(reply.likedBy) ? 'liked' : ''}
+                                        onClick={() => handleLikeComment(reply._id)}
+                                    >
+                                        Thích
+                                    </button>
+                                    <button onClick={() => handleShowReplyMainComment(reply._id)}>Trả lời</button>
+                                </div>
+
+                                <div className="center-user-home-post-comment-item-content-action-reply-count">
+                                    <span >
+                                        {commentLikeCount[reply._id] || 0}
+                                    </span>
+                                    <FontAwesomeIcon icon={faThumbsUp} style={{ color: 'blue' }} />
+                                </div>
+
                             </div>
 
                             <div className={`center-user-home-post-comment-item-content-action-reply ${showReplyInputOfMainComment === reply._id ? 'show' : ''}`}>
                                 <div className="center-user-home-post-comment-item-content-action-reply-avatar">
-                                    <img src="https://via.placeholder.com/50" alt="avatar" />
+                                    <img src={user.avatar} alt="avatar" />
                                 </div>
                                 <div className="center-user-home-post-comment-item-content-action-reply-input">
                                     <input type="text" placeholder="Viết bình luận..." value={commentReplyValue} onChange={(e) => setCommentReplyValue(e.target.value)} />
@@ -197,7 +212,7 @@ const ShowComment = ({ listComment }) => {
 
                 <>
                     <div className="center-user-home-post-comment-list-item" key={comment._id}>
-                        
+
                         <div className="center-user-home-post-comment-list-item-avatar">
                             <img src={comment.author.avatar} alt="avatar" />
                         </div>
@@ -212,16 +227,25 @@ const ShowComment = ({ listComment }) => {
                                 </pr>
                             </div>
                             <div className="center-user-home-post-comment-item-content-action">
-                                <button
-                                    className={isLikedByUser(comment.likedBy) ? 'liked' : ''}
-                                    onClick={() => handleLikeComment(comment._id)}>Thích</button>
-                                <button onClick={() => handleShowReplyMainComment(comment._id)}>Trả lời</button>
+                                <div className="center-user-home-post-comment-item-content-action-interact">
+                                    <button
+                                        className={isLikedByUser(comment.likedBy) ? 'liked' : ''}
+                                        onClick={() => handleLikeComment(comment._id)}>Thích</button>
+                                    <button onClick={() => handleShowReplyMainComment(comment._id)}>Trả lời</button>
+                                </div>
+
+                                <div className="center-user-home-post-comment-item-content-action-reply-count">
+                                    <span >
+                                        {commentLikeCount[comment._id] || 0}
+                                    </span>
+                                    <FontAwesomeIcon icon={faThumbsUp} style={{ color: 'blue' }} />
+                                </div>
                             </div>
 
 
                             <div className={`center-user-home-post-comment-item-content-action-reply ${showReplyInputOfMainComment === comment._id ? 'show' : ''}`}>
                                 <div className="center-user-home-post-comment-item-content-action-reply-avatar">
-                                    <img src="https://via.placeholder.com/50" alt="avatar" />
+                                    <img src={user.avatar} alt="avatar" />
                                 </div>
                                 <div className="center-user-home-post-comment-item-content-action-reply-input">
                                     <input type="text" placeholder="Viết bình luận..." value={commentValue} onChange={(e) => setCommentValue(e.target.value)} />
@@ -231,7 +255,7 @@ const ShowComment = ({ listComment }) => {
                                 </div>
                             </div>
 
-                            
+
                         </div>
 
                     </div>

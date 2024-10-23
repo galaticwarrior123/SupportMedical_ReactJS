@@ -29,7 +29,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route element={<RequireAuth allowedRoles={[ROLES.ADMIN, ROLES.CLIENT]} />}>
+        <Route element={<RequireAuth allowedRoles={[ROLES.ADMIN, ROLES.CLIENT, ROLES.DOCTOR]} />}>
           <Route path="/" element={<UserHome />} />
           <Route path="/post/:id" element={<Post />} />
           <Route path="/chat" element={<Chat />} />
@@ -44,7 +44,7 @@ function App() {
         <Route path="/forgot-password" element={<Fill_Email />} />
         <Route path="/reset-password" element={<Fill_NewPassword />} />
 
-        <Route element={<RequireAuth allowedRoles={ROLES.ADMIN} />}>
+        <Route element={<RequireAuth allowedRoles={[ROLES.ADMIN, ROLES.DOCTOR]} />}>
           {/* Route cha cho tất cả các trang quản trị */}
           <Route path="/admin">
             <Route index="categories" element={<CategoryManage />} />
