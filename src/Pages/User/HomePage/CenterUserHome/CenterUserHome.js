@@ -56,7 +56,7 @@ const CenterUserHome = ({ isDetailDayOpen }) => {
             <div className="center-user-home-listPost">
                 {listPost.length > 0 ? (
                     listPost.map((post) => (
-                        post.isPublished && (
+                        post.status=="PUBLISHED" && (
                             <ItemPostUserHome key={post._id} itemPost={post} currentUser={user}/>
                         )
                     ))

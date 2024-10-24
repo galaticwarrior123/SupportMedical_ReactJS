@@ -117,7 +117,11 @@ const Header = () => {
                         <li onClick={() => handleNavigate('/chat')} className={isActive('/chat', false) ? 'active-button' : ''}><img src="/images/rocketchat.png" alt="rocketchat" /></li>
                         <li onClick={() => handleNavigate('/appointment')} className={isActive('/appointment', false) ? 'active-button' : ''}><img src="/images/calendar-alt.png" alt="calendar-alt" /></li>
                         <li onClick={() => handleNavigate('/search')} className={isActive('/search') ? 'active-button' : ''}><img src="/images/search.png" alt="search" /></li>
-                        {/* <li onClick={() => toggleNotification()} className={isActive('/notifications') ? 'active-button' : ''}><img src="/images/bell.png" alt="bell" /></li> */}
+                        {
+                            user.roles.includes('DOCTOR') && (
+                                <li onClick={() => handleNavigate('/permission')} className={isActive('/permission') ? 'active-button' : ''}><img src="/images/permission.png" alt="bell" /></li>
+                            )
+                        }
                     </ul>
                 </div>
 

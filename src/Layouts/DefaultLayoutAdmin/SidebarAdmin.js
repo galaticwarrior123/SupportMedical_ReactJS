@@ -24,8 +24,8 @@ const SidebarAdmin = ({ onMenuClick, activeMenu }) => {
                     <li>
                         <Link
                             to='/admin/categories'
-                            className={`menuItemAdmin ${activeMenu === 'Quản lý danh mục' ? 'active' : ''}`}
-                            onClick={() => onMenuClick('Quản lý danh mục')}>
+                            className={`menuItemAdmin ${activeMenu === 'Quản lý khoa' ? 'active' : ''}`}
+                            onClick={() => onMenuClick('Quản lý khoa')}>
                             <FontAwesomeIcon icon={faList} />
                             <span>Quản lý khoa</span>
                         </Link>
@@ -37,15 +37,6 @@ const SidebarAdmin = ({ onMenuClick, activeMenu }) => {
                             onClick={() => onMenuClick('Quản lý bác sĩ')}>
                             <FontAwesomeIcon icon={faUserDoctor} />
                             <span>Cấp quyền phê duyệt</span>
-                        </Link>
-                    </li>
-                    <li>
-                        <Link
-                            to='/admin/browse-post'
-                            className={`menuItemAdmin ${activeMenu === 'Duyệt bài viết' ? 'active' : ''}`}
-                            onClick={() => onMenuClick('Duyệt bài viết')}>
-                            <FontAwesomeIcon icon={faComments} />
-                            <span>Duyệt bài viết</span>
                         </Link>
                     </li>
                     <li>

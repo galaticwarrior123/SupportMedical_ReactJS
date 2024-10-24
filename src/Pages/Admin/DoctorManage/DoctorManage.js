@@ -17,20 +17,22 @@ const DoctorManage = () => {
     const [isAddPermission, setIsAddPermission] = useState(false);
 
     useEffect(() => {
-        const fetchDoctors = async () => {
-            try {
-                const response = await DoctorAPI.getDoctors();
-                if (response.status === 200) {
-                    setDoctors(response.data);
-                    setFilteredDoctors(response.data);
-                }
-            }
-            catch (error) {
-                console.error(error);
-            }
-        }
+        
         fetchDoctors();
     }, []);
+
+    const fetchDoctors = async () => {
+        try {
+            const response = await DoctorAPI.getDoctors();
+            if (response.status === 200) {
+                setDoctors(response.data);
+                setFilteredDoctors(response.data);
+            }
+        }
+        catch (error) {
+            console.error(error);
+        }
+    }
 
     useEffect(() => {
         const filterDoctors = () => {
@@ -53,6 +55,12 @@ const DoctorManage = () => {
     }
     const handleCloseIsAddDoctor = () => {
         setIsAddDoctor(false);
+    }
+
+    const handleCloseListDoctors = () => {
+        setIsAddPermission(false);
+        setFilteredDoctors(doctors.filter(doctor => doctor.doctorInfo.isPermission === true));
+        fetchDoctors();
     }
 
     const handleRemovePermission = async (doctorId) => {
@@ -83,7 +91,7 @@ const DoctorManage = () => {
                         <button className="add-button-doctor" onClick={handleClickAddDoctor}>+ Thêm bác sĩ</button>
                     </div>
                     {isAddPermission && (
-                        <ListDoctor doctors={doctors} />
+                        <ListDoctor doctors={doctors} handleCloseListDoctors={handleCloseListDoctors} />                   
                     )}
                     {isAddDoctor && (
                         <AddDoctor handleCloseIsAddDoctor={handleCloseIsAddDoctor} />
