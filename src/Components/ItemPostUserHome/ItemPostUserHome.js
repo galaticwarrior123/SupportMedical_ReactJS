@@ -4,10 +4,10 @@ import { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faThumbsUp, faComment, faPaperPlane, faArrowRight, faArrowLeft, faEarth, faEllipsis, faHeart, faSurprise } from '@fortawesome/free-solid-svg-icons';
-import { formatDistanceToNow, set } from 'date-fns';
+import { formatDistanceToNow } from 'date-fns';
 import ShowPostDetailLike from './ShowPostDetailLike';
-import { se, vi } from 'date-fns/locale';
-import { ToastContainer, toast } from 'react-toastify'
+import { vi } from 'date-fns/locale';
+import {  toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 import PostAPI from '../../API/PostAPI';
 import CommentAPI from '../../API/CommentAPI';

@@ -5,6 +5,10 @@ export class UserAPI {
         return axiosClient.get(`/user/find?email=${email}`);
     }
 
+    static async searchUser(query) {
+        return axiosClient.get(`/user/search?query=${query}`);
+    }
+
     static async getUserById(userId) {
         
         return axiosClient.get(`/user/`, {

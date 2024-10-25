@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import DefaultLayoutAdmin from '../../../Layouts/DefaultLayoutAdmin/DefaultLayoutAdmin';
 import './CategoryManage.css';
-import { faSearch, faEdit, faTrash, faTimes, faCheck } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faTrash, faTimes, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { SidebarProvider } from '../../../Layouts/DefaultLayoutAdmin/SidebarContext';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { DepartmentAPI } from '../../../API/DepartmentAPI';
 const CategoryManage = () => {
@@ -154,7 +154,6 @@ const CategoryManage = () => {
     return (
         <SidebarProvider>
             <DefaultLayoutAdmin>
-                <ToastContainer />
                 <div className="category-manage">
                     <div className="top-section">
                         <div className="search-section">

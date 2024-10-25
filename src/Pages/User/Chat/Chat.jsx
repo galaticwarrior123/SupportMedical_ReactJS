@@ -77,6 +77,7 @@ const Chat = () => {
     }, [id]);
 
     const getMessages = async () => {
+        if (!selectedChat) return;
         setLoading(true);
         try {
             const response = await ChatAPI.getMessagesPagination(selectedChat._id, page, LIMIT);
@@ -166,7 +167,7 @@ const Chat = () => {
     // search for user by email
     useEffect(() => {
         if (debounceSearch) {
-            UserAPI.findUserByEmail(debounceSearch).then((response) => {
+            UserAPI.searchUser(debounceSearch).then((response) => {
                 setSearchResult(response.data);
             });
         } else {

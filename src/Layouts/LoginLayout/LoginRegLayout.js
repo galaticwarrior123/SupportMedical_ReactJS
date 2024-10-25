@@ -1,3 +1,4 @@
+import { ToastContainer } from 'react-toastify';
 import './LoginRegLayout.css';
 import { useEffect, useState } from 'react';
 
@@ -30,6 +31,7 @@ const LoginRegLayout = ({ children }) => {
 
     return (
         <div className="login-reg-layout">
+            <ToastContainer style={{ position: 'fixed', top: 60, right: 20 }} />
             <div
                 className={`login-reg-layout-background ${fadeIn ? 'fade-in' : ''}`}
                 style={{ backgroundImage: `url(${images[currentImageIndex]})` }}

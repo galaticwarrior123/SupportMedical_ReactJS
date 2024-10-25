@@ -5,9 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import AuthAPI from '../../../API/AuthAPI';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
-import { ToastContainer, toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css';
-import { set } from 'date-fns';
+import { toast } from 'react-toastify'
 
 const Register = () => {
     const [firstName, setFirstName] = useState('');
@@ -89,7 +87,6 @@ const Register = () => {
     }
     return (
         <LoginRegLayout>
-            <ToastContainer />
             <div className="register">
                 <div className="register-title">
                     <span> Đăng ký</span>

@@ -1,10 +1,9 @@
 import LoginRegLayout from '../../../Layouts/LoginLayout/LoginRegLayout';
 import './Fill_Email.css';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AuthAPI from '../../../API/AuthAPI';
-import { ToastContainer, toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 
 const Fill_Email = () => {
     const [email, setEmail] = useState('');

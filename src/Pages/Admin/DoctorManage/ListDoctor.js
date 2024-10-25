@@ -1,10 +1,9 @@
 import './ListDoctor.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch, faX } from '@fortawesome/free-solid-svg-icons';
+import { faX } from '@fortawesome/free-solid-svg-icons';
 import { DoctorAPI } from '../../../API/DoctorAPI';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { set } from 'date-fns';
 import { useState, useEffect } from 'react';
 const ListDoctor = ({ doctors, handleCloseListDoctors  }) => {
     const [listDoctor, setListDoctor] = useState(doctors);
@@ -55,7 +54,6 @@ const ListDoctor = ({ doctors, handleCloseListDoctors  }) => {
     
     return (
         <div className="list-doctor">
-            <ToastContainer />
             <div className="list-doctor-overlay">
                 <div className="list-doctor-overlay-body">
                     <div className="list-doctor-header">

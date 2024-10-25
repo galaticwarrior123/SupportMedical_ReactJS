@@ -2,7 +2,6 @@ import './BrowsePost.css';
 import ItemPostUserHome from '../../../../../Components/ItemPostUserHome/ItemPostUserHome';
 import { useState, useEffect } from 'react';
 import PostAPI from '../../../../../API/PostAPI';
-import { ToastContainer } from 'react-toastify';
 import DefaultLayout from '../../../../../Layouts/DefaultLayout/DefaultLayout';
 const BrowsePost = () => {
     const [posts, setPosts] = useState([]);
@@ -26,7 +25,6 @@ const BrowsePost = () => {
     return (
         <DefaultLayout>
             <div className="browsePost">
-                <ToastContainer />
                 <div className="browsePost_list">
                     {
                         posts.map((post, index) => (

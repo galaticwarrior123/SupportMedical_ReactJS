@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faClose, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import PostAPI from '../../../../../API/PostAPI';
 import 'react-toastify/dist/ReactToastify.css';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { DepartmentAPI } from '../../../../../API/DepartmentAPI';
 
 const CreatePost = ({ handleCloseFullScreen }) => {
@@ -74,7 +74,6 @@ const CreatePost = ({ handleCloseFullScreen }) => {
 
     return (
         <div className="create-post" onClick={handleCloseFullScreen}>
-            <ToastContainer style={{ position: 'absolute', top: 60, right: 40 }} />
             <div className="create-post-body" onClick={(e) => e.stopPropagation()}>
                 <div className="create-post-body-title">
                     <p>Tạo bài viết</p>

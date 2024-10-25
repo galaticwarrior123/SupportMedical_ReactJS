@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane, faThumbsUp } from '@fortawesome/free-solid-svg-icons';
 import { useState, useEffect } from 'react';
 import CommentAPI from '../../API/CommentAPI';
-import { ToastContainer, toast } from 'react-toastify'
+import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 const ShowComment = ({ listComment }) => {
     const [showReplyInputOfMainComment, setShowReplyInputOfMainComment] = useState(null);

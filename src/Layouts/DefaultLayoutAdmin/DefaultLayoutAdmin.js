@@ -6,6 +6,7 @@ import { faBell } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { SidebarContext } from './SidebarContext';
 import ShowProfileOption from './ShowProfileOption';
+import { ToastContainer } from 'react-toastify';
 
 const DefaultLayoutAdmin = ({ children }) => {
     const location = useLocation();
@@ -33,6 +34,7 @@ const DefaultLayoutAdmin = ({ children }) => {
 
     return (
         <div className={`adminContainer ${isCollapsed ? 'collapsed' : ''}`}>
+            <ToastContainer />
             <SidebarAdmin 
                 onMenuClick={setActiveMenu} 
                 activeMenu={activeMenu} 

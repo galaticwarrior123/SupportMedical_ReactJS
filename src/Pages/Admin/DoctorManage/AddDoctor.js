@@ -4,8 +4,7 @@ import { faX } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState } from 'react';
 import { DoctorAPI } from '../../../API/DoctorAPI';
 import { DepartmentAPI } from '../../../API/DepartmentAPI';
-import { fi, se, tr } from 'date-fns/locale';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const AddDoctor = ({ handleCloseIsAddDoctor }) => {
@@ -96,7 +95,6 @@ const AddDoctor = ({ handleCloseIsAddDoctor }) => {
     
     return (
         <div className="doctor-manage-add-person" >
-            <ToastContainer />
             <div className="doctor-manage-add-person-overlay">
                 <div className="doctor-manage-add-person-body">
                     <div className="doctor-manage-add-person-header">

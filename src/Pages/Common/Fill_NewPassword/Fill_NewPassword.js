@@ -3,7 +3,7 @@ import LoginRegLayout from '../../../Layouts/LoginLayout/LoginRegLayout';
 import AuthAPI from '../../../API/AuthAPI';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify'
+import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
@@ -46,7 +46,6 @@ const Fill_NewPassword = () => {
 
     return (
         <LoginRegLayout>
-            <ToastContainer />
             <div className="fill-new-password">
                 <div className="fill-new-password-title">
                     <span> Đặt lại mật khẩu</span>
