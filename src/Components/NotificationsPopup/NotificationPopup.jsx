@@ -3,6 +3,7 @@ import './NotificationPopup.css';
 import { useEffect } from 'react';
 import { markAsRead } from '../../redux/slices/notificationSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import bellIcon from '../../assets/images/bell.png';
 
 const NotificationPopup = () => {
     const dispatch = useDispatch();
@@ -31,7 +32,7 @@ const NotificationPopup = () => {
                     className={`notification-item ${notification.isRead ? '' : 'unread'}`} 
                     to={notification.actionUrl} style={{ textDecoration: 'none' }}
                 >
-                    <img src={notification.imageUrl} alt="Avatar" className="avatar" />
+                    <img src={notification.imageUrl || bellIcon} alt="image" className="avatar" />
                     <div>
                         {/* <strong>{notification.username}</strong> {notification.message} */}
                         <span>{notification.content}</span>

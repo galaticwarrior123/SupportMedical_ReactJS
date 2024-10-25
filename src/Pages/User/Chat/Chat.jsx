@@ -48,7 +48,7 @@ const Chat = () => {
     useEffect(() => {
         async function getChats() {
             const response = await ChatAPI.getChats();
-            if (response.data) {
+            if (response.data.length > 0) {
                 setChats(response.data);
                 // setSelectedChat(response.data[0]);
                 if (!id) 
@@ -61,8 +61,6 @@ const Chat = () => {
     useEffect(() => {
         async function getChatById() {
             const response = await ChatAPI.getChatById(id);
-            console.log(response.data);
-            console.log(id);
             if (response.data) {
                 setSelectedChat(response.data);
             } else {

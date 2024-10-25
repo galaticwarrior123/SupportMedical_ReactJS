@@ -1,10 +1,7 @@
 import React from 'react';
 import './ApptItem.css';
 
-const ApptItem = ({ appt, onClick, selected }) => {
-    const user = JSON.parse(localStorage.getItem('user'));
-
-    const other = (appt.sender._id === user._id ? appt.recipient : appt.sender);
+const ApptItem = ({ appt, onClick, selected, other }) => {
 
     return (
         <div onClick={onClick} className={`appointment-card ${selected ? 'selected' : ''}`}>
