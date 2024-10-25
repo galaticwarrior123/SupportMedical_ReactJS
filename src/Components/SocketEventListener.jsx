@@ -7,7 +7,7 @@ import { UserAPI } from '../API/UserAPI';
 import { MessageType } from '../API/ChatAPI';
 import { peerConnection } from '../Common/PeerConnection';
 import { useDispatch } from 'react-redux';
-import { addNotification, fetchNotifications } from '../redux/slices/notificationSlice';
+import { fetchNotifications } from '../redux/slices/notificationSlice';
 
 const SocketEventListener = () => {
     const dispatch = useDispatch();
@@ -33,7 +33,7 @@ const SocketEventListener = () => {
             vibrate: [200, 100, 200],
         };
 
-        toast.info(body, {
+        toast.info(title, {
             autoClose: 5000,
         });
 
@@ -50,27 +50,29 @@ const SocketEventListener = () => {
         setShowCallModal(true);
     }
 
-    const handleNewNotification = (notification) => {
-        const title = 'Thông báo mới';
-        const body = notification.content;
-        const options = {
-            body: body,
-            vibrate: [200, 100, 200],
-        };
 
-        toast.info(body, {
-            autoClose: 5000,
-        });
-
-        if (Notification.permission === 'granted') {
-            new Notification(title, options);
-        }
-
-        // fetch notification again on new notification
-        dispatch(fetchNotifications());
-    }
 
     useEffect(() => {
+        const handleNewNotification = (notification) => {
+            const title = 'Thông báo mới';
+            const body = notification.content;
+            const options = {
+                body: body,
+                vibrate: [200, 100, 200],
+            };
+
+            toast.info(body, {
+                autoClose: 5000,
+            });
+
+            if (Notification.permission === 'granted') {
+                new Notification(title, options);
+            }
+
+            // fetch notification again on new notification
+            dispatch(fetchNotifications());
+        }
+
         if (!socket) return;
 
         socket.on('receive-message', (message) => handleReceiveMessage(message));

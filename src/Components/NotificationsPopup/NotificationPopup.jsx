@@ -1,8 +1,7 @@
 import { Link } from 'react-router-dom';
 import './NotificationPopup.css';
-import { useEffect, useState } from 'react';
-import { NotificationAPI } from '../../API/NotificatoinAPI';
-import { fetchNotifications, markAsRead } from '../../redux/slices/notificationSlice';
+import { useEffect } from 'react';
+import { markAsRead } from '../../redux/slices/notificationSlice';
 import { useDispatch, useSelector } from 'react-redux';
 
 const NotificationPopup = () => {
