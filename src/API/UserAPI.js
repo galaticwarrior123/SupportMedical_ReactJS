@@ -9,6 +9,15 @@ export class UserAPI {
         return axiosClient.get(`/user/search?query=${query}`);
     }
 
+    static async searchUserByFilter(filter) {
+        return axiosClient.get('/user/search', {
+            params: {
+                query: filter.searchQuery,
+                isDoctor: filter.isDoctor,
+            }
+        });
+    }
+
     static async getUserById(userId) {
         
         return axiosClient.get(`/user/`, {

@@ -17,6 +17,7 @@ import Appointment from './Pages/User/Appointment/Appointment';
 import Call from './Pages/User/Call/Call';
 import Post from './Pages/User/Post/Post';
 import BrowsePost from './Pages/User/HomePage/CenterUserHome/BrowsePost/BrowsePost';
+import Search from './Pages/User/Search/Search';
 const ROLES = {
   'CLIENT': 'CLIENT',
   'DOCTOR': 'DOCTOR',
@@ -37,6 +38,7 @@ function App() {
           <Route path="/profile/:id" element={<ProfileUserPage />} />
           <Route path="/appointment/:id?" element={<Appointment />} />
           <Route path="/call/:to" element={<Call />} />
+          <Route path="/search" element={<Search />} />
           <Route element={<RequireAuth allowedRoles={[ROLES.DOCTOR]} />}>
             <Route path="permission" element={<BrowsePost />} />
           </Route>

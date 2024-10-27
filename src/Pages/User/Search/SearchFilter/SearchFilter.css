@@ -1,0 +1,38 @@
+
+.search-filter-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 80%;
+    justify-content: space-around;
+}
+
+.search-filter-criterion {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 5px;
+}
+
+.search-filter-criterion input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+}
+
+.select-box {
+    background-color: #ffde76;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.select-box:focus {
+    outline: none;
+}
+
+.select-box option {
+    font-size: 16px;
+}
