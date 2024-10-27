@@ -1,7 +1,9 @@
 import './LeftUserHome.css';
 import { DepartmentAPI } from '../../../../API/DepartmentAPI';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 const LeftUserHome = () => {
+    const navigate = useNavigate();
     const [allDepartment, setAllDepartment] = useState([]);
 
     useEffect(() => {
@@ -28,7 +30,9 @@ const LeftUserHome = () => {
                     <ul>
                         {allDepartment && allDepartment.length > 0 ? allDepartment.map((department) => (
                             <li key={department._id}>
-                                <button>
+                                <button onClick={
+                                    () => navigate(`/search?tagId=${department._id}&tab=posts`)
+                                }>
                                     {department.name}
                                 </button>
                             </li>
