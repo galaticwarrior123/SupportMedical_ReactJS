@@ -1,8 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import ApptItem from '../../Appointment/ApptItem/ApptItem';
 import './DetailDay.css';
+import { useAuth } from '../../../../context/AuthProvider';
 
 const DetailDay = ({ apptList }) => {
+    const { user } = useAuth();
     const navigate = useNavigate();
     const dateToDateWithDatOfWeek = (date) => {
         const dayOfWeek = ['Chủ nhật, ', 'Thứ 2, ', 'Thứ 3, ', 'Thứ 4, ', 'Thứ 5, ', 'Thứ 6, ', 'Thứ 7, '];
@@ -23,9 +25,10 @@ const DetailDay = ({ apptList }) => {
                     <div className="detail-day__content__title">Nhiệm vụ</div>
                     <div className="detail-day__content__task"></div> */}
                     {
-                        apptList.map((appt, index) => (
-                            <ApptItem key={index} appt={appt} onClick={() => navigate(`appointment/${appt._id}`)} />
-                        ))
+                        apptList.map((appt, index) => {
+                            const other = (appt.sender._id === user._id ? appt.recipient : appt.sender);
+                            return <ApptItem other={other} key={index} appt={appt} onClick={() => navigate(`appointment/${appt._id}`)} />
+                        })
                     }
                 </div>
             </div>
