@@ -70,6 +70,13 @@
 .chat-header-left {
     display: flex;
     align-items: center;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.chat-header-left:hover {
+    cursor: pointer;
+    background-color: #e8dece;
 }
 
 .chat-header-avatar {
