@@ -2,7 +2,7 @@ import './ShowComment.css';
 import { formatDistanceToNow, set } from 'date-fns';
 import { vi } from 'date-fns/locale';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPaperPlane, faThumbsUp } from '@fortawesome/free-solid-svg-icons';
+import { faPaperPlane, faThumbsUp, faImage, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { useState, useEffect } from 'react';
 import CommentAPI from '../../API/CommentAPI';
 import { ToastContainer, toast } from 'react-toastify'
@@ -16,6 +16,7 @@ const ShowComment = ({ listComment }) => {
     const [commentLikeCount, setCommentLikeCount] = useState({});
     const [allComment, setAllComment] = useState([...listComment]);
 
+    const [selectedImages, setSelectedImages] = useState({});
     const user = JSON.parse(localStorage.getItem('user'));
 
     useEffect(() => {
@@ -30,7 +31,22 @@ const ShowComment = ({ listComment }) => {
         }, {}));
     }, [allComment]);
 
+    const handleImageUpload = (e, commentId) => {
+        const file = e.target.files[0];
+        if (file) {
+            setSelectedImages(prev => ({
+                ...prev,
+                [commentId]: file // Lưu ảnh cho commentId
+            }));
+        }
+    };
+    const handleDeleteImage = (commentId) => {
+        setSelectedImages(prev => ({
+            ...prev,
+            [commentId]: null // Xóa ảnh cho commentId tương ứng
+        }));
 
+    };
 
     const handleShowReplyMainComment = (id) => {
         setShowReplyInputOfMainComment(prev => prev === id ? null : id);
@@ -41,17 +57,24 @@ const ShowComment = ({ listComment }) => {
 
         if (!value) return;
 
-        const data = {
-            postId: postId,
-            content: value,
-            parentCommentId: idParent,
-            userId: user._id
-        };
+        const data = new FormData();
+        data.append('postId', postId);
+        data.append('content', value);
+        data.append('parentCommentId', idParent);
+        data.append('userId', user._id);
+        if (selectedImages[idParent]) {
+            data.append('imageContent', selectedImages[idParent]);
+        }
+
 
         try {
             const newComment = await CommentAPI.createComment(data);
             isReply ? setCommentReplyValue('') : setCommentValue('');
 
+            setSelectedImages(prev => ({
+                ...prev,
+                [idParent]: null
+            }));
 
             const updateComments = (comments) => {
                 return comments.map((comment) => {
@@ -140,6 +163,9 @@ const ShowComment = ({ listComment }) => {
                                     {reply.content}
                                 </pr>
                             </div>
+                            {reply.image && <div className="center-user-home-post-comment-item-content-image">
+                                <img src={reply.image} alt="comment" />
+                            </div>}
                             <div className="center-user-home-post-comment-item-content-action">
                                 <div className="center-user-home-post-comment-item-content-action-interact">
                                     <button
@@ -166,12 +192,37 @@ const ShowComment = ({ listComment }) => {
                                 </div>
                                 <div className="center-user-home-post-comment-item-content-action-reply-input">
                                     <input type="text" placeholder="Viết bình luận..." value={commentReplyValue} onChange={(e) => setCommentReplyValue(e.target.value)} />
-                                    <button onClick={() => handlePostCommentReply(reply._id, reply.postId, true)}>
-                                        <FontAwesomeIcon icon={faPaperPlane} style={{ color: 'silver' }} />
-                                    </button>
+                                    <div className="comment-icons">
+
+                                        <label htmlFor={`image-upload-reply-${reply._id}`} className="image-upload-label">
+
+                                            <FontAwesomeIcon icon={faImage} style={{ color: 'silver', cursor: 'pointer' }} />
+
+                                        </label>
+
+                                        <input
+                                            id={`image-upload-reply-${reply._id}`}
+                                            type="file"
+                                            style={{ display: 'none' }}
+                                            accept="image/*"
+                                            onChange={(e) => handleImageUpload(e, reply._id)}
+                                        />
+                                        <button onClick={() => handlePostCommentReply(reply._id, reply.postId, true)}>
+                                            <FontAwesomeIcon icon={faPaperPlane} style={{ color: 'silver' }} />
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
-
+                            {selectedImages[reply._id] && (
+                                <div className="image-preview">
+                                    <div className="image-preview-title">
+                                        <img src={URL.createObjectURL(selectedImages[reply._id])} alt="preview" />
+                                        <button className="delete-image-btn" onClick={() => handleDeleteImage(reply._id)}>
+                                            <FontAwesomeIcon icon={faTimesCircle} style={{ color: 'red', cursor: 'pointer' }} />
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
                             {/* <div className="center-user-home-post-comment-item-action-seeMore">
                             <button>Xem thêm</button>
                         </div> */}
@@ -208,7 +259,7 @@ const ShowComment = ({ listComment }) => {
     return (
         <div>
 
-            {allComment.map((comment) => (
+            {allComment.map((comment, index) => (
 
                 <>
                     <div className="center-user-home-post-comment-list-item" key={comment._id}>
@@ -226,6 +277,9 @@ const ShowComment = ({ listComment }) => {
                                     {comment.content}
                                 </pr>
                             </div>
+                            {comment.image && <div className="center-user-home-post-comment-item-content-image">
+                                <img src={comment.image} alt="comment" />
+                            </div>}
                             <div className="center-user-home-post-comment-item-content-action">
                                 <div className="center-user-home-post-comment-item-content-action-interact">
                                     <button
@@ -248,12 +302,39 @@ const ShowComment = ({ listComment }) => {
                                     <img src={user.avatar} alt="avatar" />
                                 </div>
                                 <div className="center-user-home-post-comment-item-content-action-reply-input">
-                                    <input type="text" placeholder="Viết bình luận..." value={commentValue} onChange={(e) => setCommentValue(e.target.value)} />
-                                    <button onClick={() => handlePostCommentReply(comment._id, comment.postId, false)}>
-                                        <FontAwesomeIcon icon={faPaperPlane} style={{ color: 'silver' }} />
-                                    </button>
+                                    <input
+                                        type="text"
+                                        placeholder="Viết bình luận..."
+                                        value={commentValue}
+                                        onChange={(e) => setCommentValue(e.target.value)}
+                                    />
+                                    <div className="comment-icons">
+                                        <label htmlFor={`image-upload-reply-${comment._id}`} className="image-upload-label">
+                                            <FontAwesomeIcon icon={faImage} style={{ color: 'silver', cursor: 'pointer', marginLeft: '8px' }} />
+                                        </label>
+                                        <input
+                                            id={`image-upload-reply-${comment._id}`}
+                                            type="file"
+                                            style={{ display: 'none' }}
+                                            accept="image/*"
+                                            onChange={(e) => handleImageUpload(e, comment._id)}
+                                        />
+                                        <button onClick={() => handlePostCommentReply(comment._id, comment.postId, false)}>
+                                            <FontAwesomeIcon icon={faPaperPlane} style={{ color: 'silver' }} />
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
+                            {selectedImages[comment._id] && (
+                                <div className="image-preview">
+                                    <div className="image-preview-title">
+                                        <img src={URL.createObjectURL(selectedImages[comment._id])} alt="preview" />
+                                        <button className="delete-image-btn" onClick={() => handleDeleteImage(comment._id)}>
+                                            <FontAwesomeIcon icon={faTimesCircle} style={{ color: 'red', cursor: 'pointer' }} />
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
 
 
                         </div>

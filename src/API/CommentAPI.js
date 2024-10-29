@@ -3,7 +3,11 @@ import axiosClient, {axiosPrivate} from "./AxiosClient";
 class CommentAPI {
     static async createComment(data) {
         const url = '/comment';
-        return axiosPrivate.post(url, data);
+        return axiosPrivate.post(url, data, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
     }
 
     static async getCommentByPostId(postId) {

@@ -113,7 +113,8 @@ const Header = () => {
                         <li onClick={() => handleNavigate('/search')} className={isActive('/search') ? 'active-button' : ''}><img src="/images/search.png" alt="search" /></li>
                         {
                             user.roles.includes('DOCTOR') && (
-                                <li onClick={() => handleNavigate('/permission')} className={isActive('/permission') ? 'active-button' : ''}><img src="/images/permission.png" alt="bell" /></li>
+                                //<li onClick={() => handleNavigate('/permission')} className={isActive('/permission') ? 'active-button' : ''}><img src="/images/permission.png" alt="permission" style={{width:30, height:30}} /></li>
+                                <li onClick={() => handleNavigate('/permission')} className={isActive('/permission') ? 'active-button' : ''}><img src="/images/permission.png" alt="search" style={{padding:5,width:30, height:30}} /></li>
                             )
                         }
                     </ul>

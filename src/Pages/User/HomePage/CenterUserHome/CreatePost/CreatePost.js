@@ -13,7 +13,7 @@ const CreatePost = ({ handleCloseFullScreen }) => {
     const [content, setContent] = useState('');
     const user = JSON.parse(localStorage.getItem('user'));
     const [departments, setDepartments] = useState([]);
-    const [selectedDepartments, setSelectedDepartments] = useState([]);
+    const [selectedDepartment, setSelectedDepartment] = useState('all'); // Lưu ID của department hoặc "all"
     const [dropdownOpen, setDropdownOpen] = useState(false);
 
     useEffect(() => {
@@ -29,19 +29,30 @@ const CreatePost = ({ handleCloseFullScreen }) => {
     }, []);
 
     const handleAddPost = async () => {
+        const listTag = [];
         const formData = new FormData();
         formData.append('title', title);
         formData.append('content', content);
-        selectedDepartments.forEach((department) => {
-            formData.append('tags', department);
-        });
+        
+        if (selectedDepartment === 'all') {
+            // Nếu chọn tất cả, thêm tất cả department
+            departments.forEach((department) => { listTag.push(department._id); });
+            console.log(listTag);
+            formData.append('tags', listTag);
+        } else {
+            // Nếu không, chỉ thêm department đã chọn
+            formData.append('tags', selectedDepartment);
+        }
+
         images.forEach((file) => {
             formData.append('images', file);
         });
+
         try {
             await PostAPI.createPost(formData);
             toast.success('Đăng bài viết thành công!');
-            setSelectedDepartments([]);
+            alert('Đăng bài viết thành công!');
+            setSelectedDepartment('');
             setImages([]);
             setTitle('');
             setContent('');
@@ -51,12 +62,12 @@ const CreatePost = ({ handleCloseFullScreen }) => {
         }
     };
 
-    const handleCheckboxChange = (e, department) => {
-        if (e.target.checked) {
-            setSelectedDepartments((prev) => [...prev, department._id]);
-        } else {
-            setSelectedDepartments((prev) => prev.filter((id) => id !== department._id));
-        }
+    const handleRadioChange = (e, department) => {
+        setSelectedDepartment(department._id); // Lưu ID department
+    };
+
+    const handleSelectAll = () => {
+        setSelectedDepartment('all'); // Chọn tất cả
     };
 
     const handleRemoveImage = (indexToRemove) => {
@@ -93,27 +104,16 @@ const CreatePost = ({ handleCloseFullScreen }) => {
                 <div className="create-post-body-content">
                     <input type="text" placeholder="Tiêu đề" onChange={(e) => setTitle(e.target.value)} />
                     <textarea placeholder="Nội dung" onChange={(e) => setContent(e.target.value)} />
-                    
+
                     <div className="create-post-body-content-checkbox">
                         <p>Chọn chủ đề:</p>
-                        <div className="dropdown">
-                            <button className="dropdown-toggle" onClick={() => setDropdownOpen(!dropdownOpen)}>
-                                Chọn chủ đề <FontAwesomeIcon icon={faChevronDown} />
-                            </button>
-                            {dropdownOpen && (
-                                <div className="dropdown-menu">
-                                    {departments.map((department) => (
-                                        <label key={department._id} className="checkbox-item">
-                                            <input
-                                                type="checkbox"
-                                                checked={selectedDepartments.includes(department._id)}
-                                                onChange={(e) => handleCheckboxChange(e, department)}
-                                            />
-                                            {department.name}
-                                        </label>
-                                    ))}
-                                </div>
-                            )}
+                        <div className="create-post-body-content-checkbox-list">
+                            <select className="create-post-body-content-checkbox-list-select" onChange={(e) => setSelectedDepartment(e.target.value)}>
+                                <option value={"all"}>Tất cả</option>
+                                {departments.map((department) => (
+                                    <option key={department._id} value={department._id}>{department.name}</option>
+                                ))}
+                            </select>
                         </div>
                     </div>
 
@@ -122,11 +122,8 @@ const CreatePost = ({ handleCloseFullScreen }) => {
                         {images.length === 0 && <p>Chưa có ảnh nào được thêm vào</p>}
                         {images.map((image, index) => (
                             <div key={index} className="image-item">
-                                <span className="image-name">{image.name}</span>
-                                <button
-                                    className="delete-button"
-                                    onClick={() => handleRemoveImage(index)}
-                                >
+                                <img src={URL.createObjectURL(image)} alt={`Preview ${index + 1}`} />
+                                <button className="delete-button" onClick={() => handleRemoveImage(index)}>
                                     <FontAwesomeIcon icon={faTrash} />
                                 </button>
                             </div>

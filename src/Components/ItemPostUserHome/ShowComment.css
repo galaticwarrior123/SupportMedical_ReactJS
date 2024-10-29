@@ -192,3 +192,16 @@
 .liked {
     color: #0532fb; /* Change to your desired color */
 }
+
+
+.center-user-home-post-comment-item-content-image{
+    width: 150px;
+    height: 150px;
+
+}
+
+.center-user-home-post-comment-item-content-image img{
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+}

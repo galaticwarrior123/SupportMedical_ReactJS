@@ -3,7 +3,7 @@ import PostDetail from '../../Pages/User/HomePage/CenterUserHome/PostDetail/Post
 import { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheck, faThumbsUp, faComment, faPaperPlane, faArrowRight, faArrowLeft, faEarth, faEllipsis, faHeart, faSurprise } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faThumbsUp, faComment, faPaperPlane, faArrowRight, faArrowLeft, faEarth, faEllipsis, faHeart, faSurprise, faImage, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { formatDistanceToNow, set } from 'date-fns';
 import ShowPostDetailLike from './ShowPostDetailLike';
 import { se, vi } from 'date-fns/locale';
@@ -110,11 +110,14 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
 
 
     const handlePostComment = async (postId) => {
-        const data = {
-            postId: postId,
-            content: commentContent,
-            userId: user._id
-        };
+
+        const data = new FormData();
+        data.append('content', commentContent);
+        data.append('userId', user._id);
+        data.append('postId', postId);
+        if (selectedImageComment) {
+            data.append('imageContent', selectedImageComment);
+        }
         try {
             const newComment = await CommentAPI.createComment(data);
             setCommentContent('');
@@ -308,6 +311,28 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
         setShowMore(!showMore);
     }
 
+
+    const [selectedImageComment, setSelectedImageComment] = useState(null);
+    const [showImageComment, setShowImageComment] = useState(false);
+
+    const handleImageUpload = (e) => {
+        const file = e.target.files[0];
+        setSelectedImageComment(file);
+        setShowImageComment(true);
+    };
+
+    const handleDeleteImage = () => {
+        setSelectedImageComment(null);
+        setShowImageComment(false);
+    };
+
+    const handleSubmit = () => {
+        handlePostComment(itemPost._id, commentContent, selectedImageComment);
+        setCommentContent("");
+        setSelectedImageComment(null);
+        setShowImageComment(false);
+    };
+
     const formattedTime = (() => {
         const date = new Date(itemPost.createdAt);
         if (isNaN(date.getTime())) {
@@ -327,7 +352,7 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
     const renderBadge = () => {
         if (itemPost.author.roles.includes('DOCTOR')) {
             return <span className="center-user-home-post-badge"><FontAwesomeIcon icon={faCheck} style={{ color: 'green' }} /> Bác sĩ</span>;
-        } 
+        }
         // else if (itemPost.author.roles.includes('NURSE')) {
         //     return <span className="center-user-home-post-badge"><FontAwesomeIcon icon={faCheck} style={{ color: 'blue' }} /> Y tá</span>;
         // } else if (itemPost.author.roles.includes('CLIENT')) {
@@ -578,14 +603,40 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
                             <img src={JSON.parse(localStorage.getItem('user')).avatar} alt="avatar" />
                         </div>
                         <div className="center-user-home-post-comment-input">
-                            <input type="text" placeholder="Viết bình luận..." value={commentContent} onChange={(e) => setCommentContent(e.target.value)} />
-                            <button onClick={() => handlePostComment(itemPost._id)}>
-                                <FontAwesomeIcon icon={faPaperPlane} style={{ color: 'silver' }} />
-                            </button>
+                            <input
+                                type="text"
+                                placeholder="Viết bình luận..."
+                                value={commentContent}
+                                onChange={(e) => setCommentContent(e.target.value)}
+                            />
+                            <div className="comment-icons">
+                                <label htmlFor={`image-upload-${itemPost._id}`} className="image-upload-label">
+                                    <FontAwesomeIcon icon={faImage} style={{ color: 'silver', cursor: 'pointer' }} />
+                                </label>
+                                <input
+                                    id={`image-upload-${itemPost._id}`}
+                                    type="file"
+                                    style={{ display: 'none' }}
+                                    accept="image/*"
+                                    onChange={handleImageUpload}
+                                />
+                                <button onClick={handleSubmit}>
+                                    <FontAwesomeIcon icon={faPaperPlane} style={{ color: 'silver' }} />
+                                </button>
 
+                            </div>
                         </div>
                     </div>
-
+                    {showImageComment && (
+                        <div className="image-preview">
+                            <div className="image-preview-title">
+                                <img src={URL.createObjectURL(selectedImageComment)} alt="preview" />
+                                <button className="delete-image-btn" onClick={handleDeleteImage}>
+                                    <FontAwesomeIcon icon={faTimesCircle} style={{ color: 'red', cursor: 'pointer' }} />
+                                </button>
+                            </div>
+                        </div>
+                    )}
                     {clickComment && (
                         <>
                             <div className="center-user-home-post-comment-title">
@@ -611,12 +662,12 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
                         <table>
                             <tr>
                                 <td>
-                                    <button className="center-user-home-post-footer-browser-body-button-acess" onClick={() => handlePublishPost(itemPost._id,"PUBLISHED")}>
+                                    <button className="center-user-home-post-footer-browser-body-button-acess" onClick={() => handlePublishPost(itemPost._id, "PUBLISHED")}>
                                         <span>Phê duyệt</span>
                                     </button>
                                 </td>
                                 <td>
-                                    <button className='center-user-home-post-footer-browser-body-button-deny' onClick={() => handlePublishPost(itemPost._id,"REJECTED")}>
+                                    <button className='center-user-home-post-footer-browser-body-button-deny' onClick={() => handlePublishPost(itemPost._id, "REJECTED")}>
                                         <span>Từ chối</span>
                                     </button>
                                 </td>
