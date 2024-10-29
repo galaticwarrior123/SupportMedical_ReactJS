@@ -9,6 +9,10 @@
     margin-bottom: 10px;
 }
 
+.appointment-card.selected {
+    background-color: #fcd9c9;
+}
+
 .appointment-card:hover {
     background-color: #fcd9c9;
 }

@@ -143,3 +143,9 @@
 .select-box option {
     font-size: 16px;
 }
+
+.appt-with a {
+    text-decoration: none;
+    color: blue;
+    font-weight: bold;
+}

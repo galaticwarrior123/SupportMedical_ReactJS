@@ -48,6 +48,15 @@ class PostAPI {
         return axiosPrivate.put(url, data);
     }
 
+    static async searchPost(filter) {
+        const url = `/post/search`;
+        return axiosClient.get(url, { params: {
+            title: filter.searchQuery,
+            content: filter.searchQuery,
+            tagId: filter?.tagId,
+        } });
+    }
+
     static async deletePost(id) {
         const url = `/post/${id}`;
         return axiosPrivate.delete(url);

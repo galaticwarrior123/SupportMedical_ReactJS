@@ -1,9 +1,9 @@
 import LoginRegLayout from '../../../Layouts/LoginLayout/LoginRegLayout';
 import './Login.css';
 import AuthAPI from '../../../API/AuthAPI';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify'
+import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
@@ -53,7 +53,6 @@ const Login = () => {
     
     return (
         <LoginRegLayout>
-            <ToastContainer />
             <div className="login">
                 <div className="login-title">
                     <span> Đăng nhập</span>

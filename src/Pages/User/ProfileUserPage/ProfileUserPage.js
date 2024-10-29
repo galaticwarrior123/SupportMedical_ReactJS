@@ -6,7 +6,6 @@ import {useState,useEffect} from 'react';
 import PostAPI from '../../../API/PostAPI';
 import './ProfileUserPage.css';
 import ItemPostUserHome from '../../../Components/ItemPostUserHome/ItemPostUserHome';
-import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { useLocation } from 'react-router-dom';
 import { UserAPI } from '../../../API/UserAPI';
@@ -59,7 +58,6 @@ const ProfileUserPage = () => {
     }
     return (
         <DefaultLayout>
-            <ToastContainer style={{ position: 'fixed', top: 60, right: 20 }} />
             <div className="profile-page-profile">
                 <HeaderProfile user={user} onUserUpdate={handleUserUpdate} onFollowToggle={handleFollowToggle}/>
                 <div className="profile-content-profile">

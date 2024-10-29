@@ -95,8 +95,8 @@
     visibility: hidden;
 }
 .today {
-    background-color: red;
-    color: white;
+    background-color: red !important;
+    color: white !important;
   }
 
 .has-appt {

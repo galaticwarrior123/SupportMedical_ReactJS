@@ -39,7 +39,6 @@
 .center-user-home-post-comment-list-item-content-user {
     display: flex;
     justify-content: space-between;
-    font-weight: bold;
     margin-bottom: 5px;
 }
 
@@ -50,8 +49,6 @@
 .center-user-home-post-comment-item-content-action{
     display: flex;
     align-items: center;
-    margin-top: 10px;
-    padding-top: 10px;
 }
 .center-user-home-post-comment-item-content-action button {
     margin-right: 10px;
@@ -165,7 +162,6 @@
     flex: 1;
 }
 .center-user-home-post-comment-list-item-content-user {
-    font-weight: bold;
     display: flex;
     justify-content: space-between;
     margin-bottom: 5px;

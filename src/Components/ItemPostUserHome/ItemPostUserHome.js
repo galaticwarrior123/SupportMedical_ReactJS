@@ -6,8 +6,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faThumbsUp, faComment, faPaperPlane, faArrowRight, faArrowLeft, faEarth, faEllipsis, faHeart, faSurprise, faImage, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { formatDistanceToNow, set } from 'date-fns';
 import ShowPostDetailLike from './ShowPostDetailLike';
-import { se, vi } from 'date-fns/locale';
-import { ToastContainer, toast } from 'react-toastify'
+import { vi } from 'date-fns/locale';
+import {  toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 import PostAPI from '../../API/PostAPI';
 import CommentAPI from '../../API/CommentAPI';
@@ -561,7 +561,7 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
                 <div className="center-user-home-post-reaction-menu" ref={reactionsMenuRef}>
                     <ReactionMenu onReactionSelect={handleReactionSelect} />
                 </div>}
-            {(location.pathname === '/profile/' + itemPost.author._id) || (location.pathname === '/') || (location.pathname === '/post/' + itemPost._id) ? (
+            {(location.pathname === '/profile/' + itemPost.author._id) || (location.pathname==='/search') || (location.pathname === '/') || (location.pathname === '/post/' + itemPost._id) ? (
                 <div className="center-user-home-post-footer">
 
                     <div className="center-user-home-post-footer-infoPost">

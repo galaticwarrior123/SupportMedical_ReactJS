@@ -1,0 +1,24 @@
+.search-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #FFF7E1;
+    padding: 20px;
+    border-radius: 10px;
+    width: 80%;
+    margin: 0 auto;
+    margin-top: 10px;
+    height: calc(100vh - 120px);
+
+}
+
+.search-results {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    overflow-y: auto;
+}

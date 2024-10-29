@@ -9,15 +9,18 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import YesNoDialog from '../../../Components/YesNoDialog/YesNoDialog';
 import { AppointmentStatus } from '../../../API/ChatAPI';
 import { useSocket } from '../../../context/SocketProvider';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useAuth } from '../../../context/AuthProvider';
 
 
 const Appointment = () => {
+    const { user } = useAuth();
     const socket = useSocket();
     const { id } = useParams();
     const navigate = useNavigate();
     const [showModal, setShowModal] = useState(false);
     const [selectedAppt, setSelectedAppt] = useState(null);
+    const selectedApptOther = selectedAppt?.sender?._id === user._id ? selectedAppt?.recipient : selectedAppt?.sender;
     const [apptList, setApptList] = useState([]);
     const [filter, setFilter] = useState({
         q: '',
@@ -137,7 +140,7 @@ const Appointment = () => {
                                     monthLabel = `Tháng ${month + 1}`;
                                     lastMonth = month;
                                 }
-                                console.log(filter.month, month);
+                                const other = (appt.sender._id === user._id ? appt.recipient : appt.sender);
                                 return (
                                     <div key={index}>
                                         {
@@ -147,7 +150,12 @@ const Appointment = () => {
                                                 </div>
                                             )
                                         }
-                                        <ApptItem onClick={() => navigate(`/appointment/${appt._id}`)} key={index} appt={appt} />
+                                        <ApptItem 
+                                            onClick={() => navigate(`/appointment/${appt._id}`)} 
+                                            key={index} appt={appt} 
+                                            selected={id === appt._id}
+                                            other={other}
+                                        />
                                     </div>
                                 )
                             })
@@ -173,14 +181,17 @@ const Appointment = () => {
                             selectedAppt && (
                                 <div>
                                     <div className="appt-time">
-                                        <span>Thời gian: <strong>{formatDate(selectedAppt.date, "HH:mm dd/MM/yyyy")}</strong> </span>
+                                        <span>Thời gian: <strong>{formatDate(selectedAppt?.date, "HH:mm dd/MM/yyyy")}</strong> </span>
+                                    </div>
+                                    <div className="appt-with">
+                                        <span>Với: <Link to={`/profile/${selectedApptOther?._id}`}>{selectedApptOther?.firstName + ' ' + selectedApptOther?.lastName}</Link></span>
                                     </div>
                                     <div className="appt-title">
-                                        <span>Tiêu đề: <strong>{selectedAppt.title}</strong></span>
+                                        <span>Tiêu đề: <strong>{selectedAppt?.title}</strong></span>
                                     </div>
                                     <div className="appt-content">
                                         <span>Nội dung:</span>
-                                        <pre style={{ fontFamily: 'inherit', margin: '4px' }}>{selectedAppt.content}</pre>
+                                        <pre style={{ fontFamily: 'inherit', margin: '4px' }}>{selectedAppt?.content}</pre>
                                     </div>
                                 </div>
                             )

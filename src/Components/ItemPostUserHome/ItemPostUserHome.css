@@ -5,6 +5,7 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     margin-bottom: 20px;
+    max-width: 780px;
 }
 .center-user-home-post-header {
     display: flex;
@@ -483,7 +484,6 @@
     border-radius: 10px;
     background-color: #F7EEDD;
     font-size: 16px;
-    margin-bottom: 10px;
     width: 100%;
     display:flex;
 }

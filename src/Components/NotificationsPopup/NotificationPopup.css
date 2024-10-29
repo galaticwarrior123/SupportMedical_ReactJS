@@ -9,6 +9,8 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     padding: 10px;
     z-index: 100;
+    max-height: 400px;
+    overflow-y: auto;
 }
 
 .notification-popup h3 {
@@ -20,14 +22,18 @@
 .notification-item {
     display: flex;
     align-items: center;
-    margin-bottom: 10px;
-    padding: 5px 0;
+    margin-bottom: 4px;
+    padding: 8px 0;
     cursor: pointer;
     color: black;
+    border-radius: 10px;
+}
+.notification-item.unread {
+    background-color: #e8deca;
 }
 
 .notification-item:hover {
-    background-color: #f0f0f0;
+    background-color: #d2c8b4;
     transition: background-color 0.3s ease;
 }
 

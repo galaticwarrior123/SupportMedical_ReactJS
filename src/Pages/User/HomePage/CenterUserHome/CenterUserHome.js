@@ -4,11 +4,10 @@ import { useState,useEffect } from 'react';
 import CreatePost from './CreatePost/CreatePost';
 import PostAPI from '../../../../API/PostAPI';
 import 'react-toastify/dist/ReactToastify.css';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 const CenterUserHome = ({ isDetailDayOpen }) => {
     const [isCreatePost, setIsCreatePost] = useState(false);
-    const [zIndex, setZIndex] = useState(2);
     const [listPost, setListPost] = useState([]);
     const user = JSON.parse(localStorage.getItem('user'));
 
@@ -43,7 +42,6 @@ const CenterUserHome = ({ isDetailDayOpen }) => {
 
     return (
         <div className="center-user-home" style={{ zIndex: isDetailDayOpen ? 0 : 2 }}>
-            <ToastContainer style={{ position: 'fixed', top: 60, right: 20 }} />
             <div className="center-user-home-activity">
                 <img src={JSON.parse(localStorage.getItem('user')).avatar} alt="avatar" />
                 <div className="center-user-home-activity-input" onClick={handleCreatePost}>

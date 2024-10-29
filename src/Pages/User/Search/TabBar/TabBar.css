@@ -1,0 +1,19 @@
+.tab-bar-container {
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.tab-bar-tab {
+    padding: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 30%;
+    text-align: center;
+}
+
+.tab-bar-tab.active {
+    border-bottom: 2px solid #0078FF;
+    color: #0078FF;
+}

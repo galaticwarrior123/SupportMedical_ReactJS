@@ -3,7 +3,7 @@ import LoginRegLayout from '../../../Layouts/LoginLayout/LoginRegLayout';
 import { useState } from 'react';
 import AuthAPI from '../../../API/AuthAPI';
 import { useNavigate } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify'
+import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 const ConfirmUser = () => {
     const [code, setCode] = useState('');
@@ -33,7 +33,6 @@ const ConfirmUser = () => {
 
     return (
         <LoginRegLayout>
-            <ToastContainer />
             <div className="confirm-user">
                 <div className="confirm-user-title">
                     <span> Xác nhận tài khoản</span>

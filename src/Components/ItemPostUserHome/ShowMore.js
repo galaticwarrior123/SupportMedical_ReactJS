@@ -1,6 +1,6 @@
 import './ShowMore.css';
 import PostAPI from '../../API/PostAPI';
-import { ToastContainer, toast } from 'react-toastify'
+import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 const ShowMore = ({ itemPost, onDelete }) => {
     const handleDeletePost = async (postId) => {
@@ -13,10 +13,6 @@ const ShowMore = ({ itemPost, onDelete }) => {
             toast.error('Lỗi xóa bài viết');
         }
     }
-
-
-
-
     
     return (
         <div className="show-more">

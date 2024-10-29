@@ -48,7 +48,7 @@ const Chat = () => {
     useEffect(() => {
         async function getChats() {
             const response = await ChatAPI.getChats();
-            if (response.data) {
+            if (response.data.length > 0) {
                 setChats(response.data);
                 // setSelectedChat(response.data[0]);
                 if (!id) 
@@ -61,8 +61,6 @@ const Chat = () => {
     useEffect(() => {
         async function getChatById() {
             const response = await ChatAPI.getChatById(id);
-            console.log(response.data);
-            console.log(id);
             if (response.data) {
                 setSelectedChat(response.data);
             } else {
@@ -79,6 +77,7 @@ const Chat = () => {
     }, [id]);
 
     const getMessages = async () => {
+        if (!selectedChat) return;
         setLoading(true);
         try {
             const response = await ChatAPI.getMessagesPagination(selectedChat._id, page, LIMIT);
@@ -168,7 +167,7 @@ const Chat = () => {
     // search for user by email
     useEffect(() => {
         if (debounceSearch) {
-            UserAPI.findUserByEmail(debounceSearch).then((response) => {
+            UserAPI.searchUser(debounceSearch).then((response) => {
                 setSearchResult(response.data);
             });
         } else {
@@ -294,7 +293,7 @@ const Chat = () => {
 
                 <div className="card chat-box">
                     <div className="chat-header">
-                        <div className="chat-header-left">
+                        <div onClick={() => navigate(`/profile/${otherUser._id}`)} className="chat-header-left">
                             <div className="chat-header-avatar">
                                 <img src={otherUser?.avatar} alt="avatar" />
                             </div>
@@ -302,9 +301,9 @@ const Chat = () => {
                                 <div className="chat-header-content-title">
                                     <span>{otherUser?.firstName} {otherUser?.lastName}</span>
                                 </div>
-                                <div className="chat-header-content-status">
+                                {/* <div className="chat-header-content-status">
                                     <span>Đang hoạt động</span>
-                                </div>
+                                </div> */}
                             </div>
                         </div>
 

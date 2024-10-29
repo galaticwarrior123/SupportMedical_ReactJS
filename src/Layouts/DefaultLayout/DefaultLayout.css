@@ -2,13 +2,13 @@
     display: flex;
     flex-direction: column;
     height: 100vh;
-    background-color: #41C9E2;
+    /* background-color: #41C9E2; */
 }
 .content{
     position: absolute;
     top: 60px;
     left: 0;
     width: 100%;
-    background-color: #41C9E2;
+    /* background-color: #41C9E2; */
     /* height: calc(100% - 60px); */
 }
