@@ -6,8 +6,11 @@ import AuthAPI from '../../../API/AuthAPI';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-toastify'
+import { useLoading } from '../../../context/LoadingProvider';
+import { set } from 'date-fns';
 
 const Register = () => {
+    const { setLoading } = useLoading();
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
@@ -62,8 +65,8 @@ const Register = () => {
             password: password,
         }
 
+        setLoading(true);
         try {
-            console.log(data);
             AuthAPI.register(data)
                 .then(res => {
                     if (res.data.isActive === false) {
@@ -84,6 +87,7 @@ const Register = () => {
         } catch (error) {
             toast.error('Đăng ký thất bại');
         }
+        setLoading(false);
     }
     return (
         <LoginRegLayout>

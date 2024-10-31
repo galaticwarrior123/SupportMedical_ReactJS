@@ -8,8 +8,10 @@ import 'react-toastify/dist/ReactToastify.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { useAuth } from '../../../context/AuthProvider';
+import { useLoading } from '../../../context/LoadingProvider';
 
 const Login = () => {
+    const { setLoading } = useLoading();
     const { updateUser, updateToken } = useAuth();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -21,6 +23,7 @@ const Login = () => {
     };
 
     const handleLogin = async () => {
+        setLoading(true);
         if (!email || !password) {
             toast.error('Vui lòng nhập đầy đủ thông tin');
             return;
@@ -47,7 +50,7 @@ const Login = () => {
         } catch (error) {
             toast.error(error.response.data.message);
         }
-
+        setLoading(false);
     }
 
     

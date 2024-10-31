@@ -7,7 +7,10 @@ import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { useLoading } from '../../../context/LoadingProvider';
+
 const Fill_NewPassword = () => {
+    const { setLoading } = useLoading();
     const [password, setPassword] = useState('');
     const [activeCode, setActiveCode] = useState('');
     const [showPassword, setShowPassword] = useState(false);
@@ -25,6 +28,7 @@ const Fill_NewPassword = () => {
             activeCode: activeCode
         }
 
+        setLoading(true);
         AuthAPI.resetPassword(data)
             .then(res => {
                 if (res.status === 201) {
@@ -36,8 +40,8 @@ const Fill_NewPassword = () => {
             })
             .catch(err => {
                 toast.error('Đặt lại mật khẩu thất bại');
-            })
-
+            });
+        setLoading(false);
     }
 
     const togglePasswordVisibility = () => {
