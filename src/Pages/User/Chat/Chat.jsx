@@ -51,7 +51,7 @@ const Chat = () => {
             if (response.data.length > 0) {
                 setChats(response.data);
                 // setSelectedChat(response.data[0]);
-                if (!id) 
+                if (!id)
                     navigate(`/chat/${response.data[0]._id}`);
             }
         }
@@ -100,6 +100,24 @@ const Chat = () => {
 
     }, [selectedChat, page]);
 
+    // mark chat as read
+    useEffect(() => {
+        async function markChatAsRead() {
+            if (selectedChat && !selectedChat.isRead) {
+                await ChatAPI.markChatAsRead(selectedChat._id);
+                // update chat list
+                const newChats = chats.map((chat) => {
+                    if (chat._id === selectedChat._id) {
+                        return { ...chat, isRead: true };
+                    }
+                    return chat;
+                });
+                setChats(newChats);
+            }
+        }
+        markChatAsRead();
+    }, [selectedChat]);
+
     const handleLoadMore = () => {
         if (hasMore && !loading) {
             setPage(prevPage => prevPage + 1);
@@ -133,7 +151,7 @@ const Chat = () => {
             // scroll to bottom
             scrollToBottom();
         });
-        
+
 
         socket.on('update-message', async (message) => {
             if (message.chat === selectedChat?._id) {
@@ -257,11 +275,11 @@ const Chat = () => {
     return (
         <DefaultLayout>
             <div className="chat-page">
-            <CreateApptFormModal 
-                handleSendAppt={handleSendAppt}
-                show={showCreateApptFormModal} 
-                handleClose={ () => setShowCreateApptFormModal(false)} 
-            />
+                <CreateApptFormModal
+                    handleSendAppt={handleSendAppt}
+                    show={showCreateApptFormModal}
+                    handleClose={() => setShowCreateApptFormModal(false)}
+                />
                 <div className="card chat-list-card">
                     <div className="card-title">
                         <span>Cuộc trò chuyện</span>
@@ -282,11 +300,19 @@ const Chat = () => {
                                     () => handleSearchItemClicked(friend)
                                 } key={friend._id} item={friend} />
                             ))
-                            : (search ? 'Không tìm thấy kết quả nào.' : chats.map((chat) => (
-                                <ChatItem onClick={
-                                    () => handleChatItemClicked(chat)
-                                } key={chat._id} item={chat} />
-                            )))
+                            : (search ? 'Không tìm thấy kết quả nào.'
+                                : chats.map((chat) => {
+                                    const isActive = selectedChat?._id === chat._id;
+                                    return (
+                                        <ChatItem 
+                                            onClick={
+                                                () => handleChatItemClicked(chat)
+                                            } 
+                                            key={chat._id} item={chat}
+                                            isActive={isActive}
+                                        />
+                                    )}
+                                ))
                         }
                     </div>
                 </div>
@@ -308,7 +334,7 @@ const Chat = () => {
                         </div>
 
                         <div className="chat-header-right">
-                            <button 
+                            <button
                                 onClick={() => {
                                     const callWindow = window.open(`/call/${otherUser._id}`, 'VideoCallWindow', 'width=800,height=600');
                                 }}
@@ -334,19 +360,19 @@ const Chat = () => {
                             }
                             {
                                 messages?.map((message) => (
-                                    <MessageItem 
+                                    <MessageItem
                                         onAcceptApt={handleAcceptApt}
                                         key={message._id} message={message} />
                                 ))
                             }
-                            {loading && 
-                            <div style={{
-                                display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                            }}>
-                                <ReactLoading type="spin" color="#007bff" height={40} width={40} />
-                            </div>}
+                            {loading &&
+                                <div style={{
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                }}>
+                                    <ReactLoading type="spin" color="#007bff" height={40} width={40} />
+                                </div>}
 
                         </div>
 

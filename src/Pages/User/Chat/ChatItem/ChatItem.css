@@ -8,6 +8,15 @@
     width: 100%;
 }
 
+.chat-item.unread {
+    background-color: #efe6d0;
+    font-weight: bold;
+}
+
+.chat-item.active {
+    background-color: #f5f5f5;
+}
+
 .chat-item:hover {
     background-color: #f5f5f5;
 }
