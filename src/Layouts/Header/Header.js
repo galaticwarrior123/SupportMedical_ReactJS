@@ -4,6 +4,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import NotificationPopup from '../../Components/NotificationsPopup/NotificationPopup';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchNotifications } from '../../redux/slices/notificationSlice';
+import { getUnreadCount } from '../../redux/slices/chatSlice';
 
 const Header = () => {
     const dispatch = useDispatch();
@@ -14,6 +15,7 @@ const Header = () => {
 
     // unread notification count
     const { unreadCount } = useSelector((state) => state.notification);
+    const { unreadChatCount } = useSelector((state) => state.chat);
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -47,11 +49,12 @@ const Header = () => {
         handleResize(); // Check initial screen size
 
         dispatch(fetchNotifications());
-
+        dispatch(getUnreadCount());
+        console.log('header', unreadCount);
         return () => {
             window.removeEventListener('resize', handleResize);
         };
-    }, []);
+    }, [dispatch]);
     const renderDropdown = () => {
         if (isDropdownOpen) {
             return (
@@ -114,7 +117,14 @@ const Header = () => {
                 <div className={`header-nav-action-item ${isMenuOpen ? 'open' : ''}`}>
                     <ul>
                         <li onClick={() => handleNavigate('/')} className={isActive('/') ? 'active-button' : ''}><img src="/images/home.png" alt="home" /></li>
-                        <li onClick={() => handleNavigate('/chat')} className={isActive('/chat', false) ? 'active-button' : ''}><img src="/images/rocketchat.png" alt="rocketchat" /></li>
+                        <li 
+                            onClick={() => handleNavigate('/chat')} 
+                            className={isActive('/chat', false) ? 'active-button' : ''}>
+                                <img src="/images/rocketchat.png" alt="rocketchat" />
+                                {unreadChatCount > 0 && (
+                                    <span className="badge">{unreadChatCount}</span>
+                                )}
+                        </li>
                         <li onClick={() => handleNavigate('/appointment')} className={isActive('/appointment', false) ? 'active-button' : ''}><img src="/images/calendar-alt.png" alt="calendar-alt" /></li>
                         <li onClick={() => handleNavigate('/search')} className={isActive('/search') ? 'active-button' : ''}><img src="/images/search.png" alt="search" /></li>
                         {

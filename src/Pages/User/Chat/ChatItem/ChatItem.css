@@ -6,6 +6,9 @@
     cursor: pointer;
     transition: background-color 0.2s ease;
     width: 100%;
+    border-radius: 18px;
+    box-sizing: border-box;
+    
 }
 
 .chat-item.unread {

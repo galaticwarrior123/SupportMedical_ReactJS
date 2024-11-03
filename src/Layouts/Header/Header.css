@@ -64,7 +64,11 @@
     position: relative;
     cursor: pointer;
 }
-.noti-icon .badge {
+
+.header-nav-action-item ul li {
+    position: relative;
+}
+.badge {
     position: absolute;
     top: -4px;
     right: -4px;
