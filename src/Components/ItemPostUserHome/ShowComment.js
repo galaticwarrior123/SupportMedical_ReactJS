@@ -310,7 +310,7 @@ const ShowComment = ({ listComment }) => {
                                     />
                                     <div className="comment-icons">
                                         <label htmlFor={`image-upload-reply-${comment._id}`} className="image-upload-label">
-                                            <FontAwesomeIcon icon={faImage} style={{ color: 'silver', cursor: 'pointer', marginLeft: '8px' }} />
+                                            <FontAwesomeIcon icon={faImage} style={{ color: 'silver', cursor: 'pointer' }} />
                                         </label>
                                         <input
                                             id={`image-upload-reply-${comment._id}`}

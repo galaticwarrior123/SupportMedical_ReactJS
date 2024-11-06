@@ -66,7 +66,7 @@ const ListDoctor = ({ doctors, handleCloseListDoctors  }) => {
                     </div>
                     <div className="list-doctor-search" style={{ marginTop: 10, marginLeft: 10 }}>
                         <div className="search-bar">
-                            <div className='search-bar-input'>
+                            <div className='search-bar-input-doctor'>
                                 <input type="text" placeholder="Tìm kiếm tên bác sĩ" value={searchDoctor} onChange={(e) => setSearchDoctor(e.target.value)} />
                             </div>
                         </div>

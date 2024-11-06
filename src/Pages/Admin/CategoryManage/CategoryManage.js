@@ -218,7 +218,7 @@ const CategoryManage = () => {
                                                 <button className="edit-button" onClick={() => handleEdit(item)}>
                                                     <FontAwesomeIcon icon={faEdit} />
                                                 </button>
-                                                <button className="delete-button" onClick={() => handleDeleteDeparment(item._id)}>
+                                                <button className="delete-button-category" onClick={() => handleDeleteDeparment(item._id)}>
                                                     <FontAwesomeIcon icon={faTrash} />
                                                 </button>
                                             </>

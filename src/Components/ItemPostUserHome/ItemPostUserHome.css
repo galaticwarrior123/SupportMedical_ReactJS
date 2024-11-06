@@ -568,3 +568,24 @@
     color: #F7EEDD;
 }
 
+.center-user-home-post-content-title-detail {
+    width: 100%;
+}
+
+.center-user-home-post-content-detail {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    border-radius: 5px 10px;
+    margin-bottom: 10px;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.center-user-home-post-title-detail {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 5px 10px;
+}

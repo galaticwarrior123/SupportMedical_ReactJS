@@ -7,7 +7,7 @@ import { faCheck, faThumbsUp, faComment, faPaperPlane, faArrowRight, faArrowLeft
 import { formatDistanceToNow, set } from 'date-fns';
 import ShowPostDetailLike from './ShowPostDetailLike';
 import { vi } from 'date-fns/locale';
-import {  toast } from 'react-toastify'
+import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 import PostAPI from '../../API/PostAPI';
 import CommentAPI from '../../API/CommentAPI';
@@ -458,7 +458,7 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
                     </div>
                     <div className="center-user-home-post-date">
                         <span>{formattedTime}</span>
-                        {location.pathname === '/profile' && (
+                        {location.pathname === '/profile/' + itemPost.author._id && (
                             <span className="center-user-home-post-privacy"><FontAwesomeIcon icon={faEarth} style={{ color: 'gray' }} /> Công khai</span>
                         )}
                     </div>
@@ -466,26 +466,48 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
 
             </div>
             {showPostDetail && <PostDetail handleCloseFullScreen={handleCloseFullScreen} itemPost={post} />}
-            <div className="center-user-home-post-title">
-                {isPostDetail ? (
-                    <>
-                        {itemPost.content}
-                    </>
+            {location.pathname === '/post/' + itemPost._id ? (
+                <>
+                    <div className="center-user-home-post-categories">
+                        {tags.map((tag, index) => (
+                            <span key={index} className="center-user-home-post-category cate1">{tag.name}</span>
+                        ))}
+                    </div>
+                    <div className='center-user-home-post-content-title-detail'>
+                        <div className="center-user-home-post-content-detail" style={{ whiteSpace: 'pre-line' }}>
+                            <span>{itemPost.content}</span>
+                        </div>
+                        <div className="center-user-home-post-title-detail" style={{ whiteSpace: 'pre-line' }}>
+                            {itemPost.title}
+                        </div>
+                    </div>
+                </>
 
-                ) : (
-                    <>
-                        {itemPost.title}
-                        <span onClick={() => handleClickSeeDetail()}>Xem chi tiết...</span>
-                    </>
-                )}
-            </div>
-            <div className="center-user-home-post-categories">
-                {tags.map((tag, index) => (
-                    <span key={index} className="center-user-home-post-category cate1">{tag.name}</span>
-                ))}
-                {/* <span className="center-user-home-post-category cate1">Cate 1</span>
-                <span className="center-user-home-post-category cate2">Cate 2</span> */}
-            </div>
+            ) : (
+                <>
+                    <div className="center-user-home-post-categories">
+                        {tags.map((tag, index) => (
+                            <span key={index} className="center-user-home-post-category cate1">{tag.name}</span>
+                        ))}
+                    </div>
+
+                    <div className="center-user-home-post-title">
+                        {isPostDetail ? (
+                            <>
+                                {itemPost.content}
+                            </>
+
+                        ) : (
+                            <>
+                                {itemPost.title}
+                                <span onClick={() => handleClickSeeDetail()}>Xem chi tiết...</span>
+                            </>
+                        )}
+                    </div>
+                </>
+
+            )}
+
             <div className="center-user-home-post-images">
                 {images.length > 0 && (
                     <div className="center-user-home-post-images">
@@ -561,7 +583,7 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
                 <div className="center-user-home-post-reaction-menu" ref={reactionsMenuRef}>
                     <ReactionMenu onReactionSelect={handleReactionSelect} />
                 </div>}
-            {(location.pathname === '/profile/' + itemPost.author._id) || (location.pathname==='/search') || (location.pathname === '/') || (location.pathname === '/post/' + itemPost._id) ? (
+            {(location.pathname === '/profile/' + itemPost.author._id) || (location.pathname === '/search') || (location.pathname === '/') || (location.pathname === '/post/' + itemPost._id) ? (
                 <div className="center-user-home-post-footer">
 
                     <div className="center-user-home-post-footer-infoPost">

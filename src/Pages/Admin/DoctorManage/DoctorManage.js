@@ -17,7 +17,7 @@ const DoctorManage = () => {
     const [isAddPermission, setIsAddPermission] = useState(false);
 
     useEffect(() => {
-        
+
         fetchDoctors();
     }, []);
 
@@ -91,7 +91,7 @@ const DoctorManage = () => {
                         <button className="add-button-doctor" onClick={handleClickAddDoctor}>+ Thêm bác sĩ</button>
                     </div>
                     {isAddPermission && (
-                        <ListDoctor doctors={doctors} handleCloseListDoctors={handleCloseListDoctors} />                   
+                        <ListDoctor doctors={doctors} handleCloseListDoctors={handleCloseListDoctors} />
                     )}
                     {isAddDoctor && (
                         <AddDoctor handleCloseIsAddDoctor={handleCloseIsAddDoctor} />
@@ -99,13 +99,26 @@ const DoctorManage = () => {
 
                     )}
 
-
-                    <div className="search-bar">
-                        <div className='search-bar-input'>
-                            <input type="text" placeholder="Tìm kiếm bác sĩ" value={searchDoctor} onChange={(e) => setSearchDoctor(e.target.value)} />
+                    <div className="input-group">
+                        <div className='input-group-body'>
+                            <input
+                                type="text"
+                                className="input-search"
+                                placeholder="Tìm kiếm bác sĩ" 
+                                value={searchDoctor} 
+                                onChange={(e) => setSearchDoctor(e.target.value)}
+                            />
+                            {/* <div className="input-group-item-icon">
+                                        <button className="search-button">
+                                            <FontAwesomeIcon icon={faSearch} />
+                                        </button>
+                                    </div> */}
                         </div>
                     </div>
-                    <div className="doctor-list">
+
+
+                    
+                    <div className="doctor-list" style={{ marginTop: '20px' }}>
                         {filteredDoctors.length > 0 ? (
                             filteredDoctors.map((doctor, index) => (
                                 <div key={index} className="doctor-card">
