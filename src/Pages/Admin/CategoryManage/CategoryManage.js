@@ -146,7 +146,12 @@ const CategoryManage = () => {
 
     const handleDeleteDeparment = (id) => {
         DepartmentAPI.deleteDepartment(id).then((response) => {
-            fetchAllSpeciality();
+            if(response.data.error){
+                toast.error('Không thể xóa khoa này');
+            }else{
+                fetchAllSpeciality();
+                toast.success('Xóa khoa thành công');
+            }
         }).catch((error) => {
             console.log(error);
         });
