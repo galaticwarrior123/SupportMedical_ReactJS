@@ -7,12 +7,15 @@ import { AuthProvider } from './context/AuthProvider';
 import { SocketProvider } from './context/SocketProvider';
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
+import { LoadingProvider } from './context/LoadingProvider';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <Provider store={store}>
         <AuthProvider>
-            <SocketProvider><App /></SocketProvider>
+            <SocketProvider>
+               <LoadingProvider> <App /></LoadingProvider>
+            </SocketProvider>
         </AuthProvider>
     </Provider>
 );

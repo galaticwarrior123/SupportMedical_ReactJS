@@ -5,7 +5,9 @@ import AuthAPI from '../../../API/AuthAPI';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
+import { useLoading } from '../../../context/LoadingProvider';
 const ConfirmUser = () => {
+    const { setLoading } = useLoading();
     const [code, setCode] = useState('');
     const navigate = useNavigate();
 
@@ -14,7 +16,7 @@ const ConfirmUser = () => {
             email: localStorage.getItem('email'),
             activeCode: code,
         }
-        console.log(data);
+        setLoading(true);
         AuthAPI.confirmUser(data)
             .then(res => {
                 if (res.status === 201) {
@@ -28,7 +30,8 @@ const ConfirmUser = () => {
             })
             .catch(err => {
                 toast.error('Xác nhận thất bại');
-            })
+            });
+        setLoading(false);
     }
 
     return (

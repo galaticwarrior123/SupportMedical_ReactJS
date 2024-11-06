@@ -4,8 +4,10 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AuthAPI from '../../../API/AuthAPI';
 import { toast } from 'react-toastify';
+import { useLoading } from '../../../context/LoadingProvider';
 
 const Fill_Email = () => {
+    const { setLoading } = useLoading();
     const [email, setEmail] = useState('');
     const navigate = useNavigate();
     const [notice, setNotice] = useState(false);
@@ -26,6 +28,8 @@ const Fill_Email = () => {
         const data = {
             email: email
         }
+
+        setLoading(true);
         AuthAPI.forgotPassword(data)
             .then(res => {
                 if (res.status === 404) {
@@ -39,7 +43,8 @@ const Fill_Email = () => {
             })
             .catch(err => {
                 alert('Gửi thất bại');
-            })
+            });
+        setLoading(false);
 
     }
 

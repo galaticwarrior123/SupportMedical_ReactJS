@@ -2,7 +2,7 @@ import { MessageType } from '../../../../API/ChatAPI';
 import { formatMessageTime } from '../../../../Common/DatetimeUtils';
 import './ChatItem.css';
 
-const ChatItem = ({ item, onClick }) => {
+const ChatItem = ({ item, onClick, isActive }) => {
     let friend = null;
     if (!item.isGroup) {
         const userId = JSON.parse(localStorage.getItem('user'))._id;
@@ -10,7 +10,7 @@ const ChatItem = ({ item, onClick }) => {
     }
 
     return (
-            <div onClick={onClick} className="chat-item">
+            <div onClick={onClick} className={`chat-item ${item.isRead ? '' : 'unread'} ${isActive ? 'active' : ''}`}>
                 <div className="chat-item-avatar">
                     <img src={friend.avatar} alt="avatar" />
                 </div>
