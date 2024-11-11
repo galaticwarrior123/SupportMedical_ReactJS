@@ -1,123 +1,125 @@
-import React, { useState } from 'react';
-import { Bar, Pie } from 'react-chartjs-2';
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, ArcElement, Title, Tooltip, Legend } from 'chart.js';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
+import React from 'react';
 import DefaultLayoutAdmin from '../../../Layouts/DefaultLayoutAdmin/DefaultLayoutAdmin';
-import './Dashboard.css';
 import { SidebarProvider } from '../../../Layouts/DefaultLayoutAdmin/SidebarContext';
-
-ChartJS.register(CategoryScale, LinearScale, BarElement, ArcElement, Title, Tooltip, Legend);
-
+import { Line, Bar, Radar } from 'react-chartjs-2';
+import './Dashboard.css'; // Chỉ giữ file CSS chính cho toàn bộ giao diện
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, PointElement, LineElement, Title, Tooltip, Legend, RadialLinearScale } from 'chart.js';
+ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    BarElement,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Legend,
+    RadialLinearScale
+);
 const Dashboard = () => {
-    const [selectedOption, setSelectedOption] = useState('patients');
-    const [startDate, setStartDate] = useState(new Date());
-    const [endDate, setEndDate] = useState(new Date());
-
-    const handleSelectionChange = (e) => {
-        setSelectedOption(e.target.value);
-    };
-
-    const filterDataByDate = (data) => {
-        // Placeholder for filtering data based on startDate and endDate.
-        // You would replace this with your own logic to filter data based on the selected date range.
-        return data;
-    };
-
-    const dataOptions = {
-        patients: filterDataByDate({
-            labels: ['Total Patients'],
-            datasets: [
-                {
-                    label: 'Patients',
-                    data: [150], // Example data
-                    backgroundColor: ['rgba(75, 192, 192, 0.6)'],
-                    borderColor: ['rgba(75, 192, 192, 1)'],
-                    borderWidth: 1,
-                },
-            ],
-        }),
-        appointments: filterDataByDate({
-            labels: ['Total Appointments'],
-            datasets: [
-                {
-                    label: 'Appointments',
-                    data: [200], // Example data
-                    backgroundColor: ['rgba(153, 102, 255, 0.6)'],
-                    borderColor: ['rgba(153, 102, 255, 1)'],
-                    borderWidth: 1,
-                },
-            ],
-        }),
-        diseases: filterDataByDate({
-            labels: ['Disease A', 'Disease B', 'Disease C'],
-            datasets: [
-                {
-                    label: 'Diseases',
-                    data: [50, 30, 20], // Example data
-                    backgroundColor: ['rgba(255, 159, 64, 0.6)', 'rgba(54, 162, 235, 0.6)', 'rgba(255, 206, 86, 0.6)'],
-                    borderColor: ['rgba(255, 159, 64, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)'],
-                    borderWidth: 1,
-                },
-            ],
-        }),
-        frequency: filterDataByDate({
-            labels: ['Weekly', 'Monthly', 'Yearly'],
-            datasets: [
-                {
-                    label: 'Frequency',
-                    data: [100, 200, 300], // Example data
-                    backgroundColor: ['rgba(255, 99, 132, 0.6)', 'rgba(54, 162, 235, 0.6)', 'rgba(75, 192, 192, 0.6)'],
-                    borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(75, 192, 192, 1)'],
-                    borderWidth: 1,
-                },
-            ],
-        }),
-    };
-
     return (
         <SidebarProvider>
             <DefaultLayoutAdmin>
                 <div className="dashboard-container">
-                    <div className="dashboard-filters">
-                        <div className="dashboard-datepickers">
-                            <label htmlFor="start-date">Start Date:</label>
-                            <DatePicker
-                                id="start-date"
-                                selected={startDate}
-                                onChange={(date) => setStartDate(date)}
-                                dateFormat="yyyy/MM/dd"
-                            />
-                            <label htmlFor="end-date">End Date:</label>
-                            <DatePicker
-                                id="end-date"
-                                selected={endDate}
-                                onChange={(date) => setEndDate(date)}
-                                dateFormat="yyyy/MM/dd"
-                            />
-                        </div>
-                        <div className="dashboard-combobox">
-                            <label htmlFor="dashboard-select">Select Data:</label>
-                            <select id="dashboard-select" value={selectedOption} onChange={handleSelectionChange}>
-                                <option value="patients">Number of Patients</option>
-                                <option value="appointments">Number of Appointments</option>
-                                <option value="diseases">Common Diseases</option>
-                                <option value="frequency">Appointment Frequency</option>
-                            </select>
-                        </div>
+                    {/* Analysis Cards */}
+                    <div className="dashboard-row analysis-cards">
+                        <AnalysisCard title="Analysis" percentage={25} />
+                        <AnalysisCard title="Analysis" percentage={50} />
+                        <AnalysisCard title="Analysis" percentage={75} />
+                        <AnalysisCard title="Analysis" percentage={100} />
                     </div>
 
-                    <div className="dashboard-chart">
-                        {selectedOption === 'patients' && <Bar data={dataOptions.patients} />}
-                        {selectedOption === 'appointments' && <Bar data={dataOptions.appointments} />}
-                        {selectedOption === 'diseases' && <Pie data={dataOptions.diseases} />}
-                        {selectedOption === 'frequency' && <Bar data={dataOptions.frequency} />}
+                    {/* Line Chart Section */}
+                    <div className="chart-section">
+                        <h2>Daily Charts</h2>
+                        <LineChart />
+                    </div>
+
+                    {/* Bar and Radar Charts */}
+                    <div className="dashboard-row charts-group">
+                        <BarChart />
+                        <RadarChart />
+                    </div>
+
+                    {/* Progress Bars */}
+                    <div className="progress-section">
+                        <ProgressBar label="Activity" value={60} />
+                        <ProgressBar label="Completion" value={50} />
                     </div>
                 </div>
             </DefaultLayoutAdmin>
         </SidebarProvider>
-
     );
 };
 
+// AnalysisCard Component
+const AnalysisCard = ({ title, percentage }) => (
+    <div className="analysis-card">
+        <h3>{title}</h3>
+        <div className="circle">{percentage}%</div>
+        <p>Lorem ipsum dolor sit amet.</p>
+    </div>
+);
+
+// LineChart Component
+const LineChart = () => {
+    const data = {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+        datasets: [
+            {
+                label: 'Daily Data',
+                data: [65, 59, 80, 81, 56, 55, 40],
+                fill: true,
+                backgroundColor: 'rgba(75,192,192,0.2)',
+                borderColor: 'rgba(75,192,192,1)',
+            },
+        ],
+    };
+    return <Line data={data} />;
+};
+
+// BarChart Component
+const BarChart = () => {
+    const data = {
+        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        datasets: [
+            {
+                label: 'Votes',
+                data: [12, 19, 3, 5, 2, 3],
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1,
+            },
+        ],
+    };
+    return <Bar data={data} />;
+};
+
+// RadarChart Component
+const RadarChart = () => {
+    const data = {
+        labels: ['Running', 'Swimming', 'Eating', 'Cycling'],
+        datasets: [
+            {
+                label: 'Skills',
+                data: [20, 10, 4, 2],
+                backgroundColor: 'rgba(34, 202, 236, .2)',
+                borderColor: 'rgba(34, 202, 236, 1)',
+            },
+        ],
+    };
+    return <Radar data={data} />;
+};
+
+// ProgressBar Component
+const ProgressBar = ({ label, value }) => (
+    <div className="progress-bar">
+        <label>{label}</label>
+        <div className="progress">
+            <div className="progress-fill" style={{ width: `${value}%` }}></div>
+        </div>
+        <span>{value}%</span>
+    </div>
+);
+
 export default Dashboard;
+

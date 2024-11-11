@@ -15,7 +15,7 @@ import ShowComment from './ShowComment';
 import ShowMore from './ShowMore';
 import ReactionMenu from './ReactionMenu';
 
-const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelete }) => {
+const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelete, onClickShowFormRejected }) => {
     const user = JSON.parse(localStorage.getItem('user'));
     const [post, setPost] = useState({});
     const [liked, setLiked] = useState(false);
@@ -430,6 +430,9 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
             toast.error('Cấp quyền bài viết thất bại');
         }
     };
+
+
+    
     return (
         <div className="center-user-home-post">
             <div className="center-user-home-post-header">
@@ -689,7 +692,7 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
                                     </button>
                                 </td>
                                 <td>
-                                    <button className='center-user-home-post-footer-browser-body-button-deny' onClick={() => handlePublishPost(itemPost._id, "REJECTED")}>
+                                    <button className='center-user-home-post-footer-browser-body-button-deny' onClick={onClickShowFormRejected}>
                                         <span>Từ chối</span>
                                     </button>
                                 </td>
@@ -704,3 +707,7 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
 }
 
 export default ItemPostUserHome;
+
+
+
+//() => handlePublishPost(itemPost._id, "REJECTED")
