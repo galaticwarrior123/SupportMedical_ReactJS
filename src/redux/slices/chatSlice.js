@@ -19,7 +19,6 @@ export const getUnreadCount = createAsyncThunk(
     "chat/getUnreadCount",
     async () => {
         const response = await ChatAPI.getUnreadCount();
-        console.log('getUnreadCount', response.data);
         return response.data;
     }
 );
