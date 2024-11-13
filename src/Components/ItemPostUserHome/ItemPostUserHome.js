@@ -461,9 +461,9 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
                     </div>
                     <div className="center-user-home-post-date">
                         <span>{formattedTime}</span>
-                        {location.pathname === '/profile/' + itemPost.author._id && (
+                        {/* {location.pathname === '/profile/' + itemPost.author._id && (
                             <span className="center-user-home-post-privacy"><FontAwesomeIcon icon={faEarth} style={{ color: 'gray' }} /> Công khai</span>
-                        )}
+                        )} */}
                     </div>
                 </div>
 

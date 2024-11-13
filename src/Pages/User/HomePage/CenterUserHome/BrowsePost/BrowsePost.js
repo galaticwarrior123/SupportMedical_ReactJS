@@ -39,16 +39,21 @@ const BrowsePost = () => {
                 <div className="browsePost">
                     <div className="browsePost_list">
                         {
-                            posts.map((post, index) => (
-                                post.status === "PENDING" &&
-                                post.tags.some(tag => tag._id === user.doctorInfo.specialities[0]) &&
-                                <ItemPostUserHome key={index} itemPost={post} onDelete={() => {
-                                    setPosts(posts.filter(item => item._id !== post._id));
-                                }} onClickShowFormRejected={() => {
-                                    setRejectedPostId(post._id);
-                                    setIsShowFormRejected(true);
-                                }} />
-                            ))
+                            posts.length > 0 ? (
+                                posts.map((post, index) => (
+                                    post.status === "PENDING" &&
+                                    post.tags.some(tag => tag._id === user.doctorInfo.specialities[0]) &&
+                                    <ItemPostUserHome key={index} itemPost={post} onDelete={() => {
+                                        setPosts(posts.filter(item => item._id !== post._id));
+                                    }} onClickShowFormRejected={() => {
+                                        setRejectedPostId(post._id);
+                                        setIsShowFormRejected(true);
+                                    }} />
+                                ))
+                            ) : (
+                                <div>Không có bài viết nào</div>
+                            )
+                            
                         }
                     </div>
                 </div>

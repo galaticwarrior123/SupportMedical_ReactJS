@@ -43,7 +43,16 @@ const LeftUserHome = () => {
                 </div>
             </div>
             <div className="left-user-home-footer">
-
+                <div className="left-user-home-footer-header">
+                    <span>Liên hệ</span>
+                </div>
+                <div className="left-user-home-footer-content">
+                    <div className="left-user-home-footer-content-item">
+                        <span>Hotline: 1900 1234</span>
+                        <span>Email: Clinic@imail.edu.vn</span>
+                        <span>Địa chỉ: 1 Võ Văn Ngân, Thủ Đức, TP.HCM</span>
+                    </div>
+                </div>
             </div>
         </div>
     )

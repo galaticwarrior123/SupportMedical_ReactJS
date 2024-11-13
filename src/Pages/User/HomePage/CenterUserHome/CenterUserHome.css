@@ -59,3 +59,37 @@
     font-weight: 600;
     color: #020202;
 }
+
+
+@media screen and (max-width: 768px){
+    .center-user-home{
+        left: 0;
+        right: 0;
+    }
+    .center-user-home-activity{
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .center-user-home-activity img{
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+    .center-user-home-activity-input{
+        width: 100%;
+    }
+    .center-user-home-listPost{
+        width: 100%;
+    }
+    .center-user-home-no-post span{
+        font-size: 16px;
+    }
+
+    .center-user-home-activity img{
+       display: none;
+    }
+
+    .center-user-home-activity-input{
+        padding: 0;
+    }
+    
+}

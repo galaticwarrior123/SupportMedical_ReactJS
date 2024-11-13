@@ -95,11 +95,57 @@
     outline: none;
 }
 
-.left-user-home-footer{
+.left-user-home-footer {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     background-color: #F7EEDD;
-    height: 28%;
+    height: 20%;
     border-radius: 18px;
+    padding: 15px 20px;
+}
+
+.left-user-home-footer-header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.left-user-home-footer-header span {
+    font-size: 18px;
+    font-weight: 700;
+    font-family: 'Roboto', sans-serif;
+    color: #333;
+}
+
+.left-user-home-footer-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.left-user-home-footer-content-item span {
+    display: block;
+    font-size: 14px;
+    font-family: 'Roboto', sans-serif;
+    color: #333;
+    margin: 5px 0;
+    line-height: 1.5;
+}
+
+.left-user-home-footer-content-item span:hover {
+    color: #41C9E2;
+}
+
+
+
+
+@media screen and (max-width: 768px){
+    .left-user-home{
+        display: none;
+    }
+    
 }

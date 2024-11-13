@@ -67,7 +67,7 @@ const ProfileUserPage = () => {
                     </div>
                     <div className="right-side-profile">
                         {listPostUser.length > 0 ? listPostUser.map((post) => (
-                            <ItemPostUserHome key={post._id} itemPost={post} currentUser={currentUser} onDelete={handlePostDelete}/>
+                            post.status === "PUBLISHED" && <ItemPostUserHome key={post._id} itemPost={post} currentUser={currentUser} onDelete={handlePostDelete}/>
                         )) : <div className="no-post">
                             <span>Chưa có bài viết nào</span>
                         </div>}

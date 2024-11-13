@@ -170,3 +170,11 @@
     font-weight: 500;
     margin-left: 10px;
 }
+
+
+@media screen and (max-width: 768px){
+    .right-user-home{
+        display: none;
+    }
+    
+}

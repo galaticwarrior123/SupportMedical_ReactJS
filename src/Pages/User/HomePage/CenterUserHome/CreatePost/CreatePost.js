@@ -33,7 +33,7 @@ const CreatePost = ({ handleCloseFullScreen }) => {
         const formData = new FormData();
         formData.append('title', title);
         formData.append('content', content);
-        
+
         if (selectedDepartment === 'all') {
             // Nếu chọn tất cả, thêm tất cả department
             departments.forEach((department) => { listTag.push(department._id); });
@@ -50,8 +50,12 @@ const CreatePost = ({ handleCloseFullScreen }) => {
 
         try {
             await PostAPI.createPost(formData);
-            toast.success('Đăng bài viết thành công!');
-            alert('Đăng bài viết thành công!');
+            if (user.roles.includes('DOCTOR')) {
+                PostAPI.updatePost(user._id, { status: 'PUBLISHED' });
+                toast.success('Đăng bài viết thành công!');
+            } else {
+                toast.success('Bài viết của bạn đang chờ duyệt!');
+            }
             setSelectedDepartment('');
             setImages([]);
             setTitle('');
