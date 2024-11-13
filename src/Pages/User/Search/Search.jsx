@@ -8,8 +8,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import UserSearchItem from './UserSearchItem/UserSearchItem';
 import ItemPostUserHome from '../../../Components/ItemPostUserHome/ItemPostUserHome';
 import { useAuth } from '../../../context/AuthProvider';
-import { performSearch, setActiveTab, setPostFilter, setSearchQuery, setUserFilter } from '../../../redux/slices/searchSlice';
+import { performSearch, setActiveTab, setPostFilter, setSearchQuery, setUserFilter, setUserResults } from '../../../redux/slices/searchSlice';
 import SearchFilter from './SearchFilter/SearchFilter';
+import { UserAPI } from '../../../API/UserAPI';
 
 const Search = () => {
     const dispatch = useDispatch();
@@ -35,6 +36,22 @@ const Search = () => {
         }
     }, [dispatch]);
 
+    const followUser = (userId) => {
+        UserAPI.followUser(userId)
+            .then(() => {
+                const updatedUserResults = userResults.map((user) => {
+                    if (user._id === userId) {
+                        return { ...user, isFollowing: !user.isFollowing };
+                    }
+                    return user;
+                });
+                dispatch(setUserResults(updatedUserResults));
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }
+
     return (
         <DefaultLayout>
             <div className='search-page'>
@@ -56,7 +73,7 @@ const Search = () => {
                     ) : (
                         <div className='search-results'>
                             {userResults.map((user) => (
-                                <UserSearchItem key={user._id} user={user} />
+                                <UserSearchItem followUser={followUser} key={user._id} user={user} />
                             ))}
                         </div>
                     )

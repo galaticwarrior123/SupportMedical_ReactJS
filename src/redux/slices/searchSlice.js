@@ -60,6 +60,9 @@ const searchSlice = createSlice({
         setUserFilter: (state, action) => {
             state.userFilter = action.payload;
         },
+        setUserResults: (state, action) => {
+            state.userResults = action.payload;
+        }
     },
     extraReducers: (builder) => {
         builder.addCase(searchPosts.fulfilled, (state, action) => {
@@ -71,6 +74,6 @@ const searchSlice = createSlice({
     }
 });
 
-export const { setActiveTab, setSearchQuery, setPostFilter, setUserFilter } = searchSlice.actions;
+export const { setActiveTab, setSearchQuery, setPostFilter, setUserFilter, setUserResults } = searchSlice.actions;
 
 export default searchSlice.reducer;
