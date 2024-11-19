@@ -16,6 +16,7 @@ const CreatePost = ({ handleCloseFullScreen }) => {
     const [selectedDepartment, setSelectedDepartment] = useState('all'); // Lưu ID của department hoặc "all"
     const [dropdownOpen, setDropdownOpen] = useState(false);
 
+
     useEffect(() => {
         const fetchDepartments = async () => {
             try {
@@ -33,15 +34,20 @@ const CreatePost = ({ handleCloseFullScreen }) => {
         const formData = new FormData();
         formData.append('title', title);
         formData.append('content', content);
+        formData.append('author', user._id);
 
-        if (selectedDepartment === 'all') {
-            // Nếu chọn tất cả, thêm tất cả department
-            departments.forEach((department) => { listTag.push(department._id); });
-            console.log(listTag);
-            formData.append('tags', listTag);
+        if (user.roles.includes('DOCTOR')) {
+            formData.append('tags', user.doctorInfo.specialities[0]);
         } else {
-            // Nếu không, chỉ thêm department đã chọn
-            formData.append('tags', selectedDepartment);
+
+            if (selectedDepartment === 'all') {
+                // Nếu chọn tất cả, thêm tất cả department
+                departments.forEach((department) => { listTag.push(department._id); });
+                formData.append('tags', listTag);
+            } else {
+                // Nếu không, chỉ thêm department đã chọn
+                formData.append('tags', selectedDepartment);
+            }
         }
 
         images.forEach((file) => {
@@ -51,10 +57,10 @@ const CreatePost = ({ handleCloseFullScreen }) => {
         try {
             await PostAPI.createPost(formData);
             if (user.roles.includes('DOCTOR')) {
-                PostAPI.updatePost(user._id, { status: 'PUBLISHED' });
-                toast.success('Đăng bài viết thành công!');
-            } else {
-                toast.success('Bài viết của bạn đang chờ duyệt!');
+                toast.success('Đăng bài viết thành công! Bài viết của bạn sẽ được duyệt trước khi hiển thị.');
+            }
+            else {
+                toast.success('Bài viết chờ duyệt!');
             }
             setSelectedDepartment('');
             setImages([]);
@@ -108,17 +114,19 @@ const CreatePost = ({ handleCloseFullScreen }) => {
                     <input type="text" placeholder="Tiêu đề" onChange={(e) => setTitle(e.target.value)} />
                     <textarea placeholder="Nội dung" onChange={(e) => setContent(e.target.value)} />
 
-                    <div className="create-post-body-content-checkbox">
-                        <p>Chọn chủ đề:</p>
-                        <div className="create-post-body-content-checkbox-list">
-                            <select className="create-post-body-content-checkbox-list-select" onChange={(e) => setSelectedDepartment(e.target.value)}>
-                                <option value={"all"}>Tất cả</option>
-                                {departments.map((department) => (
-                                    <option key={department._id} value={department._id}>{department.name}</option>
-                                ))}
-                            </select>
+                    {!user.roles.includes('DOCTOR') && (
+                        <div className="create-post-body-content-checkbox">
+                            <p>Chọn chủ đề:</p>
+                            <div className="create-post-body-content-checkbox-list">
+                                <select className="create-post-body-content-checkbox-list-select" onChange={(e) => setSelectedDepartment(e.target.value)}>
+                                    <option value={"all"}>Tất cả</option>
+                                    {departments.map((department) => (
+                                        <option key={department._id} value={department._id}>{department.name}</option>
+                                    ))}
+                                </select>
+                            </div>
                         </div>
-                    </div>
+                    )}
 
                     <p>Thêm ảnh:</p>
                     <div className="create-post-body-listImage">

@@ -5,7 +5,6 @@ import CreatePost from './CreatePost/CreatePost';
 import PostAPI from '../../../../API/PostAPI';
 import 'react-toastify/dist/ReactToastify.css';
 import { toast } from 'react-toastify';
-import RejectedPost from './RejectedPost/RejectedPost';
 
 const CenterUserHome = ({ isDetailDayOpen }) => {
     const [isCreatePost, setIsCreatePost] = useState(false);

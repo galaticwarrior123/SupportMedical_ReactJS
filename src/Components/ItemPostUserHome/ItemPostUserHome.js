@@ -14,6 +14,7 @@ import CommentAPI from '../../API/CommentAPI';
 import ShowComment from './ShowComment';
 import ShowMore from './ShowMore';
 import ReactionMenu from './ReactionMenu';
+import { DepartmentAPI } from '../../API/DepartmentAPI';
 
 const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelete, onClickShowFormRejected }) => {
     const user = JSON.parse(localStorage.getItem('user'));
@@ -41,6 +42,20 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
     const images = itemPost?.images || [];
     const [tags, setTags] = useState(itemPost?.tags || []);
     const reactionsMenuRef = useRef(null);
+    const [listDepartment, setListDepartment] = useState([]);
+
+
+    useEffect(() => {
+        const fetchDepartments = async () => {
+            try {
+                const response = await DepartmentAPI.getAll();
+                setListDepartment(response.data);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        fetchDepartments();
+    }, []);
 
     useEffect(() => {
         const numberOfInteracts = likedByUsers.length + lovedByUsers.length + surprisedByUsers.length;
@@ -432,7 +447,6 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
     };
 
 
-    
     return (
         <div className="center-user-home-post">
             <div className="center-user-home-post-header">
@@ -469,13 +483,30 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
 
             </div>
             {showPostDetail && <PostDetail handleCloseFullScreen={handleCloseFullScreen} itemPost={post} />}
+            <div className="center-user-home-post-categories">
+                {tags.length === listDepartment.length ? (
+                    <span className="center-user-home-post-category cate1">Tất cả</span>
+                ) : (
+                    tags.map((tag, index) => (
+                        <span key={index} className="center-user-home-post-category cate1">{tag.name}</span>
+                    ))
+                )}
+
+
+            </div>
             {location.pathname === '/post/' + itemPost._id ? (
                 <>
-                    <div className="center-user-home-post-categories">
-                        {tags.map((tag, index) => (
-                            <span key={index} className="center-user-home-post-category cate1">{tag.name}</span>
-                        ))}
-                    </div>
+                    {/* <div className="center-user-home-post-categories">
+                        {tags.length === listDepartment.length ? (
+                            <span className="center-user-home-post-category cate1">Tất cả</span>
+                        ) : (
+                            tags.map((tag, index) => (
+                                <span key={index} className="center-user-home-post-category cate1">{tag.name}</span>
+                            ))
+                        )}
+
+
+                    </div> */}
                     <div className='center-user-home-post-content-title-detail'>
                         <div className="center-user-home-post-content-detail" style={{ whiteSpace: 'pre-line' }}>
                             <span>{itemPost.content}</span>
@@ -488,11 +519,15 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
 
             ) : (
                 <>
-                    <div className="center-user-home-post-categories">
-                        {tags.map((tag, index) => (
-                            <span key={index} className="center-user-home-post-category cate1">{tag.name}</span>
-                        ))}
-                    </div>
+                    {/* <div className="center-user-home-post-categories">
+                        {tags.length === listDepartment.length ? (
+                            <span className="center-user-home-post-category cate1">Tất cả</span>
+                        ) : (
+                            tags.map((tag, index) => (
+                                <span key={index} className="center-user-home-post-category cate1">{tag.name}</span>
+                            ))
+                        )}
+                    </div> */}
 
                     <div className="center-user-home-post-title">
                         {isPostDetail ? (

@@ -16,7 +16,6 @@ const ProfileUserPage = () => {
     const [user, setUser] = useState({});
     const [currentUser, setCurrentUser] = useState(JSON.parse(localStorage.getItem('user')));
     const user_id = location.pathname.split('/')[2];
-    
 
     useEffect(() => {
         fetchUserById();
@@ -36,7 +35,8 @@ const ProfileUserPage = () => {
     const fetchPostByUserId = async () => {
         try {
             const response = await PostAPI.getPostByUserId(user_id);
-            const sortedListPost = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            const filteredListPost = response.data.filter(post => post.status === "PUBLISHED");
+            const sortedListPost = filteredListPost.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
             setListPostUser(sortedListPost);
         } catch (error) {
             console.error(error);
@@ -67,7 +67,7 @@ const ProfileUserPage = () => {
                     </div>
                     <div className="right-side-profile">
                         {listPostUser.length > 0 ? listPostUser.map((post) => (
-                            post.status === "PUBLISHED" && <ItemPostUserHome key={post._id} itemPost={post} currentUser={currentUser} onDelete={handlePostDelete}/>
+                            <ItemPostUserHome key={post._id} itemPost={post} currentUser={currentUser} onDelete={handlePostDelete}/>
                         )) : <div className="no-post">
                             <span>Chưa có bài viết nào</span>
                         </div>}
