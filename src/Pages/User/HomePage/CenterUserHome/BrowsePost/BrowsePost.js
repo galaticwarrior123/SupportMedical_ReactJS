@@ -10,16 +10,15 @@ const BrowsePost = () => {
     const [isShowFormRejected, setIsShowFormRejected] = useState(false);
     const [rejectedPostId, setRejectedPostId] = useState('');
     useEffect(() => {
-        
         fetchPosts();
     }, []);
 
     const fetchPosts = async () => {
         try {
             const response = await PostAPI.getAllPost();
-            const sortedListPost = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            const pendingPosts = response.data.filter(post => post.status === "PENDING" && post.tags.some(tag => tag._id === user.doctorInfo.specialities[0]));
+            const sortedListPost = pendingPosts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
             setPosts(sortedListPost);
-            console.log(sortedListPost[0].tags)
         } catch (error) {
             console.log(error);
         }
@@ -41,8 +40,6 @@ const BrowsePost = () => {
                         {
                             posts.length > 0 ? (
                                 posts.map((post, index) => (
-                                    post.status === "PENDING" &&
-                                    post.tags.some(tag => tag._id === user.doctorInfo.specialities[0]) &&
                                     <ItemPostUserHome key={index} itemPost={post} onDelete={() => {
                                         setPosts(posts.filter(item => item._id !== post._id));
                                     }} onClickShowFormRejected={() => {
@@ -51,7 +48,9 @@ const BrowsePost = () => {
                                     }} />
                                 ))
                             ) : (
-                                <div>Không có bài viết nào</div>
+                                <div className='no-post-permission'>
+                                    <span>Không có bài viết nào</span>
+                                </div>
                             )
                             
                         }

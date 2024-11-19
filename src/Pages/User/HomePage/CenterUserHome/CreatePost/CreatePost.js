@@ -49,13 +49,21 @@ const CreatePost = ({ handleCloseFullScreen }) => {
         });
 
         try {
-            await PostAPI.createPost(formData);
+            const newPost = await PostAPI.createPost(formData);
+
+            // Kiểm tra quyền của user
             if (user.roles.includes('DOCTOR')) {
-                PostAPI.updatePost(user._id, { status: 'PUBLISHED' });
-                toast.success('Đăng bài viết thành công!');
+                // Nếu user là DOCTOR, cập nhật trạng thái bài viết
+                if (newPost && newPost._id) {
+                    await PostAPI.updatePost(newPost._id, { status: 'PUBLISHED' });
+                    toast.success('Đăng bài viết thành công!');
+                } else {
+                    toast.error('Không thể cập nhật trạng thái bài viết!');
+                }
             } else {
                 toast.success('Bài viết của bạn đang chờ duyệt!');
             }
+
             setSelectedDepartment('');
             setImages([]);
             setTitle('');
