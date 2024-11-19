@@ -1,5 +1,5 @@
 import "./RejectedPost.css";
-import PostAPI from "../../../../../API/PostAPI";
+import PostAPI from "../../../../API/PostAPI";
 import { useState } from "react";
 
 

@@ -3,7 +3,8 @@ import ItemPostUserHome from '../../../../Components/ItemPostUserHome/ItemPostUs
 import { useState, useEffect } from 'react';
 import PostAPI from '../../../../API/PostAPI';
 import DefaultLayout from '../../../../Layouts/DefaultLayout/DefaultLayout';
-import RejectedPost from '../../HomePage/CenterUserHome/RejectedPost/RejectedPost';
+import RejectedPost from '../RejectedPost/RejectedPost';
+
 const BrowsePost = () => {
     const [posts, setPosts] = useState([]);
     const user = JSON.parse(localStorage.getItem("user"));
