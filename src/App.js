@@ -16,8 +16,9 @@ import DoctorManage from './Pages/Admin/DoctorManage/DoctorManage';
 import Appointment from './Pages/User/Appointment/Appointment';
 import Call from './Pages/User/Call/Call';
 import Post from './Pages/User/Post/Post';
-import BrowsePost from './Pages/User/HomePage/CenterUserHome/BrowsePost/BrowsePost';
+
 import Search from './Pages/User/Search/Search';
+import BrowsePost from './Pages/User/DoctorPage/BrowsePost/BrowsePost';
 const ROLES = {
   'CLIENT': 'CLIENT',
   'DOCTOR': 'DOCTOR',
