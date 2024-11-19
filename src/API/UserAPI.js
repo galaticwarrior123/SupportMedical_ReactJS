@@ -10,7 +10,7 @@ export class UserAPI {
     }
 
     static async searchUserByFilter(filter) {
-        return axiosClient.get('/user/search', {
+        return axiosPrivate.get('/user/search', {
             params: {
                 query: filter.searchQuery,
                 isDoctor: filter.isDoctor,
