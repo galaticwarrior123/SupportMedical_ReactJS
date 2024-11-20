@@ -41,7 +41,7 @@ const CreateApptFormModal = ({ show, handleClose, handleSendAppt, appt, view = A
             return;
         }
 
-        handleSendAppt({ title, content, date, apptStatus: AppointmentStatus.PENDING });
+        handleSendAppt({ title, content, date: new Date(date), apptStatus: AppointmentStatus.PENDING });
         handleClose();
     }
 

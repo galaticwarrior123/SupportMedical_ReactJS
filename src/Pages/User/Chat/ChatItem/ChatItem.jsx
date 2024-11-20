@@ -10,23 +10,30 @@ const ChatItem = ({ item, onClick, isActive }) => {
     }
 
     return (
-            <div onClick={onClick} className={`chat-item ${item.isRead ? '' : 'unread'} ${isActive ? 'active' : ''}`}>
-                <div className="chat-item-avatar">
-                    <img src={friend.avatar} alt="avatar" />
+        <div onClick={onClick} className={`chat-item ${item.isRead ? '' : 'unread'} ${isActive ? 'active' : ''}`}>
+            <div className="chat-item-avatar">
+                <img src={friend.avatar} alt="avatar" />
+            </div>
+            <div className="chat-item-content">
+                <div className="chat-item-content-title">
+                    <span>{friend.firstName} {friend.lastName}</span>
+                    {
+                        friend?.roles && friend?.roles.includes('DOCTOR') && (
+                            <span className="user-doctor-badge">
+                                <span className="doctor-icon">✔️</span> Bác sĩ
+                            </span>
+                        )
+                    }
                 </div>
-                <div className="chat-item-content">
-                    <div className="chat-item-content-title">
-                        <span>{friend.firstName} {friend.lastName}</span>
-                    </div>
-                    <div className="chat-item-content-last-message">
-                        {item.lastMessage.type === MessageType.TEXT && <span className="chat-item-content-type">{item.lastMessage.content}</span>}
-                        {item.lastMessage.type === MessageType.IMAGE && <span className="chat-item-content-type">{"🖼️"}</span>}
-                        {item.lastMessage.type === MessageType.APPOINTMENT && <span className="chat-item-content-type">{"📅"}</span>}
-                        <span className="chat-item-content-time">{" · " + formatMessageTime(item.lastMessage.createdAt)}
-                        </span>
-                    </div>
+                <div className="chat-item-content-last-message">
+                    {item.lastMessage.type === MessageType.TEXT && <span className="chat-item-content-type">{item.lastMessage.content}</span>}
+                    {item.lastMessage.type === MessageType.IMAGE && <span className="chat-item-content-type">{"🖼️"}</span>}
+                    {item.lastMessage.type === MessageType.APPOINTMENT && <span className="chat-item-content-type">{"📅"}</span>}
+                    <span className="chat-item-content-time">{" · " + formatMessageTime(item.lastMessage.createdAt)}
+                    </span>
                 </div>
             </div>
+        </div>
     )
 }
 

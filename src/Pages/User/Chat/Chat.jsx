@@ -304,14 +304,15 @@ const Chat = () => {
                                 : chats.map((chat) => {
                                     const isActive = selectedChat?._id === chat._id;
                                     return (
-                                        <ChatItem 
+                                        <ChatItem
                                             onClick={
                                                 () => handleChatItemClicked(chat)
-                                            } 
+                                            }
                                             key={chat._id} item={chat}
                                             isActive={isActive}
                                         />
-                                    )}
+                                    )
+                                }
                                 ))
                         }
                     </div>
@@ -326,6 +327,13 @@ const Chat = () => {
                             <div className="chat-header-content">
                                 <div className="chat-header-content-title">
                                     <span>{otherUser?.firstName} {otherUser?.lastName}</span>
+                                    {
+                                        otherUser?.roles && otherUser?.roles.includes('DOCTOR') && (
+                                            <span className="user-doctor-badge">
+                                                <span className="doctor-icon">✔️</span> Bác sĩ
+                                            </span>
+                                        )
+                                    }
                                 </div>
                                 {/* <div className="chat-header-content-status">
                                     <span>Đang hoạt động</span>
