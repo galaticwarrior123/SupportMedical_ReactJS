@@ -38,7 +38,7 @@ const Chat = () => {
     const [loading, setLoading] = useState(false);
     const [hasMore, setHasMore] = useState(true);
 
-    const LIMIT = 10;
+    const LIMIT = 20;
 
 
     const user = JSON.parse(localStorage.getItem('user'));
@@ -80,10 +80,17 @@ const Chat = () => {
         if (!selectedChat) return;
         setLoading(true);
         try {
+            const currentScrollHeight = messageListRef.current.scrollHeight;
             const response = await ChatAPI.getMessagesPagination(selectedChat._id, page, LIMIT);
             setMessages([...messages, ...response.data]);
             if (page === 1) {
-                scrollToBottom();
+                // use setTimeout to wait for the DOM to update
+                setTimeout(() => {
+                    scrollToBottom();
+                }, 0);
+            } else {
+                const newScrollHeight = messageListRef.current.scrollHeight;
+                messageListRef.current.scrollTop = newScrollHeight - currentScrollHeight;
             }
             if (response.data.length < LIMIT) {
                 setHasMore(false);
@@ -127,7 +134,6 @@ const Chat = () => {
     const handleScroll = () => {
         const messageList = messageListRef.current;
         if (messageList.scrollTop === 0) {
-            console.log('load more');
             handleLoadMore();
         }
     }
