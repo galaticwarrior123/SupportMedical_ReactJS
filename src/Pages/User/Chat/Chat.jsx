@@ -82,7 +82,9 @@ const Chat = () => {
         try {
             const currentScrollHeight = messageListRef.current.scrollHeight;
             const response = await ChatAPI.getMessagesPagination(selectedChat._id, page, LIMIT);
-            setMessages([...messages, ...response.data]);
+            // filter out messages that are already in the list
+            const newMessages = response.data.filter((msg) => !messages.find((m) => m._id === msg._id));
+            setMessages([...messages, ...newMessages]);
             if (page === 1) {
                 // use setTimeout to wait for the DOM to update
                 setTimeout(() => {
