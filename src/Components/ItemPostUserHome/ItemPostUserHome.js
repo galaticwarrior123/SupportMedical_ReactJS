@@ -114,9 +114,16 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
 
 
             if (currentUser) {
-                setLiked(postData.likedBy.some(user => user._id === currentUser._id));
-                setLoved(postData.lovedBy.some(user => user._id === currentUser._id));
-                setSurprised(postData.surprisedBy.some(user => user._id === currentUser._id));
+                // kiểm tra bài post có mình thả cảm xúc chưa 
+                if (postData.likedBy.find(user => user._id === currentUser._id)) {
+                    setLiked(true);
+                }
+                if (postData.lovedBy.find(user => user._id === currentUser._id)) {
+                    setLoved(true);
+                }
+                if (postData.surprisedBy.find(user => user._id === currentUser._id)) {
+                    setSurprised(true);
+                }
             }
         } catch (error) {
             console.log(error);
@@ -224,6 +231,7 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
             // Gửi yêu cầu cập nhật lên server
             await PostAPI.reactPost(itemPost._id, data);
 
+            fetchPost();
 
         } catch (error) {
             console.error(error);
@@ -331,6 +339,7 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
         setShowPostDetail(false);
         setShowPostDetailLike(false);
         fetchPost();
+        
     }
 
     const handleSeeDetailLike = () => {

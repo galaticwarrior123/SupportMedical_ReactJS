@@ -4,7 +4,7 @@ import { faCheck, faThumbsUp, faComment, faPaperPlane, faArrowRight, faArrowLeft
 import ItemPostUserHome from '../../../../../Components/ItemPostUserHome/ItemPostUserHome';
 const PostDetail = ({ handleCloseFullScreen, itemPost}) => {
     
-   console.log (itemPost._id);
+   const currentUser = JSON.parse(localStorage.getItem('user'));
 
     return (
         <div className="post-detail" onClick={handleCloseFullScreen}>
@@ -16,7 +16,7 @@ const PostDetail = ({ handleCloseFullScreen, itemPost}) => {
                     </button>
                 </div>
                 <div className="post-detail-body">
-                    <ItemPostUserHome itemPost={itemPost} currentUser={itemPost.author} isPostDetail={true} />
+                    <ItemPostUserHome itemPost={itemPost} currentUser={currentUser} isPostDetail={true} />
                 </div>
 
             </div>
