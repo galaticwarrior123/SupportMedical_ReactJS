@@ -38,7 +38,7 @@ const Chat = () => {
     const [loading, setLoading] = useState(false);
     const [hasMore, setHasMore] = useState(true);
 
-    const LIMIT = 10;
+    const LIMIT = 20;
 
 
     const user = JSON.parse(localStorage.getItem('user'));
@@ -80,10 +80,19 @@ const Chat = () => {
         if (!selectedChat) return;
         setLoading(true);
         try {
+            const currentScrollHeight = messageListRef.current.scrollHeight;
             const response = await ChatAPI.getMessagesPagination(selectedChat._id, page, LIMIT);
-            setMessages([...messages, ...response.data]);
+            // filter out messages that are already in the list
+            const newMessages = response.data.filter((msg) => !messages.find((m) => m._id === msg._id));
+            setMessages([...messages, ...newMessages]);
             if (page === 1) {
-                scrollToBottom();
+                // use setTimeout to wait for the DOM to update
+                setTimeout(() => {
+                    scrollToBottom();
+                }, 0);
+            } else {
+                const newScrollHeight = messageListRef.current.scrollHeight;
+                messageListRef.current.scrollTop = newScrollHeight - currentScrollHeight;
             }
             if (response.data.length < LIMIT) {
                 setHasMore(false);
@@ -127,7 +136,6 @@ const Chat = () => {
     const handleScroll = () => {
         const messageList = messageListRef.current;
         if (messageList.scrollTop === 0) {
-            console.log('load more');
             handleLoadMore();
         }
     }
@@ -304,14 +312,15 @@ const Chat = () => {
                                 : chats.map((chat) => {
                                     const isActive = selectedChat?._id === chat._id;
                                     return (
-                                        <ChatItem 
+                                        <ChatItem
                                             onClick={
                                                 () => handleChatItemClicked(chat)
-                                            } 
+                                            }
                                             key={chat._id} item={chat}
                                             isActive={isActive}
                                         />
-                                    )}
+                                    )
+                                }
                                 ))
                         }
                     </div>
@@ -326,6 +335,13 @@ const Chat = () => {
                             <div className="chat-header-content">
                                 <div className="chat-header-content-title">
                                     <span>{otherUser?.firstName} {otherUser?.lastName}</span>
+                                    {
+                                        otherUser?.roles && otherUser?.roles.includes('DOCTOR') && (
+                                            <span className="user-doctor-badge">
+                                                <span className="doctor-icon">✔️</span> Bác sĩ
+                                            </span>
+                                        )
+                                    }
                                 </div>
                                 {/* <div className="chat-header-content-status">
                                     <span>Đang hoạt động</span>

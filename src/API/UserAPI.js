@@ -2,11 +2,11 @@ import axiosClient, { axiosPrivate } from "./AxiosClient";
 
 export class UserAPI {
     static async findUserByEmail(email) {
-        return axiosClient.get(`/user/find?email=${email}`);
+        return axiosPrivate.get(`/user/find?email=${email}`);
     }
 
     static async searchUser(query) {
-        return axiosClient.get(`/user/search?query=${query}`);
+        return axiosPrivate.get(`/user/search?query=${query}`);
     }
 
     static async searchUserByFilter(filter) {

@@ -76,7 +76,7 @@ const HeaderProfile = ({ user, onUserUpdate, onFollowToggle }) => {
     }
 
     const handleUserUpdated = (updatedUser) => {
-        onUserUpdate(updatedUser); 
+        onUserUpdate(updatedUser);
         fetchUserById();
     }
 
@@ -94,7 +94,19 @@ const HeaderProfile = ({ user, onUserUpdate, onFollowToggle }) => {
                     <img src={userData.avatar} alt="Avatar" />
                 </div>
                 <div className="profile-header-text">
-                    <h2 className="profile-username">{userData.firstName} {userData.lastName}</h2>
+                    <h2 className="profile-username">
+                        {userData.firstName} {userData.lastName}
+                        {userData.roles?.includes('DOCTOR') && (
+                            <>
+                                <span className="user-doctor-badge">
+                                    <span className="doctor-icon">✔️</span> Bác sĩ
+                                </span>
+                                <span className="user-speciality-badge">
+                                    {userData?.doctorInfo?.specialities[0]?.name}
+                                </span>
+                            </>
+                        )}
+                    </h2>
                     <p className="profile-followers">{numberOfFollowers} đang theo dõi</p>
                 </div>
                 <div className="profile-header-actions" style={{ marginLeft: 'auto' }}>

@@ -74,6 +74,12 @@
     border-radius: 10px;
 }
 
+.chat-header-content-title {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
 .chat-header-left:hover {
     cursor: pointer;
     background-color: #e8dece;

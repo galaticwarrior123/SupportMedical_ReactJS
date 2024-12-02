@@ -9,6 +9,7 @@ import { peerConnection } from '../Common/PeerConnection';
 import { useDispatch } from 'react-redux';
 import { fetchNotifications } from '../redux/slices/notificationSlice';
 import { getUnreadCount } from '../redux/slices/chatSlice';
+import { useNavigate } from 'react-router-dom';
 
 const SocketEventListener = () => {
     const dispatch = useDispatch();
@@ -17,6 +18,7 @@ const SocketEventListener = () => {
     const [showCallModal, setShowCallModal] = useState(false);
     const [caller, setCaller] = useState(null);
     const [offer, setOffer] = useState(null);
+    const navigate = useNavigate();
 
     const handleReceiveMessage = (message) => {
         const title = `Bạn có tin nhắn mới từ ${message.sender.lastName}`;
@@ -39,7 +41,13 @@ const SocketEventListener = () => {
         });
 
         if (Notification.permission === 'granted') {
-            new Notification(title, options);
+            const noti = new Notification(title, options);
+            noti.onclick = () => {
+                if (document.visibilityState === 'hidden') {
+                    window.focus();
+                }
+                navigate(`/chat/${message.chat}`);
+            }
         }
 
         dispatch(getUnreadCount());
@@ -48,6 +56,18 @@ const SocketEventListener = () => {
     const handleReceiveCall = async (data) => {
         const { from } = data;
         const callUser = (await UserAPI.getUserById(from)).data;
+        if (Notification.permission === 'granted') {
+            const noti = new Notification(`Cuộc gọi đến từ ${callUser.lastName}`, {
+                body: 'Nhấn để xem',
+                vibrate: [200, 100, 200],
+            });
+
+            noti.onclick = () => {
+                if (document.visibilityState === 'hidden') {
+                    window.focus();
+                }
+            }
+        }
         setCaller(callUser);
         setOffer(data.offer);
         setShowCallModal(true);
@@ -69,7 +89,12 @@ const SocketEventListener = () => {
             });
 
             if (Notification.permission === 'granted') {
-                new Notification(title, options);
+                const noti = new Notification(title, options);
+                noti.onclick = () => {
+                    if (document.visibilityState === 'hidden') {
+                        window.focus();
+                    }
+                }
             }
 
             // fetch notification again on new notification
