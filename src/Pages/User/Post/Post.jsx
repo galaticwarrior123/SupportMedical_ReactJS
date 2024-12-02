@@ -14,6 +14,7 @@ const Post = () => {
         try {
             const fetchPost = async () => {
                 const response = await PostAPI.getPostById(postId);
+                console.log(response.data[0]);
                 setPost(response.data[0]);
             }
             fetchPost();

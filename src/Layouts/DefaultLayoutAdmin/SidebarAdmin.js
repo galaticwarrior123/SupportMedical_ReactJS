@@ -39,7 +39,7 @@ const SidebarAdmin = ({ onMenuClick, activeMenu }) => {
                             <span>Cấp quyền phê duyệt</span>
                         </Link>
                     </li>
-                    <li>
+                    {/* <li>
                         <Link
                             to='/admin/dashboard'
                             className={`menuItemAdmin ${activeMenu === 'Thống kê' ? 'active' : ''}`}
@@ -47,7 +47,7 @@ const SidebarAdmin = ({ onMenuClick, activeMenu }) => {
                             <FontAwesomeIcon icon={faChartBar} />
                             <span>Thống kê</span>
                         </Link>
-                    </li>
+                    </li> */}
                 </ul>
             </nav>
         </aside>

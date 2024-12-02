@@ -7,7 +7,7 @@ import { useState, useEffect } from 'react';
 import CommentAPI from '../../API/CommentAPI';
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
-const ShowComment = ({ listComment }) => {
+const ShowComment = ({ listComment, countComment }) => {
     const [showReplyInputOfMainComment, setShowReplyInputOfMainComment] = useState(null);
     const [expandedReplies, setExpandedReplies] = useState([]);
     const [commentValue, setCommentValue] = useState('');
@@ -53,6 +53,12 @@ const ShowComment = ({ listComment }) => {
     }
 
     const handlePostCommentReply = async (idParent, postId, isReply = false) => {
+
+        if (isReply && !commentReplyValue){
+            toast.error('Vui lòng nhập nội dung bình luận hoặc phản hồi.');
+            return;
+        }
+
         const value = isReply ? commentReplyValue : commentValue;
 
         if (!value) return;
@@ -95,8 +101,10 @@ const ShowComment = ({ listComment }) => {
             };
 
             setAllComment(updateComments(allComment));
-
-
+            setShowReplyInputOfMainComment(null);
+            countComment();
+            
+            
             toast.success('Bình luận thành công');
 
         } catch (error) {
@@ -108,29 +116,31 @@ const ShowComment = ({ listComment }) => {
         try {
             const response = await CommentAPI.likeComment(commentId);
             const updatedComment = response.data;
-
+    
+            // Sử dụng map để tạo một mảng mới hoàn toàn
             const updateComments = (comments) => {
                 return comments.map((comment) => {
                     if (comment._id === commentId) {
                         return {
                             ...comment,
-                            likedBy: updatedComment.likedBy
-                        }
+                            likedBy: [...updatedComment.likedBy], // Cập nhật likedBy từ phản hồi API
+                        };
                     } else if (comment.replies) {
                         return {
                             ...comment,
-                            replies: updateComments(comment.replies)
-                        }
+                            replies: updateComments(comment.replies), // Đệ quy cho replies
+                        };
                     }
                     return comment;
                 });
             };
-
-            setAllComment(updateComments(allComment));
+    
+            const updatedAllComments = updateComments(allComment);
+            setAllComment(updatedAllComments); // Cập nhật toàn bộ danh sách comments
         } catch (error) {
             toast.error('Thích bình luận thất bại');
         }
-    }
+    };
 
     const toggleReplies = (commentId) => {
         if (expandedReplies.includes(commentId)) {
@@ -179,7 +189,7 @@ const ShowComment = ({ listComment }) => {
 
                                 <div className="center-user-home-post-comment-item-content-action-reply-count">
                                     <span >
-                                        {commentLikeCount[reply._id] || 0}
+                                        {reply.likedBy.length || 0}
                                     </span>
                                     <FontAwesomeIcon icon={faThumbsUp} style={{ color: 'blue' }} />
                                 </div>

@@ -19,6 +19,7 @@ import Post from './Pages/User/Post/Post';
 
 import Search from './Pages/User/Search/Search';
 import BrowsePost from './Pages/User/DoctorPage/BrowsePost/BrowsePost';
+import { useEffect } from 'react';
 const ROLES = {
   'CLIENT': 'CLIENT',
   'DOCTOR': 'DOCTOR',
@@ -27,7 +28,6 @@ const ROLES = {
 }
 
 function App() {
-
   return (
     <BrowserRouter>
       <Routes>

@@ -4,9 +4,7 @@ import { faCheck, faThumbsUp, faComment, faPaperPlane, faArrowRight, faArrowLeft
 import ItemPostUserHome from '../../../../../Components/ItemPostUserHome/ItemPostUserHome';
 const PostDetail = ({ handleCloseFullScreen, itemPost}) => {
     
-
-    
-
+   console.log (itemPost._id);
 
     return (
         <div className="post-detail" onClick={handleCloseFullScreen}>

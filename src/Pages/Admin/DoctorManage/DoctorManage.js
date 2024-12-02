@@ -104,20 +104,20 @@ const DoctorManage = () => {
                             <input
                                 type="text"
                                 className="input-search"
-                                placeholder="Tìm kiếm bác sĩ" 
-                                value={searchDoctor} 
+                                placeholder="Tìm kiếm bác sĩ"
+                                value={searchDoctor}
                                 onChange={(e) => setSearchDoctor(e.target.value)}
                             />
                             {/* <div className="input-group-item-icon">
-                                        <button className="search-button">
-                                            <FontAwesomeIcon icon={faSearch} />
-                                        </button>
-                                    </div> */}
+                                <button className="search-button">
+                                    <FontAwesomeIcon icon={faSearch} />
+                                </button>
+                            </div> */}
                         </div>
                     </div>
 
 
-                    
+
                     <div className="doctor-list" style={{ marginTop: '20px' }}>
                         {filteredDoctors.length > 0 ? (
                             filteredDoctors.map((doctor, index) => (
@@ -136,7 +136,6 @@ const DoctorManage = () => {
                                         </div>
                                     </div>
                                     <div className="doctor-approve-button">
-                                        <button className="approve-button">Xem chi tiết</button>
                                         <button className="approve-button remove" onClick={() => handleRemovePermission(doctor._id)}>Xóa quyền phê duyệt</button>
                                     </div>
                                 </div>

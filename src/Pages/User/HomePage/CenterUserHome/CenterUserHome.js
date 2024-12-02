@@ -48,7 +48,7 @@ const CenterUserHome = ({ isDetailDayOpen }) => {
             <div className="center-user-home-activity">
                 <img src={JSON.parse(localStorage.getItem('user')).avatar} alt="avatar" />
                 <div className="center-user-home-activity-input" onClick={handleCreatePost}>
-                    <span>Bạn đang nghĩ gì</span>
+                    <span>Bạn đang cần hỗ trợ gì?</span>
                 </div>
             </div>
             {isCreatePost && (

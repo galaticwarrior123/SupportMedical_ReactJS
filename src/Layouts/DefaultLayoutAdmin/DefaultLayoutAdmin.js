@@ -45,9 +45,9 @@ const DefaultLayoutAdmin = ({ children }) => {
                         <span>{activeMenu}</span>
                     </div>
                     <div className="profileAdmin">
-                        <button className="notification">
+                        {/* <button className="notification">
                             <FontAwesomeIcon icon={faBell} />
-                        </button>
+                        </button> */}
                         <img src={JSON.parse(localStorage.getItem('user')).avatar}  alt="User" className="avatarAdmin" onClick={handleShowProfile} />
                         {showProfile && (
                             <ShowProfileOption handleCloseShowProfile={handleShowProfile} />

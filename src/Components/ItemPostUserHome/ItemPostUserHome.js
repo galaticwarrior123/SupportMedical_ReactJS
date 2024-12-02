@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faThumbsUp, faComment, faPaperPlane, faArrowRight, faArrowLeft, faEarth, faEllipsis, faHeart, faSurprise, faImage, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { formatDistanceToNow, set } from 'date-fns';
 import ShowPostDetailLike from './ShowPostDetailLike';
-import { vi } from 'date-fns/locale';
+import { se, vi } from 'date-fns/locale';
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 import PostAPI from '../../API/PostAPI';
@@ -60,7 +60,6 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
     useEffect(() => {
         const numberOfInteracts = likedByUsers.length + lovedByUsers.length + surprisedByUsers.length;
         setNumberOfInteracts(numberOfInteracts);
-        setLikedByUsers(itemPost.likedBy);
         fetchListComment();
         fetchPost();
 
@@ -94,7 +93,8 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
     const fetchListComment = async () => {
         try {
             const response = await CommentAPI.getCommentByPostId(itemPost._id);
-            setListComment(response.data);
+            setListComment(response.data.comments);
+            setNumberOfComments(response.data.totalComments || 0);
         } catch (error) {
             console.log(error);
         }
@@ -125,7 +125,6 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
 
 
     const handlePostComment = async (postId) => {
-
         const data = new FormData();
         data.append('content', commentContent);
         data.append('userId', user._id);
@@ -135,18 +134,25 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
         }
         try {
             const newComment = await CommentAPI.createComment(data);
+    
+            // cập nhật ngay bình luận mới vào danh sách bình luận
+            setListComment([newComment.data.comment, ...listComment]);
+
+            fetchListComment();
+
+    
+            // Cập nhật số lượng bình luận
+            setNumberOfComments((prevCount) => prevCount + 1);
+    
+            // Reset trạng thái form
             setCommentContent('');
-            setNumberOfComments(numberOfComments + 1);
-            // Update listComment directly with the new comment
-            if (clickComment) {
-                // Insert the new comment at the start of the list
-                setListComment(prevList => [newComment.data, ...prevList]);
-            } else {
-                // Update listComment for the case when comments are not shown
-                setListComment(prevList => [...prevList, newComment.data]);
-            }
+            setSelectedImageComment(null);
+            setShowImageComment(false);
+    
+            // Hiển thị thông báo thành công
             toast.success('Bình luận thành công');
         } catch (error) {
+            // Hiển thị thông báo lỗi
             toast.error('Bình luận thất bại');
         }
     };
@@ -157,7 +163,7 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
         // nếu trường hợp là
         let data = { type: reaction };
         let interactChange = 0; // Biến này theo dõi sự thay đổi số lượng tương tác
-
+        console.log("reaction: ", reaction);
         try {
             // Nếu người dùng đã tương tác với bài viết (like, love, surprise)
             if (reaction === 'love' && loved) {
@@ -167,6 +173,7 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
                 setSurprised(false); // Xóa trạng thái ngạc nhiên
                 setLovedByUsers(prev => prev.filter(user => user._id !== currentUser._id)); // Xóa user khỏi danh sách loved
                 interactChange = -1; // Giảm số lượng tương tác
+                setCurrentReaction(null);
             } else if (reaction === 'like' && liked) {
                 data = { type: null }; // Xóa tương tác
                 setLiked(false); // Trả về nút like nguyên bản
@@ -174,6 +181,7 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
                 setSurprised(false); // Xóa trạng thái ngạc nhiên
                 setLikedByUsers(prev => prev.filter(user => user._id !== currentUser._id)); // Xóa user khỏi danh sách liked
                 interactChange = -1;
+                setCurrentReaction(null);
             } else if (reaction === 'surprise' && surprised) {
                 data = { type: null }; // Xóa tương tác
                 setSurprised(false); // Xóa trạng thái ngạc nhiên
@@ -181,6 +189,7 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
                 setLoved(false); // Xóa trạng thái yêu
                 setSurprisedByUsers(prev => prev.filter(user => user._id !== currentUser._id)); // Xóa user khỏi danh sách surprised
                 interactChange = -1;
+                setCurrentReaction(null);
             } else {
                 // Nếu chưa có tương tác nào, thêm tương tác mới
                 if (reaction === 'like') {
@@ -189,18 +198,21 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
                     interactChange = loved || surprised ? 0 : 1; // Nếu trước đó đã có love hoặc surprise, không tăng số tương tác
                     setLoved(false); // Xóa trạng thái yêu
                     setSurprised(false); // Xóa trạng thái ngạc nhiên
+                    setCurrentReaction(null);
                 } else if (reaction === 'love') {
                     setLoved(true); // Thiết lập trạng thái love
                     setLovedByUsers(prev => [...prev, currentUser]); // Thêm user vào danh sách loved
                     interactChange = liked || surprised ? 0 : 1;
                     setLiked(false); // Xóa trạng thái like
                     setSurprised(false); // Xóa trạng thái ngạc nhiên
+                    setCurrentReaction(null);
                 } else if (reaction === 'surprise') {
                     setSurprised(true); // Thiết lập trạng thái surprise
                     setSurprisedByUsers(prev => [...prev, currentUser]); // Thêm user vào danh sách surprised
                     interactChange = liked || loved ? 0 : 1;
                     setLiked(false); // Xóa trạng thái like
                     setLoved(false); // Xóa trạng thái yêu
+                    setCurrentReaction(null);
                 }
             }
 
@@ -286,6 +298,11 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
             setListComment([...listComment].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
         }
     };
+
+    const handleUpdateCountComment = () => {
+        setNumberOfComments(numberOfComments + 1);
+    };
+
     const handleImageClick = (index) => {
         setSelectedImageIndex(index);
     };
@@ -307,7 +324,7 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
     };
     const handleClickSeeDetail = () => {
         setShowPostDetail(true);
-        fetchPost();
+        //fetchPost();
 
     };
     const handleCloseFullScreen = () => {
@@ -342,6 +359,10 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
     };
 
     const handleSubmit = () => {
+        if (!commentContent) {
+            toast.error('Vui lòng nhập nội dung bình luận hoặc phản hồi.');
+            return;
+        }
         handlePostComment(itemPost._id, commentContent, selectedImageComment);
         setCommentContent("");
         setSelectedImageComment(null);
@@ -704,7 +725,7 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
                             </div>
                             <div className="center-user-home-post-comment-list">
                                 {listComment.length > 0 ? (
-                                    <ShowComment listComment={listComment} />
+                                    <ShowComment listComment={listComment} countComment={handleUpdateCountComment} />
                                 ) : (
                                     <div className="center-user-home-post-comment-list-item">
                                         <span>Không có bình luận nào</span>
