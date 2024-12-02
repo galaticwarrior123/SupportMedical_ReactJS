@@ -96,11 +96,16 @@ const HeaderProfile = ({ user, onUserUpdate, onFollowToggle }) => {
                 <div className="profile-header-text">
                     <h2 className="profile-username">
                         {userData.firstName} {userData.lastName}
-                        {userData.roles?.includes('DOCTOR') ? 
-                            <span className="user-doctor-badge">
-                                <span className="doctor-icon">✔️</span> Bác sĩ
-                            </span> : ''
-                        }
+                        {userData.roles?.includes('DOCTOR') && (
+                            <>
+                                <span className="user-doctor-badge">
+                                    <span className="doctor-icon">✔️</span> Bác sĩ
+                                </span>
+                                <span className="user-speciality-badge">
+                                    {userData?.doctorInfo?.specialities[0]?.name}
+                                </span>
+                            </>
+                        )}
                     </h2>
                     <p className="profile-followers">{numberOfFollowers} đang theo dõi</p>
                 </div>

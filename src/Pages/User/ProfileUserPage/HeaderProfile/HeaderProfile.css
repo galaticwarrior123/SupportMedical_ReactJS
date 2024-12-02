@@ -95,3 +95,12 @@
 .profile-follow-button:hover {
     background-color: #3991e0; /* Darker shade on hover */
 }
+
+.user-speciality-badge {
+    background-color: red;
+    color: #ffffff;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    margin: 0 5px;
+}
