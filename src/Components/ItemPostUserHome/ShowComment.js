@@ -7,7 +7,7 @@ import { useState, useEffect } from 'react';
 import CommentAPI from '../../API/CommentAPI';
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
-const ShowComment = ({ listComment, countComment }) => {
+const ShowComment = ({ listComment, countComment, onClickShowListLikeComment }) => {
     const [showReplyInputOfMainComment, setShowReplyInputOfMainComment] = useState(null);
     const [expandedReplies, setExpandedReplies] = useState([]);
     const [commentValue, setCommentValue] = useState('');
@@ -152,6 +152,11 @@ const ShowComment = ({ listComment, countComment }) => {
     const isLikedByUser = (likes) => {
         return likes.some(like => like === user._id);
     }
+
+    const handleShowLikeComment = (commentId) => {
+        onClickShowListLikeComment(commentId);
+    }
+
     const renderChildComment = (listChildComment, idParent) => {
         const totalReply = replyCount[idParent] || 0;
         const isExpand = expandedReplies.includes(idParent);
@@ -187,7 +192,7 @@ const ShowComment = ({ listComment, countComment }) => {
                                     <button onClick={() => handleShowReplyMainComment(reply._id)}>Trả lời</button>
                                 </div>
 
-                                <div className="center-user-home-post-comment-item-content-action-reply-count">
+                                <div className="center-user-home-post-comment-item-content-action-reply-count" onClick={()=>handleShowLikeComment(reply._id)} >
                                     <span >
                                         {reply.likedBy.length || 0}
                                     </span>
@@ -298,7 +303,7 @@ const ShowComment = ({ listComment, countComment }) => {
                                     <button onClick={() => handleShowReplyMainComment(comment._id)}>Trả lời</button>
                                 </div>
 
-                                <div className="center-user-home-post-comment-item-content-action-reply-count">
+                                <div className="center-user-home-post-comment-item-content-action-reply-count" onClick={() => handleShowLikeComment(comment._id)}>
                                     <span >
                                         {commentLikeCount[comment._id] || 0}
                                     </span>

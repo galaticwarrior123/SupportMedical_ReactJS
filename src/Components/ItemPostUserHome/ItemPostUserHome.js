@@ -15,6 +15,7 @@ import ShowComment from './ShowComment';
 import ShowMore from './ShowMore';
 import ReactionMenu from './ReactionMenu';
 import { DepartmentAPI } from '../../API/DepartmentAPI';
+import ShowMoreListLikeComment from './ShowMoreListLikeComment';
 
 const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelete, onClickShowFormRejected }) => {
     const user = JSON.parse(localStorage.getItem('user'));
@@ -43,7 +44,7 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
     const [tags, setTags] = useState(itemPost?.tags || []);
     const reactionsMenuRef = useRef(null);
     const [listDepartment, setListDepartment] = useState([]);
-
+    const [showListLikeComment, setShowListLikeComment] = useState(false);
 
     useEffect(() => {
         const fetchDepartments = async () => {
@@ -339,6 +340,10 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
         setShowPostDetail(false);
         setShowPostDetailLike(false);
         fetchPost();
+
+        setLiked(false);
+        setLoved(false);
+        setSurprised(false);
         
     }
 
@@ -475,7 +480,11 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
             toast.error('Cấp quyền bài viết thất bại');
         }
     };
-
+    const [commentDetailId, setCommentDetailId] = useState(null);
+    const handleShowMoreLikeComment = (id) => {
+        setShowListLikeComment(!showListLikeComment);
+        setCommentDetailId(id);
+    }
 
     return (
         <div className="center-user-home-post">
@@ -727,6 +736,7 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
                             </div>
                         </div>
                     )}
+                    {showListLikeComment && (<ShowMoreListLikeComment commentId={commentDetailId} handleCloseShowMoreListLikeComment={handleShowMoreLikeComment} />)}
                     {clickComment && (
                         <>
                             <div className="center-user-home-post-comment-title">
@@ -734,7 +744,7 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
                             </div>
                             <div className="center-user-home-post-comment-list">
                                 {listComment.length > 0 ? (
-                                    <ShowComment listComment={listComment} countComment={handleUpdateCountComment} />
+                                    <ShowComment listComment={listComment} countComment={handleUpdateCountComment} onClickShowListLikeComment={handleShowMoreLikeComment} />
                                 ) : (
                                     <div className="center-user-home-post-comment-list-item">
                                         <span>Không có bình luận nào</span>

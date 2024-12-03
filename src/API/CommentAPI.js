@@ -24,6 +24,11 @@ class CommentAPI {
         const url = `/comment/${id}`;
         return axiosPrivate.delete(url);
     }
+
+    static async getCommentById(id) {
+        const url = `/comment/${id}`;
+        return axiosClient.get(url);
+    }
 }
 
 export default CommentAPI;

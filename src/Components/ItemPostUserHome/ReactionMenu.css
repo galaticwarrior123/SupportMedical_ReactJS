@@ -33,7 +33,7 @@
     width:160px;
     justify-content: space-evenly;
     position: absolute;
-    margin-left:28%;
+    left: calc(50% - 80px); /* Đưa menu về giữa */
     transform: translateX(-50%) translateY(20px); /* Bắt đầu từ dưới */
     opacity: 0; /* Ẩn menu khi không hiển thị */
     transition: transform 0.3s ease-out, opacity 0.3s ease-out;

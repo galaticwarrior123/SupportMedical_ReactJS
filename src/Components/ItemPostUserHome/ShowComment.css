@@ -135,6 +135,7 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+
 }
 /* Child comments (replies) styling */
 .center-user-home-post-comment-list-item-child {

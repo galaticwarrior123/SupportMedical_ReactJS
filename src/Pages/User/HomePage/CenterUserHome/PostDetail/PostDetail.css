@@ -27,6 +27,7 @@
     overflow-y: scroll;
     overflow-x: auto;
     margin-top:65px;
+    animation: fadeIn 0.3s ease-out;
 }
 .post-detail-container::-webkit-scrollbar {
     width: 10px;
@@ -196,3 +197,11 @@
     font-size: 1.5rem;
 }
 
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}

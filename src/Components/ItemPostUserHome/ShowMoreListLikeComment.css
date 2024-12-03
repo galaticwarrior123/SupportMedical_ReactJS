@@ -1,0 +1,82 @@
+/* Container bao phủ toàn màn hình */
+.show-more-list-like-comment-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Khung chính hiển thị danh sách */
+.show-more-list-like-comment-header {
+    background-color: #fff;
+    width: 90%;
+    max-width: 500px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    animation: fadeIn 0.3s ease-out;
+}
+
+/* Tiêu đề */
+.show-more-list-like-comment-header span {
+    display: block;
+    padding: 15px;
+    font-size: 18px;
+    font-weight: bold;
+    background-color: #f1f1f1;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+}
+
+/* Danh sách các người thích */
+.show-more-list-like-comment-body {
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 10px;
+}
+
+/* Một mục trong danh sách */
+.show-more-list-like-comment-body-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background-color 0.2s ease;
+}
+
+.show-more-list-like-comment-body-item:hover {
+    background-color: #f9f9f9;
+}
+
+/* Ảnh đại diện */
+.show-more-list-like-comment-body-item img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+    object-fit: cover;
+}
+
+/* Tên người dùng */
+.show-more-list-like-comment-body-item span {
+    font-size: 16px;
+    color: #333;
+}
+
+/* Animation cho popup */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
