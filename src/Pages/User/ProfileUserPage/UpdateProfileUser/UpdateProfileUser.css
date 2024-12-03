@@ -169,3 +169,40 @@
     resize: none;
     font-family: 'Poppins', sans-serif;
 }
+
+
+.update-profile-tabs {
+    display: flex;
+    justify-content: center;
+    border-bottom: 2px solid #ddd;
+    margin-bottom: 20px;
+}
+
+.update-profile-tabs button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    transition: color 0.3s;
+    outline: none;
+}
+
+.update-profile-tabs button.active {
+    color: #007bff;
+    border-bottom: 2px solid #007bff;
+}
+
+.update-profile-tabs button:hover {
+    color: #0056b3;
+}
+
+.tab-content {
+    padding: 20px 0;
+}
+
+.tab-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}

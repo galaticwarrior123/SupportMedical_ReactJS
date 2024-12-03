@@ -42,4 +42,8 @@ export class UserAPI {
     static async getAll () {
         return axiosClient.get('/user/all');
     }
+
+    static async changePassword (data) {
+        return axiosPrivate.put('/user/change-password', data);
+    }
 }
