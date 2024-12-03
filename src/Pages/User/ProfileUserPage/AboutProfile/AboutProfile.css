@@ -20,3 +20,10 @@
     color: #00aaff;
     text-decoration: none;
 }
+
+.about-container-profile pre {
+    font-size: 14px;
+    margin-top: 10px;
+    white-space: pre-wrap;
+    font-family: 'Roboto', sans-serif;
+}

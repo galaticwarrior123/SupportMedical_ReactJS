@@ -112,6 +112,14 @@ const UpdateProfileUser = ({ handleCloseUpdateProfile, fetchByUserId, onUserUpda
                                     </div>
                                 </div>
                             </div>
+                            <div className="update-profile-user-input">
+                                <label>Tiểu sử</label>
+                                <textarea
+                                    placeholder="Tiểu sử"
+                                    value={userUpdate.bio}
+                                    onChange={(e) => setUserUpdate({ ...userUpdate, bio: e.target.value })}
+                                />
+                            </div>
                         </div>
                         <div className="update-profile-user-load-image">
                             <div className="update-profile-user-load-image-body">

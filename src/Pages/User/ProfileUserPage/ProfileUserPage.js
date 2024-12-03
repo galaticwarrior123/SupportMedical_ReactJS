@@ -62,7 +62,7 @@ const ProfileUserPage = () => {
                 <HeaderProfile user={user} onUserUpdate={handleUserUpdate} onFollowToggle={handleFollowToggle}/>
                 <div className="profile-content-profile">
                     <div className="left-side-profile">
-                        <AboutProfile />
+                        <AboutProfile user={user}/>
                         <FollowersProfile user={user} currentUser={currentUser}/>
                     </div>
                     <div className="right-side-profile">

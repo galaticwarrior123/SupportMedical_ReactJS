@@ -1,10 +1,14 @@
 import './AboutProfile.css';
 
 const AboutProfile = ({ user }) => {
+    console.log('user', user);
     return (
         <div className="about-container-profile">
           <h3>Giới thiệu</h3>
-          <p>Lorem ipsum <br/>Chứng chỉ hành nghề - <a href="#">click để xem ảnh</a></p>
+          <pre> <br/>
+          {/* Chứng chỉ hành nghề - <a href="#">click để xem ảnh</a> */}
+            {user.bio ? user.bio : 'Chưa có tiểu sử'}
+          </pre>
         </div>
       );
 }
