@@ -18,6 +18,7 @@ import { DepartmentAPI } from '../../API/DepartmentAPI';
 import ShowMoreListLikeComment from './ShowMoreListLikeComment';
 
 const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelete, onClickShowFormRejected }) => {
+    console.log("itemPost: ", itemPost);
     const user = JSON.parse(localStorage.getItem('user'));
     const [post, setPost] = useState({});
     const [liked, setLiked] = useState(false);
@@ -28,7 +29,7 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
     const [selectedImageIndex, setSelectedImageIndex] = useState(null);
     const [showPostDetail, setShowPostDetail] = useState(false);
     const [numberOfInteracts, setNumberOfInteracts] = useState(itemPost?.likedBy?.length + itemPost?.lovedBy?.length + itemPost?.surprisedBy?.length || 0);
-    const [numberOfComments, setNumberOfComments] = useState(itemPost?.comments?.length || 0);
+    const [numberOfComments, setNumberOfComments] = useState(itemPost?.totalComments || 0);
     const [showPostDetailLike, setShowPostDetailLike] = useState(false);
     const [likedByUsers, setLikedByUsers] = useState(itemPost?.likedBy || []);
     const [lovedByUsers, setLovedByUsers] = useState(itemPost?.lovedBy || []);
@@ -110,7 +111,6 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
             setLikedByUsers(response.data[0].likedBy);
             setLovedByUsers(response.data[0].lovedBy);
             setSurprisedByUsers(response.data[0].surprisedBy);
-            setNumberOfComments(response.data[0].comments.length);
 
 
 
