@@ -24,11 +24,16 @@ const UpdateProfileUser = ({ handleCloseUpdateProfile, fetchByUserId, onUserUpda
 
     const handleUpdateProfile = async () => {
         try {
+            if (!userUpdate.firstName || !userUpdate.lastName || !userUpdate.email || !userUpdate && !userUpdate.dob) {
+                toast.error('Vui lòng điền đầy đủ thông tin');
+                return;
+            }
             const formData = new FormData();
 
             // Thêm các trường từ userUpdate vào formData, ngoại trừ 'avatar'
             for (const key in userUpdate) {
-                if (userUpdate.hasOwnProperty(key) && key !== 'avatar') {
+                // nếu có trường doctorInfo thì không thêm vào formData
+                if (userUpdate.hasOwnProperty(key) && key !== 'avatar' && key !== 'doctorInfo') {
                     formData.append(key, userUpdate[key]);
                 }
             }
@@ -47,9 +52,12 @@ const UpdateProfileUser = ({ handleCloseUpdateProfile, fetchByUserId, onUserUpda
                 fetchByUserId();
                 handleCloseUpdateProfile();
                 window.location.reload();
+            }else{
+                toast.error('Cập nhật thông tin thất bại');
             }
         } catch (error) {
             console.error(error);
+            toast.error('Cập nhật thông tin thất bại');
         }
     };
 

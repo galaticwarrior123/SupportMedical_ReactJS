@@ -110,6 +110,7 @@ const DoctorManage = () => {
     return (
         <SidebarProvider>
             <DefaultLayoutAdmin>
+                {/* {isAddDoctor && <AddDoctor handleClose={handleCloseIsAddDoctor} />} */}
                 <div className="doctor-manage-body">
                     <div className="doctor-manage-add">
                         <div className="filter-container">
