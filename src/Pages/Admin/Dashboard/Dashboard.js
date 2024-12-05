@@ -7,6 +7,7 @@ import { DepartmentAPI } from '../../../API/DepartmentAPI';
 import { Line, Bar, Pie } from 'react-chartjs-2';
 import './Dashboard.css';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, PointElement, LineElement, Title, Tooltip, Legend, RadialLinearScale, ArcElement } from 'chart.js';
+import { AppointmentAPI } from '../../../API/AppointmentAPI';
 
 ChartJS.register(
     CategoryScale,
@@ -28,6 +29,7 @@ const Dashboard = () => {
     const [countPostPending, setCountPostPending] = useState(0);
     const [countPostPublished, setCountPostPublished] = useState(0);
     const [countPostRejected, setCountPostRejected] = useState(0);
+    const [countAppt, setCountAppt] = useState(0);
     const [departments, setDepartments] = useState([]);
     const [postTags, setPostTags] = useState({ tags: [], counts: [] });
     const [chartsVisible, setChartsVisible] = useState({
@@ -136,11 +138,23 @@ const Dashboard = () => {
             }
         };
 
+        const fetchApptCount = async () => {
+            try {
+                const response = await AppointmentAPI.getAllAppointments();
+                if (response.status === 200) {
+                    setCountAppt(response.data.length);
+                }
+            } catch (error) {
+                console.error('Failed to fetch appointment count:', error);
+            }
+        };
+
         fetchDoctorCount();
         fetchUserCount();
         fetchPostCount();
         fetchDepartments();
         fetchPostDataByTag();
+        fetchApptCount();
     }, []);
 
     return (
@@ -152,6 +166,7 @@ const Dashboard = () => {
                         <AnalysisCard title="Số lượng bài viết" percentage={countPost} unit="bài viết" />
                         <AnalysisCard title="Số lượng người dùng" percentage={countUser} unit="người" />
                         <AnalysisCard title="Số lượng bác sĩ" percentage={countDoctor} unit="bác sĩ" />
+                        <AnalysisCard title="Số lượng cuộc hẹn" percentage={countAppt} unit="cuộc hẹn" />
                     </div>
 
                     {/* Line Chart Section */}
