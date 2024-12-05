@@ -21,7 +21,7 @@ const DefaultLayoutAdmin = ({ children }) => {
     // Map paths to menu names
     const menuNames = {
         '/admin/categories': 'Quản lý khoa',
-        '/admin/doctors': 'Quản lý bác sĩ',
+        '/admin/doctors': 'Cấp quyền bác sĩ phê duyệt',
         '/admin/dashboard': 'Thống kê',
         // Add more paths and their corresponding names as needed
     };

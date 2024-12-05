@@ -127,7 +127,7 @@ const DoctorManage = () => {
                                 <option value="unapproved">Chưa phê duyệt</option>
                             </select>
                         </div>
-                        <button className="add-button-doctor" onClick={handleClickAddDoctor}>+ Thêm bác sĩ</button>
+                        {/* <button className="add-button-doctor" onClick={handleClickAddDoctor}>+ Thêm bác sĩ</button> */}
                     </div>
 
                     <div className="input-group">
