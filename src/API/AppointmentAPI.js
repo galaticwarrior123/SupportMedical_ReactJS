@@ -7,4 +7,8 @@ export class AppointmentAPI {
             ...filter
         } });
     }
+
+    static async getAllAppointments() {
+        return axiosPrivate.get('/appointment/all');
+    }
 }
