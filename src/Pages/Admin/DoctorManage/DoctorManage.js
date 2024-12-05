@@ -8,6 +8,7 @@ import AddDoctor from './AddDoctor';
 import { DoctorAPI } from '../../../API/DoctorAPI';
 import ListDoctor from './ListDoctor';
 import { set } from 'date-fns';
+import { toast } from 'react-toastify';
 const DoctorManage = () => {
     const [doctors, setDoctors] = useState([])
     const [filteredDoctors, setFilteredDoctors] = useState([]);
@@ -15,6 +16,8 @@ const DoctorManage = () => {
 
     const [isAddDoctor, setIsAddDoctor] = useState(false);
     const [isAddPermission, setIsAddPermission] = useState(false);
+    const [selectedFilter, setSelectedFilter] = useState('all');
+
 
     useEffect(() => {
 
@@ -39,16 +42,20 @@ const DoctorManage = () => {
             const lowercasedSearch = searchDoctor.toLowerCase();
             const filtered = doctors.filter(doctor => {
                 const fullName = `${doctor.lastName} ${doctor.firstName}`.toLowerCase();
+                const isApproved = doctor.doctorInfo.isPermission === true;
+
                 return (
-                    doctor.doctorInfo.isPermission === true &&
-                    fullName.includes(lowercasedSearch)
+                    fullName.includes(lowercasedSearch) &&
+                    (selectedFilter === 'all' ||
+                        (selectedFilter === 'approved' && isApproved) ||
+                        (selectedFilter === 'unapproved' && !isApproved))
                 );
             });
             setFilteredDoctors(filtered);
         };
 
         filterDoctors();
-    }, [searchDoctor, doctors]);
+    }, [searchDoctor, doctors, selectedFilter]);
 
     const handleClickAddDoctor = () => {
         setIsAddDoctor(true);
@@ -82,22 +89,45 @@ const DoctorManage = () => {
         setIsAddPermission(true);
     }
 
+    const handlePermission = async (doctorId) => {
+        const data = {
+            doctorId: doctorId,
+            isPermission: true
+        };
+        try {
+            const response = await DoctorAPI.permissionDoctor(data);
+            if (response.status === 200) {
+                toast.success('Cấp quyền thành công');
+                setDoctors(doctors.map(doctor => doctor._id === doctorId ? { ...doctor, doctorInfo: { ...doctor.doctorInfo, isPermission: true } } : doctor));
+            }
+        } catch (error) {
+            toast.error('Cấp quyền thất bại');
+        }
+    }
+
+
+
     return (
         <SidebarProvider>
             <DefaultLayoutAdmin>
-                <div className="doctor-manage-body" >
+                <div className="doctor-manage-body">
                     <div className="doctor-manage-add">
-                        <button className="add-button-doctor" onClick={handleClickAddPermission}>+ Thêm bác sĩ phê duyệt</button>
+                        <div className="filter-container">
+                            <div className="search-icon">
+                                <FontAwesomeIcon icon={faSearch} />
+                            </div>
+                            <select
+                                value={selectedFilter}
+                                onChange={(e) => setSelectedFilter(e.target.value)}
+                                className="filter-select"
+                            >
+                                <option value="all">Tất cả</option>
+                                <option value="approved">Đã phê duyệt</option>
+                                <option value="unapproved">Chưa phê duyệt</option>
+                            </select>
+                        </div>
                         <button className="add-button-doctor" onClick={handleClickAddDoctor}>+ Thêm bác sĩ</button>
                     </div>
-                    {isAddPermission && (
-                        <ListDoctor doctors={doctors} handleCloseListDoctors={handleCloseListDoctors} />
-                    )}
-                    {isAddDoctor && (
-                        <AddDoctor handleCloseIsAddDoctor={handleCloseIsAddDoctor} />
-
-
-                    )}
 
                     <div className="input-group">
                         <div className='input-group-body'>
@@ -108,16 +138,8 @@ const DoctorManage = () => {
                                 value={searchDoctor}
                                 onChange={(e) => setSearchDoctor(e.target.value)}
                             />
-                            {/* <div className="input-group-item-icon">
-                                <button className="search-button">
-                                    <FontAwesomeIcon icon={faSearch} />
-                                </button>
-                            </div> */}
                         </div>
                     </div>
-
-
-
                     <div className="doctor-list" style={{ marginTop: '20px' }}>
                         {filteredDoctors.length > 0 ? (
                             filteredDoctors.map((doctor, index) => (
@@ -136,12 +158,26 @@ const DoctorManage = () => {
                                         </div>
                                     </div>
                                     <div className="doctor-approve-button">
-                                        <button className="approve-button remove" onClick={() => handleRemovePermission(doctor._id)}>Xóa quyền phê duyệt</button>
+                                        {doctor.doctorInfo.isPermission ? (
+                                            <button
+                                                className="approve-button remove"
+                                                onClick={() => handleRemovePermission(doctor._id)}
+                                            >
+                                                Xóa quyền phê duyệt
+                                            </button>
+                                        ) : (
+                                            <button
+                                                className="approve-button"
+                                                onClick={() => handlePermission(doctor._id)}
+                                            >
+                                                Cấp quyền phê duyệt
+                                            </button>
+                                        )}
                                     </div>
                                 </div>
                             ))
                         ) : (
-                            <p>Không có bác sĩ nào được cấp quyền kiểm duyệt</p>
+                            <p>Không có bác sĩ nào phù hợp với bộ lọc</p>
                         )}
                     </div>
                 </div>

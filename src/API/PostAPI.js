@@ -26,7 +26,16 @@ class PostAPI {
         const url = `/post/search?userId=${id}`;
         return axiosClient.get(url);
     }
+
+    static async getByDate(month, year) {
+        const url = `/post/getByMonthYear?month=${month}&year=${year}`;
+        return axiosClient.get(url);
+    }
     
+    static async getByTag(){
+        const url = '/post/getByTag';
+        return axiosClient.get(url);
+    }
 
     // static async likePost(id) {
     //     const url = `/post/like/${id}`;

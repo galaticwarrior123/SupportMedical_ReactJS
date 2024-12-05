@@ -1,38 +1,55 @@
 .dashboard-container {
     margin-left: auto; /* Đẩy phần dashboard ra khỏi khu vực của leftpage */
-    padding: 20px;
+    padding: 30px;
     background-color: #f9f9f9;
-    border-radius: 10px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .dashboard-row {
     display: flex;
     gap: 20px;
+    flex-wrap: wrap;
 }
 
 .analysis-cards, .charts-group, .progress-section {
     display: flex;
     gap: 20px;
-    justify-content: space-around;
+    justify-content: space-between;
+    flex-wrap: wrap;
 }
 
 .chart-section {
     padding: 20px;
     border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin-top: 30px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
 .analysis-card {
-    background-color: #f5f5f5;
-    border-radius: 8px;
-    padding: 15px;
-    width: 200px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 20px;
+    width: 220px;
     text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.analysis-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
 }
 
 .circle {
-    font-size: 24px;
+    font-size: 30px;
     color: #4a90e2;
-    margin: 10px 0;
+    font-weight: bold;
+    margin: 15px 0;
 }
 
 .progress-bar {
@@ -45,12 +62,123 @@
     background-color: #e0e0e0;
     border-radius: 5px;
     flex-grow: 1;
-    height: 10px;
+    height: 12px;
     position: relative;
+    overflow: hidden;
 }
 
 .progress-fill {
     background-color: #4a90e2;
     height: 100%;
     border-radius: 5px;
+    transition: width 0.5s ease;
+}
+
+/* Style for the BarChart */
+.chart-section h2 {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.new-section h2 {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.progress {
+    background-color: #f5f5f5;
+}
+
+/* .chart-section {
+    padding: 30px;
+    border-radius: 15px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 10px rgba(5, 5, 5, 0.1);
+} */
+
+.chart-section.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.chart-section.hidden {
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.filter-container {
+    margin-bottom: 20px;
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.filter-container select {
+    padding: 8px 12px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    background-color: #fff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.filter-container select:hover {
+    border-color: #4a90e2;
+}
+
+.filter-container label {
+    font-weight: 500;
+    color: #333;
+}
+
+.dashboard-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+.analysis-cards, .charts-group, .progress-section {
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+
+.pie-chart {
+    padding: 20px;
+    border-radius: 15px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin-top: 30px;
+}
+
+.pie-chart h2 {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: #333;
+    text-align: center;
+}
+
+.pie-chart canvas {
+    display: block;
+    margin: 0 auto; /* Center the pie chart */
+}
+
+.pie-chart-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin-top: 30px;
 }
