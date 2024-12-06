@@ -167,10 +167,13 @@
     justify-content: space-between;
     margin-bottom: 5px;
 }
-
+.center-user-home-post-comment-item-content-text{
+    background-color: #f9f9f9;
+}
 .center-user-home-post-comment-item-content-text pr {
     display: block;
     margin-bottom: 5px;
+    color: black;
 }
 
 .center-user-home-post-comment-item-content-action button {
@@ -182,7 +185,7 @@
 }
 
 .center-user-home-post-comment-item-content-action button:hover {
-    text-decoration: underline;
+    text-decoration: none;
     outline: none;
 }
 

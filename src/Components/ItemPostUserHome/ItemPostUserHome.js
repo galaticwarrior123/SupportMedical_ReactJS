@@ -18,7 +18,6 @@ import { DepartmentAPI } from '../../API/DepartmentAPI';
 import ShowMoreListLikeComment from './ShowMoreListLikeComment';
 
 const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelete, onClickShowFormRejected }) => {
-    console.log("itemPost: ", itemPost);
     const user = JSON.parse(localStorage.getItem('user'));
     const [post, setPost] = useState({});
     const [liked, setLiked] = useState(false);
@@ -95,7 +94,8 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
     const fetchListComment = async () => {
         try {
             const response = await CommentAPI.getCommentByPostId(itemPost._id);
-            setListComment(response.data.comments);
+            const sortedListComment = response.data.comments.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            setListComment(sortedListComment);
             setNumberOfComments(response.data.totalComments || 0);
         } catch (error) {
             console.log(error);
@@ -144,18 +144,13 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
             const newComment = await CommentAPI.createComment(data);
     
             // cập nhật ngay bình luận mới vào danh sách bình luận
-            setListComment([newComment.data.comment, ...listComment]);
+            setListComment((prevListComment) => [newComment.data, ...prevListComment]);
 
             fetchListComment();
 
     
             // Cập nhật số lượng bình luận
             setNumberOfComments((prevCount) => prevCount + 1);
-    
-            // Reset trạng thái form
-            setCommentContent('');
-            setSelectedImageComment(null);
-            setShowImageComment(false);
     
             // Hiển thị thông báo thành công
             toast.success('Bình luận thành công');
@@ -372,8 +367,8 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
         setShowImageComment(false);
     };
 
-    const handleSubmit = () => {
-        if (!commentContent) {
+    const handleSubmitComment = () => {
+        if (!commentContent && !selectedImageComment) {
             toast.error('Vui lòng nhập nội dung bình luận hoặc phản hồi.');
             return;
         }
@@ -719,7 +714,7 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
                                     accept="image/*"
                                     onChange={handleImageUpload}
                                 />
-                                <button onClick={handleSubmit}>
+                                <button onClick={handleSubmitComment}>
                                     <FontAwesomeIcon icon={faPaperPlane} style={{ color: 'silver' }} />
                                 </button>
 

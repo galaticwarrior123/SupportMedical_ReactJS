@@ -1,6 +1,6 @@
 import './ShowComment.css';
 import { formatDistanceToNow, set } from 'date-fns';
-import { vi } from 'date-fns/locale';
+import { tr, vi } from 'date-fns/locale';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane, faThumbsUp, faImage, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { useState, useEffect } from 'react';
@@ -14,10 +14,22 @@ const ShowComment = ({ listComment, countComment, onClickShowListLikeComment }) 
     const [commentReplyValue, setCommentReplyValue] = useState('');
     const [replyCount, setReplyCount] = useState({});
     const [commentLikeCount, setCommentLikeCount] = useState({});
-    const [allComment, setAllComment] = useState([...listComment]);
+    const [allComment, setAllComment] = useState([]);
 
     const [selectedImages, setSelectedImages] = useState({});
     const user = JSON.parse(localStorage.getItem('user'));
+
+    useEffect(() => {
+        try {
+            CommentAPI.getCommentByPostId(listComment[0].postId).then((response) => {
+                const sortedComments = response.data.comments.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                setAllComment(sortedComments);
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    }, [listComment]);
+
 
     useEffect(() => {
         const replyCount = {};
@@ -54,7 +66,7 @@ const ShowComment = ({ listComment, countComment, onClickShowListLikeComment }) 
 
     const handlePostCommentReply = async (idParent, postId, isReply = false) => {
 
-        if (isReply && !commentReplyValue){
+        if (isReply && !commentReplyValue) {
             toast.error('Vui lòng nhập nội dung bình luận hoặc phản hồi.');
             return;
         }
@@ -103,8 +115,8 @@ const ShowComment = ({ listComment, countComment, onClickShowListLikeComment }) 
             setAllComment(updateComments(allComment));
             setShowReplyInputOfMainComment(null);
             countComment();
-            
-            
+
+
             toast.success('Bình luận thành công');
 
         } catch (error) {
@@ -116,7 +128,7 @@ const ShowComment = ({ listComment, countComment, onClickShowListLikeComment }) 
         try {
             const response = await CommentAPI.likeComment(commentId);
             const updatedComment = response.data;
-    
+
             // Sử dụng map để tạo một mảng mới hoàn toàn
             const updateComments = (comments) => {
                 return comments.map((comment) => {
@@ -134,7 +146,7 @@ const ShowComment = ({ listComment, countComment, onClickShowListLikeComment }) 
                     return comment;
                 });
             };
-    
+
             const updatedAllComments = updateComments(allComment);
             setAllComment(updatedAllComments); // Cập nhật toàn bộ danh sách comments
         } catch (error) {
@@ -174,9 +186,7 @@ const ShowComment = ({ listComment, countComment, onClickShowListLikeComment }) 
                                 <span>{formatDistanceToNow(new Date(reply.createdAt), { addSuffix: true, locale: vi })}</span>
                             </div>
                             <div className="center-user-home-post-comment-item-content-text">
-                                <pr>
-                                    {reply.content}
-                                </pr>
+                                {reply.content === '' ? '' : <pr>{reply.content}</pr>}
                             </div>
                             {reply.image && <div className="center-user-home-post-comment-item-content-image">
                                 <img src={reply.image} alt="comment" />
@@ -192,7 +202,7 @@ const ShowComment = ({ listComment, countComment, onClickShowListLikeComment }) 
                                     <button onClick={() => handleShowReplyMainComment(reply._id)}>Trả lời</button>
                                 </div>
 
-                                <div className="center-user-home-post-comment-item-content-action-reply-count" onClick={()=>handleShowLikeComment(reply._id)} >
+                                <div className="center-user-home-post-comment-item-content-action-reply-count" onClick={() => handleShowLikeComment(reply._id)} >
                                     <span >
                                         {reply.likedBy.length || 0}
                                     </span>
@@ -287,11 +297,10 @@ const ShowComment = ({ listComment, countComment, onClickShowListLikeComment }) 
                                 <span>{comment.author.firstName} {comment.author.lastName}</span>
                                 <span>{formatDistanceToNow(new Date(comment.createdAt), { addSuffix: true, locale: vi })}</span>
                             </div>
-                            <div className="center-user-home-post-comment-item-content-text">
-                                <pr>
-                                    {comment.content}
-                                </pr>
-                            </div>
+                            {comment.content === '' ? '' : <div className="center-user-home-post-comment-item-content-text">
+                                <pr>{comment.content}</pr>
+                            </div>}
+                            
                             {comment.image && <div className="center-user-home-post-comment-item-content-image">
                                 <img src={comment.image} alt="comment" />
                             </div>}

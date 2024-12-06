@@ -27,7 +27,7 @@ const Post = () => {
         <DefaultLayout>
             <div className="post-container">
                 <div className="post-container-body">
-                    {post && <ItemPostUserHome itemPost={post} />}
+                    {post && <ItemPostUserHome itemPost={post} currentUser={user} />}
                 </div>
             </div>
         </DefaultLayout>

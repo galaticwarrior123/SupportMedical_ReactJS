@@ -57,9 +57,13 @@ const CategoryManage = () => {
             name: newDepartment
         };
         DepartmentAPI.createDepartment(newCategory).then((response) => {
-            setNewDepartment('');
-            fetchAllSpeciality();
-            toast.success('Thêm mới khoa thành công');
+            if (response.data.error) {
+                toast.error('Khoa đã tồn tại');
+            } else {
+                setNewDepartment('');
+                fetchAllSpeciality();
+                toast.success('Thêm mới khoa thành công');
+            }
         }).catch((error) => {
             toast.error('Lỗi thêm mới khoa');
         });
@@ -146,9 +150,9 @@ const CategoryManage = () => {
 
     const handleDeleteDeparment = (id) => {
         DepartmentAPI.deleteDepartment(id).then((response) => {
-            if(response.data.error){
+            if (response.data.error) {
                 toast.error('Không thể xóa khoa này');
-            }else{
+            } else {
                 fetchAllSpeciality();
                 toast.success('Xóa khoa thành công');
             }
@@ -193,7 +197,7 @@ const CategoryManage = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {paginatedData.length>0 ? (paginatedData.map((item, index) => (
+                            {paginatedData.length > 0 ? (paginatedData.map((item, index) => (
                                 <tr key={item._id}>
                                     <td>{index + 1}</td>
                                     <td>
