@@ -52,8 +52,8 @@ class PostAPI {
         return axiosPrivate.put(url, data);
     }
 
-    static async updatePost(id, data) {
-        const url = `/post/${id}`;
+    static async updateStatusPost(id, data) {
+        const url = `/post/status/${id}`;
         return axiosPrivate.put(url, data);
     }
 

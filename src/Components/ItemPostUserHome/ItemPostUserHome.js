@@ -459,8 +459,12 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
 
 
     const handlePublishPost = async (postId, status) => {
+        if(user.doctorInfo.isPermission === false){ 
+            toast.error('Bạn không có quyền thực hiện chức năng này');
+            return;
+        }
         try {
-            await PostAPI.updatePost(postId, { status: status })
+            await PostAPI.updateStatusPost(postId, { status: status })
                 .then(() => {
                     if (status === 'PUBLISHED') {
                         toast.success('Phê duyệt bài viết thành công');

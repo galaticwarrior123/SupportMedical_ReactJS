@@ -110,7 +110,7 @@ const DoctorManage = () => {
     return (
         <SidebarProvider>
             <DefaultLayoutAdmin>
-                {/* {isAddDoctor && <AddDoctor handleClose={handleCloseIsAddDoctor} />} */}
+                {isAddDoctor && <AddDoctor handleClose={handleCloseIsAddDoctor} />}
                 <div className="doctor-manage-body">
                     <div className="doctor-manage-add">
                         <div className="filter-container">
@@ -127,7 +127,7 @@ const DoctorManage = () => {
                                 <option value="unapproved">Chưa phê duyệt</option>
                             </select>
                         </div>
-                        {/* <button className="add-button-doctor" onClick={handleClickAddDoctor}>+ Thêm bác sĩ</button> */}
+                        <button className="add-button-doctor" onClick={handleClickAddDoctor}>+ Thêm bác sĩ</button>
                     </div>
 
                     <div className="input-group">
@@ -150,7 +150,7 @@ const DoctorManage = () => {
                                             <img src={doctor.avatar} alt="avatar" />
                                         </div>
                                         <div className="doctor-details">
-                                            <p><strong>Họ và tên:</strong> {doctor.lastName} {doctor.firstName}</p>
+                                            <p><strong>Họ và tên:</strong> {doctor.firstName} {doctor.lastName}</p>
                                             <p><strong>Ngày sinh:</strong> {new Date(doctor.dob).toLocaleDateString()}</p>
                                             <p><strong>Chuyên khoa:</strong> {doctor.doctorInfo.specialities.map((speciality, index) => (
                                                 <span key={index}>{speciality.name}</span>
