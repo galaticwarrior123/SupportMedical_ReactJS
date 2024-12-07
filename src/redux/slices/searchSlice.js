@@ -19,7 +19,8 @@ export const searchPosts = createAsyncThunk(
     "search/searchPosts",
     async (filter) => {
         const response = await PostAPI.searchPost(filter);
-        return response.data;
+        const posts = response.data.filter(post => post.status === "PUBLISHED");
+        return posts;
     }
 );
 
