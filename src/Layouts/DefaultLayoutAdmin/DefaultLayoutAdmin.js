@@ -17,7 +17,6 @@ const DefaultLayoutAdmin = ({ children }) => {
     const handleShowProfile = () => {
         setShowProfile(!showProfile);
     }
-
     // Map paths to menu names
     const menuNames = {
         '/admin/categories': 'Quản lý khoa',

@@ -53,12 +53,17 @@ const CategoryManage = () => {
             toast.error('Vui lòng nhập tên khoa');
             return;
         }
+        // nếu mà tên dài quá 50 ký tự thì thông báo lỗi
+        if (newDepartment.length > 50) {
+            toast.error('Tên khoa không được quá 50 ký tự');
+            return;
+        }
         const newCategory = {
             name: newDepartment
         };
         DepartmentAPI.createDepartment(newCategory).then((response) => {
             if (response.data.error) {
-                toast.error('Khoa đã tồn tại');
+                toast.error(response.data.error);
             } else {
                 setNewDepartment('');
                 fetchAllSpeciality();
@@ -151,7 +156,7 @@ const CategoryManage = () => {
     const handleDeleteDeparment = (id) => {
         DepartmentAPI.deleteDepartment(id).then((response) => {
             if (response.data.error) {
-                toast.error('Không thể xóa khoa này');
+                toast.error(response.data.error);
             } else {
                 fetchAllSpeciality();
                 toast.success('Xóa khoa thành công');
