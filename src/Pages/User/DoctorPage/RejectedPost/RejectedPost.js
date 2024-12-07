@@ -23,7 +23,7 @@ const RejectedPost = ({handleCloseFormRejectedPost , postId}) => {
                 status: "REJECTED",
                 reasonRejected: reason
             }
-            await PostAPI.updatePost(id, data);
+            await PostAPI.updateStatusPost(id, data);
             handleCloseFormRejectedPost();
             toast.success('Từ chối bài viết thành công');
         } catch (error) {
