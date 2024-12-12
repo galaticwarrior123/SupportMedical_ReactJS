@@ -9,7 +9,11 @@ import { toast, ToastContainer } from 'react-toastify';
 const UpdateProfileUser = ({ handleCloseUpdateProfile, fetchByUserId, onUserUpdate }) => {
     const [selectedImage, setSelectedImage] = useState(JSON.parse(localStorage.getItem('user')).avatar || null);
     const [fileImage, setFileImage] = useState(null);
-    const [userUpdate, setUserUpdate] = useState(JSON.parse(localStorage.getItem('user')));
+    const user = JSON.parse(localStorage.getItem('user'));
+    const [userUpdate, setUserUpdate] = useState({
+        ...user,
+        bio: user.bio || '',
+    });
     const [activeTab, setActiveTab] = useState('update');
 
     
@@ -33,7 +37,11 @@ const UpdateProfileUser = ({ handleCloseUpdateProfile, fetchByUserId, onUserUpda
             // Thêm các trường từ userUpdate vào formData, ngoại trừ 'avatar'
             for (const key in userUpdate) {
                 // nếu có trường doctorInfo thì không thêm vào formData
-                if (userUpdate.hasOwnProperty(key) && key !== 'avatar' && key !== 'doctorInfo') {
+                if (userUpdate.hasOwnProperty(key) 
+                    && key !== 'avatar' 
+                    && key !== 'doctorInfo'
+                    && key !== 'roles'
+                ) {
                     formData.append(key, userUpdate[key]);
                 }
             }
