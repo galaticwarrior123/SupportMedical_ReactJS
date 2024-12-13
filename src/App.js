@@ -31,7 +31,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route element={<RequireAuth allowedRoles={[ROLES.CLIENT, ROLES.DOCTOR]} />}>
+        <Route element={<RequireAuth allowedRoles={[ROLES.CLIENT, ROLES.DOCTOR, ROLES.ADMIN]} />}>
           <Route path="/" element={<UserHome />} />
           <Route path="/post/:id" element={<Post />} />
           <Route path="/chat" element={<Chat />} />
