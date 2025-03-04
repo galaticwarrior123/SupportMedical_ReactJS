@@ -1,0 +1,91 @@
+.sidebarDoctor {
+    width: 250px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    background-color: #FFCC80;
+    transition: width 0.3s ease;
+}
+.logoDoctor{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height:70px;
+}
+.logoDoctor img {
+    max-width: 100%;
+    transition: opacity 0.3s ease;
+}
+.logoDoctor-arrow button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+.menuDoctor {
+    list-style: none;
+    padding: 0;
+    width: 100%;
+}
+
+.menuDoctor ul {
+    list-style: none;
+    padding: 0;
+    width: 100%;
+}
+
+.menuDoctor li {
+    margin: 10px 0;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+}
+
+.menuItemDoctor {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 10px;
+    margin: 10px 0;
+    background-color: #FFE0B2;
+    border: none;
+    width: 100%;
+    text-align: left;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s, justify-content 0.3s ease;
+}
+
+.menuItemDoctor span {
+    margin-left: 10px;
+    transition: opacity 0.3s ease;
+}
+.menuDoctor a {
+    text-decoration: none;
+    color: black;
+}
+.menuItemDoctor:hover {
+    background-color: #FFCC80;
+}
+.menuItemDoctor.active {
+    border: 1px solid black;
+}
+
+
+.sidebarDoctor.collapsed .logoDoctor-image img {
+    display: none;
+}
+
+.sidebarDoctor.collapsed .menuItemDoctor span {
+    display: none;
+}
+
+.sidebarDoctor.collapsed {
+    align-items: center;
+}
+

@@ -17,6 +17,8 @@ import Appointment from './Pages/User/Appointment/Appointment';
 import Call from './Pages/User/Call/Call';
 import Post from './Pages/User/Post/Post';
 
+import DoctorDashboard from './Pages/Doctor/Dashboard/Dashboard';
+
 import Search from './Pages/User/Search/Search';
 import BrowsePost from './Pages/User/DoctorPage/BrowsePost/BrowsePost';
 import { useEffect } from 'react';
@@ -32,23 +34,33 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route element={<RequireAuth allowedRoles={[ROLES.CLIENT, ROLES.DOCTOR, ROLES.ADMIN]} />}>
-          <Route path="/" element={<UserHome />} />
-          <Route path="/post/:id" element={<Post />} />
-          <Route path="/chat" element={<Chat />} />
-          <Route path="/chat/:id?" element={<Chat />} />
-          <Route path="/profile/:id" element={<ProfileUserPage />} />
-          <Route path="/appointment/:id?" element={<Appointment />} />
-          <Route path="/call/:to" element={<Call />} />
-          <Route path="/search" element={<Search />} />
-          <Route element={<RequireAuth allowedRoles={[ROLES.DOCTOR]} />}>
-            <Route path="permission" element={<BrowsePost />} />
+          {/* Khi nào thêm trang user thì sửa path thành /forum nha az */}
+          <Route path="/"> 
+            <Route path="/" element={<UserHome />} />
+            <Route path="/post/:id" element={<Post />} />
+            <Route path="/chat" element={<Chat />} />
+            <Route path="/chat/:id?" element={<Chat />} />
+            <Route path="/profile/:id" element={<ProfileUserPage />} />
+            <Route path="/appointment/:id?" element={<Appointment />} />
+            <Route path="/call/:to" element={<Call />} />
+            <Route path="/search" element={<Search />} />
+            <Route element={<RequireAuth allowedRoles={[ROLES.DOCTOR]} />}>
+              <Route path="permission" element={<BrowsePost />} />
+            </Route>
           </Route>
         </Route>
+
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/register/confirm-user" element={<ConfirmUser />} />
         <Route path="/forgot-password" element={<Fill_Email />} />
         <Route path="/reset-password" element={<Fill_NewPassword />} />
+
+        <Route element={<RequireAuth allowedRoles={[ROLES.DOCTOR]}/>}>
+          <Route path='/doctor'>
+            <Route path='' element={<DoctorDashboard/>} />
+          </Route>
+        </Route>
 
         <Route element={<RequireAuth allowedRoles={[ROLES.ADMIN]} />}>
           {/* Route cha cho tất cả các trang quản trị */}

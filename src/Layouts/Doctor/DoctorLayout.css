@@ -1,0 +1,92 @@
+.doctorContainer {
+    display: flex;
+    
+    overflow: hidden;
+}
+
+.doctorContainer.collapsed .sidebarDoctor {
+    width: 80px;
+}
+
+.doctorContainer.collapsed .mainContentDoctor {
+    margin-left: 80px;
+    width: calc(100% - 80px);
+}
+
+.doctorContainer.collapsed .headerDoctor {
+    left: 80px;
+    max-width: calc(100% - 80px);
+}
+
+.mainContentDoctor {
+    margin-left: 250px;
+    width: calc(100% - 250px);
+    background-color: #FFF7E1;
+    overflow-y: auto;
+    transition: margin-left 0.3s ease;
+    position: relative;
+    box-sizing: border-box;
+}
+
+.headerDoctor {
+    position: fixed;
+    top: 0;
+    left: 250px; 
+    right: 0;
+    max-width: calc(100% - 250px); 
+    width: auto;
+    background-color: #B2EBF2;
+    padding: 10px 20px;
+    height: 60px;
+    z-index: 1000; 
+    box-sizing: border-box; 
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: left 0.3s ease;
+    z-index: 2;
+}
+
+.labelDoctor {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.labelDoctor span {
+    font-size: 26px;
+    font-weight: bold;
+}
+
+.profileDoctor {
+    display: flex;
+    align-items: space-between;
+}
+
+.profileDoctor button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.profileDoctor img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.notification {
+    margin-right: 15px;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.avatarDoctor {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+
+.contentDoctor {
+    margin-top: 50px;
+    padding: 20px;
+}
