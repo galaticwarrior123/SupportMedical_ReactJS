@@ -1,13 +1,16 @@
 import DoctorLayout from "../../../Layouts/Doctor/DoctorLayout";
+import AppointmentList from "./AppointmentList";
+import './Dashboard.css';
+import DashboardHeader from "./DasheboardHeader";
 
 const Dashboard = () => {
     console.log('Doctor Dashboard');
     return (
         <DoctorLayout>
-            <h1>Doctor Dashboard</h1>
-            <p>
-                This is the dashboard for doctor.
-            </p>
+            <DashboardHeader />
+            <div className="dashboard-doctor-container">
+                <AppointmentList />
+            </div>
         </DoctorLayout>
     );
 }

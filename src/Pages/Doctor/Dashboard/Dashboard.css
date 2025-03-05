@@ -1,0 +1,84 @@
+.dashboard-header {
+    background-color: #e3f2fd;
+    height: 240px;
+    margin-bottom: 10px;
+    /* Replace with your image URL or path */
+    background-size: cover;
+    /* Ensures the image covers the entire header */
+    background-position: center;
+    /* Centers the image */
+    background-repeat: no-repeat;
+    /* Prevents image repetition */
+    position: relative;
+    /* Allows positioning of content over the image */
+}
+
+.dashboard-header-content {
+    width: 60%;
+    position: relative;
+    top: 40px;
+    left: 20px;
+    /* Ensures text stays on top of the background */
+    z-index: 1;
+    /* Places text above the background image */
+    background-color: rgba(227, 242, 253, 0.8);
+    /* Optional: Add semi-transparent overlay for readability */
+    padding: 40px 20px;
+    border-radius: 10px;
+}
+
+.dashboard-header h1 {
+    color: #1976d2;
+    margin: 0;
+    font-size: 2rem;
+}
+
+.dashboard-header p {
+    color: #666;
+    margin: 5px 0 0;
+    font-size: 1.5rem;
+}
+
+.dashboard-doctor-container {
+    flex-grow: 1;
+}
+
+.appointment-list {
+    width: 300px;
+    margin: 0px auto;
+    border: 1px solid #ccc;
+    border-radius: 18px;
+    padding: 10px;
+    background-color: #FFF7E1;
+    height: 94%;
+}
+
+.appointment-list h2 {
+    margin-top: 6px;
+}
+
+.appointment-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.appointment-item img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.appointment-item .appointment-details {
+    flex-grow: 1;
+}
+
+.appointment-item .appointment-details .appointment-type {
+    color: blue;
+}
+
+.appointment-item .appointment-time {
+    margin-left: auto;
+}

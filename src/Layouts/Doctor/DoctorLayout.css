@@ -21,7 +21,6 @@
 .mainContentDoctor {
     margin-left: 250px;
     width: calc(100% - 250px);
-    background-color: #FFF7E1;
     overflow-y: auto;
     transition: margin-left 0.3s ease;
     position: relative;
@@ -88,5 +87,8 @@
 
 .contentDoctor {
     margin-top: 50px;
-    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 50px);
+    box-sizing: border-box;
 }
