@@ -8,7 +8,7 @@ const AppointmentList = () => {
   ];
 
   return (
-    <div className="appointment-list"> 
+    <div className="appointment-list doctor-dashboard-card"> 
       <h2>Cuộc hẹn hôm nay</h2>
       {appointments.map((appointment, index) => (
         <AppointmentItem key={index} {...appointment} />

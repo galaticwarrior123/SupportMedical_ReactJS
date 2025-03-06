@@ -41,16 +41,21 @@
 
 .dashboard-doctor-container {
     flex-grow: 1;
+    display: flex;
 }
 
-.appointment-list {
-    width: 300px;
+.doctor-dashboard-card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     margin: 0px auto;
     border: 1px solid #ccc;
     border-radius: 18px;
     padding: 10px;
     background-color: #FFF7E1;
     height: 94%;
+}
+
+.appointment-list {
+    width: 300px;
 }
 
 .appointment-list h2 {
@@ -81,4 +86,74 @@
 
 .appointment-item .appointment-time {
     margin-left: auto;
+}
+
+/* patient card */
+.patient-card {
+    width: 300px;
+}
+
+.patient-info {
+    margin-bottom: 10px;
+}
+
+.patient-name {
+    margin: 0;
+    font-size: 1.2em;
+}
+
+.patient-details {
+    margin: 0;
+    color: #666;
+}
+
+.patient-notes {
+    margin-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.patient-notes ul {
+    padding-left: 20px;
+}
+
+.previous-visit {
+    margin-bottom: 15px;
+}
+
+.status-buttons {
+    display: flex;
+    justify-content: space-around;
+}
+
+.absent-button,
+.examined-button {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.absent-button {
+    background-color: #FA3C3F;
+    color: white;
+}
+
+.examined-button {
+    background-color: #3C6EFA;
+    color: white;
+}
+
+.patient-card-header {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.patient-card-header img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
 }
