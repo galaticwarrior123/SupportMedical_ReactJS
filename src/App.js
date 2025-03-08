@@ -22,6 +22,8 @@ import DoctorDashboard from './Pages/Doctor/Dashboard/Dashboard';
 import Search from './Pages/User/Search/Search';
 import BrowsePost from './Pages/User/DoctorPage/BrowsePost/BrowsePost';
 import { useEffect } from 'react';
+import Shift from './Pages/Admin/ShiftDoctorManage/Shift/Shift';
+import ShiftAssignment from './Pages/Admin/ShiftDoctorManage/ShiftAssignment/ShiftAssignment';
 const ROLES = {
   'CLIENT': 'CLIENT',
   'DOCTOR': 'DOCTOR',
@@ -70,6 +72,8 @@ function App() {
             <Route path="categories" element={<CategoryManage />} />
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="doctors" element={<DoctorManage />} />
+            <Route path="manage-schedule" element={<Shift />} />
+            <Route path="assign-shifts" element={<ShiftAssignment />} />
 
             {/* Thêm các route khác nếu cần */}
           </Route>

@@ -11,7 +11,7 @@ import { ToastContainer } from 'react-toastify';
 const DefaultLayoutAdmin = ({ children }) => {
     const location = useLocation();
     const {isCollapsed} = useContext(SidebarContext);
-    const [activeMenu, setActiveMenu] = useState('Quản lý danh mục');
+    const [activeMenu, setActiveMenu] = useState('Quản lý khoa');
     const [showProfile, setShowProfile] = useState(false);
 
     const handleShowProfile = () => {
@@ -20,8 +20,10 @@ const DefaultLayoutAdmin = ({ children }) => {
     // Map paths to menu names
     const menuNames = {
         '/admin/categories': 'Quản lý khoa',
-        '/admin/doctors': 'Cấp quyền bác sĩ phê duyệt',
+        '/admin/doctors': 'Quản lý bác sĩ',
         '/admin/dashboard': 'Thống kê',
+        '/admin/manage-schedule': 'Quản lý lịch làm việc',
+        '/admin/assign-shifts': 'Phân công ca trực',
         // Add more paths and their corresponding names as needed
     };
 

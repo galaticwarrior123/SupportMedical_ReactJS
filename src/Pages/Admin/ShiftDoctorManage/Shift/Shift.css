@@ -1,0 +1,224 @@
+.shift {
+    padding: 20px;
+}
+
+.shift-header {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.shift-header input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 150px;
+}
+
+.add-shift {
+    background-color: #FF5722;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.add-shift:hover {
+    background-color: #E64A19;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    margin-top: 15px;
+}
+
+.search-bar input {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+}
+
+.search-btn {
+    background-color: white;
+    border: none;
+    cursor: pointer;
+    padding: 5px 10px;
+    margin-left: 5px;
+}
+
+.shift-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.shift-table th, .shift-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+.shift-table thead {
+    background-color: #FFCC80;
+    font-weight: bold;
+}
+
+.shift-table tbody tr:nth-child(odd) {
+    background-color: #F5F5F5;
+}
+
+.shift-table tbody tr:nth-child(even) {
+    background-color: #E3F2FD;
+}
+
+.edit-btn, .delete-btn {
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin: 0 5px;
+    border-radius: 5px;
+}
+
+.edit-btn {
+    background-color: #FFC107;
+    color: black;
+}
+
+.delete-btn {
+    background-color: #F44336;
+    color: white;
+}
+
+
+
+.input-group-shift {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.input-group-shift input {
+    padding: 10px ;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.input-group-shift label {
+    position: absolute;
+    top: 8px;
+    left: 10px;
+    background-color: white;
+    padding: 0 5px;
+    font-size: 16px;
+    color: #aaa;
+    transition: all 0.3s ease;
+    pointer-events: none;
+    z-index: 1; /* Đặt label trên input */
+}
+
+.input-group-shift input:focus,
+.input-group-shift input:not(:placeholder-shown) {
+    border-color: #515151;
+}
+
+.input-group-shift input:focus + label,
+.input-group-shift input:not(:placeholder-shown) + label {
+    top: -8px; /* Di chuyển label lên */
+    left: 8px;
+    font-size: 12px;
+    color: #6f6f6f;
+}
+
+
+
+.edit-shift {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.edit-shift-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    width: 400px;
+}
+
+.edit-shift-content h1 {
+    text-align: center;
+    margin: 0;
+}
+
+
+.input-group-edit-shift {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.input-group-edit-shift input {
+    padding: 10px ;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.input-group-edit-shift button{
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    background-color: #FF5722;
+    color: white;
+    cursor: pointer;
+    margin-top: 10px;
+    outline: none;
+}
+
+.edit-shift-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.exit-edit {
+    position: relative;
+    top: 0px;
+    right: 5px;
+    cursor: pointer;
+}
+
+.btn-exit-edit {
+    background-color: #afa7a4;
+    color: white;
+    border: none;
+    padding: 10px 12px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.btn-exit-edit:hover {
+    background-color: #7d7a78;
+}
