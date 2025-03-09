@@ -1,0 +1,69 @@
+.record-selection {
+    background-color: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+    min-width: 700px;
+    border-top: 5px solid #42a5f5;
+    
+}
+
+.record-selection h3 {
+    background-color: #42a5f5;
+    color: white;
+    padding: 10px;
+    margin: -20px -15px 10px -15px;
+    border-radius: 8px 8px 0 0;
+    font-size: 18px;
+    text-align: center;
+}
+
+.record-select-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.record-select-card {
+    background-color: white;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    border-left: 5px solid #42a5f5;
+    transition: transform 0.3s ease-in-out;
+    opacity: 0;
+    animation: floatIn 1s forwards;
+}
+
+.record-select-card:hover {
+    transform: translateY(-3px);
+}
+
+.record-select-card p {
+    margin: 5px 0;
+    font-size: 16px;
+}
+
+.record-select-card a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.record-select-card a:hover {
+    text-decoration: underline;
+}
+
+
+@keyframes floatIn {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

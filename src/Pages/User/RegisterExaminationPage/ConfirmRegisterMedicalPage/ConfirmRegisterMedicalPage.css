@@ -1,0 +1,41 @@
+.confirm-service-container {
+    display: flex;
+    justify-content: center;
+    gap: 80px;
+    padding: 20px;
+    background-color: #e3f2fd;
+    min-height: 70vh;
+    
+}
+
+/* Thông tin lịch hẹn */
+.appointment-info {
+    background-color: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+    width: 280px;
+    text-align: left;
+    border-top: 5px solid #42a5f5;
+    height: 100%;
+
+}
+
+.appointment-info h3 {
+    background-color: #42a5f5;
+    color: white;
+    padding: 10px;
+    margin: -20px -15px 10px -15px;
+    border-radius: 8px 8px 0 0;
+    font-size: 18px;
+    text-align: center;
+}
+
+.appointment-info p {
+    margin: 5px 0;
+    font-size: 16px;
+}
+
+.confirm-content{
+    height: 100%;
+}

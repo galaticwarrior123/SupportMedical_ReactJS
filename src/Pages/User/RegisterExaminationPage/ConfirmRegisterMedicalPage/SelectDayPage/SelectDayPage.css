@@ -1,0 +1,94 @@
+.day-selection {
+    background-color: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+    min-width: 700px;
+    border-top: 5px solid #42a5f5;
+}
+
+.day-selection h3 {
+    background-color: #42a5f5;
+    color: white;
+    padding: 10px;
+    margin: -20px -15px 10px -15px;
+    border-radius: 8px 8px 0 0;
+    font-size: 18px;
+    text-align: center;
+}
+
+.month-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.nav-button {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #42a5f5;
+}
+
+.calendar {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+
+    opacity: 0;
+    animation: floatIn 1s forwards;
+}
+
+
+
+.calendar th {
+    padding: 10px;
+    background: #f5f5f5;
+    font-weight: bold;
+}
+
+.calendar td {
+    padding: 15px;
+    cursor: pointer;
+    font-size: 16px;
+    border: 1px solid #e0e0e0;
+}
+
+.calendar td.empty {
+    background-color: #f9f9f9;
+}
+
+.calendar td.available span {
+    color: #333;
+}
+
+.calendar td.sunday {
+    color: red;
+}
+
+.calendar td.saturday {
+    color: orange;
+}
+
+.calendar td.selected {
+    background-color: #e0f2ff;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+
+@keyframes floatIn {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

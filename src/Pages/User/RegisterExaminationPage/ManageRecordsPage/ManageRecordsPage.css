@@ -76,6 +76,9 @@
     width: 750px;
     box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
     margin-bottom: 10px;
+
+    opacity: 0;
+    animation: floatIn 1s forwards;
 }
 
 .record-card-up{
@@ -137,4 +140,16 @@
 
 .edit-btn-manage-records:hover {
     background-color: #ffb300;
+}
+
+
+@keyframes floatIn {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }

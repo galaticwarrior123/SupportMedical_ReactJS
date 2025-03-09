@@ -30,7 +30,7 @@
     margin-bottom: 5px;
 }
 
-input,
+.form-medical-container input,
 select {
     padding: 10px;
     border: 1px solid #ccc;
