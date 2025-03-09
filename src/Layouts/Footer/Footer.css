@@ -1,0 +1,97 @@
+/* Footer */
+.footer {
+    background-color: #FFFF;
+    display: flex;
+    align-items: flex-start;
+    padding: 20px ;
+    font-size: 14px;
+    color: #333;
+}
+
+/* Cột trái: Logo & thông tin liên hệ */
+.footer-left {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.footer-left-container {
+    margin-right: 100px;
+}
+
+.footer-left-container-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.footer-left-container-logo-text{
+    background-color: #afafaf;
+    height: 45px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+.footer-left img {
+    height: 50px; /* Điều chỉnh kích thước logo */
+}
+
+.footer-left-container-line {
+    height: 1px;
+    width: 100%;
+    background-color: #59BBFC;
+    margin-bottom: 5px;
+}
+
+.footer-left-container-slogan {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.footer-left-container-slogan span {
+    font-size: 18px;
+    font-weight: bold;
+    font-family: 'Roboto', sans-serif;
+    color: #59BBFC;
+}
+/* Thông tin liên hệ */
+.footer p {
+    margin: 5px 0;
+    font-size: 15px;
+    font-family: 'Roboto', sans-serif;
+}
+
+/* Định dạng email và số điện thoại */
+.footer a {
+    text-decoration: none;
+    color: #1976D2;
+    font-weight: bold;
+}
+
+/* Cột phải: Liên kết */
+.footer-right {
+    flex: 1;
+    text-align: left;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.footer-right h3 {
+    font-size: 15px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.footer-right a {
+    display: block;
+    text-decoration: none;
+    color: #333;
+    font-size: 15px;
+    margin: 3px 0;
+    font-weight: 200;
+}
+
+.footer-right a:hover {
+    color: #1976D2;
+    text-decoration: underline;
+}

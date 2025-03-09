@@ -24,6 +24,10 @@ import BrowsePost from './Pages/User/DoctorPage/BrowsePost/BrowsePost';
 import { useEffect } from 'react';
 import Shift from './Pages/Admin/ShiftDoctorManage/Shift/Shift';
 import ShiftAssignment from './Pages/Admin/ShiftDoctorManage/ShiftAssignment/ShiftAssignment';
+import RegisterMedicalExaminationPage from './Pages/User/RegisterExaminationPage/HomeRegisterMedicalPage/RegisterMedicalExaminationPage';
+import CreatePatientRecordPage from './Pages/User/RegisterExaminationPage/CreatePatientRecordPage/CreatePatientRecordPage';
+import ManageRecordsPage from './Pages/User/RegisterExaminationPage/ManageRecordsPage/ManageRecordsPage';
+import SelectServicePage from './Pages/User/RegisterExaminationPage/ConfirmRegisterMedicalPage/SelectServicePage';
 const ROLES = {
   'CLIENT': 'CLIENT',
   'DOCTOR': 'DOCTOR',
@@ -37,7 +41,7 @@ function App() {
       <Routes>
         <Route element={<RequireAuth allowedRoles={[ROLES.CLIENT, ROLES.DOCTOR, ROLES.ADMIN]} />}>
           {/* Khi nào thêm trang user thì sửa path thành /forum nha az */}
-          <Route path="/"> 
+          <Route path="/">
             <Route path="/" element={<UserHome />} />
             <Route path="/post/:id" element={<Post />} />
             <Route path="/chat" element={<Chat />} />
@@ -49,8 +53,16 @@ function App() {
             <Route element={<RequireAuth allowedRoles={[ROLES.DOCTOR]} />}>
               <Route path="permission" element={<BrowsePost />} />
             </Route>
+
+            
+            <Route path="/registerMedical" element={<RegisterMedicalExaminationPage />} />
+            <Route path="/create-patient-record" element={<CreatePatientRecordPage />} />
+            <Route path="/manage-records" element={<ManageRecordsPage />} />
+            <Route path="/select-service" element={<SelectServicePage />} />
           </Route>
         </Route>
+
+
 
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
@@ -58,9 +70,9 @@ function App() {
         <Route path="/forgot-password" element={<Fill_Email />} />
         <Route path="/reset-password" element={<Fill_NewPassword />} />
 
-        <Route element={<RequireAuth allowedRoles={[ROLES.DOCTOR]}/>}>
+        <Route element={<RequireAuth allowedRoles={[ROLES.DOCTOR]} />}>
           <Route path='/doctor'>
-            <Route path='' element={<DoctorDashboard/>} />
+            <Route path='' element={<DoctorDashboard />} />
           </Route>
         </Route>
 

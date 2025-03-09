@@ -1,0 +1,61 @@
+/* Header */
+.header-register-medical-examination-page {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #AEECF6; /* Màu xanh nhạt */
+  padding: 10px 20px;
+  height: 60px;
+}
+.logo {
+  display: flex;
+  flex: 1;
+}
+/* Logo */
+.logo img {
+  height: 40px; /* Điều chỉnh kích thước logo */
+  margin-left: 100px;
+  
+}
+
+/* Thông tin người dùng */
+.user-info {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: end;
+}
+
+.user-info svg {
+  font-size: 20px;
+  color: #333;
+  margin-right: 20px;
+}
+
+.user-button {
+  display: flex;
+  align-items: center;
+  background: white;
+  border: 2px solid #42A5F5; /* Viền xanh */
+  border-radius: 20px;
+  padding: 5px 12px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #1E88E5;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.3s ease-in-out;
+}
+
+.user-button img {
+  width: 32px; /* Kích thước ảnh avatar */
+  height: 32px;
+  border-radius: 50%;
+  margin-right: 15px;
+  object-fit: cover;
+}
+
+.user-button:hover {
+  background: #E3F2FD; /* Màu nền xanh nhạt khi hover */
+}
+
