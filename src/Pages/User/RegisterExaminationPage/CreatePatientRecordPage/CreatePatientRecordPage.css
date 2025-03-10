@@ -2,13 +2,14 @@
     background-color: #eaf6ff;
     padding: 30px;
     text-align: center;
+    min-height: 70vh;
 }
 
 .title {
     font-size: 28px;
     font-weight: bold;
     color: #007bff;
-    margin-bottom: 20px;
+    margin: 0 0 20px 0;
 }
 
 .form-medical-container {
@@ -60,4 +61,53 @@ select {
 
 .submit-button:hover {
     background-color: #0056b3;
+}
+
+
+
+.toggle-group {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding:10px;
+    font-size: 18px;
+    font-weight: 500;
+    border-bottom: 1px solid #ccc;
+    border-top:1px solid #ccc;
+    margin-bottom: 20px;
+}
+
+.toggle-option {
+    cursor: pointer;
+    color: black;
+    transition: color 0.3s ease-in-out;
+}
+
+.toggle-option.active {
+    color: #00aaff; /* Màu xanh dương */
+    font-weight: bold;
+}
+
+
+
+
+.form-medical-container-2{
+    display: grid;
+    max-width: 800px;
+    margin: 0 auto;
+}
+.form-medical-container-2 input 
+{
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+    margin-bottom: 20px;
+}
+.form-medical-group-2 {
+    text-align: left;
+}
+.form-medical-group-2 label {
+    font-weight: bold;
+    margin-bottom: 5px;
 }

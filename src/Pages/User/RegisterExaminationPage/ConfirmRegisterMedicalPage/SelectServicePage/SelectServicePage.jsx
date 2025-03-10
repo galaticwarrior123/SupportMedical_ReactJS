@@ -1,8 +1,15 @@
+import { useNavigate } from 'react-router-dom';
 import DefaultLayoutRegisterMedicalExaminationPage from '../../../../../Layouts/DefaultLayoutRegisterMedicalExaminationPage/DefaultLayoutRegisterMedicalExaminationPage';
 import ConfirmRegisterMedicalPage from '../ConfirmRegisterMedicalPage';
 import './SelectServicePage.css';
 
 const SelectServicePage = () => {
+    const navigate = useNavigate();
+
+    const handleNavigate = (path) => {
+        navigate(path);
+    }
+    
     return (
         <ConfirmRegisterMedicalPage>
             <div className="service-selection">
@@ -21,7 +28,7 @@ const SelectServicePage = () => {
                             <td>1</td>
                             <td>Đặt khám trực tiếp bác sĩ</td>
                             <td>150.000đ</td>
-                            <td style={{ textAlign: "end" }}><button className="book-now-btn">Đặt khám ngay</button></td>
+                            <td style={{ textAlign: "end" }}><button className="book-now-btn" onClick={() => handleNavigate('/select-record')}>Đặt khám</button></td>
                         </tr>
                     </tbody>
                 </table>

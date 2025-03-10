@@ -1,0 +1,99 @@
+
+
+.title-manage-records {
+    font-size: 24px;
+    font-weight: bold;
+    color: #1e1e1e;
+    margin-top: 0;
+}
+
+/* Record Card */
+.record-card {
+    background-color: #ECECEC;
+    border-radius: 8px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+    max-width: 750px;
+    width: 750px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+    margin-bottom: 10px;
+
+    opacity: 0;
+    animation: floatRight 1s forwards;
+}
+
+.record-card-up {
+    padding: 5px 15px;
+    background-color: white;
+    border-radius: 8px 8px 0 0;
+}
+
+/* Căn chỉnh từng dòng thông tin */
+.record-card p {
+    display: flex;
+    align-items: center;
+    /* Canh giữa icon và text theo chiều dọc */
+    gap: 10px;
+    /* Khoảng cách giữa icon và text */
+    margin: 8px 0;
+}
+
+.record-card strong {
+    font-family: "Roboto", sans-serif;
+}
+
+/* Định dạng icon */
+.record-card .fa-icon {
+    font-size: 18px;
+    color: #2c2c2c;
+    width: 25px;
+    /* Đảm bảo icon có cùng độ rộng để căn chỉnh */
+    text-align: center;
+}
+
+
+/* Action Buttons */
+.action-buttons-manage-records {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    padding: 10px;
+}
+
+.delete-btn-manage-records {
+    background-color: #ff5722;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.delete-btn-manage-records:hover {
+    background-color: #d84315;
+}
+
+.edit-btn-manage-records {
+    background-color: #ffca28;
+    color: black;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.edit-btn-manage-records:hover {
+    background-color: #ffb300;
+}
+
+
+@keyframes floatRight {
+    0% {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}

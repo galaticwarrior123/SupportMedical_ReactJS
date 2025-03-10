@@ -1,0 +1,67 @@
+/* NotificationsPage.css */
+
+@keyframes floatRight {
+    0% {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.notification-card {
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 10px;
+    transition: background-color 0.3s;
+    animation: floatRight 0.5s forwards;
+}
+
+.notification-card.read {
+    background-color: #f0f0f0;
+    /* Màu nền nhạt cho thông báo đã đọc */
+    color: #666666;
+    /* Màu chữ nhạt hơn */
+}
+
+.notification-card.unread {
+    background-color: #d6e4ff;
+    /* Màu nền đậm hơn cho thông báo chưa đọc */
+    color: #000000;
+    /* Màu chữ đậm hơn */
+}
+
+.notification-card-up {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.pagination-controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.pagination-controls button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    background-color: #2697EC;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.pagination-controls button:hover {
+    background-color: #1c6bb0;
+}
+
+.pagination-controls button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}

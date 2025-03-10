@@ -51,7 +51,7 @@
 .search-section {
     display: flex;
     justify-content: center;
-    margin: 20px 0;
+    margin: 20px 35px;
 }
 
 .search-section-input input {

@@ -32,13 +32,14 @@
     border-radius: 8px;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
     border-left: 5px solid #42a5f5;
-    transition: transform 0.3s ease-in-out;
     opacity: 0;
     animation: floatIn 1s forwards;
+    cursor: pointer;
 }
 
 .record-select-card:hover {
-    transform: translateY(-3px);
+    background-color: #f0f8ff;
+    border-left: 5px solid #42a5f5;
 }
 
 .record-select-card p {
@@ -46,9 +47,8 @@
     font-size: 16px;
 }
 
-.record-select-card a {
+.record-select-card span {
     color: #007bff;
-    text-decoration: none;
     font-weight: bold;
 }
 

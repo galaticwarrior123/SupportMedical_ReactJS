@@ -2,7 +2,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import DefaultLayoutRegisterMedicalExaminationPage from '../../../../Layouts/DefaultLayoutRegisterMedicalExaminationPage/DefaultLayoutRegisterMedicalExaminationPage';
 import './RegisterMedicalExaminationPage.css';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { useNavigate } from 'react-router-dom';
 const RegisterMedicalExaminationPage = () => {
+    const navigate = useNavigate();
+
+    const handleNavigate = (path) => {
+        navigate(path);
+    }
+
     return (
         <DefaultLayoutRegisterMedicalExaminationPage>
             <div className="register-medical-page">
@@ -47,7 +54,8 @@ const RegisterMedicalExaminationPage = () => {
                                     <span>Bác sĩ chuyên khoa</span>
                                     <p>Đặt lịch online qua web Clicknic</p>
                                 </div>
-                                <button className="book-button">Đặt khám ngay</button>
+                                <button className="book-button" onClick={() => handleNavigate('/select-service')}>Đặt khám ngay</button>
+                                
                             </div>
                         </div>
 

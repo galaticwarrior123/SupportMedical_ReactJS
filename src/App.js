@@ -26,10 +26,12 @@ import Shift from './Pages/Admin/ShiftDoctorManage/Shift/Shift';
 import ShiftAssignment from './Pages/Admin/ShiftDoctorManage/ShiftAssignment/ShiftAssignment';
 import RegisterMedicalExaminationPage from './Pages/User/RegisterExaminationPage/HomeRegisterMedicalPage/RegisterMedicalExaminationPage';
 import CreatePatientRecordPage from './Pages/User/RegisterExaminationPage/CreatePatientRecordPage/CreatePatientRecordPage';
-import ManageRecordsPage from './Pages/User/RegisterExaminationPage/ManageRecordsPage/ManageRecordsPage';
+
 import SelectServicePage from './Pages/User/RegisterExaminationPage/ConfirmRegisterMedicalPage/SelectServicePage/SelectServicePage';
 import SelectRecordPage from './Pages/User/RegisterExaminationPage/ConfirmRegisterMedicalPage/SelectRecordPage/SelectRecordPage';
 import SelectDayPage from './Pages/User/RegisterExaminationPage/ConfirmRegisterMedicalPage/SelectDayPage/SelectDayPage';
+import ManageRecordsPage from './Pages/User/RegisterExaminationPage/LayoutManageRecordsPage/ManageRecordsPage/ManageRecordsPage';
+import NotificationsPage from './Pages/User/RegisterExaminationPage/LayoutManageRecordsPage/NotificationsPage/NotificationsPage';
 const ROLES = {
   'CLIENT': 'CLIENT',
   'DOCTOR': 'DOCTOR',
@@ -63,6 +65,7 @@ function App() {
             <Route path="/select-service" element={<SelectServicePage />} />
             <Route path="/select-record" element={<SelectRecordPage />} />
             <Route path="/select-day" element={<SelectDayPage />} />
+            <Route path="/notifications" element={<NotificationsPage />} />
           </Route>
         </Route>
 

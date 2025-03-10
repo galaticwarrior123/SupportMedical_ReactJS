@@ -1,0 +1,81 @@
+.manage-records-page {
+    display: flex;
+    background-color: #e3f2fd;
+    min-height: 70vh;
+    padding: 20px;
+
+
+}
+
+.fa-icon {
+    font-size: 18px;
+    color: #2c2c2c;
+    width: 25px;
+    text-align: center;
+    margin-right: 5px;
+}
+
+/* Sidebar */
+.sidebar-manage-records {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-right: 50px;
+    flex: 1;
+    align-items: center;
+}
+
+.sidebar-sub-manage-records {
+    width: 350px;
+    margin-left:200px;
+}
+
+.add-record-btn {
+    background-color: #007bff;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.add-record-btn:hover {
+    background-color: #0056b3;
+}
+
+.box-option-manage-records {
+    background-color: white;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.sidebar-btn {
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.sidebar-btn:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+/* Main content */
+.main-content-manage-records {
+    flex: 2;
+}
+
+.sidebar-btn.active {
+    border: 3px solid #999999;
+}
