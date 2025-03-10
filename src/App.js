@@ -67,7 +67,7 @@ function App() {
             <Route path='/doctor'>
               <Route path='' element={<DoctorDashboard />} />
               <Route path='patient-profile' element={<PatientProfile />} />
-          </Route>
+            </Route>
           </Route>
 
           <Route element={<RequireAuth allowedRoles={[ROLES.ADMIN]} />}>
