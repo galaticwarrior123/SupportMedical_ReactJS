@@ -1,6 +1,9 @@
 import ConfirmRegisterMedicalPage from '../ConfirmRegisterMedicalPage';
 import { useState } from 'react';
 import './SelectDayPage.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { useNavigate } from 'react-router-dom';
 
 const daysOfWeek = ['CN', 'Hai', 'Ba', 'Tư', 'Năm', 'Sáu', 'Bảy'];
 
@@ -28,9 +31,32 @@ const SelectDayPage = () => {
     const [month, setMonth] = useState(today.getMonth());
     const [selectedDay, setSelectedDay] = useState(null);
     const daysInMonth = getDaysInMonth(year, month);
+    const [selectedTimeSlot, setSelectedTimeSlot] = useState(null);
+    const navigate = useNavigate();
+
+    const timeSlots = [
+        '08:00 - 08:30', '08:30 - 09:00', '09:00 - 09:30', '09:30 - 10:00',
+        '10:00 - 10:30', '10:30 - 11:00', '13:00 - 13:30', '13:30 - 14:00',
+        '14:00 - 14:30', '14:30 - 15:00', '15:00 - 15:30', '15:30 - 16:00'
+    ];
 
     const handleSelectDay = (day) => {
-        if (day) setSelectedDay(day);
+        if (day) {
+            setSelectedDay(day);
+            setSelectedTimeSlot(null);
+        }
+    };
+
+    const handleSelectTimeSlot = (timeSlot) => {
+        setSelectedTimeSlot(timeSlot);
+    };
+
+    const splitTimeSlots = (slots, itemsPerRow) => {
+        const rows = [];
+        for (let i = 0; i < slots.length; i += itemsPerRow) {
+            rows.push(slots.slice(i, i + itemsPerRow));
+        }
+        return rows;
     };
 
     const changeMonth = (delta) => {
@@ -46,6 +72,11 @@ const SelectDayPage = () => {
         setMonth(newMonth);
         setYear(newYear);
         setSelectedDay(null); // Reset ngày đã chọn khi đổi tháng
+    };
+
+
+    const handleNavigate = (path) => {
+        navigate(path);
     };
 
     return (
@@ -69,8 +100,8 @@ const SelectDayPage = () => {
                         {daysInMonth.map((week, i) => (
                             <tr key={i}>
                                 {week.map((day, j) => (
-                                    <td 
-                                        key={j} 
+                                    <td
+                                        key={j}
                                         className={day === selectedDay ? 'selected' : day ? 'available' : 'empty'}
                                         onClick={() => handleSelectDay(day)}
                                     >
@@ -81,7 +112,45 @@ const SelectDayPage = () => {
                         ))}
                     </tbody>
                 </table>
+
+                {selectedDay && (
+                    <>
+                        <div className="time-slot-selection">
+                            <h4>Vui lòng chọn khung giờ</h4>
+                            {splitTimeSlots(timeSlots, 5).map((row, rowIndex) => (
+                                <div className="time-slots" key={rowIndex}>
+                                    {row.map((slot, index) => (
+                                        <button
+                                            key={index}
+                                            className={slot === selectedTimeSlot ? 'time-slot selected' : 'time-slot'}
+                                            onClick={() => handleSelectTimeSlot(slot)}
+                                        >
+                                            {slot}
+                                        </button>
+                                    ))}
+                                </div>
+                            ))}
+                        </div>
+
+
+                        <div className="button-container">
+                            <button className="confirm-button" disabled={!selectedTimeSlot} onClick={() => handleNavigate('/confirm-info')}>
+                                Xác nhận
+                            </button>
+                        </div>
+                    </>
+
+
+
+                )}
+
+
             </div>
+
+            <button className="back-button" onClick={() => handleNavigate('/select-record')}>
+                <FontAwesomeIcon icon={faArrowLeft} />
+                Quay lại
+            </button>
         </ConfirmRegisterMedicalPage>
     );
 };

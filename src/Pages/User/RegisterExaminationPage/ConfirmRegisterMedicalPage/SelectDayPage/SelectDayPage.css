@@ -82,6 +82,84 @@
 }
 
 
+.time-slot-selection {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.time-slots {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.time-slot {
+    padding: 10px 20px;
+    border: 1px solid #007bff;
+    border-radius: 5px;
+    background-color: white;
+    color: #007bff;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.time-slot:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+.time-slot.selected {
+    background-color: #007bff;
+    color: white;
+}
+
+.button-container{
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.button-container button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-weight: 500;
+    cursor: pointer;
+}
+.button-container button:disabled {
+    background-color: #f0f0f0;
+    color: #b3b3b3;
+    cursor: not-allowed;
+}
+
+
+.button-container button:hover {
+    background-color: #0056b3;
+}
+
+
+.back-button {
+    background-color: #f0f0f0;
+    color: #007bff;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-weight: 500;
+    cursor: pointer;
+    margin-top: 10px;
+}
+.back-button svg {
+    margin-right: 5px;
+}
+
+.back-button:hover {
+    background-color: #e0e0e0;
+}
+
 @keyframes floatIn {
     from {
         opacity: 0;

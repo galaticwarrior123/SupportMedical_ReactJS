@@ -2,6 +2,8 @@ import { useNavigate } from 'react-router-dom';
 import DefaultLayoutRegisterMedicalExaminationPage from '../../../../../Layouts/DefaultLayoutRegisterMedicalExaminationPage/DefaultLayoutRegisterMedicalExaminationPage';
 import ConfirmRegisterMedicalPage from '../ConfirmRegisterMedicalPage';
 import './SelectServicePage.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
 const SelectServicePage = () => {
     const navigate = useNavigate();
@@ -9,7 +11,7 @@ const SelectServicePage = () => {
     const handleNavigate = (path) => {
         navigate(path);
     }
-    
+
     return (
         <ConfirmRegisterMedicalPage>
             <div className="service-selection">
@@ -33,6 +35,10 @@ const SelectServicePage = () => {
                     </tbody>
                 </table>
             </div>
+            <button className="back-button" onClick={() => handleNavigate('/')}>
+                <FontAwesomeIcon icon={faArrowLeft} />
+                Quay lại
+            </button>
         </ConfirmRegisterMedicalPage>
     )
 }

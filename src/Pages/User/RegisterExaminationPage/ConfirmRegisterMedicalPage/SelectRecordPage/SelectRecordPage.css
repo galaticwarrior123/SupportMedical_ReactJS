@@ -56,6 +56,51 @@
     text-decoration: underline;
 }
 
+.record-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    border-top: 2px solid #dfe1e2;
+    
+}
+.record-actions button {
+    padding: 5px 10px;
+    border: 1px solid #007bff;
+    background-color: #007bff;
+    color: #FFF;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    margin-left:5px;
+    margin-top:5px;
+}
+
+.record-actions button:hover {
+    background-color: #0056b3;
+    color: white;
+}
+
+.action-button-delete {
+    background-color: #f8011a !important;
+    color: white !important;
+    border: 1px solid #f3031b !important;
+}
+
+.action-button-delete:hover {
+    background-color: #d24a58 !important;
+    color: white !important;
+}
+
+.action-button-edit {
+    background-color: #ffc107 !important;
+    color: white !important;
+    border: 1px solid #ffc107 !important;
+}
+
+.action-button-edit:hover {
+    background-color: #b38f00 !important;
+    color: white !important;
+}
 
 @keyframes floatIn {
     from {
