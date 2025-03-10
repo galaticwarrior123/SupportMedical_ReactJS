@@ -45,60 +45,68 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route element={<RequireAuth allowedRoles={[ROLES.CLIENT, ROLES.DOCTOR, ROLES.ADMIN]} />}>
-          {/* Khi nào thêm trang user thì sửa path thành /forum nha az */}
+
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/register/confirm-user" element={<ConfirmUser />} />
+          <Route path="/forgot-password" element={<Fill_Email />} />
+          <Route path="/reset-password" element={<Fill_NewPassword />} />
+
+
           <Route path="/">
-            <Route path="/" element={<UserHome />} />
-            <Route path="/post/:id" element={<Post />} />
-            <Route path="/chat" element={<Chat />} />
-            <Route path="/chat/:id?" element={<Chat />} />
-            <Route path="/profile/:id" element={<ProfileUserPage />} />
-            <Route path="/appointment/:id?" element={<Appointment />} />
-            <Route path="/call/:to" element={<Call />} />
-            <Route path="/search" element={<Search />} />
+            <Route index element={<RegisterMedicalExaminationPage />} />
+            <Route path="create-patient-record" element={<CreatePatientRecordPage />} />
+            <Route path="manage-records" element={<ManageRecordsPage />} />
+            <Route path="select-service" element={<SelectServicePage />} />
+            <Route path="select-record" element={<SelectRecordPage />} />
+            <Route path="select-day" element={<SelectDayPage />} />
+            <Route path="notifications" element={<NotificationsPage />} />
+          </Route>
+
+          <Route element={<RequireAuth allowedRoles={[ROLES.DOCTOR]} />}>
+            <Route path='/doctor'>
+              <Route path='' element={<DoctorDashboard />} />
+              <Route path='patient-profile' element={<PatientProfile />} />
+          </Route>
+          </Route>
+
+          <Route element={<RequireAuth allowedRoles={[ROLES.ADMIN]} />}>
+            {/* Route cha cho tất cả các trang quản trị */}
+            <Route path="/admin">
+              <Route index="categories" element={<CategoryManage />} />
+              {/* Các route khác */}
+              <Route path="categories" element={<CategoryManage />} />
+              <Route path="dashboard" element={<Dashboard />} />
+              <Route path="doctors" element={<DoctorManage />} />
+              <Route path="manage-schedule" element={<Shift />} />
+              <Route path="assign-shifts" element={<ShiftAssignment />} />
+
+              {/* Thêm các route khác nếu cần */}
+            </Route>
+          </Route>
+
+
+          {/* Khi nào thêm trang user thì sửa path thành /forum nha az */}
+          <Route path="/forum">
+            <Route index element={<UserHome />} />
+            <Route path="post/:id" element={<Post />} />
+            <Route path="chat" element={<Chat />} />
+            <Route path="chat/:id?" element={<Chat />} />
+            <Route path="profile/:id" element={<ProfileUserPage />} />
+            <Route path="appointment/:id?" element={<Appointment />} />
+            <Route path="call/:to" element={<Call />} />
+            <Route path="search" element={<Search />} />
             <Route element={<RequireAuth allowedRoles={[ROLES.DOCTOR]} />}>
               <Route path="permission" element={<BrowsePost />} />
             </Route>
 
-            
-            <Route path="/registerMedical" element={<RegisterMedicalExaminationPage />} />
-            <Route path="/create-patient-record" element={<CreatePatientRecordPage />} />
-            <Route path="/manage-records" element={<ManageRecordsPage />} />
-            <Route path="/select-service" element={<SelectServicePage />} />
-            <Route path="/select-record" element={<SelectRecordPage />} />
-            <Route path="/select-day" element={<SelectDayPage />} />
-            <Route path="/notifications" element={<NotificationsPage />} />
+
+
           </Route>
         </Route>
 
 
 
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/register/confirm-user" element={<ConfirmUser />} />
-        <Route path="/forgot-password" element={<Fill_Email />} />
-        <Route path="/reset-password" element={<Fill_NewPassword />} />
-
-        <Route element={<RequireAuth allowedRoles={[ROLES.DOCTOR]} />}>
-          <Route path='/doctor'>
-            <Route path='' element={<DoctorDashboard />} />
-            <Route path='patient-profile' element={<PatientProfile />} />
-          </Route>
-        </Route>
-
-        <Route element={<RequireAuth allowedRoles={[ROLES.ADMIN]} />}>
-          {/* Route cha cho tất cả các trang quản trị */}
-          <Route path="/admin">
-            <Route index="categories" element={<CategoryManage />} />
-            {/* Các route khác */}
-            <Route path="categories" element={<CategoryManage />} />
-            <Route path="dashboard" element={<Dashboard />} />
-            <Route path="doctors" element={<DoctorManage />} />
-            <Route path="manage-schedule" element={<Shift />} />
-            <Route path="assign-shifts" element={<ShiftAssignment />} />
-
-            {/* Thêm các route khác nếu cần */}
-          </Route>
-        </Route>
       </Routes>
     </BrowserRouter>
   )

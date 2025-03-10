@@ -29,7 +29,7 @@ function ShowMoreListLikeComment({ commentId, handleCloseShowMoreListLikeComment
 
                     <div className="show-more-list-like-comment-body">
                         {listLikeCommentInfo.map((likeCommentInfo) => (
-                            <div className="show-more-list-like-comment-body-item" key={likeCommentInfo._id} onClick={() => navigate(`/profile/${likeCommentInfo._id}`)}>
+                            <div className="show-more-list-like-comment-body-item" key={likeCommentInfo._id} onClick={() => navigate(`/forum/profile/${likeCommentInfo._id}`)}>
                                 <img src={likeCommentInfo.avatar} alt="avatar" />
                                 <span>{likeCommentInfo.firstName} {likeCommentInfo.lastName}</span>
                             </div>

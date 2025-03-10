@@ -48,7 +48,7 @@ const HeaderRegisterMedicalExaminationPage = () => {
 
     return (
         <div className="header-register-medical-examination-page" >
-            <div className="logo" onClick={() => handleNavigate('/registerMedical')}>
+            <div className="logo" onClick={() => handleNavigate('/')}>
                 <img src="/images/Logo.png" alt="logo" />
             </div>
             <div className="user-info" ref={dropdownRef} >
