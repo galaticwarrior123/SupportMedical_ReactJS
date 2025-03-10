@@ -1,0 +1,52 @@
+.patient-profile-card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border: 1px solid #ccc;
+    border-radius: 18px;
+    padding: 10px;
+    background-color: #FFF7E1;
+    height: 94%;
+}
+
+.patient-profile-container {
+    display: flex;
+    gap: 10px;
+    padding: 10px;
+    padding-top: 20px;
+    height: calc(100vh - 40px);
+    box-sizing: border-box;
+}
+
+.patient-profile-left,
+.patient-profile-right {
+    flex-grow: 1;
+    height: 100%;
+}
+
+.patient-profile-left {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.patient-search-profile {
+    height: 60px;
+}
+
+.patient-profile-search-bar {
+    width: 100%;
+    height: 100%;   
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.patient-profile-search-bar input {
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.patient-profile-medical-history {
+    height: 100%;
+    box-sizing: border-box;
+}
