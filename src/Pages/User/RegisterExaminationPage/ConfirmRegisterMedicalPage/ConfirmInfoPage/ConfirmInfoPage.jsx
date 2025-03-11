@@ -60,7 +60,7 @@ const ConfirmInfoPage = () => {
 
                 <div className="buttons">
                     <button className="back-button-confirm" onClick={() => handleNavigate('/select-day')}><FontAwesomeIcon icon={faArrowLeft} /> Quay lại</button>
-                    <button className="confirm-button">Xác nhận</button>
+                    <button className="confirm-button" onClick={() => handleNavigate('/select-payment')}>Xác nhận</button>
                 </div>
             </div>
         </DefaultLayoutRegisterMedicalExaminationPage>

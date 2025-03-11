@@ -34,6 +34,7 @@ import ManageRecordsPage from './Pages/User/RegisterExaminationPage/LayoutManage
 import NotificationsPage from './Pages/User/RegisterExaminationPage/LayoutManageRecordsPage/NotificationsPage/NotificationsPage';
 import ConfirmInfoPage from './Pages/User/RegisterExaminationPage/ConfirmRegisterMedicalPage/ConfirmInfoPage/ConfirmInfoPage';
 import PatientProfile from './Pages/Doctor/PatientProfile/PatientProfile';
+import SelectPaymentPage from './Pages/User/RegisterExaminationPage/ConfirmRegisterMedicalPage/SelectPaymentPage/SelectPaymentPage';
 const ROLES = {
   'CLIENT': 'CLIENT',
   'DOCTOR': 'DOCTOR',
@@ -63,6 +64,7 @@ function App() {
             <Route path="select-day" element={<SelectDayPage />} />
             <Route path="notifications" element={<NotificationsPage />} />
             <Route path="confirm-info" element={<ConfirmInfoPage />} />
+            <Route path="select-payment" element={<SelectPaymentPage />} />
           </Route>
 
           <Route element={<RequireAuth allowedRoles={[ROLES.DOCTOR]} />}>
