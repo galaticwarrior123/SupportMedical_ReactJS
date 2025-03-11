@@ -35,6 +35,7 @@ import NotificationsPage from './Pages/User/RegisterExaminationPage/LayoutManage
 import ConfirmInfoPage from './Pages/User/RegisterExaminationPage/ConfirmRegisterMedicalPage/ConfirmInfoPage/ConfirmInfoPage';
 import PatientProfile from './Pages/Doctor/PatientProfile/PatientProfile';
 import SelectPaymentPage from './Pages/User/RegisterExaminationPage/ConfirmRegisterMedicalPage/SelectPaymentPage/SelectPaymentPage';
+import Schedule from './Pages/Doctor/Schedule/Schedule';
 const ROLES = {
   'CLIENT': 'CLIENT',
   'DOCTOR': 'DOCTOR',
@@ -71,6 +72,7 @@ function App() {
             <Route path='/doctor'>
               <Route path='' element={<DoctorDashboard />} />
               <Route path='patient-profile' element={<PatientProfile />} />
+              <Route path='schedule' element={<Schedule />} />
             </Route>
           </Route>
 

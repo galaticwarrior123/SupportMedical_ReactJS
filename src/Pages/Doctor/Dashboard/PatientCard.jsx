@@ -4,7 +4,7 @@ function PatientCard() {
     <div className="patient-card doctor-dashboard-card">
       <div className="patient-card-header">
         <img src="your-avatar-placeholder.png" alt="Avatar" />
-          <div className="patient-info">
+          <div className="dashboard-patient-info">
             <h2 className="patient-name">Nguyễn Văn A</h2>
             <p className="patient-details">Nam - 30 tuổi</p>
           </div>
