@@ -7,6 +7,10 @@
     height: 94%;
 }
 
+.patient-profile-card h2 {
+    margin-top: 6px;
+}
+
 .patient-profile-container {
     display: flex;
     gap: 10px;
@@ -18,7 +22,7 @@
 
 .patient-profile-left,
 .patient-profile-right {
-    flex-grow: 1;
+    width: 50%;
     height: 100%;
 }
 
@@ -34,7 +38,7 @@
 
 .patient-profile-search-bar {
     width: 100%;
-    height: 100%;   
+    height: 100%;
     display: flex;
     gap: 10px;
     align-items: center;
@@ -49,4 +53,51 @@
 .patient-profile-medical-history {
     height: 100%;
     box-sizing: border-box;
+}
+
+.patient-profile-info-body {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.patient-profile-info-item {
+    width: 46%;
+    font-size: 1.2rem;
+}
+
+.patient-profile-info-item-label {
+    font-weight: bold;
+}
+
+/* history */
+.patient-profile-medical-history {
+}
+
+.record {
+    border-bottom: 1px solid #eee;
+    padding: 10px 0;
+}
+
+.record-header {
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.record-header .record-header-date {
+    font-size: 1.2rem;
+}
+
+.record-header .record-header-icon {
+    color: #666;
+}
+
+.record-details {
+    padding: 10px 0;
+}
+
+.record-details p {
+    margin: 5px 0;
 }

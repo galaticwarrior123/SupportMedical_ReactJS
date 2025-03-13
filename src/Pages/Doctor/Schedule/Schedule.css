@@ -1,0 +1,16 @@
+.doctor-schedule-container {
+    height: 100%;
+}
+
+.doctor-schedule-container .day-selection {
+    height: 95%;
+}
+
+.doctor-schedule-container .day-selection td {
+    padding-top: 32px;
+    padding-bottom: 32px;
+}
+
+.doctor-schedule-container .day-selection td.selected {
+    font-weight: normal; /* override the original css */
+}
