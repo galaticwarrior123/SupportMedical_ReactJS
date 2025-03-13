@@ -1,20 +1,32 @@
 import './Shift.css';
 import DefaultLayoutAdmin from '../../../../Layouts/DefaultLayoutAdmin/DefaultLayoutAdmin';
 import { SidebarProvider } from '../../../../Layouts/DefaultLayoutAdmin/SidebarContext';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen, faTrash, faPlus, faSearch, faClose } from '@fortawesome/free-solid-svg-icons';
+import ShiftAPI from '../../../../API/ShiftAPI';
+import { toast } from 'react-toastify';
+import { set } from 'date-fns';
+
 
 const Shift = () => {
-    const [shifts, setShifts] = useState([
-        { id: 1, name: "Sáng", start: "6.am", end: "11.am" },
-        { id: 2, name: "Chiều", start: "1.pm", end: "5.pm" }
-    ]);
+    const [shifts, setShifts] = useState([]);
 
     const [shiftName, setShiftName] = useState('');
     const [startTime, setStartTime] = useState('');
     const [endTime, setEndTime] = useState('');
     const [isEdit, setIsEdit] = useState(false);
+
+    useEffect(() => {
+        ShiftAPI.getAllShift()
+            .then(res => {
+                setShifts(res.data);
+            })
+            .catch(err => {
+                toast.error("Lấy dữ liệu ca trực thất bại!");
+            });
+    }, []);
+
 
     const handleAddShift = () => {
         if (!shiftName || !startTime || !endTime) {
@@ -22,22 +34,73 @@ const Shift = () => {
             return;
         }
 
-        console.log(shiftName, startTime, endTime);
+        ShiftAPI.createShift({ name: shiftName, startTime: startTime, endTime: endTime })
+            .then(res => {
+                toast.success("Thêm ca trực thành công!");
+                setShifts(prev => [
+                    ...prev,
+                    { id: prev.length + 1, name: shiftName, startTime: startTime, endTime: endTime }
+                ]);
 
-        setShifts(prev => [
-            ...prev,
-            { id: prev.length + 1, name: shiftName, start: startTime, end: endTime }
-        ]);
+                setShiftName('');
+                setStartTime('');
+                setEndTime('');
+            })
+            .catch(err => {
+                toast.error("Thêm ca trực thất bại!");
+            }
+            );
 
-        setShiftName('');
-        setStartTime('');
-        setEndTime('');
+
+    }
+
+    const [shiftNameUpdate, setShiftNameUpdate] = useState('');
+    const [startTimeUpdate, setStartTimeUpdate] = useState('');
+    const [endTimeUpdate, setEndTimeUpdate] = useState('');
+    const [shiftIdUpdate, setShiftIdUpdate] = useState('');
+
+    const handleEditShift = (shift) => {
+        setIsEdit(true);
+        setShiftNameUpdate(shift.name);
+        setStartTimeUpdate(shift.startTime);
+        setEndTimeUpdate(shift.endTime);
+        setShiftIdUpdate(shift._id);
+    }
+
+    const handleUpdateShift = () => {
+        if (!shiftNameUpdate || !startTimeUpdate || !endTimeUpdate) {
+            alert("Vui lòng nhập đầy đủ thông tin!");
+            return;
+        }
+
+        ShiftAPI.updateShift(shiftIdUpdate, { name: shiftNameUpdate, startTime: startTimeUpdate, endTime: endTimeUpdate })
+            .then(res => {
+                toast.success("Cập nhật ca trực thành công!");
+                setShifts(prev => prev.map(shift => shift._id === shiftIdUpdate ? { ...shift, name: shiftNameUpdate, startTime: startTimeUpdate, endTime: endTimeUpdate } : shift));
+
+                setIsEdit(false);
+                setShiftNameUpdate('');
+                setStartTimeUpdate('');
+                setEndTimeUpdate('');
+                setShiftIdUpdate('');
+            })
+            .catch(err => {
+                toast.error("Cập nhật ca trực thất bại!");
+            });
+
     }
 
     const handleDeleteShift = (id) => {
         const isDelete = window.confirm("Bạn có chắc chắn muốn xóa ca trực này?");
         if (isDelete) {
-            setShifts(prev => prev.filter(shift => shift.id !== id));
+            ShiftAPI.deleteShift(id)
+                .then(res => {
+                    toast.success("Xóa ca trực thành công!");
+                    setShifts(prev => prev.filter(shift => shift._id !== id));
+                })
+                .catch(err => {
+                    toast.error("Xóa ca trực thất bại!");
+                });
         }
     }
 
@@ -57,16 +120,16 @@ const Shift = () => {
 
                             <div className="input-group-edit-shift">
                                 <label htmlFor="shift-name">Nhập tên ca trực</label>
-                                <input type="text" id="shift-name" placeholder=" " value={shiftName} onChange={(e) => setShiftName(e.target.value)} />
+                                <input type="text" id="shift-name" placeholder=" " value={shiftNameUpdate} onChange={(e) => setShiftNameUpdate(e.target.value)} />
 
                                 <label htmlFor="start-time">Giờ bắt đầu</label>
-                                <input type="time" id="start-time" placeholder=" " value={startTime} onChange={(e) => setStartTime(e.target.value)} />
+                                <input type="time" id="start-time" placeholder=" " value={startTimeUpdate} onChange={(e) => setStartTimeUpdate(e.target.value)} />
 
                                 <label htmlFor="end-time">Giờ kết thúc</label>
-                                <input type="time" id="end-time" placeholder=" " value={endTime} onChange={(e) => setEndTime(e.target.value)} />
+                                <input type="time" id="end-time" placeholder=" " value={endTimeUpdate} onChange={(e) => setEndTimeUpdate(e.target.value)} />
 
 
-                                <button className="save-shift" onClick={handleAddShift}>
+                                <button className="save-shift" onClick={handleUpdateShift}>
                                     <FontAwesomeIcon icon={faPlus} /> Lưu
                                 </button>
 
@@ -116,15 +179,15 @@ const Shift = () => {
                         </thead>
                         <tbody>
                             {shifts.map((shift, index) => (
-                                <tr key={shift.id}>
+                                <tr key={shift._id}>
                                     <td>{index + 1 < 10 ? `0${index + 1}` : index + 1}</td>
                                     <td>{shift.name}</td>
-                                    <td>{shift.start} - {shift.end}</td>
+                                    <td>{shift.startTime} - {shift.endTime}</td>
                                     <td>
-                                        <button className="edit-btn" onClick={() => setIsEdit(true)}>
+                                        <button className="edit-btn" onClick={() => handleEditShift(shift)}>
                                             <FontAwesomeIcon icon={faPen} /> Sửa
                                         </button>
-                                        <button className="delete-btn" onClick={() => handleDeleteShift(shift.id)}>
+                                        <button className="delete-btn" onClick={() => handleDeleteShift(shift._id)}>
                                             <FontAwesomeIcon icon={faTrash} /> Xóa
                                         </button>
                                     </td>

@@ -2,16 +2,88 @@ import { useState, useEffect } from "react";
 import "./ShiftAssignment.css";
 import DefaultLayoutAdmin from "../../../../Layouts/DefaultLayoutAdmin/DefaultLayoutAdmin";
 import { SidebarProvider } from "../../../../Layouts/DefaultLayoutAdmin/SidebarContext";
-
+import ShiftAPI from "../../../../API/ShiftAPI";
+import { DepartmentAPI } from "../../../../API/DepartmentAPI";
+import { DoctorAPI } from "../../../../API/DoctorAPI";
+import { ShiftAssignmentAPI } from "../../../../API/ShiftAssignmentAPI";
+import { set } from "date-fns";
 const ShiftAssignment = () => {
     const [month, setMonth] = useState(new Date().getMonth() + 1);
     const [year, setYear] = useState(new Date().getFullYear());
-    const [specialty, setSpecialty] = useState("Nội tiết");
+    const [specialties, setSpecialties] = useState([]);
+    const [selectedSpecialty, setSelectedSpecialty] = useState("");
     const [days, setDays] = useState([]);
     const [assignments, setAssignments] = useState({});
-    const [shifts, setShifts] = useState(["Sáng", "Chiều"]);
-    const employees = ["Nguyễn Văn A", "Nguyễn Văn B", "Trần Thị C", "Lê Văn D", "Phạm Thị E", "Nguyễn Văn F"];
+    const [shifts, setShifts] = useState([]);
+    const [listDoctor, setListDoctor] = useState([]);
+    const [filteredDoctors, setFilteredDoctors] = useState([]);
 
+
+    const today = new Date();
+    const currentDay = today.getDate();
+    const currentMonth = today.getMonth() + 1;
+    const currentYear = today.getFullYear();
+
+    useEffect(() => {
+
+        ShiftAssignmentAPI.getShiftAssignments({
+            startDate: `${year}-${month.toString().padStart(2, "0")}-01`,
+            endDate: `${year}-${month.toString().padStart(2, "0")}-31`
+        })
+            .then((res) => {
+                const newAssignments = {};
+                res.data.forEach((assignment) => {
+                    newAssignments[`${new Date(assignment.date).getDate()}-${assignment.shift.name}`] = assignment.user._id;
+                });
+                setAssignments(newAssignments);
+            })
+            .catch(() => {
+                alert("Lấy dữ liệu ca trực thất bại!");
+            });
+    }, [month, year]);
+
+
+    useEffect(() => {
+        DoctorAPI.getDoctors()
+            .then(res => {
+                const allDoctors = res.data;
+                const filtered = selectedSpecialty 
+                    ? allDoctors.filter(doctor => doctor.doctorInfo.specialities[0]._id === selectedSpecialty) 
+                    : allDoctors;
+                setListDoctor(allDoctors);
+                setFilteredDoctors(filtered);
+            })
+            .catch(() => {
+                alert("Lấy dữ liệu bác sĩ thất bại!");
+            });
+    }, [selectedSpecialty]);
+    
+    const handleSpecialtyChange = (e) => {
+        setSelectedSpecialty(e.target.value);
+    };
+
+
+    useEffect(() => {
+        DepartmentAPI.getAll()
+            .then(res => {
+                setSpecialties(res.data);
+                setSelectedSpecialty(res.data[0]._id);
+            })
+            .catch(err => {
+                alert("Lấy dữ liệu chuyên khoa thất bại!");
+            });
+    }, []);
+
+    useEffect(() => {
+        ShiftAPI.getAllShift()
+            .then(res => {
+                setShifts(res.data);
+            })
+            .catch(err => {
+                alert("Lấy dữ liệu ca trực thất bại!");
+            });
+
+    }, []);
 
     useEffect(() => {
         const daysInMonth = new Date(year, month, 0).getDate();
@@ -20,39 +92,80 @@ const ShiftAssignment = () => {
 
 
     const autoAssignShifts = () => {
-        const newAssignments = {};
-
+        const newAssignments = { ...assignments };
+    
         days.forEach((day) => {
-            let availableEmployees = [...employees]; // Copy danh sách nhân viên
-            shifts.forEach((shift) => {
-                if (availableEmployees.length > 0) {
-                    const randomIndex = Math.floor(Math.random() * availableEmployees.length);
-                    newAssignments[`${day}-${shift}`] = availableEmployees[randomIndex];
-                    availableEmployees.splice(randomIndex, 1); // Loại bỏ nhân viên đã được phân công
-                } else {
-                    newAssignments[`${day}-${shift}`] = "Trống"; // Nếu không còn nhân viên, để trống
-                }
-            });
+            if (excludedDays.includes(day)) return; // Bỏ qua những ngày bị loại trừ
+    
+            const dayDate = new Date(year, month - 1, day);
+            if (dayDate >= today) {
+                let availableEmployees = filteredDoctors.filter(
+                    (doctor) => !excludedDoctors.includes(doctor._id) // Bỏ qua những bác sĩ bị loại trừ
+                );
+    
+                shifts.forEach((shift) => {
+                    if (availableEmployees.length > 0) {
+                        const randomIndex = Math.floor(Math.random() * availableEmployees.length);
+                        newAssignments[`${day}-${shift.name}`] = availableEmployees[randomIndex]._id;
+                        availableEmployees.splice(randomIndex, 1);
+                    } else {
+                        newAssignments[`${day}-${shift.name}`] = "Trống";
+                    }
+                });
+            }
         });
-
+    
         setAssignments(newAssignments);
     };
+    
 
 
-    const handleChangeAssignment = (day, shift, newEmployee) => {
-        const shiftsOfDay = shifts.map(s => `${day}-${s}`);
-        const assignedEmployees = shiftsOfDay.map(s => assignments[s]).filter(Boolean);
+    const handleChangeAssignment = (day, shift, newEmployeeId) => {
+        // Tìm khóa hiện tại của nhân viên mới được chọn (nếu đã tồn tại trong ngày đó)
+        const currentEmployeeKey = Object.keys(assignments).find(
+            (key) => key.startsWith(`${day}-`) && assignments[key] === newEmployeeId
+        );
 
-        if (assignedEmployees.includes(newEmployee)) {
-            alert("Nhân viên này đã có ca khác trong ngày!");
-            return;
+        // Tìm nhân viên hiện tại trong ca đang được thay đổi
+        const currentEmployeeId = assignments[`${day}-${shift}`];
+
+        if (currentEmployeeKey) {
+            // Nếu nhân viên mới đã được phân công trong một ca khác, thì hoán đổi vị trí
+            setAssignments({
+                ...assignments,
+                [currentEmployeeKey]: currentEmployeeId || "Trống", // Đổi nhân viên hiện tại lên ca cũ của nhân viên mới
+                [`${day}-${shift}`]: newEmployeeId // Gán nhân viên mới vào ca hiện tại
+            });
+        } else {
+            // Nếu không tìm thấy, chỉ cần cập nhật như bình thường
+            setAssignments({
+                ...assignments,
+                [`${day}-${shift}`]: newEmployeeId
+            });
         }
-
-        setAssignments(prev => ({
-            ...prev,
-            [`${day}-${shift}`]: newEmployee
-        }));
     };
+
+    const handleSaveAssignment = () => {
+        const shiftAssignments = Object.entries(assignments).map(([key, value]) => {
+            const [day, shift] = key.split("-");
+            return {
+                // date định dạng theo kiểm 2021-09-01
+                date: `${year}-${month.toString().padStart(2, "0")}-${day.toString().padStart(2, "0")}`,
+                shiftId: shifts.find((s) => s.name === shift)._id,
+                doctorId: value === "Trống" ? null : value
+            };
+        });
+
+        console.log(shiftAssignments);
+
+        ShiftAssignmentAPI.createShiftAssignment(shiftAssignments)
+            .then(() => {
+                alert("Lưu ca trực thành công!");
+            })
+            .catch(() => {
+                alert("Lưu ca trực thất bại!");
+            });
+    }
 
     const handleDeleteAssignment = () => {
         if (assignments.length === 0) {
@@ -66,6 +179,25 @@ const ShiftAssignment = () => {
         }
     }
 
+    const [excludedDays, setExcludedDays] = useState([]);
+    const [excludedDoctors, setExcludedDoctors] = useState([]);
+
+    const handleExcludedDaysChange = (day) => {
+        if (excludedDays.includes(day)) {
+            setExcludedDays(excludedDays.filter((d) => d !== day));
+        } else {
+            setExcludedDays([...excludedDays, day]);
+        }
+    }
+
+    const handleExcludedDoctorsChange = (doctorId) => {
+        if (excludedDoctors.includes(doctorId)) {
+            setExcludedDoctors(excludedDoctors.filter((id) => id !== doctorId));
+        } else {
+            setExcludedDoctors([...excludedDoctors, doctorId]);
+        }
+    }
+
 
     return (
         <SidebarProvider>
@@ -74,11 +206,13 @@ const ShiftAssignment = () => {
                     {/* Bộ lọc chuyên khoa, tháng, năm */}
                     <div className="filters">
                         <label>Chuyên khoa
-                            <select value={specialty} onChange={(e) => setSpecialty(e.target.value)}>
-                                <option value="Nội tiết">Nội tiết</option>
-                                <option value="Tim mạch">Tim mạch</option>
-                                <option value="Hô hấp">Hô hấp</option>
-                            </select>
+                            {specialties.length > 0 && (
+                                <select value={selectedSpecialty} onChange={handleSpecialtyChange}>
+                                    {specialties.map((specialty) => (
+                                        <option key={specialty._id} value={specialty._id}>{specialty.name}</option>
+                                    ))}
+                                </select>
+                            )}
                         </label>
                         <label>Tháng
                             <select value={month} onChange={(e) => setMonth(Number(e.target.value))}>
@@ -89,17 +223,54 @@ const ShiftAssignment = () => {
                         </label>
                         <label>Năm
                             <select value={year} onChange={(e) => setYear(Number(e.target.value))}>
-                                {Array.from({ length: 10 }, (_, i) => new Date().getFullYear() - 5 + i).map((y) => (
+                                {Array.from({ length: 50 }, (_, i) => new Date().getFullYear() - 10 + i).map((y) => (
                                     <option key={y} value={y}>{y}</option>
                                 ))}
                             </select>
                         </label>
                         <div className="buttons">
                             <button className="btn delete" onClick={handleDeleteAssignment}>Xóa tất cả</button>
-                            <button className="btn save">Lưu</button>
-                            <button className="btn auto" onClick={autoAssignShifts}>Phân công tự động</button>
+                            <button className="btn save" onClick={handleSaveAssignment}>Lưu</button>
                         </div>
                     </div>
+                    <div className="exclusion-filters-box">
+                        <h3>Chọn các ngày và bác sĩ muốn loại trừ</h3>
+                        <div className="exclusion-filters">
+                            <div className="exclude-days">
+                                <h3>Chọn các ngày </h3>
+                                <div>
+                                    {days.map(day => (
+                                        <label key={day}>
+                                            <input
+                                                type="checkbox"
+                                                checked={excludedDays.includes(day)}
+                                                onChange={() => handleExcludedDaysChange(day)}
+                                            />
+                                            Ngày {day}
+                                        </label>
+                                    ))}
+                                </div>
+                            </div>
+                            <div className="exclude-doctors">
+                                <h3>Chọn bác sĩ</h3>
+                                <div>
+                                    {listDoctor.map(doctor => (
+                                        <label key={doctor._id}>
+                                            <input
+                                                type="checkbox"
+                                                checked={excludedDoctors.includes(doctor._id)}
+                                                onChange={() => handleExcludedDoctorsChange(doctor._id)}
+                                            />
+                                            {doctor.firstName} {doctor.lastName}
+                                        </label>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+
+                        <button className="btn auto" onClick={autoAssignShifts}>Phân công tự động</button>
+                    </div>
+
 
                     {/* Hiển thị lịch trực theo nhóm 4 ngày */}
                     {days.length > 0 && days.map((_, index) => index % 4 === 0 && (
@@ -114,18 +285,23 @@ const ShiftAssignment = () => {
                             </thead>
                             <tbody>
                                 {shifts.map((shift) => (
-                                    <tr key={shift}>
-                                        <td>{shift}</td>
+                                    <tr key={shift._id}>
+                                        <td>{shift.name}</td>
                                         {days.slice(index, index + 4).map((day) => (
-                                            <td key={`${shift}-${day}`}>
+                                            <td key={`${shift.name}-${day}`}>
                                                 <select
-                                                    value={assignments[`${day}-${shift}`] || ""}
-                                                    onChange={(e) => handleChangeAssignment(day, shift, e.target.value)}
+                                                    value={assignments[`${day}-${shift.name}`] || ""}
+                                                    onChange={(e) => handleChangeAssignment(day, shift.name, e.target.value)}
+                                                    disabled={
+                                                        (year < currentYear) ||
+                                                        (year === currentYear && month < currentMonth) ||
+                                                        (year === currentYear && month === currentMonth && day <= currentDay)
+                                                    }
                                                 >
-                                                    <option value="" disabled hidden>Chọn nhân viên</option>
-                                                    {employees.map((emp) => (
-                                                        <option key={emp} value={emp}>
-                                                            {emp}
+                                                    <option value="">Trống</option>
+                                                    {filteredDoctors.map((emp) => (
+                                                        <option key={emp._id} value={emp._id}>
+                                                            {emp.firstName} {emp.lastName}
                                                         </option>
                                                     ))}
                                                 </select>

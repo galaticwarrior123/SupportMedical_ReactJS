@@ -72,3 +72,79 @@
     width: 100%;
     padding: 5px;
 }
+
+
+.exclusion-filters-box{
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 5px 0 rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+.exclusion-filters-box h3{
+    margin: 0;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+}
+.exclusion-filters {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 20px;
+    padding: 20px;
+    
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+/* Phần chọn ngày cần loại trừ */
+.exclude-days {
+    flex: 1;
+}
+
+.exclude-days h3 {
+    margin:0;
+    font-size: 1.2rem;
+}
+
+.exclude-days div {
+    margin-top: 10px;
+    width: 100px;
+    height:100px;
+    overflow-y: scroll;
+    padding:10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 0 5px 0 rgba(0,0,0,0.1);
+}
+
+/* Phần chọn bác sĩ cần loại trừ */
+.exclude-doctors {
+    flex: 1;
+}
+
+.exclude-doctors h3 {
+    margin:0;
+    font-size: 1.2rem;
+}
+
+.exclude-doctors div {
+    margin-top: 10px;
+    width: 200px;
+    height:100px;
+    overflow-y: scroll;
+    padding:10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 0 5px 0 rgba(0,0,0,0.1);
+}
+
+/* Checkbox và label */
+.exclude-days label, .exclude-doctors label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.exclude-doctors input[type="checkbox"] {
+    cursor: pointer;
+}
