@@ -7,6 +7,9 @@ import { DepartmentAPI } from "../../../../API/DepartmentAPI";
 import { DoctorAPI } from "../../../../API/DoctorAPI";
 import { ShiftAssignmentAPI } from "../../../../API/ShiftAssignmentAPI";
 import { set } from "date-fns";
+import YesNoDialog from "../../../../Components/YesNoDialog/YesNoDialog";
+import { toast } from "react-toastify";
+import { to } from "react-spring";
 const ShiftAssignment = () => {
     const [month, setMonth] = useState(new Date().getMonth() + 1);
     const [year, setYear] = useState(new Date().getFullYear());
@@ -18,6 +21,11 @@ const ShiftAssignment = () => {
     const [listDoctor, setListDoctor] = useState([]);
     const [filteredDoctors, setFilteredDoctors] = useState([]);
 
+    const [excludedDays, setExcludedDays] = useState([]);
+    const [excludedDoctors, setExcludedDoctors] = useState([]);
+    const [excludedShifts, setExcludedShifts] = useState([]);
+
+    const [isOpenDialog, setIsOpenDialog] = useState(false);
 
     const today = new Date();
     const currentDay = today.getDate();
@@ -38,7 +46,7 @@ const ShiftAssignment = () => {
                 setAssignments(newAssignments);
             })
             .catch(() => {
-                alert("Lấy dữ liệu ca trực thất bại!");
+                toast.error("Lấy dữ liệu ca trực thất bại!");
             });
     }, [month, year]);
 
@@ -47,17 +55,17 @@ const ShiftAssignment = () => {
         DoctorAPI.getDoctors()
             .then(res => {
                 const allDoctors = res.data;
-                const filtered = selectedSpecialty 
-                    ? allDoctors.filter(doctor => doctor.doctorInfo.specialities[0]._id === selectedSpecialty) 
+                const filtered = selectedSpecialty
+                    ? allDoctors.filter(doctor => doctor.doctorInfo.specialities[0]._id === selectedSpecialty)
                     : allDoctors;
                 setListDoctor(allDoctors);
                 setFilteredDoctors(filtered);
             })
             .catch(() => {
-                alert("Lấy dữ liệu bác sĩ thất bại!");
+                toast.error("Lấy dữ liệu bác sĩ thất bại!");
             });
     }, [selectedSpecialty]);
-    
+
     const handleSpecialtyChange = (e) => {
         setSelectedSpecialty(e.target.value);
     };
@@ -70,7 +78,7 @@ const ShiftAssignment = () => {
                 setSelectedSpecialty(res.data[0]._id);
             })
             .catch(err => {
-                alert("Lấy dữ liệu chuyên khoa thất bại!");
+                toast.error("Lấy dữ liệu chuyên khoa thất bại!");
             });
     }, []);
 
@@ -80,7 +88,7 @@ const ShiftAssignment = () => {
                 setShifts(res.data);
             })
             .catch(err => {
-                alert("Lấy dữ liệu ca trực thất bại!");
+                toast.error("Lấy dữ liệu ca trực thất bại!");
             });
 
     }, []);
@@ -92,18 +100,27 @@ const ShiftAssignment = () => {
 
 
     const autoAssignShifts = () => {
+
+        // kiểm tra xem có bác sĩ nào không được phân công không
+        if (filteredDoctors.length === 0) {
+            toast.error("Không có bác sĩ nào để phân công!");
+            return;
+        }
+
         const newAssignments = { ...assignments };
-    
+
         days.forEach((day) => {
             if (excludedDays.includes(day)) return; // Bỏ qua những ngày bị loại trừ
-    
+
             const dayDate = new Date(year, month - 1, day);
             if (dayDate >= today) {
                 let availableEmployees = filteredDoctors.filter(
                     (doctor) => !excludedDoctors.includes(doctor._id) // Bỏ qua những bác sĩ bị loại trừ
                 );
-    
+
                 shifts.forEach((shift) => {
+                    if (excludedShifts.includes(shift._id)) return; // Bỏ qua những ca bị loại trừ
+
                     if (availableEmployees.length > 0) {
                         const randomIndex = Math.floor(Math.random() * availableEmployees.length);
                         newAssignments[`${day}-${shift.name}`] = availableEmployees[randomIndex]._id;
@@ -114,10 +131,10 @@ const ShiftAssignment = () => {
                 });
             }
         });
-    
+
         setAssignments(newAssignments);
     };
-    
+
 
 
     const handleChangeAssignment = (day, shift, newEmployeeId) => {
@@ -146,6 +163,7 @@ const ShiftAssignment = () => {
     };
 
     const handleSaveAssignment = () => {
+        
         const shiftAssignments = Object.entries(assignments).map(([key, value]) => {
             const [day, shift] = key.split("-");
             return {
@@ -172,15 +190,10 @@ const ShiftAssignment = () => {
             alert("Không có ca trực nào để xóa!");
             return;
         }
-        else {
-            if (window.confirm("Bạn có chắc chắn muốn xóa tất cả ca trực không?")) {
-                setAssignments({});
-            }
-        }
+        console.log("delete all");
     }
 
-    const [excludedDays, setExcludedDays] = useState([]);
-    const [excludedDoctors, setExcludedDoctors] = useState([]);
+    
 
     const handleExcludedDaysChange = (day) => {
         if (excludedDays.includes(day)) {
@@ -198,9 +211,27 @@ const ShiftAssignment = () => {
         }
     }
 
+    const handleExcludedShiftsChange = (shiftId) => {
+        if (excludedShifts.includes(shiftId)) {
+            setExcludedShifts(excludedShifts.filter((id) => id !== shiftId));
+        } else {
+            setExcludedShifts([...excludedShifts, shiftId]);
+        }
+    }
+
 
     return (
         <SidebarProvider>
+            <YesNoDialog
+                isOpen={isOpenDialog}
+                title={"Xác nhận"}
+                message={"Bạn có chắc chắn muốn xóa tất cả ca trực không?"}
+                yesText={"Có"}
+                noText={"Không"}
+                onConfirm={handleDeleteAssignment}
+                onCancel={() => setIsOpenDialog(false)}
+                key={"delete-shift-assignment"}
+            />
             <DefaultLayoutAdmin>
                 <div className="shift-assignment">
                     {/* Bộ lọc chuyên khoa, tháng, năm */}
@@ -229,12 +260,12 @@ const ShiftAssignment = () => {
                             </select>
                         </label>
                         <div className="buttons">
-                            <button className="btn delete" onClick={handleDeleteAssignment}>Xóa tất cả</button>
+                            <button className="btn delete" onClick={()=>setIsOpenDialog(true)}>Xóa</button>
                             <button className="btn save" onClick={handleSaveAssignment}>Lưu</button>
                         </div>
                     </div>
                     <div className="exclusion-filters-box">
-                        <h3>Chọn các ngày và bác sĩ muốn loại trừ</h3>
+                        <h3>Chọn lọc phân công</h3>
                         <div className="exclusion-filters">
                             <div className="exclude-days">
                                 <h3>Chọn các ngày </h3>
@@ -255,13 +286,31 @@ const ShiftAssignment = () => {
                                 <h3>Chọn bác sĩ</h3>
                                 <div>
                                     {listDoctor.map(doctor => (
-                                        <label key={doctor._id}>
+                                        doctor.doctorInfo.specialities[0]._id === selectedSpecialty && (    
+                                            <label key={doctor._id}>
+                                                <input
+                                                    type="checkbox"
+                                                    checked={excludedDoctors.includes(doctor._id)}
+                                                    onChange={() => handleExcludedDoctorsChange(doctor._id)}
+                                                />
+                                                {doctor.firstName} {doctor.lastName}
+                                            </label>
+                                        )
+                                        
+                                    ))}
+                                </div>
+                            </div>
+                            <div className="exclude-shifts">
+                                <h3>Chọn ca trực</h3>
+                                <div>
+                                    {shifts.map(shift => (
+                                        <label key={shift._id}>
                                             <input
                                                 type="checkbox"
-                                                checked={excludedDoctors.includes(doctor._id)}
-                                                onChange={() => handleExcludedDoctorsChange(doctor._id)}
+                                                checked={excludedShifts.includes(shift._id)}
+                                                onChange={() => handleExcludedShiftsChange(shift._id)}
                                             />
-                                            {doctor.firstName} {doctor.lastName}
+                                            {shift.name}
                                         </label>
                                     ))}
                                 </div>
