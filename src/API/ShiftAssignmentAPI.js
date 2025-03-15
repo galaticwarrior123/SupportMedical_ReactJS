@@ -10,4 +10,8 @@ export class ShiftAssignmentAPI {
     static async createShiftAssignment(shiftAssignment) {
         return axiosPrivate.post("/shift-assignment/create", shiftAssignment);
     }
+
+    static async deleteShiftAssignment(shiftAssignment) {
+        return axiosPrivate.delete("/shift-assignment/delete", { data: shiftAssignment });
+    }
 }
