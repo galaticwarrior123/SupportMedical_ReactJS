@@ -1,6 +1,9 @@
 import { useState } from "react";
 import DoctorLayout from "../../../Layouts/Doctor/DoctorLayout";
 import './Schedule.css';
+import { useDispatch, useSelector } from "react-redux";
+import { openAppointmentListModal } from "../../../redux/slices/doctorScheduleSlice";
+import AppointmentListModal from "./AppointmentListModal";
 
 const daysOfWeek = ['CN', 'Hai', 'Ba', 'Tư', 'Năm', 'Sáu', 'Bảy'];
 const getDaysInMonth = (year, month) => {
@@ -22,7 +25,9 @@ const getDaysInMonth = (year, month) => {
 };
 
 const Schedule = () => {
+    const dispatch = useDispatch();
     const today = new Date();
+    const { isAppointmentListModalOpen } = useSelector((state) => state.doctorSchedule);
     const [year, setYear] = useState(today.getFullYear());
     const [month, setMonth] = useState(today.getMonth());
     const [selectedDay, setSelectedDay] = useState(null);
@@ -46,11 +51,13 @@ const Schedule = () => {
     const handleSelectDay = (day) => {
         if (day) {
             setSelectedDay(day);
+            dispatch(openAppointmentListModal());
         }
     };
 
     return (
         <DoctorLayout>
+            {isAppointmentListModalOpen && <AppointmentListModal />}
             <div className="doctor-schedule-container">
                 <div className="day-selection">
                     <h3>Lịch làm việc</h3>
