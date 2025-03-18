@@ -14,3 +14,47 @@
 .doctor-schedule-container .day-selection td.selected {
     font-weight: normal; /* override the original css */
 }
+
+.doctor-schedule-day {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.doctor-schedule-shift {
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    margin-left: 10px;
+}
+
+.doctor-schedule-shift.day-shift {
+    background-color: #FFD700;
+}
+
+.doctor-schedule-shift.afternoon-shift {
+    background-color: #f4872f;
+}
+
+.doctor-schedule-shift.night-shift {
+    background-color: #c62ff4;
+}
+
+.legends {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.legend {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 10px;
+}
+
+.legend span {
+    margin-left: 5px;
+}

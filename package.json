@@ -27,6 +27,7 @@
     "react-simple-image-viewer": "^1.2.2",
     "react-spring": "^9.7.4",
     "react-toastify": "^10.0.5",
+    "sass": "^1.85.1",
     "socket.io-client": "^4.7.5",
     "web-vitals": "^2.1.4"
   },

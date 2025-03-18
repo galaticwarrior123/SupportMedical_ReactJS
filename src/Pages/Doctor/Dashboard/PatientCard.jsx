@@ -1,13 +1,20 @@
+import { useDispatch } from "react-redux";
+import { openRecordResultModal } from "../../../redux/slices/doctorDashboardSlice";
 
 function PatientCard() {
+  const dispatch = useDispatch();
+  const openModal = () => {
+    dispatch(openRecordResultModal());
+  }
+
   return (
     <div className="patient-card doctor-dashboard-card">
       <div className="patient-card-header">
         <img src="your-avatar-placeholder.png" alt="Avatar" />
-          <div className="dashboard-patient-info">
-            <h2 className="patient-name">Nguyễn Văn A</h2>
-            <p className="patient-details">Nam - 30 tuổi</p>
-          </div>
+        <div className="dashboard-patient-info">
+          <h2 className="patient-name">Nguyễn Văn A</h2>
+          <p className="patient-details">Nam - 30 tuổi</p>
+        </div>
       </div>
       <div className="patient-notes">
         <p>Ghi chú của bệnh nhân:</p>
@@ -23,7 +30,7 @@ function PatientCard() {
       </div>
       <div className="status-buttons">
         <button className="absent-button">Vắng</button>
-        <button className="examined-button">Đã khám</button>
+        <button onClick={openModal} className="examined-button">Đã khám</button>
       </div>
     </div>
   );

@@ -1,6 +1,9 @@
 import { useState } from "react";
 import DoctorLayout from "../../../Layouts/Doctor/DoctorLayout";
 import './Schedule.css';
+import { useDispatch, useSelector } from "react-redux";
+import { openAppointmentListModal } from "../../../redux/slices/doctorScheduleSlice";
+import AppointmentListModal from "./AppointmentListModal";
 
 const daysOfWeek = ['CN', 'Hai', 'Ba', 'Tư', 'Năm', 'Sáu', 'Bảy'];
 const getDaysInMonth = (year, month) => {
@@ -22,7 +25,9 @@ const getDaysInMonth = (year, month) => {
 };
 
 const Schedule = () => {
+    const dispatch = useDispatch();
     const today = new Date();
+    const { isAppointmentListModalOpen } = useSelector((state) => state.doctorSchedule);
     const [year, setYear] = useState(today.getFullYear());
     const [month, setMonth] = useState(today.getMonth());
     const [selectedDay, setSelectedDay] = useState(null);
@@ -46,11 +51,13 @@ const Schedule = () => {
     const handleSelectDay = (day) => {
         if (day) {
             setSelectedDay(day);
+            dispatch(openAppointmentListModal());
         }
     };
 
     return (
         <DoctorLayout>
+            {isAppointmentListModalOpen && <AppointmentListModal />}
             <div className="doctor-schedule-container">
                 <div className="day-selection">
                     <h3>Lịch làm việc</h3>
@@ -59,7 +66,7 @@ const Schedule = () => {
                         <span>{`THÁNG ${month + 1} - ${year}`}</span>
                         <button className="nav-button" onClick={() => changeMonth(1)}>➡</button>
                     </div>
-                    <table  className="calendar">
+                    <table className="calendar">
                         <thead>
                             <tr>
                                 {daysOfWeek.map((day, index) => (
@@ -76,13 +83,34 @@ const Schedule = () => {
                                             className={day === selectedDay ? 'selected' : day ? 'available' : 'empty'}
                                             onClick={() => handleSelectDay(day)}
                                         >
-                                            {day && <span>{day}</span>}
+                                            {day && 
+                                                <div className="doctor-schedule-day">
+                                                    {day} 
+                                                    <div className="doctor-schedule-shift day-shift"></div>
+                                                    <div className="doctor-schedule-shift afternoon-shift"></div>
+                                                    <div className="doctor-schedule-shift night-shift"></div>
+                                                </div>
+                                            }
                                         </td>
                                     ))}
                                 </tr>
                             ))}
                         </tbody>
                     </table>
+                    <div className="legends">
+                        <div className="legend">
+                            <div className="doctor-schedule-shift day-shift"></div>
+                            <span>Ca sáng</span>
+                        </div>
+                        <div className="legend">
+                            <div className="doctor-schedule-shift afternoon-shift"></div>
+                            <span>Ca chiều</span>
+                        </div>
+                        <div className="legend">
+                            <div className="doctor-schedule-shift night-shift"></div>
+                            <span>Ca tối</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </DoctorLayout>
