@@ -19,6 +19,11 @@ export class DoctorAPI {
         return axiosClient.get(`/doctor/all`);
     }
 
+
+    static async getAllDoctorHaveShift() {
+        return axiosClient.get(`/doctor/all/shift`);
+    }
+
     static async permissionDoctor(doctorInfo) {
         return axiosPrivate.put(`/doctor/update/permissionDoctor`, doctorInfo);
     }

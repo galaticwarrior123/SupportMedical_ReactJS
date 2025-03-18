@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import DefaultLayoutRegisterMedicalExaminationPage from '../../../../../Layouts/DefaultLayoutRegisterMedicalExaminationPage/DefaultLayoutRegisterMedicalExaminationPage';
 import ConfirmRegisterMedicalPage from '../ConfirmRegisterMedicalPage';
 import './SelectServicePage.css';
@@ -7,9 +7,13 @@ import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
 const SelectServicePage = () => {
     const navigate = useNavigate();
+    const location = useLocation();
+    const doctorSelected = location.state;
+
+
 
     const handleNavigate = (path) => {
-        navigate(path);
+        navigate(path, { state: doctorSelected });
     }
 
     return (

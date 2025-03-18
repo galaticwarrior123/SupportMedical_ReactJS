@@ -2,14 +2,16 @@ import DefaultLayoutRegisterMedicalExaminationPage from '../../../../../Layouts/
 import './ConfirmInfoPage.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faArrowLeft, faUser, faCalendarAlt, faEnvelope, faIdCard, faVenusMars, faMapMarkerAlt, faExclamationCircle, faPhone } from '@fortawesome/free-solid-svg-icons';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 
 const ConfirmInfoPage = () => {
     const navigate = useNavigate();
+    const location = useLocation();
+    const doctorSelected = location.state;
 
     const handleNavigate = (path) => {
-        navigate(path);
+        navigate(path, { state: doctorSelected });
     }
 
     return (
@@ -32,10 +34,10 @@ const ConfirmInfoPage = () => {
                         <tbody>
                             <tr>
                                 <td>1</td>
-                                <td>Da liễu</td>
+                                <td>{doctorSelected.doctor.doctorInfo.specialities[0].name}</td>
                                 <td>Tư vấn ngay online 01 lần</td>
-                                <td>Đoàn Thị Bích Vân</td>
-                                <td>Chờ cập nhật</td>
+                                <td>{doctorSelected.doctor.firstName} {doctorSelected.doctor.lastName}</td>
+                                <td><strong>{doctorSelected.timeSlot}</strong> ngày {doctorSelected.date}</td>
                                 <td>150.000 đ</td>
                                 <td><button className="delete-button-confirm"><FontAwesomeIcon icon={faTrash} /></button></td>
                             </tr>

@@ -160,6 +160,21 @@
     background-color: #e0e0e0;
 }
 
+.disabled {
+    color: gray;
+    background-color: #f0f0f0;
+    cursor: not-allowed;
+}
+
+.available {
+    color: black;
+    cursor: pointer;
+}
+
+.selected {
+    background-color: lightblue;
+}
+
 @keyframes floatIn {
     from {
         opacity: 0;

@@ -1,10 +1,11 @@
 import ConfirmRegisterMedicalPage from '../ConfirmRegisterMedicalPage';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './SelectDayPage.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
-import { useNavigate } from 'react-router-dom';
-
+import { useLocation, useNavigate } from 'react-router-dom';
+import ShiftAssignmentApi, { ShiftAssignmentAPI } from '../../../../../API/ShiftAssignmentAPI';
+import { toast } from 'react-toastify';
 const daysOfWeek = ['CN', 'Hai', 'Ba', 'Tư', 'Năm', 'Sáu', 'Bảy'];
 
 const getDaysInMonth = (year, month) => {
@@ -30,20 +31,53 @@ const SelectDayPage = () => {
     const [year, setYear] = useState(today.getFullYear());
     const [month, setMonth] = useState(today.getMonth());
     const [selectedDay, setSelectedDay] = useState(null);
+    const [workingDays, setWorkingDays] = useState([]);
     const daysInMonth = getDaysInMonth(year, month);
     const [selectedTimeSlot, setSelectedTimeSlot] = useState(null);
+    const [timeSlots, setTimeSlots] = useState([]);
     const navigate = useNavigate();
+    const location = useLocation();
+    const doctorSelected = location.state;
 
-    const timeSlots = [
+
+    const listTimeSlots = [
         '08:00 - 08:30', '08:30 - 09:00', '09:00 - 09:30', '09:30 - 10:00',
         '10:00 - 10:30', '10:30 - 11:00', '13:00 - 13:30', '13:30 - 14:00',
         '14:00 - 14:30', '14:30 - 15:00', '15:00 - 15:30', '15:30 - 16:00'
     ];
 
+    useEffect(() => {
+        ShiftAssignmentAPI.getShiftAssignments({
+            doctorId: doctorSelected.doctor._id,
+            startDate: `${year}-${(month + 1).toString().padStart(2, "0")}-1`,
+            endDate: `${year}-${(month + 1).toString().padStart(2, "0")}-31`
+        }).then((response) => {
+            const workingDays = response.data.map((shiftItem) => ({
+                date: new Date(shiftItem.date).getDate(),
+                startTime: shiftItem.shift.startTime,
+                endTime: shiftItem.shift.endTime,
+            }));
+            setWorkingDays(workingDays);
+            
+
+        }).catch((error) => {
+            toast.error('Lỗi khi tải dữ liệu ca làm việc');
+        })
+    }, [doctorSelected.doctor._id, month, year]);
+
     const handleSelectDay = (day) => {
-        if (day) {
+        if (day && workingDays.some((item) => item.date === day)) {
             setSelectedDay(day);
             setSelectedTimeSlot(null);
+
+
+            setTimeSlots(listTimeSlots.filter((timeSlot) => {
+                const [startTime, endTime] = timeSlot.split(' - ');
+                const workingDay = workingDays.find((item) => item.date === day);
+                return workingDay.startTime <= startTime && workingDay.endTime >= endTime;
+            }
+
+            ));
         }
     };
 
@@ -76,7 +110,16 @@ const SelectDayPage = () => {
 
 
     const handleNavigate = (path) => {
-        navigate(path);
+        const state = {
+            ...doctorSelected,
+        };
+    
+        if (selectedDay) {
+            state.date = `${year}-${(month + 1).toString().padStart(2, "0")}-${selectedDay.toString().padStart(2, "0")}`;
+            state.timeSlot = selectedTimeSlot;
+        }
+    
+        navigate(path, { state });
     };
 
     return (
@@ -102,7 +145,9 @@ const SelectDayPage = () => {
                                 {week.map((day, j) => (
                                     <td
                                         key={j}
-                                        className={day === selectedDay ? 'selected' : day ? 'available' : 'empty'}
+                                        className={
+                                            workingDays.some((item) => item.date === day) ? (day === selectedDay ? 'selected' : 'available') : 'disabled'
+                                        }
                                         onClick={() => handleSelectDay(day)}
                                     >
                                         {day && <span>{day}</span>}

@@ -3,9 +3,16 @@ import DefaultLayoutRegisterMedicalExaminationPage from '../../../../../Layouts/
 import './SelectPaymentPage.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMapMarkedAlt, faPhone, faUser, faUserMd, faCalendarAlt, faClock, faIdCard, faClinicMedical, faStethoscope, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { useLocation } from 'react-router-dom';
 
 const SelectPaymentPage = () => {
     const [selectedPayment, setSelectedPayment] = useState(null);
+    const location = useLocation();
+    const doctorSelected = location.state;
+
+    console.log(doctorSelected);
+
+    
 
     const handlePaymentSelection = (event) => {
         setSelectedPayment(event.target.value);
@@ -52,13 +59,13 @@ const SelectPaymentPage = () => {
                                     <div className="info-left">
                                         <FontAwesomeIcon icon={faStethoscope} /> <span>Chuyên khoa:</span>
                                     </div>
-                                    <div className="info-right">TAI MŨI HỌNG</div>
+                                    <div className="info-right">{doctorSelected.doctor.doctorInfo.specialities[0].name}</div>
                                 </div>
                                 <div>
                                     <div className="info-left">
                                         <FontAwesomeIcon icon={faUserMd} /> <span>Bác sĩ:</span>
                                     </div>
-                                    <div className="info-right">Âu Thị Cẩm Lệ</div>
+                                    <div className="info-right"> {doctorSelected.doctor.firstName} {doctorSelected.doctor.lastName} </div>
                                 </div>
                                 <div>
                                     <div className="info-left">
@@ -70,13 +77,14 @@ const SelectPaymentPage = () => {
                                     <div className="info-left">
                                         <FontAwesomeIcon icon={faCalendarAlt} /> <span>Ngày khám:</span>
                                     </div>
-                                    <div className="info-right">14/03/2025</div>
+                                    
+                                    <div className="info-right">{doctorSelected.date.split('-').reverse().join('-')} </div>
                                 </div>
                                 <div>
                                     <div className="info-left">
                                         <FontAwesomeIcon icon={faClock} /> <span>Giờ khám:</span>
                                     </div>
-                                    <div className="info-right">08:00 - 09:00</div>
+                                    <div className="info-right">{doctorSelected.timeSlot}</div>
                                 </div>
                                 <div>
                                     <div className="info-left">

@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import ConfirmRegisterMedicalPage from '../ConfirmRegisterMedicalPage';
 import './SelectRecordPage.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -50,9 +50,11 @@ const records = [
 const SelectRecordPage = () => {
     const navigate = useNavigate();
     const [activeRecordIndex, setActiveRecordIndex] = useState(null);
+    const location = useLocation();
+    const doctorSelected = location.state;
 
     const handleNavigate = (path) => {
-        navigate(path);
+        navigate(path, { state: doctorSelected });
     }
 
     const handleRecordClick = (index) => {
