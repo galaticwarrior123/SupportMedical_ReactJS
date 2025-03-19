@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import DefaultLayoutRegisterMedicalExaminationPage from "../../../../Layouts/DefaultLayoutRegisterMedicalExaminationPage/DefaultLayoutRegisterMedicalExaminationPage";
 import "./CreatePatientRecordPage.css";
+import { RecordPatientAPI } from "../../../../API/RecordPatientAPI";
 import axios from "axios";
+import { toast } from "react-toastify";
 const API_BASE_URL = "https://provinces.open-api.vn/api";
 const JOBS = [
     { id: 1, name: "Bác sĩ" },
@@ -15,11 +17,18 @@ const JOBS = [
 ];
 const GENDERS = [
     { id: 1, name: "Nam" },
-    { id: 2, name: "Nữ" },
+    { id: 0, name: "Nữ" },
 ];
 const CreatePatientRecordPage = () => {
-    const recordId = useParams().id;
+    
+    const user = JSON.parse(localStorage.getItem("user"));
     const [hasPreviousRecord, setHasPreviousRecord] = useState(true);
+    const location = useLocation();
+
+    const [currentRecord, setCurrentRecord] = useState(location.state ? location.state.record : null);
+    const [hasUpdate, setHasUpdate] = useState(location.state ? location.state.statusUpdate : undefined);
+    console.log("currentRecord", currentRecord);
+    console.log("hasUpdate", hasUpdate);
 
     // Lấy năm hiện tại
     const currentYear = new Date().getFullYear();
@@ -48,6 +57,10 @@ const CreatePatientRecordPage = () => {
     const [provinces, setProvinces] = useState([]);
     const [districts, setDistricts] = useState([]);
     const [wards, setWards] = useState([]);
+
+    const [namePatient, setNamePatient] = useState("");
+    const [phonePatient, setPhonePatient] = useState("");
+    const [addressPatient, setAddressPatient] = useState("");
 
 
     // State lưu giá trị người dùng chọn
@@ -118,16 +131,103 @@ const CreatePatientRecordPage = () => {
         }
     };
 
+    const handleSubmit = () => {
+        if (!namePatient) {
+            toast.error("Vui lòng nhập họ tên bệnh nhân");
+            return;
+        }
+        if (!selectedDay || !selectedMonth || !selectedYear) {
+            toast.error("Vui lòng chọn ngày sinh");
+            return;
+        }
+        if (!selectedGender) {
+            toast.error("Vui lòng chọn giới tính");
+            return;
+        }
+        if (!selectedJob) {
+            toast.error("Vui lòng chọn nghề nghiệp");
+            return;
+        }
+        if (!phonePatient || !/0\d{9}/.test(phonePatient)) {
+            toast.error("Vui lòng nhập số điện thoại hợp lệ");
+            return;
+        }
+        if (!selectedProvince) {
+            toast.error("Vui lòng chọn tỉnh/thành");
+            return;
+        }
+        if (!selectedDistrict) {
+            toast.error("Vui lòng chọn quận/huyện");
+            return;
+        }
+        if (!selectedWard) {
+            toast.error("Vui lòng chọn phường/xã");
+            return;
+        }
+
+        if (hasUpdate === undefined) {
+            const dataCreate = {
+                name: namePatient,
+                dob: `${selectedYear}-${selectedMonth}-${selectedDay}`,
+                job: selectedJob,
+                phoneNumber: phonePatient,
+                gender: Number(selectedGender),
+                address: `${addressPatient}`,
+                provinceCode: selectedProvince,
+                districtCode: selectedDistrict,
+                wardCode: selectedWard,
+                createdBy: user._id
+            }
+            
+
+            wards.map((ward) => {
+                if (ward.code == selectedWard) {
+                    dataCreate.ward = ward.name;
+                }
+            });
+
+            districts.map((district) => {
+                if (district.code == selectedDistrict) {
+                    dataCreate.district = district.name;
+                }
+            });
+
+            provinces.map((province) => {
+                if (province.code == selectedProvince) {
+                    dataCreate.province = province.name;
+                }
+            });
+
+
+            RecordPatientAPI.createRecordPatient(dataCreate)
+                .then((response) => {
+                    setSelectedDay("");
+                    setSelectedMonth("");
+                    setSelectedYear("");
+                    setSelectedGender("");
+                    setSelectedJob("");
+                    setAddressPatient("");
+                    setSelectedProvince("");
+                    setSelectedDistrict("");
+                    setNamePatient("");
+                    setPhonePatient("");
+                    toast.success("Tạo hồ sơ bệnh nhân thành công");
+                }).catch((error) => {
+                    toast.error("Tạo hồ sơ bệnh nhân thất bại");
+                });
+
+        }
+    };
 
     return (
         <DefaultLayoutRegisterMedicalExaminationPage>
             <div className="create-patient-record">
                 <h2 className="title">
-                    {recordId ? "CẬP NHẬT HỒ SƠ" : "TẠO MỚI HỒ SƠ"}
+                    {hasUpdate ? "CẬP NHẬT HỒ SƠ" : "TẠO MỚI HỒ SƠ"}
                 </h2>
 
                 {/* Kiểm tra nếu tạo mới thì hiển thị lựa chọn */}
-                {!recordId && (
+                {!hasUpdate && (
                     <div className="toggle-group">
                         <span
                             className={`toggle-option ${hasPreviousRecord === true ? "active" : ""}`}
@@ -145,7 +245,7 @@ const CreatePatientRecordPage = () => {
                 )}
 
                 {/* Nếu đã từng khám thì hiển thị ô nhập mã bệnh nhân */}
-                {hasPreviousRecord === true && !recordId && (
+                {hasPreviousRecord === true && !hasUpdate && (
                     <>
                         <div className="form-medical-container-2">
                             <div className="form-medical-group-2">
@@ -160,12 +260,12 @@ const CreatePatientRecordPage = () => {
 
 
                 {/* Form nhập thông tin bệnh nhân */}
-                {hasPreviousRecord === false && !recordId && (
+                {hasPreviousRecord ===false && !hasUpdate && (
                     <>
                         <div className="form-medical-container">
                             <div className="form-medical-group">
                                 <label>Họ và tên (có dấu)</label>
-                                <input type="text" placeholder="VD: Nguyễn Văn A" />
+                                <input type="text" placeholder="VD: Nguyễn Văn A" onChange={(e) => setNamePatient(e.target.value)} value={namePatient} />
                             </div>
 
                             <div className="form-medical-group">
@@ -196,7 +296,7 @@ const CreatePatientRecordPage = () => {
 
                             <div className="form-medical-group">
                                 <label>Số điện thoại</label>
-                                <input type="text" placeholder="Vui lòng nhập số điện thoại ..." />
+                                <input type="text" placeholder="Vui lòng nhập số điện thoại ..." onChange={(e) => setPhonePatient(e.target.value)} value={phonePatient} />
                             </div>
 
                             <div className="form-medical-group">
@@ -216,7 +316,7 @@ const CreatePatientRecordPage = () => {
                                 <select value={selectedJob} onChange={(e) => setSelectedJob(e.target.value)}>
                                     <option value="" disabled hidden>Chọn nghề nghiệp</option>
                                     {jobs.map((job) => (
-                                        <option key={job.id} value={job.id}>
+                                        <option key={job.id} value={job.name}>
                                             {job.name}
                                         </option>
                                     ))}
@@ -225,7 +325,7 @@ const CreatePatientRecordPage = () => {
 
                             <div className="form-medical-group">
                                 <label>Địa chỉ</label>
-                                <input type="text" placeholder="Nhập số nhà, tên đường, ấp xóm, ..." />
+                                <input type="text" placeholder="Nhập số nhà, tên đường, ấp xóm, ..." onChange={(e) => setAddressPatient(e.target.value)} value={addressPatient} />
                             </div>
 
                             <div className="form-medical-group">
@@ -273,8 +373,8 @@ const CreatePatientRecordPage = () => {
                             </div>
                         </div>
 
-                        <button className="submit-button">
-                            {recordId ? "Cập nhật" : "Tạo mới"}
+                        <button className="submit-button" onClick={() => handleSubmit()}>
+                            {hasUpdate ? "Cập nhật" : "Tạo mới"}
                         </button>
                     </>
                 )}
