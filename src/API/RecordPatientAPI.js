@@ -13,4 +13,14 @@ export class RecordPatientAPI {
         const url = '/record-patient/create';
         return axiosPrivate.post(url, data);
     }
+
+    static async updateRecordPatient(id, data) {
+        const url = '/record-patient/update/' + id;
+        return axiosPrivate.put(url, data);
+    }
+
+    static async deleteRecordPatient(id) {
+        const url = '/record-patient/delete/' + id;
+        return axiosPrivate.delete(url);
+    }
 }

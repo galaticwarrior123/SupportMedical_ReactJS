@@ -89,7 +89,7 @@ const ShiftAssignment = () => {
                 setShifts(res.data);
             })
             .catch(err => {
-                toast.error("Lấy dữ liệu ca trực thất bại!");
+                toast.error("Lấy dữ liệu ca làm việc thất bại!");
             });
 
     }, []);

@@ -13,7 +13,13 @@ const SelectServicePage = () => {
 
 
     const handleNavigate = (path) => {
-        navigate(path, { state: doctorSelected });
+        const state = {
+            ...doctorSelected,
+        }
+
+        state.amount = 150000;
+
+        navigate(path, { state: state });
     }
 
     return (

@@ -3,19 +3,24 @@ import DefaultLayoutRegisterMedicalExaminationPage from '../../../../../Layouts/
 import './SelectPaymentPage.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMapMarkedAlt, faPhone, faUser, faUserMd, faCalendarAlt, faClock, faIdCard, faClinicMedical, faStethoscope, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const SelectPaymentPage = () => {
     const [selectedPayment, setSelectedPayment] = useState(null);
     const location = useLocation();
     const doctorSelected = location.state;
-
-    console.log(doctorSelected);
+    const navigate = useNavigate();
 
     
 
     const handlePaymentSelection = (event) => {
         setSelectedPayment(event.target.value);
+    };
+
+    const handlePayment = () => {
+        if(selectedPayment === 'Thẻ ATM nội địa/ Internet Banking'){
+            navigate('/select-bank', {state: doctorSelected});
+        }
     };
 
     return (
@@ -25,9 +30,9 @@ const SelectPaymentPage = () => {
                     <div className="left-section-container">
                         <div className="section-title">Thông tin bệnh nhân</div>
                         <div className="left-section-patient-info">
-                            <p><FontAwesomeIcon icon={faUser} /> NGUYỄN TRỌNG PHÚC</p>
-                            <p><FontAwesomeIcon icon={faPhone} /> 0823452559</p>
-                            <p><FontAwesomeIcon icon={faMapMarkedAlt} /> Phường Linh Trung Thành phố Thủ Đức Thành phố Hồ Chí Minh</p>
+                            <p><FontAwesomeIcon icon={faUser} /> {doctorSelected.record.name}</p>
+                            <p><FontAwesomeIcon icon={faPhone} /> {doctorSelected.record.phoneNumber}</p>
+                            <p><FontAwesomeIcon icon={faMapMarkedAlt} /> {doctorSelected.record.address}, {doctorSelected.record.ward}, {doctorSelected.record.district}, {doctorSelected.record.province}</p>
                         </div>
                     </div>
 
@@ -95,7 +100,7 @@ const SelectPaymentPage = () => {
                             </div>
                             <div className="total-amount">Tổng cộng: <span style={{ color: '#00C2FF', fontWeight: 'bold' }}>150.000 đ</span></div>
                             <div className="total-amount-action">
-                                <button disabled={!selectedPayment}>Thanh toán</button>
+                                <button disabled={!selectedPayment} onClick={handlePayment}>Thanh toán</button>
                             </div>
 
                         </div>

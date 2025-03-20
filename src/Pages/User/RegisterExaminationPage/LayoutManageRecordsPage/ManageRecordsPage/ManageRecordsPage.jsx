@@ -60,6 +60,17 @@ const ManageRecordsPage = () => {
         } });
     }
 
+    const handleDeleteRecord = (recordId) => {
+        RecordPatientAPI.deleteRecordPatient(recordId)
+            .then((response) => {
+                toast.success("Xóa hồ sơ bệnh nhân thành công");
+                setVisibleRecords(visibleRecords.filter(record => record._id !== recordId));
+            })
+            .catch((error) => {
+                toast.error("Lỗi khi xóa hồ sơ bệnh nhân");
+            });
+    }
+
     return (
         <LayoutManageRecordsPage>
             <>
@@ -88,13 +99,13 @@ const ManageRecordsPage = () => {
                             </p>
                             <p>
                                 <FontAwesomeIcon icon={faMapMarkedAlt} className="fa-icon" />
-                                <strong>Địa chỉ:</strong> {record.address}, {record.ward}, {record.district}, {record.city}
+                                <strong>Địa chỉ:</strong> {record.address}, {record.ward}, {record.district}, {record.province}
                             </p>
                         </div>
 
                         <div className="action-buttons-manage-records">
                             <button className="edit-btn-manage-records" onClick={() => handleEditRecord(record)} >Sửa hồ sơ</button>
-                            <button className="delete-btn-manage-records">Xóa hồ sơ</button>
+                            <button className="delete-btn-manage-records" onClick={() => handleDeleteRecord(record._id)}>Xóa hồ sơ</button>
 
                         </div>
                     </div>
