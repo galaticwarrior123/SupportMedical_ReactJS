@@ -2,14 +2,17 @@ import DefaultLayoutRegisterMedicalExaminationPage from '../../../../../Layouts/
 import './ConfirmInfoPage.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faArrowLeft, faUser, faCalendarAlt, faEnvelope, faIdCard, faVenusMars, faMapMarkerAlt, faExclamationCircle, faPhone } from '@fortawesome/free-solid-svg-icons';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 
 const ConfirmInfoPage = () => {
     const navigate = useNavigate();
+    const location = useLocation();
+    const doctorSelected = location.state;
+
 
     const handleNavigate = (path) => {
-        navigate(path);
+        navigate(path, { state: doctorSelected });
     }
 
     return (
@@ -32,10 +35,10 @@ const ConfirmInfoPage = () => {
                         <tbody>
                             <tr>
                                 <td>1</td>
-                                <td>Da liễu</td>
+                                <td>{doctorSelected.doctor.doctorInfo.specialities[0].name}</td>
                                 <td>Tư vấn ngay online 01 lần</td>
-                                <td>Đoàn Thị Bích Vân</td>
-                                <td>Chờ cập nhật</td>
+                                <td>{doctorSelected.doctor.firstName} {doctorSelected.doctor.lastName}</td>
+                                <td><strong>{doctorSelected.timeSlot}</strong> ngày {doctorSelected.date}</td>
                                 <td>150.000 đ</td>
                                 <td><button className="delete-button-confirm"><FontAwesomeIcon icon={faTrash} /></button></td>
                             </tr>
@@ -46,12 +49,12 @@ const ConfirmInfoPage = () => {
                 <div className="section-confirm-info">
                     <h2>Thông tin bệnh nhân</h2>
                     <div className="patient-info">
-                        <div className='patient-info-para'><FontAwesomeIcon icon={faUser} /> Họ và tên: <strong>NGUYỄN TRỌNG PHÚC</strong></div>
-                        <div className='patient-info-para'><FontAwesomeIcon icon={faCalendarAlt} /> Ngày sinh: 01/01/2003</div>
-                        <div className='patient-info-para'><FontAwesomeIcon icon={faPhone} /> Số điện thoại: 0823452559</div>
-                        <div className='patient-info-para'><FontAwesomeIcon icon={faVenusMars} /> Giới tính: Nam</div>
-                        <div className='patient-info-para'><FontAwesomeIcon icon={faIdCard} /> Nghề nghiệp: Sinh viên</div>
-                        <div className='patient-info-para'><FontAwesomeIcon icon={faMapMarkerAlt} /> Địa chỉ: Phường Linh Trung Thành phố Thủ Đức Thành phố Hồ Chí Minh</div>
+                        <div className='patient-info-para'><FontAwesomeIcon icon={faUser} /> Họ và tên: <strong>{doctorSelected.record.name}</strong></div>
+                        <div className='patient-info-para'><FontAwesomeIcon icon={faCalendarAlt} /> Ngày sinh: {doctorSelected.record.dob.split('-').reverse().join('/')}</div>
+                        <div className='patient-info-para'><FontAwesomeIcon icon={faPhone} /> Số điện thoại: {doctorSelected.record.phoneNumber}</div>
+                        <div className='patient-info-para'><FontAwesomeIcon icon={faVenusMars} /> Giới tính: {doctorSelected.gender === true ? "Nam" : "Nữ"}</div>
+                        <div className='patient-info-para'><FontAwesomeIcon icon={faIdCard} /> Nghề nghiệp: {doctorSelected.record.job}</div>
+                        <div className='patient-info-para'><FontAwesomeIcon icon={faMapMarkerAlt} /> Địa chỉ: {doctorSelected.record.address}, {doctorSelected.record.ward}, {doctorSelected.record.district}, {doctorSelected.record.province}</div>
                     </div>
                     {/* <div className="warning-message">
                         <FontAwesomeIcon icon={faExclamationCircle} /> Trong thời gian quy định, nếu quý khách hủy phiếu khám sẽ được hoàn lại tiền khám và các dịch vụ đã đặt (không bao gồm phí tiện ích).

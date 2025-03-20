@@ -3,8 +3,10 @@ import DefaultLayoutRegisterMedicalExaminationPage from '../../../../Layouts/Def
 import './RegisterMedicalExaminationPage.css';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
-
+import { useEffect, useState } from 'react';
+import { DoctorAPI } from '../../../../API/DoctorAPI';
+import { set } from 'date-fns';
+import { toast } from 'react-toastify';
 const doctors = [
     {
         id: 1,
@@ -95,6 +97,7 @@ const doctors = [
 const RegisterMedicalExaminationPage = () => {
     const navigate = useNavigate();
     const [currentPage, setCurrentPage] = useState(1);
+    const [listDoctors, setListDoctors] = useState([]);
     const doctorsPerPage = 5;
 
     const handleNavigate = (path) => {
@@ -103,12 +106,25 @@ const RegisterMedicalExaminationPage = () => {
 
     const indexOfLastDoctor = currentPage * doctorsPerPage;
     const indexOfFirstDoctor = indexOfLastDoctor - doctorsPerPage;
-    const currentDoctors = doctors.slice(indexOfFirstDoctor, indexOfLastDoctor);
+    const currentDoctors = listDoctors.slice(indexOfFirstDoctor, indexOfLastDoctor);
 
-    const totalPages = Math.ceil(doctors.length / doctorsPerPage);
+    const totalPages = Math.ceil(listDoctors.length / doctorsPerPage);
 
     const handlePageChange = (pageNumber) => {
         setCurrentPage(pageNumber);
+    }
+
+    useEffect(() => {
+        DoctorAPI.getAllDoctorHaveShift().then((response) => {
+            setListDoctors(response.data);
+        }
+        ).catch((error) => {
+            toast.error("Lỗi khi lấy danh sách bác sĩ");
+        });
+    }, []);
+
+    const handleDirectSelectService = (doctor) => () => {
+        navigate('/select-service', { state: doctor });
     }
 
     return (
@@ -139,7 +155,7 @@ const RegisterMedicalExaminationPage = () => {
                 <div className="content-medical">
                     <div className="doctor-list-card-medical">
 
-                        {currentDoctors.length > 0 ? currentDoctors.map((doctor, index) => (
+                        {currentDoctors.length > 0 ? currentDoctors.map((doctorItem, index) => (
 
                             <div className="doctor-card-medical" key={index}>
                                 <div className="doctor-info-medical">
@@ -148,9 +164,9 @@ const RegisterMedicalExaminationPage = () => {
                                         <button className="doctor-info-medical-image-button">Xem chi tiết</button>
                                     </div>
                                     <div className="doctor-details-medical">
-                                        <h3>{doctor.name} | {doctor.major}</h3>
-                                        <p><strong>Chuyên trị:</strong> {doctor.description}</p>
-                                        <p><strong>Lịch khám:</strong> {doctor.schedule}</p>
+                                        <h3>{doctorItem.doctor.firstName} {doctorItem.doctor.lastName}  | {doctorItem.doctor.doctorInfo.specialities[0].name}</h3>
+                                        <p><strong>Chuyên trị:</strong> {doctorItem.description}</p>
+                                        <p><strong>Lịch khám: </strong> Thứ 2,3,4,5,6,7,CN</p>
                                     </div>
                                 </div>
                                 <div className="doctor-actions-medical">
@@ -158,7 +174,7 @@ const RegisterMedicalExaminationPage = () => {
                                         <span>Bác sĩ chuyên khoa</span>
                                         <p>Đặt lịch online qua web Clicknic</p>
                                     </div>
-                                    <button className="book-button" onClick={() => handleNavigate('/select-service')}>Đặt khám ngay</button>
+                                    <button className="book-button" onClick={handleDirectSelectService(doctorItem)}>Đặt khám ngay</button>
 
                                 </div>
                             </div>

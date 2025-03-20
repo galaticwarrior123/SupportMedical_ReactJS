@@ -3,12 +3,24 @@ import DefaultLayoutRegisterMedicalExaminationPage from '../../../../../Layouts/
 import './SelectPaymentPage.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMapMarkedAlt, faPhone, faUser, faUserMd, faCalendarAlt, faClock, faIdCard, faClinicMedical, faStethoscope, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const SelectPaymentPage = () => {
     const [selectedPayment, setSelectedPayment] = useState(null);
+    const location = useLocation();
+    const doctorSelected = location.state;
+    const navigate = useNavigate();
+
+    
 
     const handlePaymentSelection = (event) => {
         setSelectedPayment(event.target.value);
+    };
+
+    const handlePayment = () => {
+        if(selectedPayment === 'Thẻ ATM nội địa/ Internet Banking'){
+            navigate('/select-bank', {state: doctorSelected});
+        }
     };
 
     return (
@@ -18,9 +30,9 @@ const SelectPaymentPage = () => {
                     <div className="left-section-container">
                         <div className="section-title">Thông tin bệnh nhân</div>
                         <div className="left-section-patient-info">
-                            <p><FontAwesomeIcon icon={faUser} /> NGUYỄN TRỌNG PHÚC</p>
-                            <p><FontAwesomeIcon icon={faPhone} /> 0823452559</p>
-                            <p><FontAwesomeIcon icon={faMapMarkedAlt} /> Phường Linh Trung Thành phố Thủ Đức Thành phố Hồ Chí Minh</p>
+                            <p><FontAwesomeIcon icon={faUser} /> {doctorSelected.record.name}</p>
+                            <p><FontAwesomeIcon icon={faPhone} /> {doctorSelected.record.phoneNumber}</p>
+                            <p><FontAwesomeIcon icon={faMapMarkedAlt} /> {doctorSelected.record.address}, {doctorSelected.record.ward}, {doctorSelected.record.district}, {doctorSelected.record.province}</p>
                         </div>
                     </div>
 
@@ -52,13 +64,13 @@ const SelectPaymentPage = () => {
                                     <div className="info-left">
                                         <FontAwesomeIcon icon={faStethoscope} /> <span>Chuyên khoa:</span>
                                     </div>
-                                    <div className="info-right">TAI MŨI HỌNG</div>
+                                    <div className="info-right">{doctorSelected.doctor.doctorInfo.specialities[0].name}</div>
                                 </div>
                                 <div>
                                     <div className="info-left">
                                         <FontAwesomeIcon icon={faUserMd} /> <span>Bác sĩ:</span>
                                     </div>
-                                    <div className="info-right">Âu Thị Cẩm Lệ</div>
+                                    <div className="info-right"> {doctorSelected.doctor.firstName} {doctorSelected.doctor.lastName} </div>
                                 </div>
                                 <div>
                                     <div className="info-left">
@@ -70,13 +82,14 @@ const SelectPaymentPage = () => {
                                     <div className="info-left">
                                         <FontAwesomeIcon icon={faCalendarAlt} /> <span>Ngày khám:</span>
                                     </div>
-                                    <div className="info-right">14/03/2025</div>
+                                    
+                                    <div className="info-right">{doctorSelected.date.split('-').reverse().join('-')} </div>
                                 </div>
                                 <div>
                                     <div className="info-left">
                                         <FontAwesomeIcon icon={faClock} /> <span>Giờ khám:</span>
                                     </div>
-                                    <div className="info-right">08:00 - 09:00</div>
+                                    <div className="info-right">{doctorSelected.timeSlot}</div>
                                 </div>
                                 <div>
                                     <div className="info-left">
@@ -87,7 +100,7 @@ const SelectPaymentPage = () => {
                             </div>
                             <div className="total-amount">Tổng cộng: <span style={{ color: '#00C2FF', fontWeight: 'bold' }}>150.000 đ</span></div>
                             <div className="total-amount-action">
-                                <button disabled={!selectedPayment}>Thanh toán</button>
+                                <button disabled={!selectedPayment} onClick={handlePayment}>Thanh toán</button>
                             </div>
 
                         </div>
