@@ -46,6 +46,15 @@
     z-index: 2;
 }
 
+.headerDoctor .forum-button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 8px;
+}
+
 .labelDoctor {
     font-size: 20px;
     font-weight: bold;
@@ -62,7 +71,6 @@
 }
 
 .profileDoctor button {
-    background-color: transparent;
     border: none;
     cursor: pointer;
 }

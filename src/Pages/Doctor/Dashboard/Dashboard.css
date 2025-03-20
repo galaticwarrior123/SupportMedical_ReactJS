@@ -1,6 +1,7 @@
 .dashboard-header {
     background-color: #e3f2fd;
     height: 240px;
+    min-height: 240px;
     margin-bottom: 10px;
     /* Replace with your image URL or path */
     background-size: cover;
@@ -42,6 +43,7 @@
 .dashboard-doctor-container {
     flex-grow: 1;
     display: flex;
+    gap: 10px;
 }
 
 .doctor-dashboard-card {
@@ -56,6 +58,7 @@
 
 .appointment-list {
     width: 300px;
+    min-width: 300px;
 }
 
 .appointment-list h2 {
@@ -91,6 +94,7 @@
 /* patient card */
 .patient-card {
     width: 300px;
+    min-width: 300px;
 }
 
 .dashboard-patient-info {
