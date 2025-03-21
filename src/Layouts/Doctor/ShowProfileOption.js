@@ -1,6 +1,8 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import './ShowProfileOption.css';
 import { useRef, useEffect } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 
 
 
@@ -32,7 +34,10 @@ const ShowProfileOption = ({ handleCloseShowProfile }) => {
                 <img src={user.avatar} alt="avatar" />
                 <span>{user.firstName} {user.lastName}</span>
             </div>
-            <button className="show-profile-option-button" onClick={handleLogout}>Đăng xuất</button>
+            <button className="show-profile-option-button" onClick={handleLogout}>
+                <FontAwesomeIcon icon={faRightFromBracket} pull='left' />
+                Đăng xuất
+            </button>
         </div>
     )
 

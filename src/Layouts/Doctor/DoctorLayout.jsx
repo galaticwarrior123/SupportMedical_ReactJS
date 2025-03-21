@@ -2,12 +2,14 @@ import ShowProfileOption from "./ShowProfileOption";
 import { ToastContainer } from 'react-toastify';
 import SidebarDoctor from "./SidebarDoctor";
 import { useContext, useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { SidebarContext, SidebarProvider } from "./SidebarContext";
 import './DoctorLayout.css';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faComment } from "@fortawesome/free-solid-svg-icons";
 
 const DoctorLayout = ({ children }) => {
-    console.log(children);
+    const navigate = useNavigate();
     const location = useLocation();
     const { isCollapsed } = useContext(SidebarContext);
     const [activeMenu, setActiveMenu] = useState('Tổng quan');
@@ -45,6 +47,10 @@ const DoctorLayout = ({ children }) => {
                         {/* <button className="notification">
                                 <FontAwesomeIcon icon={faBell} />
                             </button> */}
+                        <button className="forum-button" onClick={() => navigate('/forum')}>
+                            <FontAwesomeIcon size="lg" pull="left" icon={faComment} />
+                            Đến trang diễn đàn
+                        </button>
                         <img src={JSON.parse(localStorage.getItem('user')).avatar} alt="User" className="avatarDoctor" onClick={handleShowProfile} />
                         {showProfile && (
                             <ShowProfileOption handleCloseShowProfile={handleShowProfile} />
