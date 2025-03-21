@@ -88,6 +88,17 @@ const SelectRecordPage = () => {
         setActiveRecordIndex(index === activeRecordIndex ? null : index);
     };
 
+    const handleDeleteRecord = (recordId) => {
+        RecordPatientAPI.deleteRecordPatient(recordId)
+            .then((response) => {
+                setRecords(records.filter((record) => record._id !== recordId));
+                toast.success("Xóa hồ sơ thành công");
+            })
+            .catch((error) => {
+                toast.error("Lỗi khi xóa hồ sơ");
+            });
+    }
+
 
     return (
         <ConfirmRegisterMedicalPage>
@@ -106,7 +117,7 @@ const SelectRecordPage = () => {
                             {activeRecordIndex === index && (
                                 <div className="record-actions">
                                     <div className='record-actions-left'>
-                                        <button className="action-button-delete" >Xóa</button>
+                                        <button className="action-button-delete" onClick={() => handleDeleteRecord(record._id)}>Xóa</button>
                                         <button className="action-button-edit" onClick={() => handleNavigate('/create-patient-record',1)}>Sửa</button>
                                     </div>
                                     <button className="action-button" onClick={() => handleNavigate('/select-day')}>Tiếp theo</button>

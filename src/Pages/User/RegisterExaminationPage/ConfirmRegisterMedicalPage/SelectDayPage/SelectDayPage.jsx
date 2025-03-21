@@ -4,7 +4,8 @@ import './SelectDayPage.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { useLocation, useNavigate } from 'react-router-dom';
-import ShiftAssignmentApi, { ShiftAssignmentAPI } from '../../../../../API/ShiftAssignmentAPI';
+import { ShiftAssignmentAPI } from '../../../../../API/ShiftAssignmentAPI';
+import { TimeSlotAPI } from '../../../../../API/TimeSlotAPI';
 import { toast } from 'react-toastify';
 const daysOfWeek = ['CN', 'Hai', 'Ba', 'Tư', 'Năm', 'Sáu', 'Bảy'];
 
@@ -38,13 +39,7 @@ const SelectDayPage = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const doctorSelected = location.state;
-
-
-    const listTimeSlots = [
-        '08:00 - 08:30', '08:30 - 09:00', '09:00 - 09:30', '09:30 - 10:00',
-        '10:00 - 10:30', '10:30 - 11:00', '13:00 - 13:30', '13:30 - 14:00',
-        '14:00 - 14:30', '14:30 - 15:00', '15:00 - 15:30', '15:30 - 16:00'
-    ];
+    const [listTimeSlots, setListTimeSlots] = useState([]);
 
     useEffect(() => {
         ShiftAssignmentAPI.getShiftAssignments({
@@ -58,7 +53,7 @@ const SelectDayPage = () => {
                 endTime: shiftItem.shift.endTime,
             }));
             setWorkingDays(workingDays);
-            
+
 
         }).catch((error) => {
             toast.error('Lỗi khi tải dữ liệu ca làm việc');
@@ -66,19 +61,38 @@ const SelectDayPage = () => {
     }, [doctorSelected.doctor._id, month, year]);
 
     const handleSelectDay = (day) => {
-        if (day && workingDays.some((item) => item.date === day)) {
-            setSelectedDay(day);
-            setSelectedTimeSlot(null);
+        if (!day) return;
 
+        // Định dạng ngày dạng yyyy-mm-dd
+        const date = `${year}-${(month + 1).toString().padStart(2, "0")}-${day.toString().padStart(2, "0")}`;
 
-            setTimeSlots(listTimeSlots.filter((timeSlot) => {
-                const [startTime, endTime] = timeSlot.split(' - ');
+        TimeSlotAPI.getTimeSlotsByDate(date)
+            .then(res => {
+                const fetchedTimeSlots = res.data; // Lấy danh sách khung giờ từ API
+
+                // Tìm `workingDay` tương ứng với ngày đã chọn
                 const workingDay = workingDays.find((item) => item.date === day);
-                return workingDay.startTime <= startTime && workingDay.endTime >= endTime;
-            }
 
-            ));
-        }
+                if (workingDay) {
+                    // Lọc khung giờ theo khoảng thời gian làm việc của bác sĩ
+                    const filteredTimeSlots = fetchedTimeSlots.filter((timeSlot) => {
+                        const [slotStartTime, slotEndTime] = [timeSlot.startTime, timeSlot.endTime];
+
+                        // So sánh thời gian để kiểm tra xem khung giờ có nằm trong khoảng thời gian làm việc không
+                        return workingDay.startTime <= slotStartTime && workingDay.endTime >= slotEndTime;
+                    });
+
+                    setListTimeSlots(filteredTimeSlots); // Cập nhật danh sách khung giờ đã lọc
+                    setTimeSlots(filteredTimeSlots); // Hiển thị khung giờ đã lọc
+                    setSelectedDay(day); // Cập nhật ngày được chọn
+                    setSelectedTimeSlot(null); // Reset lựa chọn khung giờ
+                } else {
+                    toast.error('Không tìm thấy thông tin ca làm việc cho ngày đã chọn');
+                }
+            })
+            .catch(err => {
+                toast.error('Có lỗi xảy ra khi tải danh sách khung giờ');
+            });
     };
 
     const handleSelectTimeSlot = (timeSlot) => {
@@ -113,12 +127,12 @@ const SelectDayPage = () => {
         const state = {
             ...doctorSelected,
         };
-    
+
         if (selectedDay) {
             state.date = `${year}-${(month + 1).toString().padStart(2, "0")}-${selectedDay.toString().padStart(2, "0")}`;
             state.timeSlot = selectedTimeSlot;
         }
-    
+
         navigate(path, { state });
     };
 
@@ -170,13 +184,12 @@ const SelectDayPage = () => {
                                             className={slot === selectedTimeSlot ? 'time-slot selected' : 'time-slot'}
                                             onClick={() => handleSelectTimeSlot(slot)}
                                         >
-                                            {slot}
+                                            {`${slot.startTime} - ${slot.endTime}`}
                                         </button>
                                     ))}
                                 </div>
                             ))}
                         </div>
-
 
                         <div className="button-container">
                             <button className="confirm-button" disabled={!selectedTimeSlot} onClick={() => handleNavigate('/confirm-info')}>
@@ -184,9 +197,6 @@ const SelectDayPage = () => {
                             </button>
                         </div>
                     </>
-
-
-
                 )}
 
 

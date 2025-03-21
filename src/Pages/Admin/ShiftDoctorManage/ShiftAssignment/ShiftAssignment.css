@@ -72,6 +72,7 @@
     border: 1px solid black;
     padding: 8px;
     text-align: center;
+    vertical-align: top;
 }
 
 .shift-table-assignment th {
@@ -83,6 +84,12 @@
     padding: 5px;
 }
 
+.doctor-assignment {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+}
 
 .exclusion-filters-box{
     background-color: white;

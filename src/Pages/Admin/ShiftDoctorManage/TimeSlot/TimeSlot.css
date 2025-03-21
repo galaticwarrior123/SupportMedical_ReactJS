@@ -1,0 +1,120 @@
+.timeslot-container {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    max-width: 800px;
+    margin: auto;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.settings {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.settings label {
+    display: flex;
+    flex-direction: column;
+    font-size: 14px;
+}
+
+.settings input, .settings select {
+    padding: 8px;
+    margin-top: 5px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+.settings button {
+    grid-column: span 2;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.settings button:hover {
+    background-color: #0056b3;
+}
+
+.slot-list {
+    margin-top: 20px;
+    display: grid;
+    gap: 10px;
+}
+
+.slot-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: white;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
+
+.slot-item span {
+    font-size: 14px;
+}
+
+.slot-item button {
+    padding: 5px 10px;
+    margin-left: 10px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.slot-item button:hover {
+    background-color: #c82333;
+}
+
+
+.timeslot-container-pagination{
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    align-items: center;
+}
+
+.timeslot-container-pagination button{
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.timeslot-container-pagination button:hover{
+    background-color: #0056b3;
+}
+
+.timeslot-container-pagination button:disabled{
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.timeslot-container-pagination span{
+    margin: 0 10px;
+    font-size: 16px;
+}
+
+.btn-slot-update{
+    padding: 5px 10px;
+    background-color: #28a745 !important;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
