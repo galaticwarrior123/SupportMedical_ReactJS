@@ -5,93 +5,9 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { DoctorAPI } from '../../../../API/DoctorAPI';
+import { DepartmentAPI } from '../../../../API/DepartmentAPI';
 import { set } from 'date-fns';
 import { toast } from 'react-toastify';
-const doctors = [
-    {
-        id: 1,
-        name: "BS CKI. Đoàn Thị Bích Vân",
-        major: "Da Liễu",
-        description: "Chuyên trị: Da liễu Viêm da cơ địa, vảy nến, nấm da...",
-        schedule: "Thứ 2,3,4,5,6,7,Chủ nhật,Hẹn khám",
-        image: "/images/pictureDoctor.jpg"
-
-    },
-
-    {
-        id: 1,
-        name: "BS CKI. Đoàn Thị Bích Vân",
-        major: "Da Liễu",
-        description: "Chuyên trị: Da liễu Viêm da cơ địa, vảy nến, nấm da...",
-        schedule: "Thứ 2,3,4,5,6,7,Chủ nhật,Hẹn khám",
-        image: "/images/pictureDoctor.jpg"
-
-    },
-
-
-    {
-        id: 1,
-        name: "BS CKI. Đoàn Thị Bích Vân",
-        major: "Da Liễu",
-        description: "Chuyên trị: Da liễu Viêm da cơ địa, vảy nến, nấm da...",
-        schedule: "Thứ 2,3,4,5,6,7,Chủ nhật,Hẹn khám",
-        image: "/images/pictureDoctor.jpg"
-
-    },
-
-
-    {
-        id: 1,
-        name: "BS CKI. Đoàn Thị Bích Vân",
-        major: "Da Liễu",
-        description: "Chuyên trị: Da liễu Viêm da cơ địa, vảy nến, nấm da...",
-        schedule: "Thứ 2,3,4,5,6,7,Chủ nhật,Hẹn khám",
-        image: "/images/pictureDoctor.jpg"
-
-    },
-
-
-    {
-        id: 1,
-        name: "BS CKI. Đoàn Thị Bích Vân",
-        major: "Da Liễu",
-        description: "Chuyên trị: Da liễu Viêm da cơ địa, vảy nến, nấm da...",
-        schedule: "Thứ 2,3,4,5,6,7,Chủ nhật,Hẹn khám",
-        image: "/images/pictureDoctor.jpg"
-
-    },
-
-
-    {
-        id: 1,
-        name: "BS CKI. Đoàn Thị Bích Vân",
-        major: "Da Liễu",
-        description: "Chuyên trị: Da liễu Viêm da cơ địa, vảy nến, nấm da...",
-        schedule: "Thứ 2,3,4,5,6,7,Chủ nhật,Hẹn khám",
-        image: "/images/pictureDoctor.jpg"
-
-    },
-
-    {
-        id: 1,
-        name: "BS CKI. Đoàn Thị Bích Vân",
-        major: "Da Liễu",
-        description: "Chuyên trị: Da liễu Viêm da cơ địa, vảy nến, nấm da...",
-        schedule: "Thứ 2,3,4,5,6,7,Chủ nhật,Hẹn khám",
-        image: "/images/pictureDoctor.jpg"
-
-    },
-
-    {
-        id: 1,
-        name: "BS CKI. Đoàn Thị Bích Vân",
-        major: "Da Liễu",
-        description: "Chuyên trị: Da liễu Viêm da cơ địa, vảy nến, nấm da...",
-        schedule: "Thứ 2,3,4,5,6,7,Chủ nhật,Hẹn khám",
-        image: "/images/pictureDoctor.jpg"
-
-    },
-];
 
 
 const RegisterMedicalExaminationPage = () => {
@@ -103,6 +19,8 @@ const RegisterMedicalExaminationPage = () => {
     const handleNavigate = (path) => {
         navigate(path);
     }
+
+    const [listSpecialities, setListSpecialities] = useState([]);
 
     const indexOfLastDoctor = currentPage * doctorsPerPage;
     const indexOfFirstDoctor = indexOfLastDoctor - doctorsPerPage;
@@ -120,6 +38,14 @@ const RegisterMedicalExaminationPage = () => {
         }
         ).catch((error) => {
             toast.error("Lỗi khi lấy danh sách bác sĩ");
+        });
+    }, []);
+
+    useEffect(() => {
+        DepartmentAPI.getAll().then((response) => {
+            setListSpecialities(response.data);
+        }).catch((error) => {
+            toast.error("Lỗi khi lấy danh sách chuyên khoa");
         });
     }, []);
 
@@ -160,7 +86,7 @@ const RegisterMedicalExaminationPage = () => {
                             <div className="doctor-card-medical" key={index}>
                                 <div className="doctor-info-medical">
                                     <div className="doctor-info-medical-image">
-                                        <img src="/images/pictureDoctor.jpg" alt="Doctor" />
+                                        <img src="/images/account.png" alt="Doctor" />
                                         <button className="doctor-info-medical-image-button">Xem chi tiết</button>
                                     </div>
                                     <div className="doctor-details-medical">
@@ -226,7 +152,9 @@ const RegisterMedicalExaminationPage = () => {
                                 <div className="filter-item">
                                     <label>Chuyên khoa:</label>
                                     <select>
-                                        <option>Da liễu</option>
+                                        {listSpecialities.map((speciality, index) => (
+                                            <option key={index}>{speciality.name}</option>
+                                        ))}
                                     </select>
                                 </div>
                                 <button className="filter-button">Tìm kiếm</button>

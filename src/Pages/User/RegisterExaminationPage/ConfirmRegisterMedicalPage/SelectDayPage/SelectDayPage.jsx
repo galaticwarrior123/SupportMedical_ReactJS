@@ -41,6 +41,7 @@ const SelectDayPage = () => {
     const doctorSelected = location.state;
     const [listTimeSlots, setListTimeSlots] = useState([]);
 
+
     useEffect(() => {
         ShiftAssignmentAPI.getShiftAssignments({
             doctorId: doctorSelected.doctor._id,
@@ -96,6 +97,7 @@ const SelectDayPage = () => {
     };
 
     const handleSelectTimeSlot = (timeSlot) => {
+        
         setSelectedTimeSlot(timeSlot);
     };
 
@@ -130,7 +132,7 @@ const SelectDayPage = () => {
 
         if (selectedDay) {
             state.date = `${year}-${(month + 1).toString().padStart(2, "0")}-${selectedDay.toString().padStart(2, "0")}`;
-            state.timeSlot = selectedTimeSlot;
+            state.timeSlot = `${selectedTimeSlot.startTime} - ${selectedTimeSlot.endTime}`;
         }
 
         navigate(path, { state });

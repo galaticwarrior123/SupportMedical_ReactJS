@@ -49,6 +49,7 @@
     background-color: blue;
     color: white;
 }
+
 .save:hover {
     background-color: darkblue;
 }
@@ -57,6 +58,7 @@
     background-color: orange;
     color: black;
 }
+
 .auto:hover {
     background-color: darkorange;
 }
@@ -66,13 +68,16 @@
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 20px;
+    border: 2px solid;
 }
 
-.shift-table-assignment th, .shift-table-assignment td {
+.shift-table-assignment th,
+.shift-table-assignment td {
     border: 1px solid black;
     padding: 8px;
     text-align: center;
-    vertical-align: top;
+    vertical-align: middle;
+    border: 2px solid;
 }
 
 .shift-table-assignment th {
@@ -88,27 +93,53 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
-    align-items: center;
+    align-items: flex-start;
+    height: 100px;
+    overflow-y: scroll;
+    background-color: white;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.1);
+    border: 1px solid #ddd;
+    margin-top: 10px;
 }
 
-.exclusion-filters-box{
+.doctor-assignment ::webkit-scrollbar {
+    width: 5px;
+}
+
+.doctor-assignment ::webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.doctor-assignment ::webkit-scrollbar-thumb {
+    background: #888;
+}
+
+.doctor-assignment ::webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.exclusion-filters-box {
     background-color: white;
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 0 5px 0 rgba(0,0,0,0.1);
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
 }
-.exclusion-filters-box h3{
+
+.exclusion-filters-box h3 {
     margin: 0;
     font-size: 1.5rem;
     margin-bottom: 20px;
 }
+
 .exclusion-filters {
     display: flex;
     gap: 30px;
     margin-bottom: 20px;
     padding: 20px;
-    
+
     border: 1px solid #ddd;
     border-radius: 8px;
 }
@@ -119,19 +150,19 @@
 }
 
 .exclude-days h3 {
-    margin:0;
+    margin: 0;
     font-size: 1.2rem;
 }
 
 .exclude-days div {
     margin-top: 10px;
     width: 100px;
-    height:100px;
+    height: 100px;
     overflow-y: scroll;
-    padding:10px;
+    padding: 10px;
     border: 1px solid #ddd;
     border-radius: 8px;
-    box-shadow: 0 0 5px 0 rgba(0,0,0,0.1);
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.1);
 }
 
 /* Phần chọn bác sĩ cần loại trừ */
@@ -140,23 +171,25 @@
 }
 
 .exclude-doctors h3 {
-    margin:0;
+    margin: 0;
     font-size: 1.2rem;
 }
 
 .exclude-doctors div {
     margin-top: 10px;
     width: 200px;
-    height:100px;
+    height: 100px;
     overflow-y: scroll;
-    padding:10px;
+    padding: 10px;
     border: 1px solid #ddd;
     border-radius: 8px;
-    box-shadow: 0 0 5px 0 rgba(0,0,0,0.1);
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.1);
 }
 
 /* Checkbox và label */
-.exclude-days label, .exclude-doctors label, .exclude-shifts label {
+.exclude-days label,
+.exclude-doctors label,
+.exclude-shifts label {
     display: flex;
     align-items: center;
     gap: 5px;
@@ -171,17 +204,71 @@
 .exclude-shifts div {
     margin-top: 10px;
     width: 200px;
-    height:100px;
+    height: 100px;
     overflow-y: scroll;
-    padding:10px;
+    padding: 10px;
     border: 1px solid #ddd;
     border-radius: 8px;
-    box-shadow: 0 0 5px 0 rgba(0,0,0,0.1);
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.1);
 }
 
 .exclude-shifts h3 {
-    margin:0;
+    margin: 0;
     font-size: 1.2rem;
 }
 
+
+
+.expanded-view {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.expanded-view-box {
+    width: 80%;
+    max-width: 400px;
+    max-height: 400px;
+    height: 80%;
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    position: relative;
+}
+
+.expanded-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    line-height: 50px;
+}
+
+.expanded-item label {
+    font-weight: initial;
+    font-size: 20px;
+    font-family: Arial, sans-serif;
+    
+}
+
+.close-expanded-view {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    border-radius: 50%;
+    padding: 5px;
+    border: none;
+}
+
+.close-expanded-view:hover {
+    background-color: #ddd;
+}
 

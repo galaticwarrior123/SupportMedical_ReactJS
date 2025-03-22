@@ -6,10 +6,11 @@ import ShiftAPI from "../../../../API/ShiftAPI";
 import { DepartmentAPI } from "../../../../API/DepartmentAPI";
 import { DoctorAPI } from "../../../../API/DoctorAPI";
 import { ShiftAssignmentAPI } from "../../../../API/ShiftAssignmentAPI";
-import { set } from "date-fns";
+import { faEllipsisH, faClose, faArrowsUpDownLeftRight } from "@fortawesome/free-solid-svg-icons";
 import YesNoDialog from "../../../../Components/YesNoDialog/YesNoDialog";
 import { toast } from "react-toastify";
-import { to } from "react-spring";
+import { motion, AnimatePresence } from 'framer-motion';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const ShiftAssignment = () => {
     const [month, setMonth] = useState(new Date().getMonth() + 1);
     const [year, setYear] = useState(new Date().getFullYear());
@@ -114,17 +115,17 @@ const ShiftAssignment = () => {
         const currentDay = currentDate.getDate();
         const currentMonth = currentDate.getMonth() + 1;
         const currentYear = currentDate.getFullYear();
-    
+
         if (filteredDoctors.length === 0) {
             toast.error("Không có bác sĩ nào để phân công!");
             return;
         }
-    
+
         const newAssignments = { ...assignments };
-    
+
         days.forEach((day) => {
             const assignedDoctorsPerDay = new Set();
-            
+
             if (
                 (year < currentYear) ||
                 (year === currentYear && month < currentMonth) ||
@@ -133,33 +134,33 @@ const ShiftAssignment = () => {
             ) {
                 return;
             }
-    
+
             shifts.forEach((shift) => {
                 if (excludedShifts.includes(shift._id)) {
                     return;
                 }
-    
+
                 const key = `${day}-${shift.name}`;
                 const assignedDoctors = newAssignments[key] || [];  // Lấy danh sách bác sĩ đã được phân công trong ngày và ca này
-                
+
                 const availableDoctors = filteredDoctors.filter(
                     (doctor) =>
-                        !assignedDoctors.includes(doctor._id) && 
+                        !assignedDoctors.includes(doctor._id) &&
                         !assignedDoctorsPerDay.has(doctor._id) &&
                         !excludedDoctors.includes(doctor._id)
                 );
-    
+
                 const randomDoctors = availableDoctors
                     .sort(() => Math.random() - 0.5)
                     .slice(0, MAX_EMPLOYEES_PER_SHIFT);
-    
+
                 if (randomDoctors.length === MAX_EMPLOYEES_PER_SHIFT) {
                     randomDoctors.forEach((doctor) => assignedDoctorsPerDay.add(doctor._id));
                     newAssignments[key] = randomDoctors.map((doctor) => doctor._id);
                 }
             });
         });
-    
+
         setAssignments(newAssignments);
     };
 
@@ -260,6 +261,22 @@ const ShiftAssignment = () => {
         } else {
             setExcludedShifts([...excludedShifts, shiftId]);
         }
+    }
+
+    const [expandedCells, setExpandedCells] = useState({});
+
+    const handleExtendDisplay = (key) => {
+        setExpandedCells((prev) => ({
+            ...prev,
+            [key]: !prev[key],
+        }));
+    };
+
+    const handleCloseExtendDisplay = (key) => {
+        setExpandedCells((prev) => ({
+            ...prev,
+            [key]: false,
+        }));
     }
 
 
@@ -387,9 +404,24 @@ const ShiftAssignment = () => {
                                         {days.slice(index, index + 4).map((day) => {
                                             const key = `${day}-${shift.name}`;
                                             const assignedDoctors = assignments[key] || []; // Lấy ra mảng các bác sĩ được phân công
+                                            const isExpanded = expandedCells[key];
 
                                             return (
-                                                <td key={key}>
+                                                <td key={key} style={{ position: "relative" }}>
+                                                    <button
+                                                        style={{
+                                                            position: 'absolute',
+                                                            top: '0px',
+                                                            right: '0px',
+                                                            fontSize: '10px',
+                                                            padding: '2px 4px',
+                                                            border: 'none',
+                                                        }}
+                                                        onClick={() => handleExtendDisplay(key)}
+                                                    >
+                                                        <FontAwesomeIcon icon={faArrowsUpDownLeftRight} />
+                                                    </button>
+
                                                     <div className="doctor-assignment">
                                                         {filteredDoctors.map((emp) => {
                                                             const isAssigned = assignedDoctors.includes(emp._id);
@@ -415,6 +447,60 @@ const ShiftAssignment = () => {
                                                             );
                                                         })}
                                                     </div>
+
+                                                    <AnimatePresence>
+                                                        {isExpanded && (
+                                                            <div className="expanded-view">
+                                                                <motion.div className="expanded-view-box"
+                                                                    initial={{
+                                                                        scale: 0.3,
+                                                                        opacity: 0,
+                                                                        x: 0,
+                                                                        y: 0
+                                                                    }}
+                                                                    animate={{
+                                                                        scale: 1,
+                                                                        opacity: 1,
+                                                                        x: "0",
+                                                                        y: "0"
+                                                                    }}
+                                                                    exit={{
+                                                                        scale: 0.3,
+                                                                        opacity: 0
+                                                                    }}
+                                                                    transition={{ type: "spring", stiffness: 200, damping: 20 }}
+
+
+                                                                >
+                                                                    <button className="close-expanded-view" onClick={() => handleCloseExtendDisplay(key)}>
+                                                                        <FontAwesomeIcon icon={faClose} />
+                                                                    </button>
+                                                                    {filteredDoctors.map((emp) => {
+                                                                        const isAssigned = assignedDoctors.includes(emp._id);
+                                                                        return (
+                                                                            <div key={emp._id} className="expanded-item">
+                                                                                <label>
+                                                                                    <input
+                                                                                        type="checkbox"
+                                                                                        checked={isAssigned}
+                                                                                        onChange={(e) =>
+                                                                                            handleChangeAssignment(day, shift.name, emp._id, e.target.checked)
+                                                                                        }
+                                                                                        disabled={
+                                                                                            (year < currentYear) ||
+                                                                                            (year === currentYear && month < currentMonth) ||
+                                                                                            (year === currentYear && month === currentMonth && day < currentDay)
+                                                                                        }
+                                                                                    />
+                                                                                    {emp.firstName} {emp.lastName}
+                                                                                </label>
+                                                                            </div>
+                                                                        );
+                                                                    })}
+                                                                </motion.div>
+                                                            </div>
+                                                        )}
+                                                    </AnimatePresence>
                                                 </td>
                                             );
                                         })}
@@ -430,6 +516,43 @@ const ShiftAssignment = () => {
 };
 
 export default ShiftAssignment;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -33,7 +33,7 @@
 .service-selection th, td {
     padding: 10px;
     border-bottom: 1px solid #ddd;
-    text-align: left;
+    text-align: center;
     
 }
 
@@ -42,7 +42,14 @@
     
 }
 
+.btn-book-service {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
 
+    opacity: 0;
+    animation: floatIn 1s forwards;
+}
 
 .book-now-btn {
     background-color: #007bff;
@@ -56,7 +63,7 @@
 }
 
 .book-now-btn:hover {
-    background-color: #0056b3;
+    background-color: #023265;
 }
 
 
