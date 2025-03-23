@@ -9,10 +9,20 @@ const ConfirmInfoPage = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const doctorSelected = location.state;
-
+    console.log(doctorSelected);
 
     const handleNavigate = (path) => {
         navigate(path, { state: doctorSelected });
+    }
+
+    const checkService = () => {
+        if (doctorSelected.selectedService === 'directExamination') {
+            return 'Khám trực tiếp bác sĩ';
+        } else if (doctorSelected.selectedService === 'appointment') {
+            return 'Đặt lịch hẹn khám';
+        } else {
+            return 'Khám định kỳ';
+        }
     }
 
     return (
@@ -36,10 +46,10 @@ const ConfirmInfoPage = () => {
                             <tr>
                                 <td>1</td>
                                 <td>{doctorSelected.doctor.doctorInfo.specialities[0].name}</td>
-                                <td>Tư vấn ngay online 01 lần</td>
+                                <td>{checkService()}</td>
                                 <td>{doctorSelected.doctor.firstName} {doctorSelected.doctor.lastName}</td>
-                                <td><strong>{doctorSelected.timeSlot}</strong> ngày {doctorSelected.date}</td>
-                                <td>150.000 đ</td>
+                                <td><strong>{doctorSelected.timeSlot.startTime}-{doctorSelected.timeSlot.endTime}</strong> ngày {doctorSelected.date.split('-').reverse().join('/')}</td>
+                                <td><strong>{doctorSelected.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ</strong></td>
                                 <td><button className="delete-button-confirm"><FontAwesomeIcon icon={faTrash} /></button></td>
                             </tr>
                         </tbody>
@@ -52,7 +62,7 @@ const ConfirmInfoPage = () => {
                         <div className='patient-info-para'><FontAwesomeIcon icon={faUser} /> Họ và tên: <strong>{doctorSelected.record.name}</strong></div>
                         <div className='patient-info-para'><FontAwesomeIcon icon={faCalendarAlt} /> Ngày sinh: {doctorSelected.record.dob.split('-').reverse().join('/')}</div>
                         <div className='patient-info-para'><FontAwesomeIcon icon={faPhone} /> Số điện thoại: {doctorSelected.record.phoneNumber}</div>
-                        <div className='patient-info-para'><FontAwesomeIcon icon={faVenusMars} /> Giới tính: {doctorSelected.gender === true ? "Nam" : "Nữ"}</div>
+                        <div className='patient-info-para'><FontAwesomeIcon icon={faVenusMars} /> Giới tính: {doctorSelected.record.gender == true ? "Nam" : "Nữ"}</div>
                         <div className='patient-info-para'><FontAwesomeIcon icon={faIdCard} /> Nghề nghiệp: {doctorSelected.record.job}</div>
                         <div className='patient-info-para'><FontAwesomeIcon icon={faMapMarkerAlt} /> Địa chỉ: {doctorSelected.record.address}, {doctorSelected.record.ward}, {doctorSelected.record.district}, {doctorSelected.record.province}</div>
                     </div>

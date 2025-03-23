@@ -16,7 +16,7 @@ const UpdateProfileUser = ({ handleCloseUpdateProfile, fetchByUserId, onUserUpda
     });
     const [activeTab, setActiveTab] = useState('update');
 
-    
+
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         setFileImage(e.target.files);
@@ -37,8 +37,8 @@ const UpdateProfileUser = ({ handleCloseUpdateProfile, fetchByUserId, onUserUpda
             // Thêm các trường từ userUpdate vào formData, ngoại trừ 'avatar'
             for (const key in userUpdate) {
                 // nếu có trường doctorInfo thì không thêm vào formData
-                if (userUpdate.hasOwnProperty(key) 
-                    && key !== 'avatar' 
+                if (userUpdate.hasOwnProperty(key)
+                    && key !== 'avatar'
                     && key !== 'doctorInfo'
                     && key !== 'roles'
                 ) {
@@ -51,6 +51,7 @@ const UpdateProfileUser = ({ handleCloseUpdateProfile, fetchByUserId, onUserUpda
                 formData.append('avatar', fileImage[0]); // Thêm ảnh mới nếu có
             }
 
+
             const response = await UserAPI.updateProfile(formData);
 
             if (response.status === 200) {
@@ -60,7 +61,7 @@ const UpdateProfileUser = ({ handleCloseUpdateProfile, fetchByUserId, onUserUpda
                 fetchByUserId();
                 handleCloseUpdateProfile();
                 window.location.reload();
-            }else{
+            } else {
                 toast.error('Cập nhật thông tin thất bại');
             }
         } catch (error) {
@@ -95,6 +96,9 @@ const UpdateProfileUser = ({ handleCloseUpdateProfile, fetchByUserId, onUserUpda
             toast.error('Mật khẩu cũ không đúng');
         }
     };
+
+
+    const [treatment, setTreatment] = useState(''); 
 
     return (
         <div className="update-profile-user" >
@@ -137,9 +141,9 @@ const UpdateProfileUser = ({ handleCloseUpdateProfile, fetchByUserId, onUserUpda
                                             <input type="text" placeholder="Tên" value={userUpdate.lastName} onChange={(e) => setUserUpdate({ ...userUpdate, lastName: e.target.value })} />
                                         </div>
                                         {/* <div className="update-profile-user-input">
-                                <label>Số điện thoại</label>
-                                <input type="text" placeholder="Số điện thoại" />
-                            </div> */}
+                                            <label>Chuyên trị</label>
+                                            <input type="text" placeholder="Nhập chuyên trị" value={userUpdate.doctorInfo?.treatment} onChange={(e) => setUserUpdate({ ...userUpdate, doctorInfo: { ...userUpdate.doctorInfo, treatmentDescriptionDoctor: e.target.value } })} />
+                                        </div> */}
                                         <div className="update-profile-user-input">
                                             <label>Email</label>
                                             <input type="email" placeholder="Email" value={userUpdate.email} onChange={(e) => setUserUpdate({ ...userUpdate, email: e.target.value })} disabled />

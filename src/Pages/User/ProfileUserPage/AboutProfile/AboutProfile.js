@@ -1,7 +1,6 @@
 import './AboutProfile.css';
 
 const AboutProfile = ({ user }) => {
-    console.log('user', user);
     return (
         <div className="about-container-profile">
           <h3>Giới thiệu</h3>

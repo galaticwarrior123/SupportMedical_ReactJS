@@ -5,6 +5,7 @@ import { is } from 'date-fns/locale';
 import { useLocation, useNavigate } from 'react-router-dom';
 import UpdateProfileUser from '../UpdateProfileUser/UpdateProfileUser';
 import { ChatAPI } from '../../../../API/ChatAPI';
+import { toast } from 'react-toastify';
 const HeaderProfile = ({ user, onUserUpdate, onFollowToggle }) => {
     const navigate = useNavigate();
     const [isFollowed, setIsFollowed] = useState(false);
@@ -34,7 +35,7 @@ const HeaderProfile = ({ user, onUserUpdate, onFollowToggle }) => {
         }
     }
     const checkProfileMe = () => {
-        const user_id = location.pathname.split('/')[2];
+        const user_id = location.pathname.split('/')[3];
         if (localStorage.getItem('user')) {
             const userLocal = JSON.parse(localStorage.getItem('user'));
             if (userLocal._id === user_id) {
@@ -48,7 +49,7 @@ const HeaderProfile = ({ user, onUserUpdate, onFollowToggle }) => {
 
     const fetchUserById = async () => {
         try {
-            const user_id = location.pathname.split('/')[2];
+            const user_id = location.pathname.split('/')[3];
             const response = await UserAPI.getUserById(user_id);
             setUserData(response.data);
             setNumberOfFollowers(response.data.following.length);
@@ -65,7 +66,7 @@ const HeaderProfile = ({ user, onUserUpdate, onFollowToggle }) => {
 
 
         } catch (error) {
-            console.error(error);
+            toast.error("Lỗi khi lấy thông tin người dùng");
         }
     }
 
@@ -82,7 +83,7 @@ const HeaderProfile = ({ user, onUserUpdate, onFollowToggle }) => {
 
     const handlePrivateChat = async () => {
         const response = await ChatAPI.getPrivateChat(user._id);
-        navigate(`/chat/${response.data._id}`);
+        navigate(`/forum/chat/${response.data._id}`);
     }
     return (
         <div className="profile-header-container">

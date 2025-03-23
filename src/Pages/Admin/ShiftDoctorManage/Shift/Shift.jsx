@@ -17,6 +17,8 @@ const Shift = () => {
     const [endTime, setEndTime] = useState('');
     const [isEdit, setIsEdit] = useState(false);
 
+    const [searchName, setSearchName] = useState('');
+
     useEffect(() => {
         ShiftAPI.getAllShift()
             .then(res => {
@@ -162,10 +164,10 @@ const Shift = () => {
                     </div>
 
                     <div className="search-bar">
-                        <input type="text" placeholder="Tìm kiếm" />
-                        <button className="search-btn">
+                        <input type="text" placeholder="Tìm kiếm" value={searchName} onChange={(e) => setSearchName(e.target.value)} />
+                        {/* <button className="search-btn">
                             <FontAwesomeIcon icon={faSearch} />
-                        </button>
+                        </button> */}
                     </div>
 
                     <table className="shift-table">
@@ -178,21 +180,22 @@ const Shift = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {shifts.map((shift, index) => (
-                                <tr key={shift._id}>
-                                    <td>{index + 1 < 10 ? `0${index + 1}` : index + 1}</td>
-                                    <td>{shift.name}</td>
-                                    <td>{shift.startTime} - {shift.endTime}</td>
-                                    <td>
-                                        <button className="edit-btn" onClick={() => handleEditShift(shift)}>
-                                            <FontAwesomeIcon icon={faPen} /> Sửa
-                                        </button>
-                                        <button className="delete-btn" onClick={() => handleDeleteShift(shift._id)}>
-                                            <FontAwesomeIcon icon={faTrash} /> Xóa
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))}
+                            {shifts.filter(shift => shift.name.toLowerCase().includes(searchName.toLowerCase()))
+                                .map((shift, index) => (
+                                    <tr key={shift._id}>
+                                        <td>{index + 1 < 10 ? `0${index + 1}` : index + 1}</td>
+                                        <td>{shift.name}</td>
+                                        <td>{shift.startTime} - {shift.endTime}</td>
+                                        <td>
+                                            <button className="edit-btn" onClick={() => handleEditShift(shift)}>
+                                                <FontAwesomeIcon icon={faPen} /> Sửa
+                                            </button>
+                                            <button className="delete-btn" onClick={() => handleDeleteShift(shift._id)}>
+                                                <FontAwesomeIcon icon={faTrash} /> Xóa
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
                         </tbody>
                     </table>
                 </div>

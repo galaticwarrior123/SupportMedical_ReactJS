@@ -53,6 +53,7 @@ const SelectDayPage = () => {
                 startTime: shiftItem.shift.startTime,
                 endTime: shiftItem.shift.endTime,
             }));
+
             setWorkingDays(workingDays);
 
 
@@ -72,17 +73,19 @@ const SelectDayPage = () => {
                 const fetchedTimeSlots = res.data; // Lấy danh sách khung giờ từ API
 
                 // Tìm `workingDay` tương ứng với ngày đã chọn
-                const workingDay = workingDays.find((item) => item.date === day);
+                const workingDay = workingDays.filter((item) => item.date === day);
 
-                if (workingDay) {
-                    // Lọc khung giờ theo khoảng thời gian làm việc của bác sĩ
+                if (workingDay.length > 0) {
+                    // Lọc khung giờ theo tất cả các khoảng thời gian làm việc của bác sĩ
                     const filteredTimeSlots = fetchedTimeSlots.filter((timeSlot) => {
                         const [slotStartTime, slotEndTime] = [timeSlot.startTime, timeSlot.endTime];
-
-                        // So sánh thời gian để kiểm tra xem khung giờ có nằm trong khoảng thời gian làm việc không
-                        return workingDay.startTime <= slotStartTime && workingDay.endTime >= slotEndTime;
+    
+                        // Kiểm tra khung giờ có nằm trong bất kỳ khoảng thời gian làm việc nào không
+                        return workingDay.some(shift =>
+                            shift.startTime <= slotStartTime && shift.endTime >= slotEndTime
+                        );
                     });
-
+    
                     setListTimeSlots(filteredTimeSlots); // Cập nhật danh sách khung giờ đã lọc
                     setTimeSlots(filteredTimeSlots); // Hiển thị khung giờ đã lọc
                     setSelectedDay(day); // Cập nhật ngày được chọn
@@ -132,7 +135,7 @@ const SelectDayPage = () => {
 
         if (selectedDay) {
             state.date = `${year}-${(month + 1).toString().padStart(2, "0")}-${selectedDay.toString().padStart(2, "0")}`;
-            state.timeSlot = `${selectedTimeSlot.startTime} - ${selectedTimeSlot.endTime}`;
+            state.timeSlot = selectedTimeSlot;
         }
 
         navigate(path, { state });

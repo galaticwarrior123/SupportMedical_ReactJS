@@ -146,7 +146,7 @@ const ShiftAssignment = () => {
                 const availableDoctors = filteredDoctors.filter(
                     (doctor) =>
                         !assignedDoctors.includes(doctor._id) &&
-                        !assignedDoctorsPerDay.has(doctor._id) &&
+                        // !assignedDoctorsPerDay.has(doctor._id) &&
                         !excludedDoctors.includes(doctor._id)
                 );
 
@@ -155,7 +155,7 @@ const ShiftAssignment = () => {
                     .slice(0, MAX_EMPLOYEES_PER_SHIFT);
 
                 if (randomDoctors.length === MAX_EMPLOYEES_PER_SHIFT) {
-                    randomDoctors.forEach((doctor) => assignedDoctorsPerDay.add(doctor._id));
+                    // randomDoctors.forEach((doctor) => assignedDoctorsPerDay.add(doctor._id));
                     newAssignments[key] = randomDoctors.map((doctor) => doctor._id);
                 }
             });
@@ -201,6 +201,10 @@ const ShiftAssignment = () => {
             }));
         });
 
+        
+
+        
+
         ShiftAssignmentAPI.createShiftAssignment(shiftAssignments)
             .then(() => {
                 toast.success("Lưu ca trực thành công!");
@@ -212,12 +216,12 @@ const ShiftAssignment = () => {
 
     const handleDeleteAssignment = () => {
 
-        // chuyển assignments thành mảng các đối tượng để xóa
+        
         const shiftAssignments = Object.entries(assignments).flatMap(([key, doctorIds]) => {
             const [day, shift] = key.split("-");
             return doctorIds.map(doctorId => ({
-                date: `${year}-${month.toString().padStart(2, "0")}-${day.toString().padStart(2, "0")}`, // Format ngày tháng
-                shiftId: shifts.find((s) => s.name === shift)._id, // Lấy ra ID của ca trực
+                date: `${year}-${month.toString().padStart(2, "0")}-${day.toString().padStart(2, "0")}`,
+                shiftId: shifts.find((s) => s.name === shift)._id,
                 doctorId
             }));
         });
@@ -392,9 +396,14 @@ const ShiftAssignment = () => {
                             <thead>
                                 <tr>
                                     <th>Ca trực</th>
-                                    {days.slice(index, index + 4).map(day => (
-                                        <th key={day}>{`Ngày ${day}/${month}`}</th>
-                                    ))}
+                                    {days.slice(index, index + 4).map(day => {
+                                        const date = new Date(year, month - 1, day); // Tạo đối tượng Date
+                                        const weekdays = ['Chủ Nhật', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'];
+                                        const weekday = weekdays[date.getDay()]; // Lấy ra thứ tương ứng
+                                        return (
+                                            <th key={day}>{`${weekday} - Ngày ${day}/${month}`}</th>
+                                        );
+                                    })}
                                 </tr>
                             </thead>
                             <tbody>

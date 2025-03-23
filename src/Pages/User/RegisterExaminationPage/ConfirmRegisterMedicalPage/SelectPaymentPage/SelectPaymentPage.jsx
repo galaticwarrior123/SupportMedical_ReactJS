@@ -89,7 +89,7 @@ const SelectPaymentPage = () => {
                                     <div className="info-left">
                                         <FontAwesomeIcon icon={faClock} /> <span>Giờ khám:</span>
                                     </div>
-                                    <div className="info-right">{doctorSelected.timeSlot}</div>
+                                    <div className="info-right">{doctorSelected.timeSlot.startTime} - {doctorSelected.timeSlot.endTime}</div>
                                 </div>
                                 <div>
                                     <div className="info-left">

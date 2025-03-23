@@ -12,6 +12,7 @@ import { toast } from 'react-toastify';
 
 const RegisterMedicalExaminationPage = () => {
     const navigate = useNavigate();
+    const [searchName, setSearchName] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [listDoctors, setListDoctors] = useState([]);
     const doctorsPerPage = 5;
@@ -35,6 +36,7 @@ const RegisterMedicalExaminationPage = () => {
     useEffect(() => {
         DoctorAPI.getAllDoctorHaveShift().then((response) => {
             setListDoctors(response.data);
+            console.log(response.data);
         }
         ).catch((error) => {
             toast.error("Lỗi khi lấy danh sách bác sĩ");
@@ -71,7 +73,7 @@ const RegisterMedicalExaminationPage = () => {
 
                 <div className="search-section">
                     <div className="search-section-input">
-                        <input type="text" placeholder="Tìm kiếm bác sĩ" />
+                        <input type="text" placeholder="Tìm kiếm bác sĩ" value={searchName} onChange={(e) => setSearchName(e.target.value)} />
                         {/* <button className="search-button">
                             <FontAwesomeIcon icon={faSearch} />
                         </button> */}
@@ -81,17 +83,16 @@ const RegisterMedicalExaminationPage = () => {
                 <div className="content-medical">
                     <div className="doctor-list-card-medical">
 
-                        {currentDoctors.length > 0 ? currentDoctors.map((doctorItem, index) => (
-
+                        {currentDoctors.length > 0 ? currentDoctors.filter(doctor => doctor.doctor.firstName.toLowerCase().includes(searchName.toLowerCase()) || doctor.doctor.lastName.toLowerCase().includes(searchName.toLowerCase())).map((doctorItem, index) => (
                             <div className="doctor-card-medical" key={index}>
                                 <div className="doctor-info-medical">
                                     <div className="doctor-info-medical-image">
-                                        <img src="/images/account.png" alt="Doctor" />
+                                        <img src={doctorItem.doctor.avatar || '/images/account.png'} alt="Doctor" />
                                         <button className="doctor-info-medical-image-button">Xem chi tiết</button>
                                     </div>
                                     <div className="doctor-details-medical">
                                         <h3>{doctorItem.doctor.firstName} {doctorItem.doctor.lastName}  | {doctorItem.doctor.doctorInfo.specialities[0].name}</h3>
-                                        <p><strong>Chuyên trị:</strong> {doctorItem.description}</p>
+                                        <p><strong>Chuyên trị:</strong> {doctorItem.doctor.doctorInfo.treatmentDescription || 'Chưa cập nhật'}</p>
                                         <p><strong>Lịch khám: </strong> Thứ 2,3,4,5,6,7,CN</p>
                                     </div>
                                 </div>

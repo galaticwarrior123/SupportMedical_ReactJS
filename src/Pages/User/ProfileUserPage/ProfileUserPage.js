@@ -9,13 +9,15 @@ import ItemPostUserHome from '../../../Components/ItemPostUserHome/ItemPostUserH
 import 'react-toastify/dist/ReactToastify.css'
 import { useLocation } from 'react-router-dom';
 import { UserAPI } from '../../../API/UserAPI';
+import { toast } from 'react-toastify';
 
 const ProfileUserPage = () => {
     const [listPostUser, setListPostUser] = useState([]);
     const location = useLocation();
     const [user, setUser] = useState({});
     const [currentUser, setCurrentUser] = useState(JSON.parse(localStorage.getItem('user')));
-    const user_id = location.pathname.split('/')[2];
+    const user_id = location.pathname.split('/')[3];
+
 
     useEffect(() => {
         fetchUserById();
@@ -28,7 +30,7 @@ const ProfileUserPage = () => {
             setUser(response.data);
             
         } catch (error) {
-            console.error(error);
+            toast.error("Lỗi khi lấy thông tin người dùng");
         }
     }
 
