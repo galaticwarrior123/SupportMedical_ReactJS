@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './HeaderRegisterMedicalMedicalExaminationPage.css';
-import { faBell, faNotesMedical, faSignOutAlt, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faBell, faNotesMedical, faSignOutAlt, faUser, faCalendarCheck } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -104,6 +104,9 @@ const HeaderRegisterMedicalExaminationPage = () => {
                         <ul>
                             <li onClick={() => handleNavigate('/manage-records')}>
                                 <FontAwesomeIcon icon={faUser} /> Hồ sơ bệnh nhân
+                            </li>
+                            <li onClick={() => handleNavigate('/my-appointments')}>
+                                <FontAwesomeIcon icon={faCalendarCheck} /> Lịch khám của tôi
                             </li>
                             <li onClick={() => handleNavigate('/notifications')}>
                                 <FontAwesomeIcon icon={faNotesMedical} /> Thông báo

@@ -15,7 +15,7 @@ const ConfirmRegisterMedicalPage = ({children}) => {
                 <div className="appointment-info">
                     <h3>Thông tin lịch hẹn</h3>
                     <p><strong>Chuyên khoa:</strong> {doctorSelected.doctor.doctorInfo.specialities[0].name}</p>
-                    <p><strong>Bác sĩ:</strong> {doctorSelected.doctor.firstName} {doctorSelected.doctor.lastName} </p>
+                    <p><strong>Bác sĩ:</strong> BS. {doctorSelected.doctor.firstName} {doctorSelected.doctor.lastName} </p>
                 </div>
 
                 {/* Bảng chọn dịch vụ */}

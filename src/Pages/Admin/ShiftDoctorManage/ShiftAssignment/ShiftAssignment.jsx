@@ -201,10 +201,6 @@ const ShiftAssignment = () => {
             }));
         });
 
-        
-
-        
-
         ShiftAssignmentAPI.createShiftAssignment(shiftAssignments)
             .then(() => {
                 toast.success("Lưu ca trực thành công!");
@@ -324,7 +320,7 @@ const ShiftAssignment = () => {
                             </select>
                         </label>
                         <div className="buttons">
-                            <button className="btn delete" onClick={() => setIsOpenDialog(true)}>Xóa</button>
+                            <button className="btn delete" onClick={() => setIsOpenDialog(true)}>Xóa tất cả</button>
                             <button className="btn save" onClick={handleSaveAssignment}>Lưu</button>
                         </div>
                     </div>

@@ -1,0 +1,187 @@
+.appointment-card-result {
+    border-radius: 10px; 
+    max-width: 800px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    border: 1px solid #E0E0E0;
+
+    opacity: 0;
+    animation: floatRight 1s forwards;
+}
+.appointment-card-up {
+    padding: 5px 15px;
+    border-radius: 10px 10px 0 0;
+    background-color: #ffffff;
+}
+.appointment-card-up p {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 8px 0;
+    font-size: 16px;
+}
+
+.appointment-card-up .icon {
+    font-size: 18px;
+    color: #2c2c2c;
+    width: 25px;
+    text-align: center;
+}
+
+.appointment-card-up .info-text {
+    color: #2697EC;
+    font-weight: bold;
+    margin-left: 5px;
+}
+
+.appointment-card-buttons {
+    display: flex;
+    justify-content: flex-end;
+    background-color: #F1F1F1;
+    padding: 10px;
+    border-radius: 0 0 10px 10px;
+}
+
+.btn-cancel-appointment {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    margin-left: 10px;
+    background-color: #ec2626;
+    margin-right: 10px;
+}
+.btn-cancel-appointment:hover {
+    background-color: #d21f1f;
+}
+.btn-details-appointment {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    background-color: #2697EC;
+}
+.btn-details-appointment:hover {
+    background-color: #1f83d2;
+}
+
+
+
+@keyframes floatRight {
+    0% {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+
+.modal-overlay-appointment{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-appointment-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    width: 100%;
+    position: relative;
+}
+.modal-appointment-header{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+.modal-appointment-header h3 {
+    font-size: 20px;
+    color: #2c2c2c;
+    margin:0;
+    position: relative;
+}
+.modal-appointment-header button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    color: #2c2c2c;
+    border-radius: 50%;
+    padding: 5px;
+}
+.modal-appointment-header button:hover {
+    background-color: #F1F1F1;
+}
+
+
+
+.modal-appointment-body {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.modal-appointment-info,
+.modal-appointment-patient-info {
+    flex: 1;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+/* Tiêu đề phần thông tin bệnh nhân */
+.modal-appointment-info h4,
+.modal-appointment-patient-info h4 {
+    text-align: center;
+    margin:0;
+}
+
+/* Các dòng thông tin */
+.modal-appointment-info p,
+.modal-appointment-patient-info p {
+    margin: 10px 0;
+    line-height: 1.6;
+}
+
+/* Biểu tượng FontAwesome */
+.modal-appointment-patient-info p svg {
+    margin-right: 8px;
+    width: 20px;
+}
+
+/* Responsive cho màn hình nhỏ */
+@media (max-width: 768px) {
+    .modal-appointment-body {
+        flex-direction: column;
+    }
+}
+
+
+
+

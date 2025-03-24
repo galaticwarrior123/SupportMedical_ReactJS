@@ -38,6 +38,8 @@ import SelectPaymentPage from './Pages/User/RegisterExaminationPage/ConfirmRegis
 import Schedule from './Pages/Doctor/Schedule/Schedule';
 import SelectBankPage from './Pages/User/RegisterExaminationPage/ConfirmRegisterMedicalPage/SelectBankPage/SelectBankPage';
 import TimeSlot from './Pages/Admin/ShiftDoctorManage/TimeSlot/TimeSlot';
+import PaymentSuccess from './Pages/User/RegisterExaminationPage/ConfirmRegisterMedicalPage/PaymentSuccess/PaymentSuccess';
+import MyAppointmentsPage from './Pages/User/RegisterExaminationPage/LayoutManageRecordsPage/MyAppointmentsPage/MyAppointmentsPage';
 const ROLES = {
   'CLIENT': 'CLIENT',
   'DOCTOR': 'DOCTOR',
@@ -62,6 +64,7 @@ function App() {
             <Route index element={<RegisterMedicalExaminationPage />} />
             <Route path="create-patient-record" element={<CreatePatientRecordPage />} />
             <Route path="manage-records" element={<ManageRecordsPage />} />
+            <Route path="my-appointments" element={<MyAppointmentsPage />} />
             <Route path="select-service" element={<SelectServicePage />} />
             <Route path="select-record" element={<SelectRecordPage />} />
             <Route path="select-day" element={<SelectDayPage />} />
@@ -69,6 +72,7 @@ function App() {
             <Route path="confirm-info" element={<ConfirmInfoPage />} />
             <Route path="select-payment" element={<SelectPaymentPage />} />
             <Route path="select-bank" element={<SelectBankPage />} />
+            <Route path="paymentSuccess" element={<PaymentSuccess />} />
           </Route>
 
           <Route element={<RequireAuth allowedRoles={[ROLES.DOCTOR]} />}>

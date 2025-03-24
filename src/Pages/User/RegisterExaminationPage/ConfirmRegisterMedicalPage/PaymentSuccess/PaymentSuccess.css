@@ -1,0 +1,95 @@
+.layout-payment-success {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 70vh;
+    background-color: #eaf6ff;
+}
+
+.payment-success-card {
+    background-color: white;
+    border-radius: 8px;
+    padding: 40px;
+    text-align: center;
+    width: 400px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.success-icon {
+    margin-bottom: 20px;
+}
+
+.checkmark {
+    width: 85px;
+    height: 80px;
+    stroke-width: 2;
+    stroke: #789d6e;
+    stroke-miterlimit: 10;
+    fill: none;
+    animation: scaleAnimation 0.3s ease-out forwards;
+}
+
+.checkmark-circle {
+    stroke-dasharray: 166;
+    stroke-dashoffset: 166;
+    animation: strokeAnimation 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+
+.checkmark-check {
+    stroke-dasharray: 48;
+    stroke-dashoffset: 48;
+    animation: strokeAnimation 0.3s 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+
+@keyframes strokeAnimation {
+    100% {
+        stroke-dashoffset: 0;
+    }
+}
+
+@keyframes scaleAnimation {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+.payment-success-card h2 {
+    color: #789d6e;
+    margin-bottom: 10px;
+}
+
+.payment-success-card p {
+    color: #666;
+    margin-bottom: 30px;
+}
+
+.button-group {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.payment-success-card button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.myregistration-button{
+    background-color: #1C9E9C;
+    color: white;
+}
+
+.mainPage-button {
+    background-color: #0066CC;
+    color: white;
+}
+
+.payment-success-card button:hover {
+    opacity: 0.9;
+}

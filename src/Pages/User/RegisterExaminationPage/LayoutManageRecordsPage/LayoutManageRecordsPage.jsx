@@ -2,7 +2,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import DefaultLayoutRegisterMedicalExaminationPage from '../../../../Layouts/DefaultLayoutRegisterMedicalExaminationPage/DefaultLayoutRegisterMedicalExaminationPage';
 import './LayoutManageRecordsPage.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAddressCard, faBell, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faAddressCard, faBell, faCalendarCheck, faPlus } from '@fortawesome/free-solid-svg-icons';
 
 
 
@@ -29,6 +29,12 @@ const LayoutManageRecordsPage = ({ children }) => {
                                 onClick={() => handleNavigate('/manage-records')}>
                                 <FontAwesomeIcon icon={faAddressCard} className="fa-icon" />
                                 Hồ sơ bệnh nhân
+                            </button>
+                            <button 
+                                className={`sidebar-btn ${location.pathname === '/my-appointments' ? 'active' : ''}`} 
+                                onClick={() => handleNavigate('/my-appointments')}>
+                                <FontAwesomeIcon icon={faCalendarCheck} className="fa-icon" />
+                                Lịch hẹn của tôi
                             </button>
                             <button 
                                 className={`sidebar-btn ${location.pathname === '/notifications' ? 'active' : ''}`} 

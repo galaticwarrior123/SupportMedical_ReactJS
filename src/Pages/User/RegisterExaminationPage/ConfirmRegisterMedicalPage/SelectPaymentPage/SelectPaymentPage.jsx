@@ -5,19 +5,18 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMapMarkedAlt, faPhone, faUser, faUserMd, faCalendarAlt, faClock, faIdCard, faClinicMedical, faStethoscope, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { useLocation, useNavigate } from 'react-router-dom';
 
+
 const SelectPaymentPage = () => {
     const [selectedPayment, setSelectedPayment] = useState(null);
     const location = useLocation();
     const doctorSelected = location.state;
     const navigate = useNavigate();
-
-    
-
     const handlePaymentSelection = (event) => {
         setSelectedPayment(event.target.value);
     };
 
     const handlePayment = () => {
+
         if(selectedPayment === 'Thẻ ATM nội địa/ Internet Banking'){
             navigate('/select-bank', {state: doctorSelected});
         }
@@ -70,7 +69,7 @@ const SelectPaymentPage = () => {
                                     <div className="info-left">
                                         <FontAwesomeIcon icon={faUserMd} /> <span>Bác sĩ:</span>
                                     </div>
-                                    <div className="info-right"> {doctorSelected.doctor.firstName} {doctorSelected.doctor.lastName} </div>
+                                    <div className="info-right"> BS. {doctorSelected.doctor.firstName} {doctorSelected.doctor.lastName} </div>
                                 </div>
                                 <div>
                                     <div className="info-left">

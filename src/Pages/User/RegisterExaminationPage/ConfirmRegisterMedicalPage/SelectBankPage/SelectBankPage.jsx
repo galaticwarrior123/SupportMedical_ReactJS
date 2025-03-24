@@ -7,8 +7,10 @@ import { PaymentAPI } from '../../../../../API/PaymentAPI';
 import { useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
+
 const SelectBankPage = () => {
     const location = useLocation();
+    const user = JSON.parse(localStorage.getItem('user'));
     const doctorSelected = location.state;
     const [banks, setBanks] = useState([]);
 
@@ -32,8 +34,19 @@ const SelectBankPage = () => {
             bankCode: bankCode,
         };
 
+        const data = {
+            user: user._id,
+            doctor: doctorSelected.doctor._id,
+            recordPatient: doctorSelected.record._id,
+            timeSlot: doctorSelected.timeSlot._id,
+            typeService: doctorSelected.selectedService,
+            fee: doctorSelected.amount
+        };
+
+        // Nếu tạo đăng ký khám thành công thì gọi tiếp API thanh toán
         PaymentAPI.createPaymentUrl(payment)
             .then((response) => {
+                localStorage.setItem('recordPatient', JSON.stringify(data));
                 window.location.href = response.data.paymentUrl;
             })
             .catch((error) => {
@@ -41,6 +54,7 @@ const SelectBankPage = () => {
             });
 
     };
+
 
     return (
         <DefaultLayoutRegisterMedicalExaminationPage>
