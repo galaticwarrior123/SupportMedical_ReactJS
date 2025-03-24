@@ -3,7 +3,7 @@ import './HeaderRegisterMedicalMedicalExaminationPage.css';
 import { faBell, faNotesMedical, faSignOutAlt, faUser, faCalendarCheck } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import { NotificationAPI } from '../../API/NotificatoinAPI';
 
 const notifications = [
     { id: 1, content: "Bạn có lịch hẹn khám mới từ Nguyễn Văn A", createAt: "2021-10-10", isRead: false },
@@ -17,8 +17,15 @@ const HeaderRegisterMedicalExaminationPage = () => {
     const dropdownRef = useRef(null);
     const bellDropdownRef = useRef(null);
     const navigate = useNavigate();
+    const [notifications, setNotifications] = useState([]);
 
     const unreadNotifications = notifications.filter(notification => !notification.isRead).length;
+
+    useEffect(() => {
+        NotificationAPI.getNotifications().then((response) => {
+            setNotifications(response.data);
+        });
+    }, []);
 
     // Đóng dropdown nếu click bên ngoài
     useEffect(() => {
@@ -45,6 +52,20 @@ const HeaderRegisterMedicalExaminationPage = () => {
         setShowDropdown(false);
     }
 
+    const handleMaskAsRead = (notification) => {
+        navigate(notification.actionUrl);
+        NotificationAPI.markAsRead([notification._id]).then(() => {
+            setNotifications(prev => prev.map(notification => {
+                if (notification._id === notification._id) {
+                    return { ...notification, isRead: true };
+                }
+                return notification;
+            }));
+        });
+    }
+
+    
+
 
     return (
         <div className="header-register-medical-examination-page" >
@@ -66,16 +87,27 @@ const HeaderRegisterMedicalExaminationPage = () => {
 
                     {showBellDropdown && (
                         <div className="bell-dropdown">
-                            {notifications.length > 0 ?
+                            {notifications.length > 0 ? (
                                 <>
                                     {notifications.map(notification => (
                                         <div
-                                            key={notification.id}
+                                            key={notification._id}
                                             className={`notification-item ${notification.isRead ? 'read' : 'unread'}`}
+                                            onClick={() => handleMaskAsRead(notification)}
                                         >
                                             {notification.content}
+                                            <br />
+                                            <span className="notification-time">
+                                                {new Date(notification.createdAt).toLocaleString('vi-VN', {
+                                                    hour12: false,
+                                                    year: 'numeric',
+                                                    month: '2-digit',
+                                                    day: '2-digit',
+                                                    hour: '2-digit',
+                                                    minute: '2-digit',
+                                                }).replace(',', '')}
+                                            </span>
                                         </div>
-
                                     ))}
 
                                     <div className="notification-bell-footer">
@@ -83,7 +115,10 @@ const HeaderRegisterMedicalExaminationPage = () => {
                                             Xem tất cả thông báo
                                         </button>
                                     </div>
-                                </> : <p>Không có thông báo mới</p>}
+                                </>
+                            ) : (
+                                <p>Không có thông báo mới</p>
+                            )}
                         </div>
                     )}
                 </div>

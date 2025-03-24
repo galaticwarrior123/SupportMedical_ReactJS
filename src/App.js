@@ -40,6 +40,7 @@ import SelectBankPage from './Pages/User/RegisterExaminationPage/ConfirmRegister
 import TimeSlot from './Pages/Admin/ShiftDoctorManage/TimeSlot/TimeSlot';
 import PaymentSuccess from './Pages/User/RegisterExaminationPage/ConfirmRegisterMedicalPage/PaymentSuccess/PaymentSuccess';
 import MyAppointmentsPage from './Pages/User/RegisterExaminationPage/LayoutManageRecordsPage/MyAppointmentsPage/MyAppointmentsPage';
+import DetailAppointmentPage from './Pages/User/RegisterExaminationPage/LayoutManageRecordsPage/DetailAppointmentPage/DetailAppointmentPage';
 const ROLES = {
   'CLIENT': 'CLIENT',
   'DOCTOR': 'DOCTOR',
@@ -64,6 +65,7 @@ function App() {
             <Route index element={<RegisterMedicalExaminationPage />} />
             <Route path="create-patient-record" element={<CreatePatientRecordPage />} />
             <Route path="manage-records" element={<ManageRecordsPage />} />
+            <Route path='detail-appointment/:id' element={<DetailAppointmentPage />} />
             <Route path="my-appointments" element={<MyAppointmentsPage />} />
             <Route path="select-service" element={<SelectServicePage />} />
             <Route path="select-record" element={<SelectRecordPage />} />

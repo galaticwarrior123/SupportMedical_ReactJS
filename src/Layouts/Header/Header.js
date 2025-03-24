@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchNotifications } from '../../redux/slices/notificationSlice';
 import { getUnreadCount } from '../../redux/slices/chatSlice';
 
+
 const Header = () => {
     const dispatch = useDispatch();
     const [isMenuOpen, setIsMenuOpen] = useState(true);

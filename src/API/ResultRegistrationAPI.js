@@ -7,6 +7,11 @@ export class ResultRegistrationAPI {
         return axiosPrivate.get(url);
     }
 
+    static async getResultRegistrationById(id) {
+        const url = `/result-registration/detail/${id}`;
+        return axiosPrivate.get(url);
+    }
+
     static async createResultRegistration(data) {
         const url = '/result-registration/create';
         return axiosPrivate.post(url, data);

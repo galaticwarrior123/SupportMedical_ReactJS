@@ -1,0 +1,77 @@
+.layout-detail-my-appointment-page-container{
+    min-height: 70vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.detail-my-appointment-page-container {
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+.detail-my-appointment-page-container h2{
+    margin:0;
+    margin-bottom:20px;
+}
+.detail-my-appointment-page-title {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 20px;
+}
+.detail-my-appointment-page-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+.detail-my-appointment-page-content h3{
+    margin:0;
+}
+.detail-my-appointment-page-box {
+    flex: 1;
+    min-width: 300px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-left: 5px solid #3498db;
+    border-radius: 8px;
+}
+
+.detail-my-appointment-page-box h3 {
+    font-size: 18px;
+    color: #2980b9;
+    margin-bottom: 10px;
+}
+
+.detail-my-appointment-page-box p {
+    font-size: 16px;
+    color: #333;
+    margin: 5px 0;
+}
+
+.detail-my-appointment-page-box strong {
+    color: #2c3e50;
+}
+
+.detail-my-appointment-page-button {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.detail-my-appointment-page-button button {
+    padding: 10px 20px;
+    border: none;
+    background-color: #3498db;
+    color: white;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.detail-my-appointment-page-button button:hover {
+    background-color: #2980b9;
+}
