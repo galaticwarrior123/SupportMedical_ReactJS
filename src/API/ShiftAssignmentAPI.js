@@ -14,4 +14,8 @@ export class ShiftAssignmentAPI {
     static async deleteShiftAssignment(shiftAssignment) {
         return axiosPrivate.delete("/shift-assignment/delete", { data: shiftAssignment });
     }
+
+    static async getMyShifts(filter) {
+        return axiosPrivate.get("/shift-assignment/my-shifts", { params: filter });
+    }
 }

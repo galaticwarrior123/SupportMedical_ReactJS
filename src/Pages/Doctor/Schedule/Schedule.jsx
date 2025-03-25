@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import DoctorLayout from "../../../Layouts/Doctor/DoctorLayout";
 import './Schedule.css';
 import { useDispatch, useSelector } from "react-redux";
 import { openAppointmentListModal } from "../../../redux/slices/doctorScheduleSlice";
 import AppointmentListModal from "./AppointmentListModal";
+import { ShiftAssignmentAPI } from "../../../API/ShiftAssignmentAPI";
+import { use } from "react";
 
 const daysOfWeek = ['CN', 'Hai', 'Ba', 'Tư', 'Năm', 'Sáu', 'Bảy'];
 const getDaysInMonth = (year, month) => {
@@ -33,6 +35,8 @@ const Schedule = () => {
     const [selectedDay, setSelectedDay] = useState(null);
     const daysInMonth = getDaysInMonth(year, month);
 
+    const [listShift, setListShift] = useState([]);
+
     const changeMonth = (delta) => {
         let newMonth = month + delta;
         let newYear = year;
@@ -54,6 +58,18 @@ const Schedule = () => {
             dispatch(openAppointmentListModal());
         }
     };
+    useEffect(() => {
+        const getListShift = async () => {
+            const response = await ShiftAssignmentAPI.getMyShifts({ month: month + 1, year });
+            console.log(response);
+            setListShift(response.data);
+        }
+        getListShift();
+    }, [month, year]);
+
+    const checkShift = useCallback((day, shift) => {
+        return listShift.some(item => item.date.split('-')[2] == day && item.shift.name.toLowerCase().includes(shift));
+    }, [listShift]);
 
     return (
         <DoctorLayout>
@@ -86,9 +102,9 @@ const Schedule = () => {
                                             {day && 
                                                 <div className="doctor-schedule-day">
                                                     {day} 
-                                                    <div className="doctor-schedule-shift day-shift"></div>
-                                                    <div className="doctor-schedule-shift afternoon-shift"></div>
-                                                    <div className="doctor-schedule-shift night-shift"></div>
+                                                    {checkShift(day, 'sáng') && <div className="doctor-schedule-shift day-shift"></div>}
+                                                    {checkShift(day, 'chiều') && <div className="doctor-schedule-shift afternoon-shift"></div>}
+                                                    {checkShift(day, 'tối') && <div className="doctor-schedule-shift night-shift"></div>}
                                                 </div>
                                             }
                                         </td>
