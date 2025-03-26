@@ -117,17 +117,17 @@ const Header = () => {
 
                 <div className={`header-nav-action-item ${isMenuOpen ? 'open' : ''}`}>
                     <ul>
-                        <li onClick={() => handleNavigate('/')} className={isActive('/') ? 'active-button' : ''}><img src="/images/home.png" alt="home" /></li>
+                        <li onClick={() => handleNavigate('/forum')} className={isActive('/forum') ? 'active-button' : ''}><img src="/images/home.png" alt="home" /></li>
                         <li 
-                            onClick={() => handleNavigate('/chat')} 
+                            onClick={() => handleNavigate('/forum/chat')} 
                             className={isActive('/forum/chat', false) ? 'active-button' : ''}>
                                 <img src="/images/rocketchat.png" alt="rocketchat" />
                                 {unreadChatCount > 0 && (
                                     <span className="badge">{unreadChatCount}</span>
                                 )}
                         </li>
-                        <li onClick={() => handleNavigate('/appointment')} className={isActive('/appointment', false) ? 'active-button' : ''}><img src="/images/calendar-alt.png" alt="calendar-alt" /></li>
-                        <li onClick={() => handleNavigate('/search')} className={isActive('/search') ? 'active-button' : ''}><img src="/images/search.png" alt="search" /></li>
+                        <li onClick={() => handleNavigate('/forum/appointment')} className={isActive('/forum/appointment', false) ? 'active-button' : ''}><img src="/images/calendar-alt.png" alt="calendar-alt" /></li>
+                        <li onClick={() => handleNavigate('/forum/search')} className={isActive('/forum/search') ? 'active-button' : ''}><img src="/images/search.png" alt="search" /></li>
                         {
                             user.roles.includes('DOCTOR') && (
                                 //<li onClick={() => handleNavigate('/permission')} className={isActive('/permission') ? 'active-button' : ''}><img src="/images/permission.png" alt="permission" style={{width:30, height:30}} /></li>

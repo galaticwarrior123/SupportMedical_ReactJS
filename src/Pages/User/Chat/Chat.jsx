@@ -52,7 +52,7 @@ const Chat = () => {
                 setChats(response.data);
                 // setSelectedChat(response.data[0]);
                 if (!id)
-                    navigate(`/chat/${response.data[0]._id}`);
+                    navigate(`/forum/chat/${response.data[0]._id}`);
             }
         }
         getChats();
@@ -64,7 +64,7 @@ const Chat = () => {
             if (response.data) {
                 setSelectedChat(response.data);
             } else {
-                navigate('/chat');
+                navigate('/forum/chat');
             }
         }
         if (id) {
@@ -226,7 +226,7 @@ const Chat = () => {
         // find chat by participants
         const response = await ChatAPI.getPrivateChat(item._id);
         if (response.data) {
-            navigate(`/chat/${response.data._id}`);
+            navigate(`/forum/chat/${response.data._id}`);
         } else {
             setMessages([]);
             setSelectedChat(null);
@@ -235,7 +235,7 @@ const Chat = () => {
 
     const handleChatItemClicked = (item) => {
         if (item._id !== selectedChat._id) {
-            navigate(`/chat/${item._id}`);
+            navigate(`/forum/chat/${item._id}`);
         }
     }
 
@@ -328,7 +328,7 @@ const Chat = () => {
 
                 <div className="card chat-box">
                     <div className="chat-header">
-                        <div onClick={() => navigate(`/profile/${otherUser._id}`)} className="chat-header-left">
+                        <div onClick={() => navigate(`/forum/profile/${otherUser._id}`)} className="chat-header-left">
                             <div className="chat-header-avatar">
                                 <img src={otherUser?.avatar} alt="avatar" />
                             </div>

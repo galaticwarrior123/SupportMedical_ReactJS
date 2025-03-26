@@ -52,15 +52,12 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/register/confirm-user" element={<ConfirmUser />} />
+        <Route path="/forgot-password" element={<Fill_Email />} />
+        <Route path="/reset-password" element={<Fill_NewPassword />} />
         <Route element={<RequireAuth allowedRoles={[ROLES.CLIENT, ROLES.DOCTOR, ROLES.ADMIN]} />}>
-
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/register/confirm-user" element={<ConfirmUser />} />
-          <Route path="/forgot-password" element={<Fill_Email />} />
-          <Route path="/reset-password" element={<Fill_NewPassword />} />
-
-
           <Route path="/">
             <Route index element={<RegisterMedicalExaminationPage />} />
             <Route path="create-patient-record" element={<CreatePatientRecordPage />} />
