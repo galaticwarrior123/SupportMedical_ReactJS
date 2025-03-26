@@ -23,4 +23,9 @@ export class RecordPatientAPI {
         const url = '/record-patient/delete/' + id;
         return axiosPrivate.delete(url);
     }
+
+    static async searchRecordPatient(q) {
+        const url = `/record-patient/search?q=${q}`;
+        return axiosClient.get(url);
+    }
 }

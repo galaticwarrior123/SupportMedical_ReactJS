@@ -4,6 +4,7 @@ import searchReducer from "./slices/searchSlice";
 import chatReducer from "./slices/chatSlice";
 import doctorDashboardReducer from "./slices/doctorDashboardSlice";
 import doctorScheduleReducer from "./slices/doctorScheduleSlice";
+import doctorPatientProfileReducer from "./slices/doctorPatientProfileSlice";
 
 export const store = configureStore({
     reducer: {
@@ -11,6 +12,7 @@ export const store = configureStore({
         search: searchReducer,
         chat: chatReducer,
         doctorDashboard: doctorDashboardReducer,
-        doctorSchedule: doctorScheduleReducer
+        doctorSchedule: doctorScheduleReducer,
+        doctorPatientProfile: doctorPatientProfileReducer,
     },
 });
