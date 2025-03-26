@@ -41,6 +41,7 @@ import PaymentSuccess from './Pages/User/RegisterExaminationPage/ConfirmRegister
 import MyAppointmentsPage from './Pages/User/RegisterExaminationPage/LayoutManageRecordsPage/MyAppointmentsPage/MyAppointmentsPage';
 import DetailAppointmentPage from './Pages/User/RegisterExaminationPage/LayoutManageRecordsPage/DetailAppointmentPage/DetailAppointmentPage';
 import ShiftSegment from './Pages/Admin/ShiftDoctorManage/ShiftSegment/ShiftSegment';
+import MedExamServicePage from './Pages/Admin/MedExamServiceManage/MedExamServicePage';
 const ROLES = {
   'CLIENT': 'CLIENT',
   'DOCTOR': 'DOCTOR',
@@ -92,7 +93,8 @@ function App() {
               <Route path="doctors" element={<DoctorManage />} />
               <Route path="manage-schedule" element={<Shift />} />
               <Route path="assign-shifts" element={<ShiftAssignment />} />
-              <Route path="time-slot" element={<ShiftSegment />} />
+              <Route path="shift-segment" element={<ShiftSegment />} />
+              <Route path="medExamService" element={<MedExamServicePage />} />
               {/* Thêm các route khác nếu cần */}
             </Route>
           </Route>

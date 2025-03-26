@@ -4,6 +4,10 @@ import { SidebarProvider } from '../../../../Layouts/DefaultLayoutAdmin/SidebarC
 import './ShiftSegment.css';
 import { ShiftSegmentAPI } from '../../../../API/ShiftSegmentAPI';
 import { toast } from 'react-toastify';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faClose } from '@fortawesome/free-solid-svg-icons';
+import { motion, AnimatePresence } from 'framer-motion';
+import YesNoDialog from '../../../../Components/YesNoDialog/YesNoDialog';
 
 const ShiftSegment = () => {
     const [timeSlots, setTimeSlots] = useState([]);
@@ -20,6 +24,11 @@ const ShiftSegment = () => {
 
     const intervalOptions = [10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60];
 
+    const [isEdit, setIsEdit] = useState(false);
+    const [updatedShiftSegment, setUpdatedShiftSegment] = useState({});
+    const [idShiftSegmentDelete, setIdShiftSegmentDelete] = useState('');
+    const [isOpenDialog, setIsOpenDialog] = useState(false);
+
     useEffect(() => {
         ShiftSegmentAPI.getShiftSegments()
             .then(res => {
@@ -32,6 +41,20 @@ const ShiftSegment = () => {
 
 
     const generateTimeSlots = () => {
+
+        if (!startDate || !endDate) {
+            toast.error('Vui lòng chọn ngày bắt đầu và ngày kết thúc');
+            return;
+        }
+
+
+        // nếu ngày bắt đầu lớn hơn ngày kết thúc
+        if (new Date(startDate) > new Date(endDate)) {
+            toast.error('Ngày bắt đầu không thể lớn hơn ngày kết thúc');
+            return;
+        }
+
+
         const slots = [];
         const currentDate = new Date(startDate);
         const endDateObj = new Date(endDate);
@@ -100,6 +123,7 @@ const ShiftSegment = () => {
         ShiftSegmentAPI.deleteShiftSegment(id)
             .then(res => {
                 setTimeSlots(prevSlots => prevSlots.filter(slot => slot._id !== id));
+                setIsOpenDialog(false);
                 toast.success('Xóa ca làm việc thành công');
             })
             .catch(err => {
@@ -116,6 +140,7 @@ const ShiftSegment = () => {
                     }
                     return slot;
                 }));
+                setIsEdit(false);
                 toast.success('Cập nhật số lượng đăng ký tối đa thành công');
             })
             .catch(err => {
@@ -138,9 +163,81 @@ const ShiftSegment = () => {
     const currentItems = filteredSlots.slice(indexOfFirstItem, indexOfLastItem);
     const totalPages = Math.ceil(filteredSlots.length / itemsPerPage);
 
+
+
+    const handleEditShiftSegment = (shiftSegment) => {
+        setIsEdit(true);
+        setUpdatedShiftSegment(shiftSegment);
+    }
+
+    const handleOpenDialog = (id) => {
+        setIsOpenDialog(true);
+        setIdShiftSegmentDelete(id);
+    }
+
+    const handleClose = () => {
+        setIsEdit(false);
+    }
     return (
         <SidebarProvider>
             <DefaultLayoutAdmin>
+                <YesNoDialog
+                    isOpen={isOpenDialog}
+                    title={"Xác nhận"}
+                    message={"Bạn có chắc chắn muốn xóa ca làm việc này không?"}
+                    yesText={"Có"}
+                    noText={"Không"}
+                    onConfirm={() => handleDelete(idShiftSegmentDelete)}
+                    onCancel={() => setIsOpenDialog(false)}
+                    key={"delete-shift"}
+                />
+                <AnimatePresence>
+                    {isEdit && (
+                        <div className="edit-shift-segment-container">
+                            <motion.div className="edit-shift-segment-form"
+                                initial={{
+                                    scale: 0.3,
+                                    opacity: 0,
+                                    x: 0,
+                                    y: 0
+                                }}
+                                animate={{
+                                    scale: 1,
+                                    opacity: 1,
+                                    x: "0",
+                                    y: "0"
+                                }}
+                                exit={{
+                                    scale: 0.3,
+                                    opacity: 0
+                                }}
+                                transition={{ type: "spring", stiffness: 200, damping: 20 }}
+                            >
+                                <div className="edit-shift-segment-header">
+                                    <h3>Cập nhật số lượng</h3>
+                                    <button className="close-edit-shift-segment-btn" onClick={handleClose}>
+                                        <FontAwesomeIcon icon={faClose} />
+                                    </button>
+                                </div>
+                                <div className="edit-shift-segment-content">
+                                    <div className="edit-shift-segment-content-info">
+
+                                        <span><strong>Thời gian: </strong>{updatedShiftSegment.startTime} - {updatedShiftSegment.endTime} ngày {updatedShiftSegment.date.split('-').reverse().join('/')}</span>
+                                        <span><strong>Bác sĩ: </strong>BS. {updatedShiftSegment.shiftAssignment?.user?.firstName} {updatedShiftSegment.shiftAssignment?.user?.lastName}</span>
+                                        <span><strong>Chuyên khoa: </strong>{updatedShiftSegment.shiftAssignment?.user?.doctorInfo?.specialities[0].name}</span>
+                                        <span><strong>Số lượng đăng ký hiện tại: </strong>{updatedShiftSegment.currentRegistrations}/{updatedShiftSegment.maxRegistrations}</span>
+
+                                    </div>
+                                    <div className="edit-shift-segment-content-form">
+                                        <label>Số lượng đăng ký tối đa: <input type="number" value={updatedShiftSegment.maxRegistrations} onChange={e => setUpdatedShiftSegment({ ...updatedShiftSegment, maxRegistrations: Number(e.target.value) })} /></label>
+                                        <button onClick={() => handleUpdate(updatedShiftSegment._id, updatedShiftSegment.maxRegistrations)}>Cập nhật</button>
+                                    </div>
+                                </div>
+                            </motion.div>
+                        </div>
+                    )}
+                </AnimatePresence>
+
                 <div className="timeslot-container">
                     <div className="settings">
                         <label>Ngày bắt đầu: <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} /></label>
@@ -161,7 +258,7 @@ const ShiftSegment = () => {
                     <div className="search-bar">
                         <input
                             type="text"
-                            placeholder="Tìm kiếm theo ngày hoặc giờ..."
+                            placeholder="Tìm kiếm theo ngày, giờ, tên bác sĩ,..."
                             value={searchQuery}
                             onChange={e => setSearchQuery(e.target.value)}
                         />
@@ -181,11 +278,8 @@ const ShiftSegment = () => {
                                     </div>
                                 </div>
                                 <div className='slot-item-buttons'>
-                                    <button onClick={() => handleDelete(slot._id)} className='btn-slot-delete'>Xóa</button>
-                                    <button onClick={() => {
-                                        const newMax = prompt('Nhập số lượng đăng ký tối đa mới:', slot.maxRegistrations);
-                                        if (newMax) handleUpdate(slot._id, Number(newMax));
-                                    }} className='btn-slot-update'>Cập nhật</button>
+                                    <button onClick={() => handleOpenDialog(slot._id)} className='btn-slot-delete'>Xóa</button>
+                                    <button onClick={() => handleEditShiftSegment(slot)} className='btn-slot-update'>Cập nhật</button>
                                 </div>
                             </div>
                         ))}

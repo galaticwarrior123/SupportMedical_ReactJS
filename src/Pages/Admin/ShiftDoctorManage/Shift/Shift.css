@@ -90,10 +90,16 @@
     background-color: #FFC107;
     color: black;
 }
+.edit-btn:hover {
+    background-color: #FFA000;
+}
 
 .delete-btn {
     background-color: #F44336;
     color: white;
+}
+.delete-btn:hover {
+    background-color: #D32F2F;
 }
 
 

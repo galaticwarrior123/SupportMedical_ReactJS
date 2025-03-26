@@ -6,17 +6,17 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen, faTrash, faPlus, faSearch, faClose } from '@fortawesome/free-solid-svg-icons';
 import ShiftAPI from '../../../../API/ShiftAPI';
 import { toast } from 'react-toastify';
-import { set } from 'date-fns';
+import { motion, AnimatePresence } from 'framer-motion';
+import YesNoDialog from '../../../../Components/YesNoDialog/YesNoDialog';
 
 
 const Shift = () => {
     const [shifts, setShifts] = useState([]);
-
     const [shiftName, setShiftName] = useState('');
     const [startTime, setStartTime] = useState('');
     const [endTime, setEndTime] = useState('');
     const [isEdit, setIsEdit] = useState(false);
-
+    const [isOpenDialog, setIsOpenDialog] = useState(false);
     const [searchName, setSearchName] = useState('');
 
     useEffect(() => {
@@ -32,7 +32,7 @@ const Shift = () => {
 
     const handleAddShift = () => {
         if (!shiftName || !startTime || !endTime) {
-            alert("Vui lòng nhập đầy đủ thông tin!");
+            toast.error("Vui lòng nhập đầy đủ thông tin!");
             return;
         }
 
@@ -71,7 +71,7 @@ const Shift = () => {
 
     const handleUpdateShift = () => {
         if (!shiftNameUpdate || !startTimeUpdate || !endTimeUpdate) {
-            alert("Vui lòng nhập đầy đủ thông tin!");
+            toast.error("Vui lòng nhập đầy đủ thông tin!");
             return;
         }
 
@@ -93,53 +93,88 @@ const Shift = () => {
     }
 
     const handleDeleteShift = (id) => {
-        const isDelete = window.confirm("Bạn có chắc chắn muốn xóa ca trực này?");
-        if (isDelete) {
-            ShiftAPI.deleteShift(id)
-                .then(res => {
-                    toast.success("Xóa ca trực thành công!");
-                    setShifts(prev => prev.filter(shift => shift._id !== id));
-                })
-                .catch(err => {
-                    toast.error("Xóa ca trực thất bại!");
-                });
-        }
+        ShiftAPI.deleteShift(id)
+            .then(res => {
+                toast.success("Xóa ca trực thành công!");
+                setIsOpenDialog(false);
+                setShifts(prev => prev.filter(shift => shift._id !== id));
+            })
+            .catch(err => {
+                toast.error("Xóa ca trực thất bại!");
+            });
+
+    }
+    const [idShiftDelete, setIdShiftDelete] = useState('');
+
+    const handleOpenDialogDelete = (id) => {
+        setIsOpenDialog(true);
+        setIdShiftDelete(id);
+
     }
 
     return (
         <SidebarProvider>
             <DefaultLayoutAdmin>
-                {isEdit &&
-                    <div className="edit-shift">
-                        <div className="edit-shift-content">
-                            <div className="edit-shift-header">
-                                <h1>Sửa ca trực</h1>
-                                <button className="btn-exit-edit" onClick={() => setIsEdit(false)}>
-                                    <FontAwesomeIcon icon={faClose} />
-                                </button>
-                            </div>
+                <YesNoDialog
+                    isOpen={isOpenDialog}
+                    title={"Xác nhận"}
+                    message={"Bạn có chắc chắn muốn xóa ca làm việc này không?"}
+                    yesText={"Có"}
+                    noText={"Không"}
+                    onConfirm={() => handleDeleteShift(idShiftDelete)}
+                    onCancel={() => setIsOpenDialog(false)}
+                    key={"delete-shift"}
+                />
+                <AnimatePresence>
+                    {isEdit &&
+                        <div className="edit-shift">
+                            <motion.div className="edit-shift-content"
+                                initial={{
+                                    scale: 0.3,
+                                    opacity: 0,
+                                    x: 0,
+                                    y: 0
+                                }}
+                                animate={{
+                                    scale: 1,
+                                    opacity: 1,
+                                    x: "0",
+                                    y: "0"
+                                }}
+                                exit={{
+                                    scale: 0.3,
+                                    opacity: 0
+                                }}
+                                transition={{ type: "spring", stiffness: 200, damping: 20 }}
+                            >
+                                <div className="edit-shift-header">
+                                    <h1>Sửa ca trực</h1>
+                                    <button className="btn-exit-edit" onClick={() => setIsEdit(false)}>
+                                        <FontAwesomeIcon icon={faClose} />
+                                    </button>
+                                </div>
 
 
-                            <div className="input-group-edit-shift">
-                                <label htmlFor="shift-name">Nhập tên ca trực</label>
-                                <input type="text" id="shift-name" placeholder=" " value={shiftNameUpdate} onChange={(e) => setShiftNameUpdate(e.target.value)} />
+                                <div className="input-group-edit-shift">
+                                    <label htmlFor="shift-name">Nhập tên ca trực</label>
+                                    <input type="text" id="shift-name" placeholder=" " value={shiftNameUpdate} onChange={(e) => setShiftNameUpdate(e.target.value)} />
 
-                                <label htmlFor="start-time">Giờ bắt đầu</label>
-                                <input type="time" id="start-time" placeholder=" " value={startTimeUpdate} onChange={(e) => setStartTimeUpdate(e.target.value)} />
+                                    <label htmlFor="start-time">Giờ bắt đầu</label>
+                                    <input type="time" id="start-time" placeholder=" " value={startTimeUpdate} onChange={(e) => setStartTimeUpdate(e.target.value)} />
 
-                                <label htmlFor="end-time">Giờ kết thúc</label>
-                                <input type="time" id="end-time" placeholder=" " value={endTimeUpdate} onChange={(e) => setEndTimeUpdate(e.target.value)} />
+                                    <label htmlFor="end-time">Giờ kết thúc</label>
+                                    <input type="time" id="end-time" placeholder=" " value={endTimeUpdate} onChange={(e) => setEndTimeUpdate(e.target.value)} />
 
 
-                                <button className="save-shift" onClick={handleUpdateShift}>
-                                    <FontAwesomeIcon icon={faPlus} /> Lưu
-                                </button>
+                                    <button className="save-shift" onClick={handleUpdateShift}>
+                                        <FontAwesomeIcon icon={faPlus} /> Lưu
+                                    </button>
 
-                            </div>
+                                </div>
+                            </motion.div>
                         </div>
-                    </div>
-                }
-
+                    }
+                </AnimatePresence>
 
                 <div className="shift">
                     <div className="shift-header">
@@ -190,7 +225,7 @@ const Shift = () => {
                                             <button className="edit-btn" onClick={() => handleEditShift(shift)}>
                                                 <FontAwesomeIcon icon={faPen} /> Sửa
                                             </button>
-                                            <button className="delete-btn" onClick={() => handleDeleteShift(shift._id)}>
+                                            <button className="delete-btn" onClick={() => handleOpenDialogDelete(shift._id)}>
                                                 <FontAwesomeIcon icon={faTrash} /> Xóa
                                             </button>
                                         </td>

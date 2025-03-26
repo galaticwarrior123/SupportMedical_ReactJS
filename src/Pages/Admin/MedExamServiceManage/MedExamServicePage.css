@@ -1,0 +1,81 @@
+.med-exam-container {
+    background: #fff3cd;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.med-exam-form {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.med-exam-form input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.add-btn {
+    background: #ff5722;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.search-box {
+    width: 300px;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.service-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+}
+
+.service-table th, .service-table td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+.service-table th {
+    background: #f0ad4e;
+    color: white;
+}
+
+.service-table tr:nth-child(even) {
+    background: #e3f2fd;
+}
+.small-col {
+    width: 15%;
+    text-align: center;
+}
+
+.wide-col {
+    width: 35%;
+}
+.edit-btn {
+    background: #ffc107;
+    color: black;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-right: 5px;
+}
+
+.delete-btn {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+}

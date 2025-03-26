@@ -24,7 +24,8 @@ const DefaultLayoutAdmin = ({ children }) => {
         '/admin/dashboard': 'Thống kê',
         '/admin/manage-schedule': 'Quản lý lịch làm việc',
         '/admin/assign-shifts': 'Phân công ca trực',
-        '/admin/time-slot': 'Quản lý khung giờ',
+        '/admin/shift-segment': 'Quản lý khung giờ',
+        '/admin/medExamService': 'Quản lý dịch vụ khám',
         // Add more paths and their corresponding names as needed
     };
 

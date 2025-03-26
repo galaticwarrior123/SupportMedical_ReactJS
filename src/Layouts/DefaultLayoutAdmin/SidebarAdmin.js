@@ -1,5 +1,5 @@
 import './SidebarAdmin.css';
-import { faList, faComments, faChartBar, faArrowLeft, faArrowRight, faUserDoctor, faShare, faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { faList, faServer, faChartBar, faArrowLeft, faArrowRight, faUserDoctor, faShare, faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useContext, useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
@@ -17,7 +17,7 @@ const SidebarAdmin = ({ onMenuClick, activeMenu }) => {
 
     useEffect(() => {
         const currentPath = location.pathname;
-        if (currentPath === '/admin/manage-schedule' || currentPath === '/admin/assign-shifts' || currentPath === '/admin/time-slot') {
+        if (currentPath === '/admin/manage-schedule' || currentPath === '/admin/assign-shifts' || currentPath === '/admin/shift-segment') {
             setShiftMenuOpen(true);
         } else {
             setShiftMenuOpen(false);
@@ -58,11 +58,11 @@ const SidebarAdmin = ({ onMenuClick, activeMenu }) => {
                     </li>
                     <li>
                         <Link
-                            to='/admin/dashboard'
-                            className={`menuItemAdmin ${activeMenu === 'Thống kê' ? 'active' : ''}`}
-                            onClick={() => onMenuClick('Thống kê')}>
-                            <FontAwesomeIcon icon={faChartBar} />
-                            <span>Thống kê</span>
+                            to='/admin/medExamService'
+                            className={`menuItemAdmin ${activeMenu === 'Quản lý dịch vụ khám' ? 'active' : ''}`}
+                            onClick={() => onMenuClick('Quản lý dịch vụ khám')}>
+                            <FontAwesomeIcon icon={faServer} />
+                            <span>Quản lý dịch vụ khám</span>
                         </Link>
                     </li>
                     <li>
@@ -93,14 +93,24 @@ const SidebarAdmin = ({ onMenuClick, activeMenu }) => {
                                 </li>
                                 <li>
                                     <Link
-                                        to='/admin/time-slot'
-                                        className={`submenuItemAdmin ${location.pathname === '/admin/time-slot' ? 'active' : ''}`}
+                                        to='/admin/shift-segment'
+                                        className={`submenuItemAdmin ${location.pathname === '/admin/shift-segment' ? 'active' : ''}`}
                                         onClick={() => onMenuClick('Phân công')}>
                                         <span>Quản lý khung giờ</span>
                                     </Link>
                                 </li>
                             </ul>
                         )}
+                    </li>
+
+                    <li>
+                        <Link
+                            to='/admin/dashboard'
+                            className={`menuItemAdmin ${activeMenu === 'Thống kê' ? 'active' : ''}`}
+                            onClick={() => onMenuClick('Thống kê')}>
+                            <FontAwesomeIcon icon={faChartBar} />
+                            <span>Thống kê</span>
+                        </Link>
                     </li>
                 </ul>
             </nav>
