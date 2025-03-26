@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import DefaultLayoutAdmin from '../../../../Layouts/DefaultLayoutAdmin/DefaultLayoutAdmin';
 import { SidebarProvider } from '../../../../Layouts/DefaultLayoutAdmin/SidebarContext';
-import './TimeSlot.css';
-import { TimeSlotAPI } from '../../../../API/TimeSlotAPI';
+import './ShiftSegment.css';
+import { ShiftSegmentAPI } from '../../../../API/ShiftSegmentAPI';
 import { toast } from 'react-toastify';
 
-const TimeSlot = () => {
+const ShiftSegment = () => {
     const [timeSlots, setTimeSlots] = useState([]);
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
@@ -21,7 +21,7 @@ const TimeSlot = () => {
     const intervalOptions = [10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60];
 
     useEffect(() => {
-        TimeSlotAPI.getAllTimeSlots()
+        ShiftSegmentAPI.getShiftSegments()
             .then(res => {
                 setTimeSlots(res.data);
             })
@@ -35,57 +35,69 @@ const TimeSlot = () => {
         const slots = [];
         const currentDate = new Date(startDate);
         const endDateObj = new Date(endDate);
-    
+
         while (currentDate <= endDateObj) {
             const [startHour, startMinute] = startTime.split(':').map(Number);
             const [endHour, endMinute] = endTime.split(':').map(Number);
+
             const currentSlotTime = new Date(currentDate);
             currentSlotTime.setHours(startHour, startMinute, 0, 0);
-    
+
             const endSlotTime = new Date(currentDate);
             endSlotTime.setHours(endHour, endMinute, 0, 0);
-    
-            while (currentSlotTime <= endSlotTime) {
-                const endTimeObj = new Date(currentSlotTime.getTime() + slotInterval * 60000); // Tính toán endTime
-    
+
+            while (currentSlotTime < endSlotTime) {
+                let endTimeObj = new Date(currentSlotTime.getTime() + slotInterval * 60000);
+
+                // Nếu endTimeObj vượt quá endSlotTime, thì giới hạn nó lại
+                if (endTimeObj > endSlotTime) {
+                    endTimeObj = new Date(endSlotTime);
+                }
+
                 const slot = {
                     id: Date.now() + Math.random(),
                     date: currentDate.toISOString().split('T')[0],
                     startTime: currentSlotTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false }),
-                    endTime: endTimeObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false }), // Định dạng 24h
+                    endTime: endTimeObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false }),
                     maxRegistrations,
                 };
+
                 slots.push(slot);
+
+                // Kiểm tra nếu endTimeObj đã đạt hoặc vượt quá endSlotTime thì dừng
+                if (endTimeObj >= endSlotTime) break;
+
                 currentSlotTime.setMinutes(currentSlotTime.getMinutes() + slotInterval);
             }
-    
+
             currentDate.setDate(currentDate.getDate() + 1);
         }
-    
+
         const data = slots.map(slot => ({
             startTime: slot.startTime,
             endTime: slot.endTime,
             date: slot.date,
             maxRegistrations: slot.maxRegistrations
         }));
-    
-        TimeSlotAPI.createTimeSlot(data)
+
+        ShiftSegmentAPI.createShiftSegment(data)
             .then(res => {
-                setTimeSlots(res.data);
+                setTimeSlots(prevSlots => [...prevSlots, ...res.data]);
                 setStartDate('');
                 setEndDate('');
                 setStartTime('08:00');
                 setEndTime('17:00');
                 setCurrentPage(1);
                 toast.success('Tạo ca làm việc thành công');
-            }).catch(err => {
+            })
+            .catch(err => {
                 toast.error('Có lỗi xảy ra khi tạo ca làm việc');
             });
     };
-    
+
 
     const handleDelete = (id) => {
-        TimeSlotAPI.deleteTimeSlot(id)
+        ShiftSegmentAPI.deleteShiftSegment(id)
             .then(res => {
                 setTimeSlots(prevSlots => prevSlots.filter(slot => slot._id !== id));
                 toast.success('Xóa ca làm việc thành công');
@@ -95,15 +107,8 @@ const TimeSlot = () => {
             });
     };
 
-    const handleUpdate = (id, newMaxRegistrations,slot) => {
-        console.log(id, newMaxRegistrations,slot);
-
-        TimeSlotAPI.updateTimeSlot(id, {
-            startTime: slot.startTime,
-            endTime: slot.endTime,
-            date: slot.date,
-            maxRegistrations: newMaxRegistrations
-        })
+    const handleUpdate = (id, newMaxRegistrations) => {
+        ShiftSegmentAPI.updateMaxRegistrations(id, newMaxRegistrations)
             .then(res => {
                 setTimeSlots(prevSlots => prevSlots.map(slot => {
                     if (slot._id === id) {
@@ -122,7 +127,10 @@ const TimeSlot = () => {
     const filteredSlots = timeSlots.filter(slot =>
         (slot.date && slot.date.includes(searchQuery)) ||
         (slot.startTime && slot.startTime.includes(searchQuery)) ||
-        (slot.endTime && slot.endTime.includes(searchQuery))
+        (slot.endTime && slot.endTime.includes(searchQuery)) ||
+        (slot.shiftAssignment?.user?.firstName && slot.shiftAssignment?.user?.firstName.includes(searchQuery)) ||
+        (slot.shiftAssignment?.user?.lastName && slot.shiftAssignment?.user?.lastName.includes(searchQuery)) ||
+        (slot.shiftAssignment?.user?.doctorInfo?.specialities[0].name && slot.shiftAssignment?.user?.doctorInfo?.specialities[0].name.includes(searchQuery))
     );
 
     const indexOfLastItem = currentPage * itemsPerPage;
@@ -162,13 +170,21 @@ const TimeSlot = () => {
                     <div className="slot-list">
                         {currentItems.map(slot => (
                             <div key={slot._id} className="slot-item">
-                                <span>{slot.date} - {slot.startTime} - {slot.endTime}</span>
-                                <span>Số lượng đăng ký tối đa: {slot.maxRegistrations}</span>
+                                <div className='slot-item-top'>
+                                    <div className='slot-item-top-left'>
+                                        <span><strong>Thời gian: </strong>{slot.startTime} - {slot.endTime} ngày {slot.date.split('-').reverse().join('/')}</span>
+                                        <span><strong>Bác sĩ: </strong>BS. {slot.shiftAssignment?.user?.firstName} {slot.shiftAssignment?.user?.lastName}</span>
+                                        <span><strong>Chuyên khoa: </strong>{slot.shiftAssignment?.user?.doctorInfo?.specialities[0].name}</span>
+                                    </div>
+                                    <div className='slot-item-top-right'>
+                                        <span><strong>Số lượng đăng ký hiện tại: </strong>{slot.currentRegistrations}/{slot.maxRegistrations}</span>
+                                    </div>
+                                </div>
                                 <div className='slot-item-buttons'>
                                     <button onClick={() => handleDelete(slot._id)} className='btn-slot-delete'>Xóa</button>
                                     <button onClick={() => {
                                         const newMax = prompt('Nhập số lượng đăng ký tối đa mới:', slot.maxRegistrations);
-                                        if (newMax) handleUpdate(slot._id, Number(newMax), slot);
+                                        if (newMax) handleUpdate(slot._id, Number(newMax));
                                     }} className='btn-slot-update'>Cập nhật</button>
                                 </div>
                             </div>
@@ -186,5 +202,5 @@ const TimeSlot = () => {
     );
 };
 
-export default TimeSlot;
+export default ShiftSegment;
 

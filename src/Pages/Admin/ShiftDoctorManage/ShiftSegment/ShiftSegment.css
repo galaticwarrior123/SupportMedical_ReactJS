@@ -20,7 +20,8 @@
     font-size: 14px;
 }
 
-.settings input, .settings select {
+.settings input,
+.settings select {
     padding: 8px;
     margin-top: 5px;
     border-radius: 4px;
@@ -50,18 +51,38 @@
 
 .slot-item {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
     padding: 10px;
     background-color: white;
     border-radius: 4px;
     border: 1px solid #ddd;
 }
 
+.slot-item-top {
+    display: flex;
+    border-bottom: 2px solid #ddd;
+}
+
+.slot-item-top-left {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    line-height: 2;
+}
+.slot-item-top-right {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
 .slot-item span {
     font-size: 14px;
 }
-
+.slot-item-buttons{
+    display: flex;
+    justify-content: right;
+    margin-top: 10px;
+}
 .slot-item button {
     padding: 5px 10px;
     margin-left: 10px;
@@ -78,14 +99,14 @@
 }
 
 
-.timeslot-container-pagination{
+.timeslot-container-pagination {
     display: flex;
     justify-content: center;
     margin-top: 20px;
     align-items: center;
 }
 
-.timeslot-container-pagination button{
+.timeslot-container-pagination button {
     padding: 10px 20px;
     background-color: #007bff;
     color: white;
@@ -95,21 +116,21 @@
     transition: background-color 0.3s;
 }
 
-.timeslot-container-pagination button:hover{
+.timeslot-container-pagination button:hover {
     background-color: #0056b3;
 }
 
-.timeslot-container-pagination button:disabled{
+.timeslot-container-pagination button:disabled {
     background-color: #ccc;
     cursor: not-allowed;
 }
 
-.timeslot-container-pagination span{
+.timeslot-container-pagination span {
     margin: 0 10px;
     font-size: 16px;
 }
 
-.btn-slot-update{
+.btn-slot-update {
     padding: 5px 10px;
     background-color: #28a745 !important;
     color: white;

@@ -38,7 +38,7 @@ const SelectBankPage = () => {
             user: user._id,
             doctor: doctorSelected.doctor._id,
             recordPatient: doctorSelected.record._id,
-            timeSlot: doctorSelected.timeSlot._id,
+            shiftSegment: doctorSelected.shiftSegment._id,
             typeService: doctorSelected.selectedService,
             fee: doctorSelected.amount
         };

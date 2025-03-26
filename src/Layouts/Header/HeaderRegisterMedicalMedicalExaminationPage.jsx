@@ -89,7 +89,7 @@ const HeaderRegisterMedicalExaminationPage = () => {
                         <div className="bell-dropdown">
                             {notifications.length > 0 ? (
                                 <>
-                                    {notifications.map(notification => (
+                                    {notifications.slice(0,2).map(notification => (
                                         <div
                                             key={notification._id}
                                             className={`notification-item ${notification.isRead ? 'read' : 'unread'}`}

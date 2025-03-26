@@ -37,10 +37,10 @@ import PatientProfile from './Pages/Doctor/PatientProfile/PatientProfile';
 import SelectPaymentPage from './Pages/User/RegisterExaminationPage/ConfirmRegisterMedicalPage/SelectPaymentPage/SelectPaymentPage';
 import Schedule from './Pages/Doctor/Schedule/Schedule';
 import SelectBankPage from './Pages/User/RegisterExaminationPage/ConfirmRegisterMedicalPage/SelectBankPage/SelectBankPage';
-import TimeSlot from './Pages/Admin/ShiftDoctorManage/TimeSlot/TimeSlot';
 import PaymentSuccess from './Pages/User/RegisterExaminationPage/ConfirmRegisterMedicalPage/PaymentSuccess/PaymentSuccess';
 import MyAppointmentsPage from './Pages/User/RegisterExaminationPage/LayoutManageRecordsPage/MyAppointmentsPage/MyAppointmentsPage';
 import DetailAppointmentPage from './Pages/User/RegisterExaminationPage/LayoutManageRecordsPage/DetailAppointmentPage/DetailAppointmentPage';
+import ShiftSegment from './Pages/Admin/ShiftDoctorManage/ShiftSegment/ShiftSegment';
 const ROLES = {
   'CLIENT': 'CLIENT',
   'DOCTOR': 'DOCTOR',
@@ -95,7 +95,7 @@ function App() {
               <Route path="doctors" element={<DoctorManage />} />
               <Route path="manage-schedule" element={<Shift />} />
               <Route path="assign-shifts" element={<ShiftAssignment />} />
-              <Route path="time-slot" element={<TimeSlot />} />
+              <Route path="time-slot" element={<ShiftSegment />} />
               {/* Thêm các route khác nếu cần */}
             </Route>
           </Route>

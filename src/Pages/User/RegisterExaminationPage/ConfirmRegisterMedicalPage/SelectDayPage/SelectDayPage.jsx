@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { ShiftAssignmentAPI } from '../../../../../API/ShiftAssignmentAPI';
-import { TimeSlotAPI } from '../../../../../API/TimeSlotAPI';
+import { ShiftSegmentAPI } from '../../../../../API/ShiftSegmentAPI';
 import { toast } from 'react-toastify';
 const daysOfWeek = ['CN', 'Hai', 'Ba', 'Tư', 'Năm', 'Sáu', 'Bảy'];
 
@@ -39,7 +39,7 @@ const SelectDayPage = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const doctorSelected = location.state;
-    const [listTimeSlots, setListTimeSlots] = useState([]);
+
 
 
     useEffect(() => {
@@ -68,7 +68,7 @@ const SelectDayPage = () => {
         // Định dạng ngày dạng yyyy-mm-dd
         const date = `${year}-${(month + 1).toString().padStart(2, "0")}-${day.toString().padStart(2, "0")}`;
 
-        TimeSlotAPI.getTimeSlotsByDate(date)
+        ShiftSegmentAPI.getShiftSegmentsByDoctor(doctorSelected.doctor._id, date)
             .then(res => {
                 const fetchedTimeSlots = res.data; // Lấy danh sách khung giờ từ API
 
@@ -79,14 +79,12 @@ const SelectDayPage = () => {
                     // Lọc khung giờ theo tất cả các khoảng thời gian làm việc của bác sĩ
                     const filteredTimeSlots = fetchedTimeSlots.filter((timeSlot) => {
                         const [slotStartTime, slotEndTime] = [timeSlot.startTime, timeSlot.endTime];
-    
+
                         // Kiểm tra khung giờ có nằm trong bất kỳ khoảng thời gian làm việc nào không
                         return workingDay.some(shift =>
                             shift.startTime <= slotStartTime && shift.endTime >= slotEndTime
                         );
                     });
-    
-                    setListTimeSlots(filteredTimeSlots); // Cập nhật danh sách khung giờ đã lọc
                     setTimeSlots(filteredTimeSlots); // Hiển thị khung giờ đã lọc
                     setSelectedDay(day); // Cập nhật ngày được chọn
                     setSelectedTimeSlot(null); // Reset lựa chọn khung giờ
@@ -100,7 +98,7 @@ const SelectDayPage = () => {
     };
 
     const handleSelectTimeSlot = (timeSlot) => {
-        
+
         setSelectedTimeSlot(timeSlot);
     };
 
@@ -135,7 +133,7 @@ const SelectDayPage = () => {
 
         if (selectedDay) {
             state.date = `${year}-${(month + 1).toString().padStart(2, "0")}-${selectedDay.toString().padStart(2, "0")}`;
-            state.timeSlot = selectedTimeSlot;
+            state.shiftSegment = selectedTimeSlot;
         }
 
         navigate(path, { state });
@@ -165,9 +163,15 @@ const SelectDayPage = () => {
                                     <td
                                         key={j}
                                         className={
-                                            workingDays.some((item) => item.date === day) ? (day === selectedDay ? 'selected' : 'available') : 'disabled'
+                                            day && new Date(year, month, day) < today
+                                                ? 'disabled' // Ngày làm việc đã qua
+                                                : workingDays.some((item) => item.date === day)
+                                                    ? day === selectedDay
+                                                        ? 'selected'
+                                                        : 'available'
+                                                    : 'disabled'
                                         }
-                                        onClick={() => handleSelectDay(day)}
+                                        onClick={() => new Date(year, month, day) >= today && handleSelectDay(day)}
                                     >
                                         {day && <span>{day}</span>}
                                     </td>
@@ -186,10 +190,11 @@ const SelectDayPage = () => {
                                     {row.map((slot, index) => (
                                         <button
                                             key={index}
-                                            className={slot === selectedTimeSlot ? 'time-slot selected' : 'time-slot'}
-                                            onClick={() => handleSelectTimeSlot(slot)}
+                                            className={`time-slot ${slot.isFull ===true ? 'disabled' : ''} ${slot === selectedTimeSlot ? 'selected' : ''}`}
+                                            onClick={() => !slot.isFull && handleSelectTimeSlot(slot)}
+                                            disabled={slot.isFull}
                                         >
-                                            {`${slot.startTime} - ${slot.endTime}`}
+                                            {`${slot.startTime} - ${slot.endTime}`} 
                                         </button>
                                     ))}
                                 </div>

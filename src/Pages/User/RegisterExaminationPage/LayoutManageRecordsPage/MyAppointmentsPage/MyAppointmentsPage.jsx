@@ -54,7 +54,7 @@ const MyAppointmentsPage = () => {
                                 <p><FontAwesomeIcon icon={faUser} className="icon" /> <strong>Họ và tên:</strong> <span>{appointment.recordPatient.name}</span></p>
                                 <p><FontAwesomeIcon icon={faStethoscope} className="icon" /> <strong>Chuyên khoa khám:</strong> <span>{appointment.doctor.doctorInfo.specialities[0].name}</span></p>
                                 <p><FontAwesomeIcon icon={faUserMd} className="icon" /> <strong>Bác sĩ phụ trách:</strong> <span>BS. {appointment.doctor.firstName} {appointment.doctor.lastName}</span></p>
-                                <p><FontAwesomeIcon icon={faClock} className="icon" /> <strong>Thời gian:</strong> <span>{appointment.timeSlot.startTime}-{appointment.timeSlot.endTime} ngày {appointment.timeSlot.date.split('-').reverse().join('/')}</span></p>
+                                <p><FontAwesomeIcon icon={faClock} className="icon" /> <strong>Thời gian:</strong> <span>{appointment.shiftSegment.startTime}-{appointment.shiftSegment.endTime} ngày {appointment.shiftSegment.date.split('-').reverse().join('/')}</span></p>
                             </div>
                             <div className="appointment-card-buttons">
                                 <button className="btn-cancel-appointment" onClick={() => handleCancleAppointment(appointment._id)}> Hủy lịch hẹn</button>
@@ -100,7 +100,7 @@ const MyAppointmentsPage = () => {
                                         <p><strong>Chuyên khoa:</strong> {selectedAppointment.doctor.doctorInfo.specialities[0].name}</p>
                                         <p><strong>Dịch vụ:</strong> Đặt lịch hẹn khám</p>
                                         <p><strong>Bác sĩ:</strong> BS. {selectedAppointment.doctor.firstName} {selectedAppointment.doctor.lastName}</p>
-                                        <p><strong>Thời gian khám:</strong> {selectedAppointment.timeSlot.startTime}-{selectedAppointment.timeSlot.endTime} ngày {selectedAppointment.timeSlot.date.split('-').reverse().join('/')}</p>
+                                        <p><strong>Thời gian khám:</strong> {selectedAppointment.shiftSegment.startTime}-{selectedAppointment.shiftSegment.endTime} ngày {selectedAppointment.shiftSegment.date.split('-').reverse().join('/')}</p>
                                         <p><strong>Tiền khám:</strong> {selectedAppointment.fee.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ</p>
                                     </div>
                                     <div className="modal-appointment-patient-info">

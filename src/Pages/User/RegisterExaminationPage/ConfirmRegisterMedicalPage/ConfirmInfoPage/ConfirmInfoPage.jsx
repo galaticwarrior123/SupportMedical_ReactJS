@@ -48,7 +48,7 @@ const ConfirmInfoPage = () => {
                                 <td>{doctorSelected.doctor.doctorInfo.specialities[0].name}</td>
                                 <td>{checkService()}</td>
                                 <td>BS. {doctorSelected.doctor.firstName} {doctorSelected.doctor.lastName}</td>
-                                <td><strong>{doctorSelected.timeSlot.startTime}-{doctorSelected.timeSlot.endTime}</strong> ngày {doctorSelected.date.split('-').reverse().join('/')}</td>
+                                <td><strong>{doctorSelected.shiftSegment.startTime}-{doctorSelected.shiftSegment.endTime}</strong> ngày {doctorSelected.date.split('-').reverse().join('/')}</td>
                                 <td><strong>{doctorSelected.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ</strong></td>
                                 <td><button className="delete-button-confirm"><FontAwesomeIcon icon={faTrash} /></button></td>
                             </tr>
