@@ -271,3 +271,24 @@
     background-color: #ddd;
 }
 
+.shift-table-button {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.delete-changed{
+    background-color: rgb(229, 96, 19);
+    color: white;
+    font-size: 1rem;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.delete-changed:hover{
+    background-color: rgb(204, 85, 19);
+}

@@ -12,6 +12,7 @@ import { toast } from "react-toastify";
 import { motion, AnimatePresence } from 'framer-motion';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+
 const ShiftAssignment = () => {
     const [month, setMonth] = useState(new Date().getMonth() + 1);
     const [year, setYear] = useState(new Date().getFullYear());
@@ -29,6 +30,7 @@ const ShiftAssignment = () => {
     const [numberOfWorkingDoctors, setNumberOfWorkingDoctors] = useState(1);
     const [assignmentsData, setAssignmentsData] = useState({});
 
+
     const [isOpenDialog, setIsOpenDialog] = useState(false);
 
     const today = new Date();
@@ -39,14 +41,15 @@ const ShiftAssignment = () => {
 
     useEffect(() => {
         const key = `${year}-${month}`;
-
-        if (assignmentsData[key]) {
-            // Nếu đã có dữ liệu cho tháng và năm này, chỉ cần hiển thị lại
-            setAssignments(assignmentsData[key]);
+    
+        if (assignmentsData[key]?.[selectedSpecialty]) {
+            // Nếu đã có dữ liệu, hiển thị lại
+            setAssignments(assignmentsData[key][selectedSpecialty]);
         } else {
             ShiftAssignmentAPI.getShiftAssignments({
                 startDate: `${year}-${month.toString().padStart(2, "0")}-01`,
-                endDate: `${year}-${month.toString().padStart(2, "0")}-31`
+                endDate: `${year}-${month.toString().padStart(2, "0")}-31`,
+                specialtyId: selectedSpecialty 
             })
                 .then((res) => {
                     const newAssignments = {};
@@ -54,28 +57,26 @@ const ShiftAssignment = () => {
                         const day = new Date(assignment.date).getDate();
                         const key = `${day}-${assignment.shift.name}`;
                         if (!newAssignments[key]) {
-                            newAssignments[key] = []; // Nếu chưa tồn tại, khởi tạo mảng rỗng
+                            newAssignments[key] = [];
                         }
-
-                        // Thêm ID người dùng vào mảng của key hiện tại
                         newAssignments[key].push(assignment.user._id);
-
                     });
-
-                    // Lưu dữ liệu mới vào state tổng
-                    setAssignmentsData((prev) => ({
+    
+                    setAssignmentsData(prev => ({
                         ...prev,
-                        [key]: newAssignments
+                        [key]: {
+                            ...(prev[key] || {}), // Giữ lại dữ liệu cũ của tháng khác
+                            [selectedSpecialty]: newAssignments
+                        }
                     }));
-
-
+    
                     setAssignments(newAssignments);
                 })
                 .catch(() => {
                     toast.error("Lấy dữ liệu ca trực thất bại!");
                 });
         }
-    }, [month, year]);
+    }, [month, year, selectedSpecialty]);
 
 
     useEffect(() => {
@@ -128,10 +129,6 @@ const ShiftAssignment = () => {
 
     const autoAssignShifts = () => {
         const MAX_EMPLOYEES_PER_SHIFT = Number(numberOfWorkingDoctors);
-        const currentDate = new Date();
-        const currentDay = currentDate.getDate();
-        const currentMonth = currentDate.getMonth() + 1;
-        const currentYear = currentDate.getFullYear();
         const key = `${year}-${month}`;
     
         if (filteredDoctors.length === 0) {
@@ -139,55 +136,54 @@ const ShiftAssignment = () => {
             return;
         }
     
-        // Lấy dữ liệu cũ của tháng để giữ lại các khoa khác
-        const existingAssignments = assignmentsData[key] || {};
-        const newAssignments = { ...existingAssignments }; // Sao chép để không ảnh hưởng đến state gốc
+        // Lấy dữ liệu cũ của tháng và chuyên khoa hiện tại
+        let newAssignments = { ...assignmentsData[key]?.[selectedSpecialty] } || {};
     
         days.forEach((day) => {
-            if (
-                (year < currentYear) ||
-                (year === currentYear && month < currentMonth) ||
-                (year === currentYear && month === currentMonth && day < currentDay) ||
-                excludedDays.includes(day)
-            ) {
+            // Nếu ngày bị loại trừ, xóa toàn bộ ca của ngày đó
+            if (excludedDays.includes(day)) {
+                shifts.forEach((shift) => {
+                    delete newAssignments[`${day}-${shift.name}`];
+                });
                 return;
             }
     
             shifts.forEach((shift) => {
+                // Nếu ca bị loại trừ, xóa dữ liệu ca đó
                 if (excludedShifts.includes(shift._id)) {
+                    delete newAssignments[`${day}-${shift.name}`];
                     return;
                 }
     
                 const shiftKey = `${day}-${shift.name}`;
-                const assignedDoctors = newAssignments[shiftKey] || [];
+                let assignedDoctors = [];
     
-                const availableDoctors = filteredDoctors.filter(
-                    (doctor) =>
-                        !assignedDoctors.includes(doctor._id) &&
-                        !excludedDoctors.includes(doctor._id)
-                );
+                let availableDoctors = filteredDoctors
+                    .filter((doctor) => !excludedDoctors.includes(doctor._id)) // Loại trừ bác sĩ
+                    .sort(() => Math.random() - 0.5);
     
-                const randomDoctors = availableDoctors
-                    .sort(() => Math.random() - 0.5)
+                assignedDoctors = availableDoctors
                     .slice(0, MAX_EMPLOYEES_PER_SHIFT)
                     .map((doctor) => doctor._id);
     
-                if (randomDoctors.length > 0) {
-                    newAssignments[shiftKey] = [...assignedDoctors, ...randomDoctors];
-                }
+                newAssignments[shiftKey] = assignedDoctors;
             });
         });
     
-        // Cập nhật lại state mà vẫn giữ các dữ liệu khác trong tháng
+        // Cập nhật state assignmentsData theo cả tháng, năm và chuyên khoa
         setAssignmentsData((prev) => ({
             ...prev,
-            [key]: newAssignments
+            [key]: {
+                ...(prev[key] || {}),
+                [selectedSpecialty]: newAssignments
+            }
         }));
     
+        // Cập nhật state assignments để hiển thị ngay
         setAssignments(newAssignments);
     };
 
-
+    
     const handleChangeAssignment = (day, shift, newEmployeeId, isChecked) => {
         const key = `${day}-${shift}`;
         const currentDoctors = assignments[key] || [];
@@ -206,13 +202,17 @@ const ShiftAssignment = () => {
             updatedDoctors = currentDoctors.filter((id) => id !== newEmployeeId);
         }
 
-        setAssignmentsData({
-            ...assignmentsData,
+
+        setAssignmentsData((prev) => ({
+            ...prev,
             [`${year}-${month}`]: {
-                ...assignmentsData[`${year}-${month}`],
-                [key]: updatedDoctors
+                ...(prev[`${year}-${month}`] || {}),
+                [selectedSpecialty]: {
+                    ...(prev[`${year}-${month}`]?.[selectedSpecialty] || {}),
+                    [key]: updatedDoctors
+                }
             }
-        });
+        }));
 
         // Cập nhật trạng thái với mảng đã chỉnh sửa (có thể là mảng rỗng nếu không còn bác sĩ nào)
         setAssignments({
@@ -223,53 +223,76 @@ const ShiftAssignment = () => {
 
 
     const handleSaveAssignment = () => {
-
-        if (Object.keys(assignments).length === 0) {
-            toast.info("Không có ca trực nào để lưu!");
+        const today = new Date();
+        const todayString = `${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2, "0")}-${today.getDate().toString().padStart(2, "0")}`;
+        
+        let allShiftAssignments = [];
+        let updatedAssignmentsData = { ...assignmentsData };
+    
+        Object.keys(assignmentsData).forEach((monthYearKey) => {
+            Object.keys(assignmentsData[monthYearKey]).forEach((specialtyId) => {
+                const assignmentsForSpecialty = assignmentsData[monthYearKey][specialtyId];
+                
+                Object.entries(assignmentsForSpecialty).forEach(([shiftKey, doctorIds]) => {
+                    const [day, shiftName] = shiftKey.split("-");
+                    const [assignYear, assignMonth] = monthYearKey.split("-");
+                    const assignmentDate = `${assignYear}-${assignMonth.padStart(2, "0")}-${day.padStart(2, "0")}`;
+                    
+                    if (assignmentDate >= todayString) {
+                        const filteredDoctorIds = doctorIds.filter(doctorId =>
+                            listDoctor.find(doc => doc._id === doctorId)?.doctorInfo.specialities[0]._id === specialtyId
+                        );
+    
+                        if (filteredDoctorIds.length > 0) {
+                            allShiftAssignments.push(...filteredDoctorIds.map(doctorId => ({
+                                date: assignmentDate,
+                                shiftId: shifts.find(s => s.name === shiftName)._id,
+                                doctorId
+                            })));
+                        }
+                    }
+                });
+            });
+        });
+    
+        if (allShiftAssignments.length === 0) {
+            toast.info("Không có ca trực hợp lệ để lưu.");
             return;
         }
-
-        const shiftAssignments = Object.entries(assignments).flatMap(([key, doctorIds]) => {
-            const [day, shift] = key.split("-");
-            return doctorIds.map(doctorId => ({
-                date: `${year}-${month.toString().padStart(2, "0")}-${day.toString().padStart(2, "0")}`,
-                shiftId: shifts.find((s) => s.name === shift)._id,
-                doctorId
-            }));
-        });
-
-        ShiftAssignmentAPI.createShiftAssignment(shiftAssignments)
+    
+        ShiftAssignmentAPI.createShiftAssignment(allShiftAssignments)
             .then(() => {
+                setAssignmentsData(updatedAssignmentsData);
                 toast.success("Lưu ca trực thành công!");
-
-                setAssignmentsData({
-                    ...assignmentsData,
-                    [`${year}-${month}`]: assignments
-                });
-
             })
             .catch(() => {
                 toast.error("Lưu ca trực thất bại!");
             });
     };
-
+    
     const handleDeleteAssignment = () => {
-
-        const today = new Date(); // Lấy ngày hiện tại
+        const today = new Date();
         const todayString = `${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2, "0")}-${today.getDate().toString().padStart(2, "0")}`;
+        const key = `${year}-${month}`;
 
-        const shiftAssignments = Object.entries(assignments).flatMap(([key, doctorIds]) => {
-            const [day, shift] = key.split("-");
+        const newAssignments = { ...assignments }; // Sao chép state để không ảnh hưởng trực tiếp
+
+        const shiftAssignments = Object.entries(assignments).flatMap(([shiftKey, doctorIds]) => {
+            const [day, shift] = shiftKey.split("-");
             const assignmentDate = `${year}-${month.toString().padStart(2, "0")}-${day.toString().padStart(2, "0")}`;
 
-            // Chỉ lấy các bác sĩ thuộc chuyên khoa đã chọn và ngày không trước ngày hiện tại
             if (assignmentDate < todayString) {
-                return []; // Bỏ qua nếu ngày nhỏ hơn ngày hiện tại
+                return [];
             }
 
             const filteredDoctorIds = doctorIds.filter(doctorId =>
                 listDoctor.find(doc => doc._id === doctorId)?.doctorInfo.specialities[0]._id === selectedSpecialty
             );
+
+            if (filteredDoctorIds.length > 0) {
+                // Chỉ xóa bác sĩ thuộc chuyên khoa đang chọn
+                newAssignments[shiftKey] = newAssignments[shiftKey].filter(id => !filteredDoctorIds.includes(id));
+            }
 
             return filteredDoctorIds.map(doctorId => ({
                 date: assignmentDate,
@@ -285,7 +308,12 @@ const ShiftAssignment = () => {
 
         ShiftAssignmentAPI.deleteShiftAssignment(shiftAssignments)
             .then(() => {
-                setAssignments({});
+                // Cập nhật state, chỉ xóa ca của chuyên khoa đang chọn, giữ nguyên các chuyên khoa khác
+                setAssignments(newAssignments);
+                setAssignmentsData(prev => ({
+                    ...prev,
+                    [key]: newAssignments
+                }));
                 setIsOpenDialog(false);
                 setNumberOfWorkingDoctors(1);
                 toast.success("Xóa ca trực thành công!");
@@ -295,40 +323,6 @@ const ShiftAssignment = () => {
                 setNumberOfWorkingDoctors(1);
                 toast.error("Xóa ca trực thất bại!");
             });
-
-    }
-
-    const handleDeleteRecording = () => {
-        const key = `${year}-${month}`;
-    
-        if (!assignmentsData[key]) return;
-    
-        // Sao chép dữ liệu của tháng-năm đang xử lý
-        const newAssignments = { ...assignmentsData[key] };
-    
-        // Duyệt qua từng ngày - ca trực và chỉ xóa bác sĩ thuộc chuyên khoa đã chọn
-        Object.keys(newAssignments).forEach(dayShift => {
-            newAssignments[dayShift] = newAssignments[dayShift].filter(
-                doctorId => !(listDoctor.some(doc => doc._id === doctorId && doc.doctorInfo.specialities[0]._id === selectedSpecialty))
-            );
-    
-            // Nếu ca trực đó không còn bác sĩ nào thì xóa luôn
-            if (newAssignments[dayShift].length === 0) {
-                delete newAssignments[dayShift];
-            }
-        });
-    
-        // Nếu sau khi lọc mà tháng-năm này không còn ca trực nào thì xóa luôn key đó
-        const updatedAssignmentsData = { ...assignmentsData };
-        if (Object.keys(newAssignments).length === 0) {
-            delete updatedAssignmentsData[key];
-        } else {
-            updatedAssignmentsData[key] = newAssignments;
-        }
-    
-        // Cập nhật state
-        setAssignmentsData(updatedAssignmentsData);
-        setAssignments(newAssignments);
     };
 
 
@@ -414,7 +408,6 @@ const ShiftAssignment = () => {
                         </label>
                         <div className="buttons">
                             <button className="btn delete" onClick={() => setIsOpenDialog(true)}>Xóa tất cả</button>
-                            <button className="btn delete-recording" onClick={handleDeleteRecording}>Xóa bản ghi</button>
                             <button className="btn save" onClick={handleSaveAssignment}>Lưu</button>
                         </div>
                     </div>
@@ -480,7 +473,6 @@ const ShiftAssignment = () => {
                             <button className="btn auto" onClick={autoAssignShifts}>Phân công tự động</button>
                         </div>
                     </div>
-
 
                     {/* Hiển thị lịch trực theo nhóm 4 ngày */}
                     {days.length > 0 && days.map((_, index) => index % 4 === 0 && (
