@@ -42,6 +42,7 @@ import MyAppointmentsPage from './Pages/User/RegisterExaminationPage/LayoutManag
 import DetailAppointmentPage from './Pages/User/RegisterExaminationPage/LayoutManageRecordsPage/DetailAppointmentPage/DetailAppointmentPage';
 import ShiftSegment from './Pages/Admin/ShiftDoctorManage/ShiftSegment/ShiftSegment';
 import MedExamServicePage from './Pages/Admin/MedExamServiceManage/MedExamServicePage';
+import ShiftChange from './Pages/Admin/ShiftDoctorManage/ShiftChange/ShiftChange';
 const ROLES = {
   'CLIENT': 'CLIENT',
   'DOCTOR': 'DOCTOR',
@@ -95,6 +96,7 @@ function App() {
               <Route path="assign-shifts" element={<ShiftAssignment />} />
               <Route path="shift-segment" element={<ShiftSegment />} />
               <Route path="medExamService" element={<MedExamServicePage />} />
+              <Route path='shift-change' element={<ShiftChange />} />
               {/* Thêm các route khác nếu cần */}
             </Route>
           </Route>

@@ -1,0 +1,147 @@
+.shift-change-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+}
+.shift-change-container h2{
+    text-align: center;
+}
+.shift-change-table th, .shift-change-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+.shift-change-table th {
+    background-color: #007bff;
+    color: white;
+}
+
+/* Điều chỉnh kích thước cột */
+.shift-change-table th:nth-child(6), 
+.shift-change-table td:nth-child(6) {
+    width: 30%; /* Ô Lý do lớn nhất */
+    text-align: center;
+    padding-left: 15px;
+}
+
+.shift-change-table th:nth-child(5), 
+.shift-change-table td:nth-child(5) {
+    width: 10%; /* Ô Thao tác nhỏ nhất */
+    text-align: center;
+}
+
+
+
+.approve-btn, .reject-btn {
+    padding: 6px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+    margin: 0 3px;
+}
+
+.approve-btn {
+    background-color: #28a745;
+    color: white;
+}
+.approve-btn:hover {
+    background-color: #218838;
+}
+
+.reject-btn {
+    background-color: #dc3545;
+    color: white;
+}
+.reject-btn:hover {
+    background-color: #c82333;
+}
+
+.no-data {
+    text-align: center;
+    padding: 15px;
+    font-weight: bold;
+}
+
+
+
+.reject-modal{
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.reject-modal-content{
+    width: 30%;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.reject-modal-content h2{
+    text-align: center;
+    margin:0;
+}
+.reject-modal-content textarea {
+    width: 100%; /* Chiếm toàn bộ chiều rộng modal */
+    height: 100px; /* Đặt chiều cao phù hợp */
+    border-radius: 5px;
+    padding: 10px;
+    resize: none; /* Không cho phép thay đổi kích thước */
+    font-family: 'Arial', sans-serif;
+    font-size: 14px;
+    box-sizing: border-box; /* Đảm bảo padding không làm tăng kích thước */
+    border: 1px solid #ccc; /* Viền nhẹ để rõ ràng hơn */
+    outline: none;
+    margin-top: 10px;
+}
+
+.reject-modal-content textarea:focus {
+    border-color: #1251e1; /* Viền xanh khi focus */
+    box-shadow: 0 0 5px rgba(18, 81, 225, 0.5);
+}
+
+.reject-modal-actions{
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.reject-modal-actions button{
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+    margin: 0 3px;
+}
+
+.btn-cancel-reject{
+    background-color: #6c757d;
+    color: white;
+}
+
+.btn-cancel-reject:hover{
+    background-color: #5a6268;
+}
+
+.btn-confirm-reject{
+    background-color: #1251e1;
+    color: white;
+}
+
+.btn-confirm-reject:hover{
+    background-color: #0d42c2;
+}

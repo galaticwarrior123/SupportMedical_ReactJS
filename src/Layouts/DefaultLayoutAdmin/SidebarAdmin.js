@@ -17,7 +17,7 @@ const SidebarAdmin = ({ onMenuClick, activeMenu }) => {
 
     useEffect(() => {
         const currentPath = location.pathname;
-        if (currentPath === '/admin/manage-schedule' || currentPath === '/admin/assign-shifts' || currentPath === '/admin/shift-segment') {
+        if (currentPath === '/admin/manage-schedule' || currentPath === '/admin/assign-shifts' || currentPath === '/admin/shift-segment' || currentPath === '/admin/shift-change') {
             setShiftMenuOpen(true);
         } else {
             setShiftMenuOpen(false);
@@ -87,15 +87,23 @@ const SidebarAdmin = ({ onMenuClick, activeMenu }) => {
                                     <Link
                                         to='/admin/assign-shifts'
                                         className={`submenuItemAdmin ${location.pathname === '/admin/assign-shifts' ? 'active' : ''}`}
-                                        onClick={() => onMenuClick('Phân công')}>
+                                        onClick={() => onMenuClick('Phân công ca trực')}>
                                         <span>Phân công ca trực </span>
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link
+                                        to='/admin/shift-change'
+                                        className={`submenuItemAdmin ${location.pathname === '/admin/shift-change' ? 'active' : ''}`}
+                                        onClick={() => onMenuClick('Thay đổi ca trực')}>
+                                        <span>Thay đổi ca trực</span>
                                     </Link>
                                 </li>
                                 <li>
                                     <Link
                                         to='/admin/shift-segment'
                                         className={`submenuItemAdmin ${location.pathname === '/admin/shift-segment' ? 'active' : ''}`}
-                                        onClick={() => onMenuClick('Phân công')}>
+                                        onClick={() => onMenuClick('Quản lý khung giờ')}>
                                         <span>Quản lý khung giờ</span>
                                     </Link>
                                 </li>
