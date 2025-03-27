@@ -30,7 +30,7 @@ const SelectBankPage = () => {
 
     const handleBankClick = (bankCode) => {
         const payment = {
-            amount: doctorSelected.amount,
+            amount: doctorSelected.medExamService.fee,
             bankCode: bankCode,
         };
 
@@ -39,8 +39,8 @@ const SelectBankPage = () => {
             doctor: doctorSelected.doctor._id,
             recordPatient: doctorSelected.record._id,
             shiftSegment: doctorSelected.shiftSegment._id,
-            typeService: doctorSelected.selectedService,
-            fee: doctorSelected.amount
+            medExamService: doctorSelected.medExamService._id,
+            fee: doctorSelected.medExamService.fee,
         };
 
         // Nếu tạo đăng ký khám thành công thì gọi tiếp API thanh toán

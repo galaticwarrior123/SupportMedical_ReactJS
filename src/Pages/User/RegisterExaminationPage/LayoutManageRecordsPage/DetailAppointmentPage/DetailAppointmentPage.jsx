@@ -20,18 +20,6 @@ const DetailAppointmentPage = () => {
         });
     }, [resultId]);
 
-
-    const checkTypeService = (typeService) => {
-        if (typeService === 'appointment') {
-            return 'Khám bệnh';
-        } else if (typeService === 'directExamination') {
-            return 'Khám trực tiếp';
-        }
-        return 'Khám định kỳ';
-    }
-
-
-
     return (
         <DefaultLayoutRegisterMedicalExaminationPage>
             <div className="layout-detail-my-appointment-page-container">
@@ -43,7 +31,7 @@ const DetailAppointmentPage = () => {
                         <div className="detail-my-appointment-page-box">
                             <h3>Thông tin lịch khám</h3>
                             <p><strong>Chuyên khoa:</strong> {result.doctor?.doctorInfo?.specialities[0].name}</p>
-                            <p><strong>Dịch vụ:</strong> {checkTypeService(result.typeService)}</p>
+                            <p><strong>Dịch vụ:</strong> {result.medExamService?.name}</p>
                             <p><strong>Bác sĩ:</strong>BS. {result.doctor?.firstName} {result.doctor?.lastName}</p>
                             <p><strong>Thời gian khám:</strong> {result.shiftSegment?.startTime} - {result.shiftSegment?.endTime} ngày {result.timeSlot?.date.split('-').reverse().join('-')}</p>
                             <p><strong>Tiền khám:</strong> {result.fee?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")} đ</p>

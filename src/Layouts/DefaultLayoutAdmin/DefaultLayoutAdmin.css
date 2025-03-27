@@ -89,4 +89,5 @@
 .contentAdmin {
     margin-top: 50px;
     padding: 20px;
+    min-height: 100vh;
 }

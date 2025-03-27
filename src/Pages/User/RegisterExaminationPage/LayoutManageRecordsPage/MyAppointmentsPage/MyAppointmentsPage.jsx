@@ -98,7 +98,7 @@ const MyAppointmentsPage = () => {
                                     <div className="modal-appointment-info">
                                         <h4>Thông tin lịch khám</h4>
                                         <p><strong>Chuyên khoa:</strong> {selectedAppointment.doctor.doctorInfo.specialities[0].name}</p>
-                                        <p><strong>Dịch vụ:</strong> Đặt lịch hẹn khám</p>
+                                        <p><strong>Dịch vụ:</strong> {selectedAppointment.medExamService.name}</p>
                                         <p><strong>Bác sĩ:</strong> BS. {selectedAppointment.doctor.firstName} {selectedAppointment.doctor.lastName}</p>
                                         <p><strong>Thời gian khám:</strong> {selectedAppointment.shiftSegment.startTime}-{selectedAppointment.shiftSegment.endTime} ngày {selectedAppointment.shiftSegment.date.split('-').reverse().join('/')}</p>
                                         <p><strong>Tiền khám:</strong> {selectedAppointment.fee.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ</p>

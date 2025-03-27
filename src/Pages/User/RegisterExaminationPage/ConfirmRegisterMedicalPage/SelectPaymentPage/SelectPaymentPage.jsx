@@ -75,7 +75,7 @@ const SelectPaymentPage = () => {
                                     <div className="info-left">
                                         <FontAwesomeIcon icon={faClinicMedical} /> <span>Dịch vụ:</span>
                                     </div>
-                                    <div className="info-right">Khám dịch vụ</div>
+                                    <div className="info-right">{doctorSelected.medExamService.name}</div>
                                 </div>
                                 <div>
                                     <div className="info-left">
@@ -94,10 +94,10 @@ const SelectPaymentPage = () => {
                                     <div className="info-left">
                                         <span>Tiền khám:</span>
                                     </div>
-                                    <div className="info-right" style={{ color: '#00C2FF', fontWeight: 'bold' }}>150.000 đ</div>
+                                    <div className="info-right" style={{ color: '#00C2FF', fontWeight: 'bold' }}>{doctorSelected.medExamService.fee.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} đ</div>
                                 </div>
                             </div>
-                            <div className="total-amount">Tổng cộng: <span style={{ color: '#00C2FF', fontWeight: 'bold' }}>150.000 đ</span></div>
+                            <div className="total-amount">Tổng cộng: <span style={{ color: '#00C2FF', fontWeight: 'bold' }}>{doctorSelected.medExamService.fee.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} đ</span></div>
                             <div className="total-amount-action">
                                 <button disabled={!selectedPayment} onClick={handlePayment}>Thanh toán</button>
                             </div>

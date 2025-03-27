@@ -1,11 +1,12 @@
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import DefaultLayoutRegisterMedicalExaminationPage from '../../../../../Layouts/DefaultLayoutRegisterMedicalExaminationPage/DefaultLayoutRegisterMedicalExaminationPage';
 import ConfirmRegisterMedicalPage from '../ConfirmRegisterMedicalPage';
 import './SelectServicePage.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
-
+import { MedExamServiceAPI } from '../../../../../API/MedExamServiceAPI';
+import { toast } from 'react-toastify';
 const typesOfService = {
     directExamination: 'directExamination',
     appointment: 'appointment',
@@ -17,7 +18,18 @@ const SelectServicePage = () => {
     const location = useLocation();
     const doctorSelected = location.state;
 
+    const [services, setServices] = useState([]);
     const [selectedService, setSelectedService] = useState(null);
+
+    useEffect(() => {
+        MedExamServiceAPI.getMedExamServices()
+            .then((response) => {
+                setServices(response.data);
+            })
+            .catch((error) => {
+                toast.error('Lỗi khi lấy dữ liệu dịch vụ khám bệnh!');
+            });
+    }, []);
 
     const handleSelectService = (serviceType) => {
         setSelectedService(serviceType);
@@ -31,8 +43,7 @@ const SelectServicePage = () => {
 
         const state = {
             ...doctorSelected,
-            amount: 150000,
-            selectedService: selectedService
+            medExamService: services.find((service) => service._id === selectedService),
         };
 
         navigate(path, { state: state });
@@ -52,7 +63,26 @@ const SelectServicePage = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
+                        {services.length > 0 ? services.map((service, index) => (
+                            <tr key={service._id}>
+                                <td>{index + 1}</td>
+                                <td>{service.name}</td>
+                                <td>{service.fee.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}đ</td>
+                                <td>
+                                    <input
+                                        type="radio"
+                                        name="service"
+                                        onChange={() => handleSelectService(service._id)}
+                                        checked={selectedService === service._id}
+                                    />
+                                </td>
+                            </tr>
+                        )) : (
+                            <tr>
+                                <td colSpan="4">Không có dữ liệu dịch vụ khám bệnh</td>
+                            </tr>
+                        )}
+                        {/* <tr>
                             <td>1</td>
                             <td>Đặt khám trực tiếp bác sĩ</td>
                             <td>150.000đ</td>
@@ -90,7 +120,7 @@ const SelectServicePage = () => {
                                     checked={selectedService === typesOfService.regularCheckup}
                                 />
                             </td>
-                        </tr>
+                        </tr> */}
                     </tbody>
                 </table>
                 <div className='btn-book-service'>

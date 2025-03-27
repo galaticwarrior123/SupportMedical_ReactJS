@@ -7,48 +7,6 @@ import { useEffect, useState } from 'react';
 import { RecordPatientAPI } from '../../../../../API/RecordPatientAPI';
 import { toast } from 'react-toastify';
 
-// const records = [
-//     {
-//         name: "Nguyễn Văn A",
-//         dob: "01/01/2003",
-//         phone: "0823452359",
-//         gender: "Nam",
-//         address: "Số 1, Võ Văn Ngân, Thành phố Thủ Đức, Thành phố Hồ Chí Minh"
-//     },
-//     {
-//         name: "Nguyễn Văn B",
-//         dob: "01/02/2003",
-//         phone: "0823452559",
-//         gender: "Nam",
-//         address: "Số 2, Võ Văn Ngân, Thành phố Thủ Đức, Thành phố Hồ Chí Minh"
-//     },
-
-//     {
-//         name: "Nguyễn Văn B",
-//         dob: "01/02/2003",
-//         phone: "0823452559",
-//         gender: "Nam",
-//         address: "Số 2, Võ Văn Ngân, Thành phố Thủ Đức, Thành phố Hồ Chí Minh"
-//     },
-
-
-//     {
-//         name: "Nguyễn Văn B",
-//         dob: "01/02/2003",
-//         phone: "0823452559",
-//         gender: "Nam",
-//         address: "Số 2, Võ Văn Ngân, Thành phố Thủ Đức, Thành phố Hồ Chí Minh"
-//     },
-
-//     {
-//         name: "Nguyễn Văn B",
-//         dob: "01/02/2003",
-//         phone: "0823452559",
-//         gender: "Nam",
-//         address: "Số 2, Võ Văn Ngân, Thành phố Thủ Đức, Thành phố Hồ Chí Minh"
-//     }
-// ];
-
 const SelectRecordPage = () => {
     const user = JSON.parse(localStorage.getItem('user'));
     const navigate = useNavigate();
@@ -56,6 +14,7 @@ const SelectRecordPage = () => {
     const location = useLocation();
     const doctorSelected = location.state;
     const [records, setRecords] = useState([]);
+
 
     useEffect(() => {
         RecordPatientAPI.getRecordPatientList(user._id)

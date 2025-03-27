@@ -222,22 +222,33 @@ const MedExamServicePage = () => {
 
                 <div className="med-exam-container">
                     <div className="med-exam-form">
-                        <input
-                            type="text"
-                            placeholder="Nhập tên dịch vụ"
-                            value={serviceName}
-                            onChange={(e) => setServiceName(e.target.value)}
-                        />
-                        <input
-                            type="text"
-                            placeholder="Nhập giá tiền"
-                            value={servicePrice}
-                            onChange={handlePriceChange}
-                            onKeyDown={handleKeyDown}
-                            onBlur={handlePriceBlur}
-                            onFocus={handlePriceFocus}
-                        />
-                        <button className="add-btn" onClick={handleAddService}>+ Thêm dịch vụ</button>
+                        <div className='med-exam-form-input-group'>
+                            <div style={{ position: 'relative' }}>
+                                <input
+                                    type="text"
+                                    placeholder=" "
+                                    value={serviceName}
+                                    onChange={(e) => setServiceName(e.target.value)}
+                                    id="service-name"
+                                />
+                                <label htmlFor="service-name">Nhập tên dịch vụ:</label>
+                            </div>
+
+                            <div style={{ position: 'relative' }}>
+                                <input
+                                    type="text"
+                                    placeholder=" "
+                                    value={servicePrice}
+                                    onChange={handlePriceChange}
+                                    onKeyDown={handleKeyDown}
+                                    onBlur={handlePriceBlur}
+                                    onFocus={handlePriceFocus}
+                                    id="service-price"
+                                />
+                                <label htmlFor="service-price">Nhập giá tiền:</label>
+                            </div>
+                        </div>
+                        <button className="add-service-btn" onClick={handleAddService}>+ Thêm dịch vụ</button>
                     </div>
                     <input type="text" className="search-box" placeholder="Tìm kiếm" onChange={(e) => setSearchTerm(e.target.value)} value={searchTerm} />
                     <table className="service-table">
@@ -251,7 +262,7 @@ const MedExamServicePage = () => {
                         </thead>
                         <tbody>
                             {filteredServices.length > 0 ? filteredServices.map((service, index) => (
-                                <tr key={service.id}>
+                                <tr key={service._id}>
                                     <td>{index + 1}</td>
                                     <td>{service.name}</td>
                                     <td>{formatCurrency(service.fee)}</td>
