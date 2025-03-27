@@ -24,6 +24,11 @@ export class DoctorAPI {
         return axiosClient.get(`/doctor/all/shift`);
     }
 
+    static async getDoctorsHaveShiftFilter(filter) {
+        const url = `/doctor/all/filterShift`;
+        return axiosClient.get(url, { params: filter });
+    }
+
     static async permissionDoctor(doctorInfo) {
         return axiosPrivate.put(`/doctor/update/permissionDoctor`, doctorInfo);
     }

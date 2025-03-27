@@ -67,7 +67,7 @@ const MyAppointmentsPage = () => {
 
                 <AnimatePresence>
                     {selectedAppointment && (
-                        <div className="modal-overlay-appointment" onClick={handleCloseModal}>
+                        <div className="modal-overlay-appointment">
                             <motion.div className="modal-appointment-content" onClick={(e) => e.stopPropagation()}
                                 initial={{
                                     scale: 0.3,

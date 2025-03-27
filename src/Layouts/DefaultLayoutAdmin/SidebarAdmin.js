@@ -1,5 +1,5 @@
 import './SidebarAdmin.css';
-import { faList, faServer, faChartBar, faArrowLeft, faArrowRight, faUserDoctor, faShare, faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { faList, faChartBar, faArrowLeft, faArrowRight, faUserDoctor, faShare, faChevronUp, faChevronDown, faMedkit } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useContext, useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
@@ -12,7 +12,7 @@ const SidebarAdmin = ({ onMenuClick, activeMenu }) => {
 
     const handleShiftMenuClick = () => {
         setShiftMenuOpen(prev => !prev);
-        onMenuClick('Lịch làm việc');
+        // onMenuClick('Lịch làm việc');
     }
 
     useEffect(() => {
@@ -61,7 +61,7 @@ const SidebarAdmin = ({ onMenuClick, activeMenu }) => {
                             to='/admin/medExamService'
                             className={`menuItemAdmin ${activeMenu === 'Quản lý dịch vụ khám' ? 'active' : ''}`}
                             onClick={() => onMenuClick('Quản lý dịch vụ khám')}>
-                            <FontAwesomeIcon icon={faServer} />
+                            <FontAwesomeIcon icon={faMedkit} />
                             <span>Quản lý dịch vụ khám</span>
                         </Link>
                     </li>

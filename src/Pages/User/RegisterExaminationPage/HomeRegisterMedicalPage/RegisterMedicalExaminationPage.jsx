@@ -8,6 +8,7 @@ import { DoctorAPI } from '../../../../API/DoctorAPI';
 import { DepartmentAPI } from '../../../../API/DepartmentAPI';
 import { set } from 'date-fns';
 import { toast } from 'react-toastify';
+import { to } from 'react-spring';
 
 
 const RegisterMedicalExaminationPage = () => {
@@ -17,10 +18,11 @@ const RegisterMedicalExaminationPage = () => {
     const [listDoctors, setListDoctors] = useState([]);
     const doctorsPerPage = 5;
 
-
+    const today = new Date();
     const [selectedDay, setSelectedDay] = useState(new Date().getDate());
     const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
     const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
+    const [selectedSpeciality, setSelectedSpeciality] = useState('all');
     const [daysInMonth, setDaysInMonth] = useState([]);
 
     // Hàm kiểm tra năm nhuận
@@ -87,7 +89,26 @@ const RegisterMedicalExaminationPage = () => {
     }
 
     const handleFilter = () => {
-        console.log(selectedDay, selectedMonth, selectedYear);
+        // kiểm tra dữ liệu đầu vào nhỏ hơn ngày hiện tại hay không
+        if (selectedYear < today.getFullYear() || (selectedYear === today.getFullYear() && selectedMonth < today.getMonth() + 1) || (selectedYear === today.getFullYear() && selectedMonth === today.getMonth() + 1 && selectedDay < today.getDate())) {
+            toast.error("Ngày bạn chọn nhỏ hơn ngày hiện tại");
+            return;
+        }
+
+
+        const filter = {
+            day: selectedDay,
+            month: selectedMonth,
+            year: selectedYear,
+            specialtyId: selectedSpeciality === 'all' ? null : listSpecialities.find(speciality => speciality.name === selectedSpeciality)._id
+        }
+        DoctorAPI.getDoctorsHaveShiftFilter(filter).then((response) => {
+            setListDoctors(response.data);
+            setCurrentPage(1);
+
+        }).catch((error) => {
+            toast.error("Lỗi khi lọc danh sách bác sĩ");
+        });
     }
 
     return (
@@ -193,7 +214,7 @@ const RegisterMedicalExaminationPage = () => {
                                 </div>
                                 <div className="filter-item">
                                     <label>Chuyên khoa:</label>
-                                    <select>
+                                    <select value={selectedSpeciality} onChange={(e) => setSelectedSpeciality(e.target.value)}>
                                         <option value="all">Tất cả</option>
                                         {listSpecialities.map((speciality, index) => (
                                             <option key={index}>{speciality.name}</option>
