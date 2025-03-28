@@ -10,7 +10,7 @@ const ShiftChange = () => {
     const [shiftRequests, setShiftRequests] = useState([]);
     const [reasonReject, setReasonReject] = useState('');
     const [isOpenRejectModal, setIsOpenRejectModal] = useState(false);
-
+    const [idReject, setIdReject] = useState('');
 
     useEffect(() => {
         fetchShiftRequests();
@@ -26,28 +26,50 @@ const ShiftChange = () => {
     };
 
     const handleShiftChange = async (request) => {
-        const data = {
-            shiftAssignmentId: request.shiftAssignment._id,
-            newDoctorId: request.newDoctor._id,
-            currentDoctorId: request.currentDoctor._id,
-            date: request.date
-        }
+        try {
+            const data = {
+                shiftAssignmentId: request.shiftAssignment._id,
+                newDoctorId: request.newDoctor._id,
+                currentDoctorId: request.currentDoctor._id,
+                date: request.date
+            };
 
-        ShiftAssignmentAPI.shiftAssignmentChange(data)
+            // Gọi API đổi ca
+            await ShiftAssignmentAPI.shiftAssignmentChange(data);
+
+            // Cập nhật trạng thái yêu cầu đổi ca
+            await ShiftChangeAPI.updateShiftRequest(request._id, { status: 'ACCEPTED' });
+
+            toast.success('Chấp nhận yêu cầu thành công');
+            fetchShiftRequests();
+        } catch (error) {
+            toast.error('Lỗi khi chấp nhận yêu cầu');
+        }
+    };
+
+
+
+    const handleConfirmReject = async (shiftRequestId) => {
+        const data = {
+            reason: reasonReject,
+            status: 'REJECTED'
+        };
+
+        ShiftChangeAPI.rejectShiftRequest(shiftRequestId, data)
             .then(() => {
-                toast.success('Chấp nhận yêu cầu thành công');
+                toast.success('Từ chối yêu cầu thành công');
+                setIsOpenRejectModal(false);
                 fetchShiftRequests();
             })
             .catch(() => {
-                toast.error('Lỗi khi chấp nhận yêu cầu');
+                toast.error('Lỗi khi từ chối yêu cầu');
             });
-            
+    };
 
 
-    }
-
-    const handleOpenRejectModal = () => {
+    const handleOpenRejectModal = (id) => {
         setIsOpenRejectModal(true);
+        setIdReject(id);
     };
 
     return (
@@ -91,7 +113,7 @@ const ShiftChange = () => {
                                     </button>
                                     <button
                                         className="btn-confirm-reject"
-                                        onClick={() => setIsOpenRejectModal(false)}
+                                        onClick={() => handleConfirmReject(idReject)}
                                     >
                                         Xác nhận
                                     </button>
@@ -110,7 +132,7 @@ const ShiftChange = () => {
                                 <th>Bác sĩ mới</th>
                                 <th>Chuyên khoa</th>
                                 <th>Ngày</th>
-                                <th>Ca làm việc</th> {/* Cột ca làm việc */}
+                                <th>Ca làm việc</th>
                                 <th>Lý do</th>
                                 <th>Thao tác</th>
                             </tr>

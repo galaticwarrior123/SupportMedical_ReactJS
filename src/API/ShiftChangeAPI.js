@@ -23,6 +23,11 @@ export class ShiftChangeAPI {
         return axiosPrivate.put(url, shiftRequest);
     }
 
+    static rejectShiftRequest = async (shiftRequestId,data) => {
+        const url = `/shift-change/rejectRequestShiftChange/${shiftRequestId}`;
+        return axiosPrivate.put(url,data);
+    }
+
     static deleteShiftRequest = async (shiftRequestId) => {
         const url = `/shift-change/deleteRequestShiftChange/${shiftRequestId}`;
         return axiosPrivate.delete(url);
