@@ -43,6 +43,7 @@ import DetailAppointmentPage from './Pages/User/RegisterExaminationPage/LayoutMa
 import ShiftSegment from './Pages/Admin/ShiftDoctorManage/ShiftSegment/ShiftSegment';
 import MedExamServicePage from './Pages/Admin/MedExamServiceManage/MedExamServicePage';
 import ShiftChange from './Pages/Admin/ShiftDoctorManage/ShiftChange/ShiftChange';
+import RequestShiftChange from './Pages/Doctor/RequestShiftChange/RequestShiftChange';
 const ROLES = {
   'CLIENT': 'CLIENT',
   'DOCTOR': 'DOCTOR',
@@ -81,6 +82,7 @@ function App() {
               <Route path='' element={<DoctorDashboard />} />
               <Route path='patient-profile' element={<PatientProfile />} />
               <Route path='schedule' element={<Schedule />} />
+              <Route path='shift-change' element={<RequestShiftChange />} />
             </Route>
           </Route>
 

@@ -95,7 +95,7 @@ const Header = () => {
         if (isMobileView) {
             return toggleMenu;
         }
-        return () => handleNavigate('/');
+        return () => handleNavigate('/forum');
     };
 
     const toggleNotification = () => {

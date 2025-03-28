@@ -1,0 +1,187 @@
+.request-shift-layout{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+.request-shift-container {
+    min-width: 500px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.request-shift-container h2 {
+    margin: 0;
+    text-align: center;
+}
+.request-shift-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.request-shift-form label {
+    margin: 10px 0 5px;
+    font-weight: bold;
+}
+
+.request-shift-form select,
+.request-shift-form textarea {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.request-shift-form textarea {
+    height: 80px;
+    resize: none;
+    font-family: Arial, sans-serif;
+}
+
+.submit-btn {
+    margin-top: 15px;
+    padding: 10px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.submit-btn:hover {
+    background: #0056b3;
+}
+
+
+
+.shift-request-table {
+    margin-top: 20px;
+    background: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.shift-request-table h3 {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.shift-request-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.shift-request-table th,
+.shift-request-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+.shift-request-table th {
+    background: #007bff;
+    color: white;
+}
+
+.shift-request-table tr:nth-child(even) {
+    background: #f2f2f2;
+}
+
+.edit-request-btn {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 14px;
+    margin-right: 10px;
+}
+.edit-request-btn:hover {
+    background: #218838;
+}
+
+.delete-request-btn {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.delete-request-btn:hover {
+    background: #c82333;
+}
+
+
+.edit-request-modal {
+    display: flex;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+    justify-content: center;
+    align-items: center;
+}
+
+.edit-request-content-modal {
+    background: #f9f9f9;
+    border-radius: 8px;
+    padding: 20px;
+    width: 500px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.edit-request-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+    position: relative;
+}
+.edit-request-header h2 {
+    margin: 0;  
+}
+.close-modal-btn {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #999;
+}
+
+.close-modal-btn:hover {
+    color: #333;
+}
+
+.edit-request-form-modal {
+    display: flex;
+    flex-direction: column;
+}
+
+.edit-request-form-modal textarea {
+    height: 120px;
+    resize: none;
+    font-family: Arial, sans-serif;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+
+
+

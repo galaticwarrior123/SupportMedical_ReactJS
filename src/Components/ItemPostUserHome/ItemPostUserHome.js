@@ -395,7 +395,7 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
     })();
 
     const renderBadge = () => {
-        if (itemPost.author.roles.includes('DOCTOR')) {
+        if (itemPost.author?.roles.includes('DOCTOR')) {
             return <span className="center-user-home-post-badge"><FontAwesomeIcon icon={faCheck} style={{ color: 'green' }} /> Bác sĩ</span>;
         }
         // else if (itemPost.author.roles.includes('NURSE')) {
@@ -489,13 +489,13 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
         <div className="center-user-home-post">
             <div className="center-user-home-post-header">
                 <div className="center-user-home-post-avatar">
-                    <img src={itemPost.author.avatar} alt="avatar" />
+                    <img src={itemPost.author?.avatar} alt="avatar" />
                 </div>
                 <div className="center-user-home-post-user-info">
                     <div className="center-user-home-post-user-info-top">
                         <div className="center-user-home-post-user-info-top-name">
-                            <Link to={`/profile/${itemPost.author._id}`}>
-                                <span>{itemPost.author.firstName} {itemPost.author.lastName}</span>
+                            <Link to={`/profile/${itemPost.author?._id}`}>
+                                <span>{itemPost.author?.firstName} {itemPost.author?.lastName}</span>
                             </Link>
                             {renderBadge()}
                         </div>
@@ -659,7 +659,7 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
                 <div className="center-user-home-post-reaction-menu" ref={reactionsMenuRef}>
                     <ReactionMenu onReactionSelect={handleReactionSelect} />
                 </div>}
-            {(location.pathname === '/forum/profile/' + itemPost.author._id) || (location.pathname === '/forum/search') || (location.pathname === '/forum') || (location.pathname === '/forum/post/' + itemPost._id) ? (
+            {(location.pathname === '/forum/profile/' + itemPost.author?._id) || (location.pathname === '/forum/search') || (location.pathname === '/forum') || (location.pathname === '/forum/post/' + itemPost._id) ? (
                 <div className="center-user-home-post-footer">
 
                     <div className="center-user-home-post-footer-infoPost">

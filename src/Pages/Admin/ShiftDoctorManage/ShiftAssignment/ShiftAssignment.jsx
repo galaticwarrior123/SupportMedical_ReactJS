@@ -6,7 +6,7 @@ import ShiftAPI from "../../../../API/ShiftAPI";
 import { DepartmentAPI } from "../../../../API/DepartmentAPI";
 import { DoctorAPI } from "../../../../API/DoctorAPI";
 import { ShiftAssignmentAPI } from "../../../../API/ShiftAssignmentAPI";
-import { faEllipsisH, faClose, faArrowsUpDownLeftRight } from "@fortawesome/free-solid-svg-icons";
+import { faEllipsisH, faClose, faArrowsUpDownLeftRight, faUpRightAndDownLeftFromCenter } from "@fortawesome/free-solid-svg-icons";
 import YesNoDialog from "../../../../Components/YesNoDialog/YesNoDialog";
 import { toast } from "react-toastify";
 import { motion, AnimatePresence } from 'framer-motion';
@@ -512,7 +512,7 @@ const ShiftAssignment = () => {
                                                         }}
                                                         onClick={() => handleExtendDisplay(key)}
                                                     >
-                                                        <FontAwesomeIcon icon={faArrowsUpDownLeftRight} />
+                                                        <FontAwesomeIcon icon={faUpRightAndDownLeftFromCenter} />
                                                     </button>
 
                                                     <div className="doctor-assignment">

@@ -7,6 +7,10 @@ export class DoctorAPI {
         return axiosClient.get(`/doctor/all`);
     }
 
+    static async getDoctorBySpecialty(specialty) {
+        return axiosClient.get(`/doctor/all/specialty/${specialty}`);
+    }
+
     static async createDoctor(doctor) {
         return axiosPrivate.post(`/doctor/create`, doctor,{
             headers: {

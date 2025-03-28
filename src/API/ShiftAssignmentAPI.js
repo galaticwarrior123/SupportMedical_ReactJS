@@ -7,6 +7,10 @@ export class ShiftAssignmentAPI {
         return axiosPrivate.get("/shift-assignment/all", { params: data });
     }
 
+    static async getShiftAssignmentsByDoctorExpect(doctorId) {
+        return axiosPrivate.get("/shift-assignment/all/by-doctor-expect/" + doctorId);
+    }
+
     static async createShiftAssignment(shiftAssignment) {
         return axiosPrivate.post("/shift-assignment/create", shiftAssignment);
     }

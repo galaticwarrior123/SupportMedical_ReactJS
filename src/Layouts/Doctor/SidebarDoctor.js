@@ -1,5 +1,5 @@
 import './SidebarDoctor.css';
-import { faList, faComments, faChartBar, faArrowLeft, faArrowRight, faUserDoctor } from '@fortawesome/free-solid-svg-icons';
+import { faList, faComments, faChartBar, faArrowLeft, faArrowRight, faUserDoctor, faRetweet } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useContext } from 'react';
 import { Link } from 'react-router-dom';
@@ -46,6 +46,15 @@ const SidebarDoctor = ({ onMenuClick, activeMenu }) => {
                             onClick={() => onMenuClick('Lịch làm việc')}>
                             <FontAwesomeIcon icon={faChartBar} />
                             <span>Lịch làm việc</span>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link
+                            to='/doctor/shift-change'
+                            className={`menuItemDoctor ${activeMenu === 'Thay đổi ca' ? 'active' : ''}`}
+                            onClick={() => onMenuClick('Thay đổi ca')}>
+                            <FontAwesomeIcon icon={ faRetweet} />
+                            <span>Thay đổi ca</span>
                         </Link>
                     </li>
                 </ul>
