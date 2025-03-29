@@ -7,6 +7,7 @@ import './DefaultLayoutRegisterMedicalExaminationPage.css'
 
 
 const DefaultLayoutRegisterMedicalExaminationPage = ({ children }) => {
+
     return (
         <div className="default-layout">
             <ToastContainer style={{ position: 'fixed', top: 60, right: 20 }} />

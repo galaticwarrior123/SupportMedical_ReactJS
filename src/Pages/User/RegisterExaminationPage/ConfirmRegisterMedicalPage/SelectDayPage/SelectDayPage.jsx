@@ -45,7 +45,7 @@ const SelectDayPage = () => {
     useEffect(() => {
         ShiftAssignmentAPI.getShiftAssignments({
             doctorId: doctorSelected.doctor._id,
-            startDate: `${year}-${(month + 1).toString().padStart(2, "0")}-1`,
+            startDate: `${year}-${(month + 1).toString().padStart(2, "0")}-01`,
             endDate: `${year}-${(month + 1).toString().padStart(2, "0")}-31`
         }).then((response) => {
             const workingDays = response.data.map((shiftItem) => ({
@@ -53,7 +53,7 @@ const SelectDayPage = () => {
                 startTime: shiftItem.shift.startTime,
                 endTime: shiftItem.shift.endTime,
             }));
-
+            
             setWorkingDays(workingDays);
 
 
@@ -74,6 +74,7 @@ const SelectDayPage = () => {
 
                 // Tìm `workingDay` tương ứng với ngày đã chọn
                 const workingDay = workingDays.filter((item) => item.date === day);
+
 
                 if (workingDay.length > 0) {
                     // Lọc khung giờ theo tất cả các khoảng thời gian làm việc của bác sĩ

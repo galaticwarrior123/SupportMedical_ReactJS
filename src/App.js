@@ -60,7 +60,7 @@ function App() {
         <Route path="/register/confirm-user" element={<ConfirmUser />} />
         <Route path="/forgot-password" element={<Fill_Email />} />
         <Route path="/reset-password" element={<Fill_NewPassword />} />
-        <Route element={<RequireAuth allowedRoles={[ROLES.CLIENT, ROLES.DOCTOR, ROLES.ADMIN]} />}>
+        <Route>
           <Route path="/">
             <Route index element={<RegisterMedicalExaminationPage />} />
             <Route path="create-patient-record" element={<CreatePatientRecordPage />} />
@@ -105,7 +105,7 @@ function App() {
 
 
           {/* Khi nào thêm trang user thì sửa path thành /forum nha az */}
-          <Route path="/forum">
+          <Route path="/forum"  element={<RequireAuth allowedRoles={[ROLES.CLIENT, ROLES.DOCTOR, ROLES.ADMIN]} />}>
             <Route index element={<UserHome />} />
             <Route path="post/:id" element={<Post />} />
             <Route path="chat" element={<Chat />} />
@@ -117,9 +117,6 @@ function App() {
             <Route element={<RequireAuth allowedRoles={[ROLES.DOCTOR]} />}>
               <Route path="permission" element={<BrowsePost />} />
             </Route>
-
-
-
           </Route>
         </Route>
 
