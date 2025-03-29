@@ -41,6 +41,7 @@ const SelectBankPage = () => {
             shiftSegment: doctorSelected.shiftSegment._id,
             medExamService: doctorSelected.medExamService._id,
             fee: doctorSelected.medExamService.fee,
+            description: doctorSelected.description,
         };
 
         // Nếu tạo đăng ký khám thành công thì gọi tiếp API thanh toán

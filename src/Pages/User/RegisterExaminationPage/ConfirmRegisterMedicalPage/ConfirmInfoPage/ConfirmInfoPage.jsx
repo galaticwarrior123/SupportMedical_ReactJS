@@ -3,16 +3,22 @@ import './ConfirmInfoPage.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faArrowLeft, faUser, faCalendarAlt, faEnvelope, faIdCard, faVenusMars, faMapMarkerAlt, faExclamationCircle, faPhone } from '@fortawesome/free-solid-svg-icons';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
 
 const ConfirmInfoPage = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const doctorSelected = location.state;
-    console.log(doctorSelected);
+    const [description, setDescription] = useState('');
 
     const handleNavigate = (path) => {
-        navigate(path, { state: doctorSelected });
+        const state = {
+            ...doctorSelected,
+            description: description,
+        };
+
+        navigate(path, { state: state });
     }
 
 
@@ -60,6 +66,19 @@ const ConfirmInfoPage = () => {
                     {/* <div className="warning-message">
                         <FontAwesomeIcon icon={faExclamationCircle} /> Trong thời gian quy định, nếu quý khách hủy phiếu khám sẽ được hoàn lại tiền khám và các dịch vụ đã đặt (không bao gồm phí tiện ích).
                     </div> */}
+                </div>
+
+                <div className="section-confirm-note">
+                    <h2>Ghi chú khám (nếu có)</h2>
+                    <div className='note-textarea-container'>
+                        <textarea className='note-textarea' placeholder='Nhập ghi chú tại đây...' value={description} onChange={(e) => setDescription(e.target.value)}></textarea>
+                    </div>
+                </div>
+
+                <div className='section-confirm-description'>
+                    <h2>Lưu ý</h2>
+                    <div className='description-para'>Quý khách vui lòng đến đúng giờ khám đã đặt. Nếu không đến đúng giờ khám, quý khách sẽ không được khám và không được hoàn tiền.</div>
+                    <div className='description-para'>Nếu quý khách có bất kỳ câu hỏi nào về lịch hẹn của mình, vui lòng liên hệ với chúng tôi qua số điện thoại <strong>1900 1234</strong></div>
                 </div>
 
                 <div className="buttons">

@@ -121,3 +121,60 @@
         transform: translateY(0);
     }
 }
+
+
+
+.section-confirm-note {
+    background-color: #00bfff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+}
+
+.section-confirm-note h2 {
+    color: white;
+    margin: 0;
+    opacity: 0;
+    animation: floatIn 1s forwards;
+}
+
+.note-textarea-container {
+    width: auto;
+    height: 150px;
+    border-radius: 5px;
+    background: white;
+    margin-top: 10px;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    opacity: 0;
+    animation: floatIn 1s forwards;
+}
+
+.note-textarea {
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    resize: none;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    font-size: 16px;
+    box-sizing: border-box;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    font-family: Arial, sans-serif;
+
+    
+}
+
+
+.note-textarea:focus {
+    outline: none;
+    border-color: #00bfff;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+
+

@@ -33,8 +33,9 @@ const DetailAppointmentPage = () => {
                             <p><strong>Chuyên khoa:</strong> {result.doctor?.doctorInfo?.specialities[0].name}</p>
                             <p><strong>Dịch vụ:</strong> {result.medExamService?.name}</p>
                             <p><strong>Bác sĩ:</strong>BS. {result.doctor?.firstName} {result.doctor?.lastName}</p>
-                            <p><strong>Thời gian khám:</strong> {result.shiftSegment?.startTime} - {result.shiftSegment?.endTime} ngày {result.timeSlot?.date.split('-').reverse().join('-')}</p>
+                            <p><strong>Thời gian khám:</strong> {result.shiftSegment?.startTime} - {result.shiftSegment?.endTime} ngày {result.shiftSegment?.date.split('-').reverse().join('-')}</p>
                             <p><strong>Tiền khám:</strong> {result.fee?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")} đ</p>
+                            <p><strong>Ghi chú khám:</strong> {result.description ? result.description : 'Không có'}</p>
                         </div>
 
                         {/* Thông tin bệnh nhân */}
