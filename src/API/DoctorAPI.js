@@ -12,7 +12,7 @@ export class DoctorAPI {
     }
 
     static async createDoctor(doctor) {
-        return axiosPrivate.post(`/doctor/create`, doctor,{
+        return axiosPrivate.post(`/doctor/create`, doctor, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
@@ -35,5 +35,10 @@ export class DoctorAPI {
 
     static async permissionDoctor(doctorInfo) {
         return axiosPrivate.put(`/doctor/update/permissionDoctor`, doctorInfo);
+    }
+
+    static async updateDoctorInfo(id, doctorInfo) {
+        const url = `/doctor/updateDoctorInfo/` + id;
+        return axiosPrivate.put(url, doctorInfo);
     }
 }

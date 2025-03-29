@@ -1,0 +1,138 @@
+.modal-doctor-info {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content-doctor-info {
+    background: white;
+    width: 500px;
+    max-width: 90%;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.3s ease-in-out;
+    height: 70vh;
+    overflow-y: auto; /* Thêm thanh cuộn nếu nội dung quá dài */
+}
+
+.modal-header-doctor-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 10px;
+}
+
+.modal-header-doctor-info h2 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.close-button-doctor-info {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #888;
+    transition: color 0.2s ease-in-out;
+}
+
+.close-button-doctor-info:hover {
+    color: #d9534f;
+}
+
+/* Phần trên: Chia thành 2 cột */
+.doctor-top-info {
+    display: flex;
+    gap: 20px;
+    margin-top: 15px;
+}
+
+.doctor-avatar-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.doctor-avatar {
+    width: 120px;
+    height: 150px;
+    border-radius: 8px;
+    object-fit: cover;
+    border: 3px solid #aeaeae;
+}
+
+.doctor-info-container {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+}
+
+.doctor-info-container h3 {
+    margin: 0;
+    font-size: 24px;
+    color: #3ab0eb;
+}
+
+.doctor-info-container p {
+    margin: 5px 0;
+    font-size: 16px;
+    color: #555;
+}
+
+/* Phần dưới: Mô tả */
+.doctor-description {
+    margin-top: 15px;
+    border-top: 2px solid #ddd;
+}
+
+.doctor-description h4 {
+    margin-top: 0;
+    margin-bottom: 8px;
+    font-size: 20px;
+    color: #333;
+}
+
+.doctor-description pre {
+    font-size: 18px;
+    color: #1e1e1e;
+    line-height: 1.5;
+    white-space: pre-wrap; /* Giữ nguyên định dạng văn bản */
+    word-wrap: break-word; /* Ngắt dòng nếu quá dài */
+    font-family: 'Arial', sans-serif; /* Font chữ mặc định */
+    
+}
+
+/* Hiệu ứng mở modal */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.modal-footer-doctor-info {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+.modal-footer-doctor-info button {
+    background-color: #3ab0eb;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+.modal-footer-doctor-info button:hover {
+    background-color: #2a8dc3;
+}

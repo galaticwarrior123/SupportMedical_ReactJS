@@ -1,0 +1,213 @@
+.update-profile-container {
+    width: 50%;
+    
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    
+}
+.tab-content-update-profile-doctor{
+    height: 70vh;
+    overflow-y: scroll;
+}
+
+.tabs-update-profile-doctor {
+    display: flex;
+    justify-content: center;
+    border-bottom: 2px solid #ccc;
+    margin-bottom: 20px;
+}
+
+.tabs-update-profile-doctor button {
+    background: none;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    color: gray;
+}
+
+.tabs-update-profile-doctor .active {
+    font-weight: bold;
+    color: blue;
+    border-bottom: 2px solid blue;
+}
+
+.profile-form {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.profile-left-update-profile-doctor {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.profile-right-update-profile-doctor{
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.avatar-container-update-profile-doctor {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.avatar-update-profile-doctor {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 2px solid #ccc;
+    object-fit: cover;
+}
+
+.upload-button {
+    margin-top: 10px;
+    background: blue;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.upload-button:hover {
+    background: darkblue;
+}
+
+.save-button {
+    margin-top: 20px;
+    width: 100%;
+    background: blue;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.save-button:hover {
+    background: darkblue;
+}
+
+.profile-left-update-profile-doctor input,
+.profile-left-update-profile-doctor select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.profile-left-update-profile-doctor input[type="file"] {
+    padding: 0;
+    border: none;
+    background: none;
+}
+
+.profile-left-update-profile-doctor input[type="file"]::file-selector-button {
+    background: blue;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.profile-left-update-profile-doctor input[type="file"]::file-selector-button:hover {
+    background: darkblue;
+}
+
+.profile-left-update-profile-doctor label {
+    font-weight: bold;
+    text-align: left;
+}
+
+.profile-form-footer-update-profile-doctor{
+    margin-top: 20px;
+}
+
+.profile-form-footer-update-profile-doctor label {
+    display: flex;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+
+.form-textarea-profile {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize: none;
+    display: flex;
+}
+
+.form-textarea-profile textarea {
+    width: 100%; /* Đảm bảo textarea chiếm toàn bộ chiều rộng của container */
+    height: 120px; /* Có thể điều chỉnh chiều cao */
+    padding: 10px;
+    border: none; /* Loại bỏ viền riêng của textarea để đồng bộ với container */
+    outline: none;
+    border-radius: 5px;
+    resize: none;
+    font-size: 16px;
+    font-family: 'Arial', sans-serif; /* Font chữ cho textarea */
+}
+
+.file-input {
+    display: none;
+}
+
+
+
+.password-form-update-doctor-info {
+    width: 100%;
+    margin: 20px auto;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.password-form-update-doctor-info label {
+    font-weight: bold;
+    color: #333;
+    text-align: left;
+}
+
+.password-form-update-doctor-info input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: border 0.3s ease-in-out;
+}
+
+.password-form-update-doctor-info input:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+.password-form-update-doctor-info button {
+    background: #007bff;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.password-form-update-doctor-info button:hover {
+    background: #0056b3;
+}

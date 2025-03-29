@@ -19,7 +19,6 @@ const AddDoctor = ({ handleCloseIsAddDoctor }) => {
     const [doctorGender, setDoctorGender] = useState(true);
     const [doctorSpecialty, setDoctorSpecialty] = useState("");
 
-    const [treatmentDescriptionDoctor, setTreatmentDescriptionDoctor] = useState("");
 
     useEffect(() => {
         const fetchDepartments = async () => {
@@ -61,7 +60,6 @@ const AddDoctor = ({ handleCloseIsAddDoctor }) => {
             formData.append("gender", doctorGender);  // Giới tính có thể là chuỗi 'Male' hoặc 'Female'
             formData.append("specialty", doctorSpecialty);
 
-            formData.append("treatmentDescriptionDoctor", treatmentDescriptionDoctor);
     
             // Nếu có ảnh, thêm ảnh vào formData
             if (fileImage) {
@@ -122,10 +120,6 @@ const AddDoctor = ({ handleCloseIsAddDoctor }) => {
                             <div className="doctor-manage-add-person-input">
                                 <label>Số điện thoại</label>
                                 <input type="text" placeholder="Số điện thoại" value={doctorPhone} onChange={(e) => setDoctorPhone(e.target.value)} />
-                            </div>
-                            <div className="doctor-manage-add-person-input">
-                                <label>Chuyên trị</label>
-                                <input type="text" placeholder="Chuyên trị" value={treatmentDescriptionDoctor} onChange={(e) => setTreatmentDescriptionDoctor(e.target.value)} />
                             </div>
                             <div className="doctor-manage-add-person-input">
                                 <label>Email</label>

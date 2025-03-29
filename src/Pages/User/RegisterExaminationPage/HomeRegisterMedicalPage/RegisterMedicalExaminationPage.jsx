@@ -9,6 +9,7 @@ import { DepartmentAPI } from '../../../../API/DepartmentAPI';
 import { set } from 'date-fns';
 import { toast } from 'react-toastify';
 import { to } from 'react-spring';
+import ModalDoctorInfo from './ModalDoctorInfo';
 
 
 const RegisterMedicalExaminationPage = () => {
@@ -24,6 +25,8 @@ const RegisterMedicalExaminationPage = () => {
     const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
     const [selectedSpeciality, setSelectedSpeciality] = useState('all');
     const [daysInMonth, setDaysInMonth] = useState([]);
+
+    const [isOpenModal, setIsOpenModal] = useState(false);
 
     // Hàm kiểm tra năm nhuận
     const isLeapYear = (year) => {
@@ -111,8 +114,20 @@ const RegisterMedicalExaminationPage = () => {
         });
     }
 
+    const [detailDoctor, setDetailDoctor] = useState({});
+
+    const handleOpenModal = (doctor) => {
+
+        setIsOpenModal(true);
+        setDetailDoctor(doctor);
+    }
+
     return (
         <DefaultLayoutRegisterMedicalExaminationPage>
+            {isOpenModal && (
+                <ModalDoctorInfo doctor={detailDoctor} onClose={() => setIsOpenModal(false)} />
+            )}
+
             <div className="register-medical-page">
                 <div className="banner">
                     <div className="banner-left">
@@ -144,11 +159,11 @@ const RegisterMedicalExaminationPage = () => {
                                 <div className="doctor-info-medical">
                                     <div className="doctor-info-medical-image">
                                         <img src={doctorItem.doctor.avatar || '/images/account.png'} alt="Doctor" />
-                                        <button className="doctor-info-medical-image-button">Xem chi tiết</button>
+                                        <button className="doctor-info-medical-image-button" onClick={() => handleOpenModal(doctorItem.doctor)}>Xem thông tin</button>
                                     </div>
                                     <div className="doctor-details-medical">
                                         <h3>BS. {doctorItem.doctor.firstName} {doctorItem.doctor.lastName}  | {doctorItem.doctor.doctorInfo.specialities[0].name}</h3>
-                                        <p><strong>Chuyên trị:</strong> {doctorItem.doctor.doctorInfo.treatmentDescription || 'Chưa cập nhật'}</p>
+                                        <p><strong>Chuyên trị:</strong> {doctorItem.doctor.doctorInfo.treatment || 'Chưa cập nhật'}</p>
                                         <p><strong>Lịch khám: </strong> Thứ 2,3,4,5,6,7,CN</p>
                                     </div>
                                 </div>
