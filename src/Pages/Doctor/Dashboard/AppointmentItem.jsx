@@ -1,12 +1,19 @@
-const AppointmentItem = ({ name, time, type }) => {
+import { useDispatch, useSelector } from "react-redux";
+import { setSelectedPatient } from "../../../redux/slices/doctorDashboardSlice";
+
+const AppointmentItem = ({ item }) => {
+  const dispatch = useDispatch();
+  const { selectedPatient } = useSelector((state) => state.doctorDashboard);
+
   return (
-    <div className="appointment-item">
-      <img src="your-avatar-placeholder.png" alt="Avatar" />
+    <div onClick={() => {
+      dispatch(setSelectedPatient(item));
+    }} className={`appointment-item ${selectedPatient?._id === item._id ? 'selected' : ''}`} >
       <div className="appointment-details">
-        <div>{name}</div>
-        <div className="appointment-type">{type}</div>
+        <div>{item.recordPatient.name}</div>
+        <div className="appointment-type">{item.medExamService.name}</div>
       </div>
-      <div className="appointment-time">{time}</div>
+      <div className="doctor-appointment-time">{`${item.shiftSegment.startTime} - ${item.shiftSegment.endTime}`}</div>
     </div>
   );
 };

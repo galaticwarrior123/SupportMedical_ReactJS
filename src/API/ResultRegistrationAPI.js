@@ -21,4 +21,9 @@ export class ResultRegistrationAPI {
         const url = `/result-registration/delete/${id}`;
         return axiosPrivate.delete(url);
     }
+
+    static async doctorGetByFilter(filter) {
+        const url = '/result-registration/doctor/get-by-filter';
+        return axiosPrivate.get(url, filter);
+    }
 }
