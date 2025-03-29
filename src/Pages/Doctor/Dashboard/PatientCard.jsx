@@ -1,19 +1,20 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { openRecordResultModal } from "../../../redux/slices/doctorDashboardSlice";
 
 function PatientCard() {
   const dispatch = useDispatch();
+  const { selectedPatient } = useSelector((state) => state.doctorDashboard);
   const openModal = () => {
     dispatch(openRecordResultModal());
   }
 
-  return (
+  return selectedPatient &&  (
     <div className="patient-card doctor-dashboard-card">
       <div className="patient-card-header">
-        <img src="your-avatar-placeholder.png" alt="Avatar" />
         <div className="dashboard-patient-info">
-          <h2 className="patient-name">Nguyễn Văn A</h2>
-          <p className="patient-details">Nam - 30 tuổi</p>
+          <h2 className="patient-name">{selectedPatient?.recordPatient.name}</h2>
+          <p className="patient-details">{selectedPatient?.recordPatient.gender ? 'Nam' : 'Nữ'} - {selectedPatient.recordPatient.province}</p>
+          <p className="patient-details">{selectedPatient?.recordPatient.dob}</p>
         </div>
       </div>
       <div className="patient-notes">

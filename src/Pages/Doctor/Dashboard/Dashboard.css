@@ -48,7 +48,8 @@
 
 .doctor-dashboard-card {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    margin: 0px auto;
+    /* margin: 0px auto; */
+    margin-left: 10px;
     border: 1px solid #ccc;
     border-radius: 18px;
     padding: 10px;
@@ -59,6 +60,8 @@
 .appointment-list {
     width: 300px;
     min-width: 300px;
+    transition: all 1s ease;
+    z-index: 2;
 }
 
 .appointment-list h2 {
@@ -70,6 +73,16 @@
     align-items: center;
     padding: 10px;
     border-bottom: 1px solid #eee;
+}
+
+.appointment-item.selected {
+    background-color: #fceeca;
+    border-radius: 5px;
+}
+
+.appointment-item:hover {
+    border-radius: 5px;
+    background-color: #fceeca;
 }
 
 .appointment-item img {
@@ -87,14 +100,30 @@
     color: blue;
 }
 
-.appointment-item .appointment-time {
+.appointment-item .doctor-appointment-time {
     margin-left: auto;
+    font-size: 18px;
+    font-weight: bold;
+    display: block;
+    color: #000000;
 }
 
 /* patient card */
 .patient-card {
     width: 300px;
     min-width: 300px;
+    /* slide from left animation */
+    animation: slideIn 0.5s forwards;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(-50%);
+    }
+
+    to {
+        transform: translateX(0);
+    }
 }
 
 .dashboard-patient-info {
