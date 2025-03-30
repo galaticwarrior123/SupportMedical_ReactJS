@@ -71,6 +71,7 @@ const RegisterMedicalExaminationPage = () => {
     }
 
     useEffect(() => {
+
         DoctorAPI.getAllDoctorHaveShift().then((response) => {
             setListDoctors(response.data);
         }

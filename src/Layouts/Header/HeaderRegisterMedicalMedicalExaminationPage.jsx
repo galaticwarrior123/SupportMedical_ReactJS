@@ -91,7 +91,7 @@ const HeaderRegisterMedicalExaminationPage = () => {
                         </div>
 
                         {showBellDropdown && (
-                            <div className="bell-dropdown">
+                            <div className="bell-dropdown-container">
                                 {notifications.length > 0 ? (
                                     <>
                                         {notifications.slice(0, 2).map(notification => (
