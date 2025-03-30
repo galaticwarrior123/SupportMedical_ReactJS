@@ -24,6 +24,6 @@ export class ResultRegistrationAPI {
 
     static async doctorGetByFilter(filter) {
         const url = '/result-registration/doctor/get-by-filter';
-        return axiosPrivate.get(url, filter);
+        return axiosPrivate.get(url, { params: filter });
     }
 }

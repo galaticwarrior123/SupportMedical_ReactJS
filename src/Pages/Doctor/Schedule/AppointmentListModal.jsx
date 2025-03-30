@@ -1,21 +1,37 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './AppointmentListModal.module.scss';
-import { useDispatch } from 'react-redux';
-import { closeAppointmentListModal } from '../../../redux/slices/doctorScheduleSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { closeAppointmentListModal, setSelectedPatient } from '../../../redux/slices/doctorScheduleSlice';
 import AppointmentItem from '../Dashboard/AppointmentItem';
+import { ResultRegistrationAPI } from '../../../API/ResultRegistrationAPI';
+import { ResultRegistrationStatus } from '../../../Common/Constants';
 
 function AppointmentListModal() {
     const dispatch = useDispatch();
-    const appointments = [
-        { name: 'Nguyễn Văn A', time: '9:00', type: 'TƯ VẤN' },
-        { name: 'Nguyễn Văn B', time: '9:00', type: 'TÁI KHÁM' },
-        { name: 'Nguyễn Văn C', time: '10:00', type: 'ĐỊNH KỲ' },
-      ];
+    const selectedDate = useSelector((state) => state.doctorSchedule.selectedDate);
+    const { selectedPatient } = useSelector((state) => state.doctorSchedule);
+
+    const [appointments, setAppointments] = useState([]);
+    useEffect(() => {
+        const fetchAppointments = async () => {
+            try {
+                const response = await ResultRegistrationAPI.doctorGetByFilter({
+                    startDate: selectedDate,
+                    endDate: selectedDate,
+                    status: ResultRegistrationStatus.PENDING,
+                });
+                setAppointments(response.data);
+            } catch (error) {
+                console.error('Error fetching appointments:', error);
+            }
+        };
+        fetchAppointments();
+    }, [selectedDate]);
     return (
         <div className={styles.modalOverlay}>
             <div className={styles.modal}>
                 <div className={styles.header}>
-                    <span className={styles.date}>21/4/2025</span>
+                    <span className={styles.date}>{selectedDate}</span>
                     <div className={styles.shift}>
                         <span className={styles.shiftLabel}>Ca:</span>
                         <select className={styles.shiftSelect}>
@@ -25,47 +41,49 @@ function AppointmentListModal() {
                     </div>
                 </div>
 
-                <div className={styles.content}>
-                    <div className={styles.appointments}>
-                        <h3 className={styles.title}>Cuộc hẹn trong ngày</h3>
-                        {/* <div className={styles.appointment}>
-                            <span className={styles.name}>Nguyễn Văn A</span>
-                            <span className={styles.time}>9:00</span>
-                            <span className={styles.type}>TƯ VẤN</span>
-                        </div>
-                        <div className={styles.appointment}>
-                            <span className={styles.name}>Nguyễn Văn B</span>
-                            <span className={styles.time}>9:00</span>
-                            <span className={styles.type}>TÁI KHÁM</span>
-                        </div>
-                        <div className={styles.appointment}>
-                            <span className={styles.name}>Nguyễn Văn C</span>
-                            <span className={styles.time}>10:00</span>
-                            <span className={styles.type}>ĐỊNH KỲ</span>
-                        </div> */}
-                        {appointments.map((appointment, index) => (
-                            <AppointmentItem key={index} {...appointment} />
-                        ))}
-                    </div>
+                {<div className={styles.content}>
+                    {
+                        appointments.length > 0 ? (
+                            <>
+                                <div className={styles.appointments}>
+                                    <h3 className={styles.title}>Cuộc hẹn trong ngày</h3>
+                                    {appointments.map((appointment, index) => (
+                                        <AppointmentItem
+                                            isSelected={selectedPatient?._id === appointment._id}
+                                            onClick={() => {
+                                                dispatch(setSelectedPatient(appointment));
+                                            }} key={index} item={appointment} />
+                                    ))}
+                                </div>
+                                {selectedPatient &&
+                                    <div className={styles.patientInfo}>
+                                        <h3 className={styles.patientName}>{selectedPatient?.recordPatient.name}</h3>
+                                        <p className={styles.patientDetails}>{selectedPatient?.recordPatient.gender ? 'Nam' : 'Nữ'} - {selectedPatient?.recordPatient.province}</p>
+                                        <p className={styles.patientDetails}>{selectedPatient?.recordPatient.dob}</p>
+                                        <div className={styles.patientNotes}>
+                                            <p className={styles.notesLabel}>Ghi chú của bệnh nhân:</p>
+                                            <ul className={styles.notesList}>
+                                                <li>Triệu chứng ho, nghẹt mũi</li>
+                                            </ul>
+                                        </div>
+                                        <div className={styles.previousVisit}>
+                                            <p className={styles.visitLabel}>Lần khám trước: Với bác sĩ Phúc vào 20 thg 11, 2024</p>
+                                            <p className={styles.visitDetails}>Triệu chứng: nhứt đầu nhẹ, hoa mắt</p>
+                                            <p className={styles.visitDetails}>Kết luận: cảm cúm</p>
+                                            <p className={styles.visitDetails}>Kê đơn: paracetamol - 2 lần một ngày</p>
+                                        </div>
+                                    </div>
+                                }
+                            </>
+                        ) : (
+                            <div className={styles.noAppointments}>
+                                <p>Không có cuộc hẹn nào trong ngày.</p>
+                            </div>
+                        )
+                    }
 
-                    <div className={styles.patientInfo}>
-                        <h3 className={styles.patientName}>Nguyễn Văn A</h3>
-                        <p className={styles.patientDetails}>Nam - 30 tuổi</p>
-                        <div className={styles.patientNotes}>
-                            <p className={styles.notesLabel}>Ghi chú của bệnh nhân:</p>
-                            <ul className={styles.notesList}>
-                                <li>Triệu chứng ho, nghẹt mũi</li>
-                            </ul>
-                        </div>
-                        <div className={styles.previousVisit}>
-                            <p className={styles.visitLabel}>Lần khám trước: Với bác sĩ Phúc vào 20 thg 11, 2024</p>
-                            <p className={styles.visitDetails}>Triệu chứng: nhứt đầu nhẹ, hoa mắt</p>
-                            <p className={styles.visitDetails}>Kết luận: cảm cúm</p>
-                            <p className={styles.visitDetails}>Kê đơn: paracetamol - 2 lần một ngày</p>
-                        </div>
-                    </div>
                 </div>
-
+                }
                 <button className={styles.closeButton} onClick={() => dispatch(closeAppointmentListModal())}>Đóng</button>
             </div>
         </div>
