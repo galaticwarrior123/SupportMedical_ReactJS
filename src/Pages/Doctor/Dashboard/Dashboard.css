@@ -28,6 +28,12 @@
     border-radius: 10px;
 }
 
+.dashboard-header-content .number-patient {
+    font-size: 2rem;
+    color: #1976d2;
+    margin: 0;
+}
+
 .dashboard-header h1 {
     color: #1976d2;
     margin: 0;
