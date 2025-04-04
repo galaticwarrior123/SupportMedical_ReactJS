@@ -45,6 +45,7 @@ import MedExamServicePage from './Pages/Admin/MedExamServiceManage/MedExamServic
 import ShiftChange from './Pages/Admin/ShiftDoctorManage/ShiftChange/ShiftChange';
 import RequestShiftChange from './Pages/Doctor/RequestShiftChange/RequestShiftChange';
 import UpdateProfileDoctor from './Pages/Doctor/UpdateProfileDoctor/UpdateProfileDoctor';
+import ResultExaminationPage from './Pages/User/RegisterExaminationPage/LayoutManageRecordsPage/ResultExaminationPage/ResultExaminationPage';
 const ROLES = {
   'CLIENT': 'CLIENT',
   'DOCTOR': 'DOCTOR',
@@ -68,6 +69,7 @@ function App() {
             <Route path="manage-records" element={<ManageRecordsPage />} />
             <Route path='detail-appointment/:id' element={<DetailAppointmentPage />} />
             <Route path="my-appointments" element={<MyAppointmentsPage />} />
+            <Route path="result-examination" element={<ResultExaminationPage />} />
             <Route path="select-service" element={<SelectServicePage />} />
             <Route path="select-record" element={<SelectRecordPage />} />
             <Route path="select-day" element={<SelectDayPage />} />

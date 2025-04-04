@@ -185,3 +185,19 @@
 
 
 
+.btn-done-appointment {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    background-color: #c9caca;
+    margin-right: 10px;
+    color: #2c2c2c;
+}
+.btn-done-appointment:disabled {
+    background-color: #c9caca;
+    color: #2c2c2c;
+    cursor: not-allowed;
+}

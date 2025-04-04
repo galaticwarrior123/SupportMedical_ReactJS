@@ -159,8 +159,11 @@ const HeaderRegisterMedicalExaminationPage = () => {
                             <li onClick={() => handleNavigate('/my-appointments')}>
                                 <FontAwesomeIcon icon={faCalendarCheck} /> Lịch khám của tôi
                             </li>
+                            <li onClick={() => handleNavigate('/result-examination')}>
+                                <FontAwesomeIcon icon={faNotesMedical} /> Kết quả khám bệnh
+                            </li>
                             <li onClick={() => handleNavigate('/notifications')}>
-                                <FontAwesomeIcon icon={faNotesMedical} /> Thông báo
+                                <FontAwesomeIcon icon={faBell} /> Thông báo
                             </li>
                             <li className="logout" onClick={() => handleLogout()} style={{ color: 'red' }}>
                                 <FontAwesomeIcon icon={faSignOutAlt} /> Đăng xuất

@@ -99,7 +99,6 @@ const RenderRecordPatientPage = () => {
                                 <span>Ngày sinh: {maskDob(patient.dob)}</span>
                                 <span>Giới tính: {patient.gender === true ? 'Nam' : 'Nữ'}</span>
                                 <span>Địa chỉ: {maskAddress(patient.address, patient.district)}, {patient.province}</span>
-                                <span>Ngày đăng ký khám gần nhất: {patient.lastVisit}</span>
                             </div>
                         </div>
                         <div className='list-result-record-patient-item-footer'>

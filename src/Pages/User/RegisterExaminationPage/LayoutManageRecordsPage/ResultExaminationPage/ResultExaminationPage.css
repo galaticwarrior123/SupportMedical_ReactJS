@@ -1,0 +1,88 @@
+.title-result-examination {
+    font-size: 24px;
+    font-weight: bold;
+    color: #1e1e1e;
+    margin-top: 0;
+}
+
+.content-result-examination-text {
+    text-align: center;
+    font-size: 18px;
+    color: #888;
+}
+
+.med-history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.med-history-item {
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 20px;
+    background-color: #fefefe;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    transition: box-shadow 0.2s;
+    display: flex;
+
+    opacity: 0;
+    animation: floatRight 1s forwards;
+}
+
+.med-history-item:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.med-history-patient,
+.med-history-exam {
+    margin-bottom: 15px;
+    flex:1;
+}
+
+.med-history-exam{
+    border-left:1px solid #ddd;
+    padding-left: 20px;
+}
+
+.med-history-patient h3,
+.med-history-exam h3 {
+    color: #3498db;
+    margin-bottom: 10px;
+    margin-top: 0;
+}
+
+.med-history-item p {
+    margin: 6px 0;
+    font-size: 16px;
+    color: #333;
+    display: flex;
+    /* Cho label và icon cùng hàng ngang */
+    align-items: center;
+    /* Căn giữa theo chiều dọc */
+}
+
+.med-history-item svg {
+    margin-right: 10px;
+    min-width: 20px;
+    /* Đảm bảo icon có kích thước cố định để label không bị lệch */
+    text-align: center;
+    color: #2980b9;
+}
+.label {
+    font-weight: bold;
+    color: #555;
+    font-size: 16px;
+}
+
+@keyframes floatRight {
+    0% {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}

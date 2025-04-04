@@ -57,7 +57,11 @@ const MyAppointmentsPage = () => {
                                 <p><FontAwesomeIcon icon={faClock} className="icon" /> <strong>Thời gian:</strong> <span>{appointment.shiftSegment.startTime}-{appointment.shiftSegment.endTime} ngày {appointment.shiftSegment.date.split('-').reverse().join('/')}</span></p>
                             </div>
                             <div className="appointment-card-buttons">
-                                <button className="btn-cancel-appointment" onClick={() => handleCancleAppointment(appointment._id)}> Hủy lịch hẹn</button>
+                                {appointment.status === "pending" ? (
+                                    <button className="btn-cancel-appointment" onClick={() => handleCancleAppointment(appointment._id)}> Hủy lịch hẹn</button>
+                                ) : (
+                                    <button className="btn-done-appointment" disabled>Đã khám</button>
+                                )}
                                 <button className="btn-details-appointment" onClick={() => handleViewDetails(appointment)}>Xem chi tiết</button>
                             </div>
                         </div>
@@ -86,9 +90,9 @@ const MyAppointmentsPage = () => {
                                     opacity: 0
                                 }}
                                 transition={{ type: "spring", stiffness: 200, damping: 20 }}
-                                
-                                
-                                
+
+
+
                             >
                                 <div className="modal-appointment-header">
                                     <h3>Thông tin chi tiết khám bệnh</h3>

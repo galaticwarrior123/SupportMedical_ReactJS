@@ -1,14 +1,10 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import DefaultLayoutRegisterMedicalExaminationPage from '../../../../Layouts/DefaultLayoutRegisterMedicalExaminationPage/DefaultLayoutRegisterMedicalExaminationPage';
 import './RegisterMedicalExaminationPage.css';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { DoctorAPI } from '../../../../API/DoctorAPI';
 import { DepartmentAPI } from '../../../../API/DepartmentAPI';
-import { set } from 'date-fns';
 import { toast } from 'react-toastify';
-import { to } from 'react-spring';
 import ModalDoctorInfo from './ModalDoctorInfo';
 
 
