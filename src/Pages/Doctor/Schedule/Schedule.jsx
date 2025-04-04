@@ -55,7 +55,8 @@ const Schedule = () => {
     const handleSelectDay = (day) => {
         if (day) {
             setSelectedDay(day);
-            dispatch(openAppointmentListModal());
+            const selectedDate = new Date(year, month, day + 1).toISOString().split('T')[0];
+            dispatch(openAppointmentListModal(selectedDate));
         }
     };
     useEffect(() => {

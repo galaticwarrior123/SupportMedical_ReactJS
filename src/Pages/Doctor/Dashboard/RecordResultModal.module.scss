@@ -64,5 +64,10 @@
     &_save {
         background-color: #4CAF50;
         color: white;
+
+        &:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
     }
 }
