@@ -25,7 +25,7 @@ const Shift = () => {
                 setShifts(res.data);
             })
             .catch(err => {
-                toast.error("Lấy dữ liệu ca trực thất bại!");
+                toast.error("Lấy dữ liệu ca làm việc thất bại!");
             });
     }, []);
 
@@ -38,7 +38,7 @@ const Shift = () => {
 
         ShiftAPI.createShift({ name: shiftName, startTime: startTime, endTime: endTime })
             .then(res => {
-                toast.success("Thêm ca trực thành công!");
+                toast.success("Thêm ca làm việc thành công!");
                 setShifts(prev => [
                     ...prev,
                     { id: prev.length + 1, name: shiftName, startTime: startTime, endTime: endTime }
@@ -49,7 +49,7 @@ const Shift = () => {
                 setEndTime('');
             })
             .catch(err => {
-                toast.error("Thêm ca trực thất bại!");
+                toast.error("Thêm ca làm việc thất bại!");
             }
             );
 
@@ -77,7 +77,7 @@ const Shift = () => {
 
         ShiftAPI.updateShift(shiftIdUpdate, { name: shiftNameUpdate, startTime: startTimeUpdate, endTime: endTimeUpdate })
             .then(res => {
-                toast.success("Cập nhật ca trực thành công!");
+                toast.success("Cập nhật ca làm việc thành công!");
                 setShifts(prev => prev.map(shift => shift._id === shiftIdUpdate ? { ...shift, name: shiftNameUpdate, startTime: startTimeUpdate, endTime: endTimeUpdate } : shift));
 
                 setIsEdit(false);
@@ -87,7 +87,7 @@ const Shift = () => {
                 setShiftIdUpdate('');
             })
             .catch(err => {
-                toast.error("Cập nhật ca trực thất bại!");
+                toast.error("Cập nhật ca làm việc thất bại!");
             });
 
     }
@@ -95,12 +95,12 @@ const Shift = () => {
     const handleDeleteShift = (id) => {
         ShiftAPI.deleteShift(id)
             .then(res => {
-                toast.success("Xóa ca trực thành công!");
+                toast.success("Xóa ca làm việc thành công!");
                 setIsOpenDialog(false);
                 setShifts(prev => prev.filter(shift => shift._id !== id));
             })
             .catch(err => {
-                toast.error("Xóa ca trực thất bại!");
+                toast.error("Xóa ca làm việc thất bại!");
             });
 
     }
@@ -148,7 +148,7 @@ const Shift = () => {
                                 transition={{ type: "spring", stiffness: 200, damping: 20 }}
                             >
                                 <div className="edit-shift-header">
-                                    <h1>Sửa ca trực</h1>
+                                    <h1>Sửa ca làm việc</h1>
                                     <button className="btn-exit-edit" onClick={() => setIsEdit(false)}>
                                         <FontAwesomeIcon icon={faClose} />
                                     </button>
@@ -156,7 +156,7 @@ const Shift = () => {
 
 
                                 <div className="input-group-edit-shift">
-                                    <label htmlFor="shift-name">Nhập tên ca trực</label>
+                                    <label htmlFor="shift-name">Nhập tên ca làm việc</label>
                                     <input type="text" id="shift-name" placeholder=" " value={shiftNameUpdate} onChange={(e) => setShiftNameUpdate(e.target.value)} />
 
                                     <label htmlFor="start-time">Giờ bắt đầu</label>
@@ -180,7 +180,7 @@ const Shift = () => {
                     <div className="shift-header">
                         <div className="input-group-shift">
                             <input type="text" id="shift-name" placeholder=" " value={shiftName} onChange={(e) => setShiftName(e.target.value)} />
-                            <label htmlFor="shift-name">Nhập tên ca trực</label>
+                            <label htmlFor="shift-name">Nhập tên làm việc</label>
                         </div>
 
                         <div className="input-group-shift">
@@ -194,7 +194,7 @@ const Shift = () => {
                         </div>
 
                         <button className="add-shift" onClick={handleAddShift}>
-                            <FontAwesomeIcon icon={faPlus} /> Thêm ca trực
+                            <FontAwesomeIcon icon={faPlus} /> Thêm ca làm việc
                         </button>
                     </div>
 

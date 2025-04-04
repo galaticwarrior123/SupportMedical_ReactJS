@@ -19,9 +19,41 @@
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     animation: fadeIn 0.3s ease-in-out;
-    height: 70vh;
-    overflow-y: auto; /* Thêm thanh cuộn nếu nội dung quá dài */
+   
 }
+
+.modal-divider-doctor-info-container {
+    height: 70vh;
+    overflow-y: auto; /* Thêm thanh cuộn dọc */
+    scrollbar-width: none; /* Ẩn scrollbar trên Firefox */
+}
+
+.modal-divider-doctor-info-container:hover {
+    scrollbar-width: thin; /* Hiển thị scrollbar khi hover trên Firefox */
+}
+
+.modal-divider-doctor-info-container::-webkit-scrollbar {
+    width: 8px; /* Độ rộng thanh cuộn */
+    background: transparent; /* Ẩn khi không hover */
+}
+
+.modal-divider-doctor-info-container:hover::-webkit-scrollbar {
+    background: rgba(0, 0, 0, 0.1); /* Màu nền khi hover */
+}
+
+.modal-divider-doctor-info-container::-webkit-scrollbar-thumb {
+    background: transparent; /* Ẩn thanh cuộn */
+    border-radius: 10px;
+}
+
+.modal-divider-doctor-info-container:hover::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.5); /* Hiển thị khi hover */
+}
+
+.modal-divider-doctor-info-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.7); /* Tăng độ tối khi hover vào scrollbar */
+}
+
 
 .modal-header-doctor-info {
     display: flex;

@@ -50,6 +50,11 @@ const ShiftChange = () => {
 
 
     const handleConfirmReject = async (shiftRequestId) => {
+        if (!reasonReject) {
+            toast.error('Vui lòng nhập lý do từ chối');
+            return;
+        }
+
         const data = {
             reason: reasonReject,
             status: 'REJECTED'

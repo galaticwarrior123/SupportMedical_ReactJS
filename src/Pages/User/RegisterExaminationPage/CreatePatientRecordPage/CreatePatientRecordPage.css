@@ -90,24 +90,3 @@ select {
 
 
 
-
-.form-medical-container-2{
-    display: grid;
-    max-width: 800px;
-    margin: 0 auto;
-}
-.form-medical-container-2 input 
-{
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    width: 100%;
-    margin-bottom: 20px;
-}
-.form-medical-group-2 {
-    text-align: left;
-}
-.form-medical-group-2 label {
-    font-weight: bold;
-    margin-bottom: 5px;
-}

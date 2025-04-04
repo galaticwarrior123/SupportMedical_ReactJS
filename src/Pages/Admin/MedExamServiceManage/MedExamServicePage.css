@@ -26,6 +26,10 @@
     margin-left: 20px;
 }
 
+.add-service-btn:hover {
+    background: #e64a19;
+}
+
 .search-box {
     width: 300px;
     padding: 8px;

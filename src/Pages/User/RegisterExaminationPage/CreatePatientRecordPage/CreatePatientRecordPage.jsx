@@ -5,6 +5,7 @@ import "./CreatePatientRecordPage.css";
 import { RecordPatientAPI } from "../../../../API/RecordPatientAPI";
 import axios from "axios";
 import { toast } from "react-toastify";
+import RenderRecordPatientPage from "./RenderRecordPatientPage";
 const API_BASE_URL = "https://provinces.open-api.vn/api";
 const JOBS = [
     { id: 1, name: "Bác sĩ" },
@@ -300,19 +301,8 @@ const CreatePatientRecordPage = () => {
 
                 {/* Nếu đã từng khám thì hiển thị ô nhập mã bệnh nhân */}
                 {hasPreviousRecord === true && !hasUpdate && (
-                    <>
-                        <div className="form-medical-container-2">
-                            <div className="form-medical-group-2">
-                                <label>Mã bệnh nhân</label>
-                                <input type="text" placeholder="Vui lòng nhập mã bệnh nhân ..." />
-                            </div>
-
-                        </div>
-                        <button className="submit-button">Tìm kiếm</button>
-                    </>
+                        <RenderRecordPatientPage />      
                 )}
-
-
                 {/* Form nhập thông tin bệnh nhân */}
                 {hasPreviousRecord === false ? (
                     <>

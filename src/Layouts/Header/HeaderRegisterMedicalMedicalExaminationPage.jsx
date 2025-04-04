@@ -64,6 +64,8 @@ const HeaderRegisterMedicalExaminationPage = () => {
     const handleLogout = () => {
         localStorage.removeItem('user');
         localStorage.removeItem('token');
+        localStorage.removeItem('roles');
+        localStorage.removeItem('sidebarCollapsed');
         setShowDropdown(false);
         navigate('/');
     }

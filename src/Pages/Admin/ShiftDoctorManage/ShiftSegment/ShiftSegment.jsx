@@ -43,7 +43,7 @@ const ShiftSegment = () => {
     const generateTimeSlots = () => {
 
         if (!startDate || !endDate) {
-            toast.error('Vui lòng chọn ngày bắt đầu và ngày kết thúc');
+            toast.error('Vui lòng nhập đầy đủ thông tin');
             return;
         }
 

@@ -28,4 +28,9 @@ export class RecordPatientAPI {
         const url = `/record-patient/search?q=${q}`;
         return axiosClient.get(url);
     }
+
+    static async updateUsingBy(id, data) {
+        const url = '/record-patient/update-using-by/' + id;
+        return axiosPrivate.put(url, data);
+    }
 }
