@@ -6,7 +6,7 @@ import { DoctorAPI } from '../../../../API/DoctorAPI';
 import { DepartmentAPI } from '../../../../API/DepartmentAPI';
 import { toast } from 'react-toastify';
 import ModalDoctorInfo from './ModalDoctorInfo';
-
+import { ResultRegistrationAPI } from '../../../../API/ResultRegistrationAPI';
 
 const RegisterMedicalExaminationPage = () => {
     const navigate = useNavigate();
@@ -23,7 +23,7 @@ const RegisterMedicalExaminationPage = () => {
     const [daysInMonth, setDaysInMonth] = useState([]);
 
     const [isOpenModal, setIsOpenModal] = useState(false);
-
+    const [detailDoctor, setDetailDoctor] = useState({});
     // Hàm kiểm tra năm nhuận
     const isLeapYear = (year) => {
         return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
@@ -84,7 +84,12 @@ const RegisterMedicalExaminationPage = () => {
         });
     }, []);
 
-    const handleDirectSelectService = (doctor) => () => {
+    const handleDirectSelectService = (doctor) => async() => {
+        const hasPending = await checkHasExamination();
+        if(hasPending === true) {
+            toast.error("Bạn đã có lịch khám chưa hoàn thành, vui lòng kiểm tra lại!");
+            return;
+        }
         navigate('/select-service', { state: doctor });
     }
 
@@ -111,12 +116,29 @@ const RegisterMedicalExaminationPage = () => {
         });
     }
 
-    const [detailDoctor, setDetailDoctor] = useState({});
-
     const handleOpenModal = (doctor) => {
 
         setIsOpenModal(true);
         setDetailDoctor(doctor);
+    }
+
+
+    const checkHasExamination = async () => {
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (!user) {
+            toast.error("Vui lòng đăng nhập để thực hiện chức năng này");
+            return;
+        }
+        const response = await ResultRegistrationAPI.getAllResultRegistration(user._id);
+
+        // kiểm tra xem có lịch khám nào có status là pendinhg hay không
+        const hasPendingExamination = response.data.some(item => item.status === 'pending');
+        if (hasPendingExamination) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     return (

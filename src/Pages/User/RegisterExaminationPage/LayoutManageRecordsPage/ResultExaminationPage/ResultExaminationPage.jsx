@@ -16,10 +16,13 @@ import {
     faPrescriptionBottleAlt,
     faPills,
     faBriefcase,
+    faClose,
 } from '@fortawesome/free-solid-svg-icons';
 
 const ResultExaminationPage = () => {
     const [listMedExamHistory, setListMedExamHistory] = useState([]);
+    const [isOpenModal, setIsOpenModal] = useState(false);
+    const [medItemExamHistory, setMedItemExamHistory] = useState({});
 
     useEffect(() => {
         const fetchMedExamHistory = async () => {
@@ -35,8 +38,28 @@ const ResultExaminationPage = () => {
         fetchMedExamHistory();
     }, []);
 
+    const handleOpenModal = (medItemExamHistory) => {
+        setIsOpenModal(true);
+        setMedItemExamHistory(medItemExamHistory);
+    }
+
     return (
         <LayoutManageRecordsPage>
+            {isOpenModal && (
+                <div className="modal-medical-history">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h2>Thông tin kê thuốc</h2>
+                            <button className="close-button" onClick={() => setIsOpenModal(false)}>
+                                <FontAwesomeIcon icon={faClose} />
+                            </button>
+                        </div>
+                        <div className="modal-body">
+                            <pre>{medItemExamHistory.prescription}</pre>
+                        </div>
+                    </div>
+                </div>
+            )}
             <div className="result-examination-page">
                 <h2 className="title-result-examination">Kết quả khám bệnh</h2>
                 {listMedExamHistory.length === 0 ? (
@@ -63,7 +86,11 @@ const ResultExaminationPage = () => {
                                     <p><FontAwesomeIcon icon={faStethoscope} /> <span className="label">Chuyên khoa:</span> {item.doctor.doctorInfo.specialities[0].name}</p>
                                     <p><FontAwesomeIcon icon={faNotesMedical} /> <span className="label">Triệu chứng:</span> {item.symptoms}</p>
                                     <p><FontAwesomeIcon icon={faPrescriptionBottleAlt} /> <span className="label">Kết luận:</span> {item.result}</p>
-                                    <p><FontAwesomeIcon icon={faPills} /> <span className="label">Kê đơn thuốc:</span> {item.prescription}</p>
+                                    <p><FontAwesomeIcon icon={faPills} /> <span className="label">Kê đơn thuốc:</span>
+                                        <p className="med-history-prescription" onClick={() => handleOpenModal(item)}>
+                                            Xem chi tiết
+                                        </p>
+                                    </p>
                                 </div>
                             </div>
                         ))}
