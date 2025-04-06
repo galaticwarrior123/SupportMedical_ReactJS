@@ -83,7 +83,7 @@ function App() {
           <Route element={<RequireAuth allowedRoles={[ROLES.DOCTOR]} />}>
             <Route path='/doctor'>
               <Route path='' element={<DoctorDashboard />} />
-              <Route path='patient-profile' element={<PatientProfile />} />
+              <Route path='patient-profile/:profileId?' element={<PatientProfile />} />
               <Route path='schedule' element={<Schedule />} />
               <Route path='shift-change' element={<RequestShiftChange />} />
               <Route path='update-profile' element={<UpdateProfileDoctor />} />

@@ -5,9 +5,16 @@ import { useState } from "react";
 import { ResultRegistrationAPI } from "../../../API/ResultRegistrationAPI";
 import { ResultRegistrationStatus } from "../../../Common/Constants";
 import { toast } from "react-toastify";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faIdCard } from "@fortawesome/free-solid-svg-icons";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../../../context/AuthProvider";
+import { format } from "date-fns";
 
 function PatientCard() {
+  const { user } = useAuth();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [openAbsentDialog, setOpenAbsentDialog] = useState(false);
   const { selectedPatient } = useSelector((state) => state.doctorDashboard);
   const openModal = () => {
@@ -36,7 +43,9 @@ function PatientCard() {
     }
   }
 
-  return selectedPatient &&  (
+  console.log("Selected patient:", selectedPatient);
+
+  return selectedPatient && (
     <>
       <YesNoDialog
         isOpen={openAbsentDialog}
@@ -48,25 +57,45 @@ function PatientCard() {
         noText="Hủy bỏ"
       />
       <div className="patient-card doctor-dashboard-card">
-        
+
         <div className="patient-card-header">
           <div className="dashboard-patient-info">
             <h2 className="patient-name">{selectedPatient?.recordPatient.name}</h2>
             <p className="patient-details">{selectedPatient?.recordPatient.gender ? 'Nam' : 'Nữ'} - {selectedPatient.recordPatient.province}</p>
             <p className="patient-details">{selectedPatient?.recordPatient.dob}</p>
           </div>
+          <button onClick={
+            () => {
+              navigate(`/doctor/patient-profile/${selectedPatient.recordPatient._id}`);
+            }
+          } className="btn-profile">
+            <FontAwesomeIcon icon={faIdCard} className="patient-icon" fontSize={20} />
+          </button>
         </div>
         <div className="patient-notes">
           <p>Ghi chú của bệnh nhân:</p>
           <ul>
-            <li>Triệu chứng ho, nghẹt mũi</li>
+            <li>{selectedPatient.description ?? "(trống)"}</li>
           </ul>
         </div>
         <div className="previous-visit">
-          <p>Lần khám trước: Với bác sĩ Phúc vào 20 thg 11, 2024</p>
-          <p>Triệu chứng: nhứt đầu nhẹ, hoa mắt</p>
-          <p>Kết luận: cảm cúm</p>
-          <p>Kê đơn: paracetamol - 2 lần một ngày</p>
+          {
+            selectedPatient?.latestVisit && (
+              <>
+                <p>
+                  Lần khám trước: Với {
+                    selectedPatient?.latestVisit.doctor._id === user._id
+                      ? "bạn"
+                      : <Link to={`/forum/profile/${selectedPatient?.latestVisit.doctor._id}`}>Bác sĩ {selectedPatient?.latestVisit.doctor.lastName}</Link>
+                  } vào {format(new Date(selectedPatient?.latestVisit.createdAt), "dd 'thg' MM',' yyyy")}
+                </p>
+                <p>Triệu chứng: {selectedPatient?.latestVisit.symptoms}</p>
+                <p>Kết luận: {selectedPatient?.latestVisit.result}</p>
+                <p>Kê đơn: {selectedPatient?.latestVisit.prescription}</p>
+              </>
+            )
+          }
+
         </div>
         <div className="status-buttons">
           <button onClick={handleAbsent} className="absent-button">Vắng</button>

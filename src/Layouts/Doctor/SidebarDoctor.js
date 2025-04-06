@@ -35,7 +35,7 @@ const SidebarDoctor = ({ onMenuClick, activeMenu }) => {
                             to='/doctor/patient-profile'
                             className={`menuItemDoctor ${activeMenu === 'Hồ sơ bệnh nhân' ? 'active' : ''}`}
                             onClick={() => onMenuClick('Hồ sơ bệnh nhân')}>
-                            <FontAwesomeIcon icon={faUserDoctor} />
+                            <FontAwesomeIcon icon={faIdCard} />
                             <span>Hồ sơ bệnh nhân</span>
                         </Link>
                     </li>

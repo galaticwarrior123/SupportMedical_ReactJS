@@ -97,6 +97,12 @@
     padding: 10px 0;
 }
 
+.record-details-item a {
+    text-decoration: none;
+    font-weight: bold;
+    color: #1976d2;
+}
+
 .record-details p {
     margin: 5px 0;
 }
