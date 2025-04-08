@@ -4,8 +4,11 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { MedExamHistoryAPI } from '../../../API/MedExamHistoryAPI';
 import { format } from 'date-fns';
+import { Link } from 'react-router-dom';
+import { useAuth } from '../../../context/AuthProvider';
 
 const MedicalHistory = () => {
+    const { user } = useAuth();
     const { patientProfile } = useSelector((state) => state.doctorPatientProfile);
     const [medicalHistory, setMedicalHistory] = useState([]);
     const [expandedIndex, setExpandedIndex] = useState(null);
@@ -40,15 +43,20 @@ const MedicalHistory = () => {
                     <div className="record-header" onClick={() => toggleExpand(index)}>
                         <span className="record-header-date">{record.date}</span>
                         <span className="record-header-icon">
-                            {expandedIndex === index ? 
-                                <FontAwesomeIcon icon={faChevronDown} /> 
+                            {expandedIndex === index ?
+                                <FontAwesomeIcon icon={faChevronDown} />
                                 : <FontAwesomeIcon icon={faChevronLeft} />}
                         </span>
                     </div>
                     {expandedIndex === index && (
                         <div className="record-details">
                             <div className="record-details-item">
-                                <strong>Bác sĩ khám:</strong> {record.doctor.firstName} {record.doctor.lastName}
+                                <strong>Bác sĩ khám: </strong>
+                                {
+                                    record.doctor._id === user._id
+                                        ? "bạn"
+                                        : <Link to={`/forum/profile/${record.doctor._id}`}>{record.doctor.firstName} {record.doctor.lastName}</Link>
+                                }
                             </div>
                             <div className="record-details-item">
                                 <strong>Triệu chứng:</strong> {record.symptoms}

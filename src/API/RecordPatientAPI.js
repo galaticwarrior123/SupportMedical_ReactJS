@@ -33,4 +33,9 @@ export class RecordPatientAPI {
         const url = '/record-patient/update-using-by/' + id;
         return axiosPrivate.put(url, data);
     }
+
+    static async getRecordPatientById(id) {
+        const url = '/record-patient/detail/' + id;
+        return axiosClient.get(url);
+    }
 }

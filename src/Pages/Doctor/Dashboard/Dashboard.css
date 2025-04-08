@@ -159,6 +159,12 @@
     margin-bottom: 15px;
 }
 
+.previous-visit a {
+    text-decoration: none;
+    font-weight: bold;
+    color: #1976d2;
+}
+
 .status-buttons {
     display: flex;
     justify-content: space-around;
@@ -188,6 +194,7 @@
     align-items: center;
     padding: 10px;
     border-bottom: 1px solid #eee;
+    justify-content: space-between;
 }
 
 .patient-card-header img {
@@ -195,4 +202,17 @@
     height: 50px;
     border-radius: 50%;
     margin-right: 10px;
+}
+
+.btn-profile {
+    padding: 12px 15px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+    background-color: transparent;
+}
+
+.btn-profile:hover {
+    background-color: #fceeca;
 }

@@ -34,6 +34,7 @@ const SearchProfile = () => {
 
     const selectProfile = (profile) => {
         dispatch(setPatientProfile(profile));
+        window.history.replaceState(null, '', `/doctor/patient-profile/${profile._id}`);
         setSearchKey('');
         setIsListVisible(false);
         setSearchProfiles([]);

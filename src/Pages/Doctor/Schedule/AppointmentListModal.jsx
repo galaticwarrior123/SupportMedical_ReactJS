@@ -5,9 +5,13 @@ import { closeAppointmentListModal, setSelectedPatient } from '../../../redux/sl
 import AppointmentItem from '../Dashboard/AppointmentItem';
 import { ResultRegistrationAPI } from '../../../API/ResultRegistrationAPI';
 import { ResultRegistrationStatus } from '../../../Common/Constants';
+import { format } from 'date-fns';
+import { Link } from 'react-router-dom';
+import { useAuth } from '../../../context/AuthProvider';
 
 function AppointmentListModal() {
     const dispatch = useDispatch();
+    const { user } = useAuth();
     const selectedDate = useSelector((state) => state.doctorSchedule.selectedDate);
     const { selectedPatient } = useSelector((state) => state.doctorSchedule);
 
@@ -63,14 +67,26 @@ function AppointmentListModal() {
                                         <div className={styles.patientNotes}>
                                             <p className={styles.notesLabel}>Ghi chú của bệnh nhân:</p>
                                             <ul className={styles.notesList}>
-                                                <li>Triệu chứng ho, nghẹt mũi</li>
+                                                <li>{selectedPatient.description ?? "(trống)"}</li>
                                             </ul>
                                         </div>
                                         <div className={styles.previousVisit}>
-                                            <p className={styles.visitLabel}>Lần khám trước: Với bác sĩ Phúc vào 20 thg 11, 2024</p>
-                                            <p className={styles.visitDetails}>Triệu chứng: nhứt đầu nhẹ, hoa mắt</p>
-                                            <p className={styles.visitDetails}>Kết luận: cảm cúm</p>
-                                            <p className={styles.visitDetails}>Kê đơn: paracetamol - 2 lần một ngày</p>
+                                            {
+                                                selectedPatient?.latestVisit && (
+                                                    <>
+                                                        <p className={styles.visitLabel}>
+                                                            Lần khám trước: Với {
+                                                                selectedPatient?.latestVisit.doctor._id === user._id
+                                                                    ? "bạn"
+                                                                    : <Link to={`/forum/profile/${selectedPatient?.latestVisit.doctor._id}`}>Bác sĩ {selectedPatient?.latestVisit.doctor.lastName}</Link>
+                                                            } vào {format(new Date(selectedPatient?.latestVisit.createdAt), "dd 'thg' MM',' yyyy")}
+                                                        </p>
+                                                        <p className={styles.visitDetails}>Triệu chứng: {selectedPatient?.latestVisit.symptoms}</p>
+                                                        <p className={styles.visitDetails}>Kết luận: {selectedPatient?.latestVisit.result}</p>
+                                                        <p className={styles.visitDetails}>Kê đơn: {selectedPatient?.latestVisit.prescription}</p>
+                                                    </>
+                                                )
+                                            }
                                         </div>
                                     </div>
                                 }
