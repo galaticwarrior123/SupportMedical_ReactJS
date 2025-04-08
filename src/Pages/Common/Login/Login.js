@@ -44,6 +44,8 @@ const Login = () => {
             setPassword('');
             if (response.data.user.roles.includes('ADMIN')) {
                 navigate('/admin');
+            } else if(response.data.user.roles.includes('DOCTOR')) {
+                navigate('/doctor');
             } else {
                 navigate('/');
             }

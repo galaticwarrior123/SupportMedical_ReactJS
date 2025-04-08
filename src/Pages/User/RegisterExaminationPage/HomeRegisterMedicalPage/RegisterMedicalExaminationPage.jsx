@@ -85,6 +85,11 @@ const RegisterMedicalExaminationPage = () => {
     }, []);
 
     const handleDirectSelectService = (doctor) => async() => {
+        if(localStorage.getItem('token') === null) {
+            navigate('/login');
+            return;
+        }
+
         const hasPending = await checkHasExamination();
         if(hasPending === true) {
             toast.error("Bạn đã có lịch khám chưa hoàn thành, vui lòng kiểm tra lại!");
