@@ -9,6 +9,7 @@ import { ResultRegistrationAPI } from '../../../../../API/ResultRegistrationAPI'
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { motion, AnimatePresence } from 'framer-motion';
+import { ResultRegistrationStatus } from '../../../../../Common/Constants';
 
 const MyAppointmentsPage = () => {
     const [listAppointments, setListAppointments] = useState([]);
@@ -21,7 +22,9 @@ const MyAppointmentsPage = () => {
     useEffect(() => {
         ResultRegistrationAPI.getAllResultRegistration(user._id)
             .then((response) => {
-                setListAppointments(response.data);
+                const filteredAppointments = response.data.filter(item => item.status !== ResultRegistrationStatus.CANCELLED);
+                setListAppointments(filteredAppointments);
+                setCurrentPage(1); // Reset to the first page after fetching
             })
             .catch(() => {
                 toast.error("Lỗi khi lấy danh sách lịch hẹn");
@@ -37,13 +40,17 @@ const MyAppointmentsPage = () => {
     };
 
     const handleCancleAppointment = (id) => {
-        ResultRegistrationAPI.deleteResultRegistration(id)
+        const data = {
+            status:  ResultRegistrationStatus.CANCELLED
+        };
+
+        ResultRegistrationAPI.updateResultRegistration(id, data)
             .then(() => {
                 toast.success("Hủy lịch hẹn thành công");
-                setListAppointments((prev) => prev.filter((appointment) => appointment._id !== id));
+                setListAppointments((prev) => prev.filter((item) => item._id !== id));
             })
             .catch(() => {
-                toast.error("Lỗi khi hủy lịch hẹn");
+                toast.error("Có lỗi xảy ra khi hủy lịch hẹn");
             });
     };
 
