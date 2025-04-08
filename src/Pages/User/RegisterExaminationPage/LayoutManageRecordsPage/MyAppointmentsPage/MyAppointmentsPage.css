@@ -201,3 +201,14 @@
     color: #2c2c2c;
     cursor: not-allowed;
 }
+
+
+
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    gap: 10px;
+}

@@ -97,6 +97,7 @@ const NotificationsPage = () => {
 
                 <div className="pagination-controls">
                     <button onClick={handlePreviousPage} disabled={currentPage === 1}>Trang trước</button>
+                    <span>Trang {currentPage} / {Math.ceil(notifications.length / notificationsPerPage)}</span>
                     <button onClick={handleNextPage} disabled={indexOfLastNotification >= notifications.length}>Trang sau</button>
                 </div>
             </>
