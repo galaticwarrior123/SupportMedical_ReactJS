@@ -27,6 +27,8 @@ const DefaultLayoutAdmin = ({ children }) => {
         '/admin/shift-segment': 'Quản lý khung giờ',
         '/admin/medExamService': 'Quản lý dịch vụ khám',
         '/admin/shift-change': 'Thay đổi ca trực',
+        '/admin/medication': 'Quản lý thuốc',
+        '/admin/type-medication': 'Quản lý danh mục thuốc',
         // Add more paths and their corresponding names as needed
     };
 

@@ -46,6 +46,8 @@ import ShiftChange from './Pages/Admin/ShiftDoctorManage/ShiftChange/ShiftChange
 import RequestShiftChange from './Pages/Doctor/RequestShiftChange/RequestShiftChange';
 import UpdateProfileDoctor from './Pages/Doctor/UpdateProfileDoctor/UpdateProfileDoctor';
 import ResultExaminationPage from './Pages/User/RegisterExaminationPage/LayoutManageRecordsPage/ResultExaminationPage/ResultExaminationPage';
+import DrugManagePage from './Pages/Admin/DrugManagePage/DrugPage/DrugManagePage';
+import TypeMedicationPage from './Pages/Admin/DrugManagePage/TypeDrugPage/TypeDrugPage';
 const ROLES = {
   'CLIENT': 'CLIENT',
   'DOCTOR': 'DOCTOR',
@@ -103,6 +105,8 @@ function App() {
               <Route path="shift-segment" element={<ShiftSegment />} />
               <Route path="medExamService" element={<MedExamServicePage />} />
               <Route path='shift-change' element={<ShiftChange />} />
+              <Route path="medication" element={<DrugManagePage />} />
+              <Route path="type-medication" element={<TypeMedicationPage />} />
               {/* Thêm các route khác nếu cần */}
             </Route>
           </Route>

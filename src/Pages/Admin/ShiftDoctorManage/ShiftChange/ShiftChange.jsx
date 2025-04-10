@@ -11,6 +11,8 @@ const ShiftChange = () => {
     const [reasonReject, setReasonReject] = useState('');
     const [isOpenRejectModal, setIsOpenRejectModal] = useState(false);
     const [idReject, setIdReject] = useState('');
+    const [currentPage, setCurrentPage] = useState(1);
+    const [itemsPerPage, setItemsPerPage] = useState(10); // Số lượng item trên mỗi trang
 
     useEffect(() => {
         fetchShiftRequests();
@@ -75,6 +77,38 @@ const ShiftChange = () => {
     const handleOpenRejectModal = (id) => {
         setIsOpenRejectModal(true);
         setIdReject(id);
+    };
+
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
+    };
+
+    const handleItemsPerPageChange = (e) => {
+        setItemsPerPage(Number(e.target.value));
+        setCurrentPage(1); // reset về trang 1 khi thay đổi số item/trang
+    };
+
+    const paginatedData = shiftRequests.slice(
+        (currentPage - 1) * itemsPerPage,
+        currentPage * itemsPerPage
+    );
+
+    const totalPages = Math.ceil(shiftRequests.length / itemsPerPage);
+
+    const generatePaginationButtons = () => {
+        let buttons = [];
+        for (let i = 1; i <= totalPages; i++) {
+            buttons.push(
+                <button
+                    key={i}
+                    className={i === currentPage ? 'active' : ''}
+                    onClick={() => handlePageChange(i)}
+                >
+                    {i}
+                </button>
+            );
+        }
+        return buttons;
     };
 
     return (
@@ -143,12 +177,12 @@ const ShiftChange = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {shiftRequests.length === 0 ? (
+                            {paginatedData.length === 0 ? (
                                 <tr>
                                     <td colSpan="7" className="no-data">Không có yêu cầu đổi ca nào</td>
                                 </tr>
 
-                            ) : shiftRequests.map(request => (
+                            ) : paginatedData.map(request => (
                                 <tr key={request._id}>
                                     <td>BS. {request.currentDoctor.firstName} {request.currentDoctor.lastName}</td>
                                     <td>BS. {request.newDoctor.firstName} {request.newDoctor.lastName}</td>
@@ -176,6 +210,27 @@ const ShiftChange = () => {
                             ))}
                         </tbody>
                     </table>
+
+                    <div className="pagination">
+                        <span>Hiển thị</span>
+                        <select value={itemsPerPage} onChange={handleItemsPerPageChange}>
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                            <option value="50">50</option>
+                        </select>
+                        <span>
+                            {(currentPage - 1) * itemsPerPage + 1}-{Math.min(currentPage * itemsPerPage, shiftRequests.length)} của {totalPages}
+                        </span>
+                        <div className="page-controls">
+                            <button disabled={currentPage === 1} onClick={() => handlePageChange(currentPage - 1)}>
+                                &lt;
+                            </button>
+                            {generatePaginationButtons()}
+                            <button disabled={currentPage === totalPages} onClick={() => handlePageChange(currentPage + 1)}>
+                                &gt;
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </DefaultLayoutAdmin>
         </SidebarProvider>

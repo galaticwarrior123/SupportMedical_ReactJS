@@ -1,0 +1,217 @@
+.typeDrugContainer {
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    margin: 20px;
+}
+
+.formSection {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border: 2px solid #e2e2e2;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.formSection span{
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.inputGroupDrug {
+    position: relative;
+    margin-bottom: 20px;
+    width: 100%;
+    display: flex
+}
+
+.inputGroupDrug input {
+    padding: 12px 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background: none;
+    outline: none;
+    width: 100%;
+}
+
+.inputGroupDrug label {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    color: #aaa;
+    font-size: 16px;
+    background-color: white;
+    padding: 0 5px;
+    transition: 0.2s ease all;
+    pointer-events: none;
+}
+
+.inputGroupDrug input:focus + label,
+.inputGroupDrug input:not(:placeholder-shown) + label {
+    top: -10px;
+    left: 8px;
+    font-size: 12px;
+    color: #3498db;
+}
+
+
+
+.formSection button {
+    width: 150px;
+    padding: 10px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.searchSection {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.searchSection input {
+    padding: 8px;
+    flex: 1;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.listSection table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.listSection th, .listSection td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+}
+
+.listSection th {
+    background-color: #f4f4f4;
+}
+
+.editBtn, .deleteBtn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.editBtn:hover {
+    color: #f39c12;
+}
+
+.deleteBtn:hover {
+    color: #e74c3c;
+}
+
+
+
+
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.modalContent {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 400px;
+    position: relative;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    display: flex;
+    flex-direction: column;
+}
+
+.modalContent input{
+    margin-bottom: 10px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-family: inherit;
+}
+
+.modalHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.modalHeader h3 {
+    margin: 0;
+    font-size: 20px;
+    color: #333;
+}
+.closeModalBtn {
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    color: #999;
+}
+
+.saveEditBtn {
+    width: 100%;
+    padding: 10px;
+    background-color: #27ae60;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.inputGroupTypeDrug {
+    position: relative;
+    margin-bottom: 20px;
+    display: flex;
+}
+
+.inputGroupTypeDrug input {
+    width: 100%;
+    padding: 12px 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background: none;
+    outline: none;
+}
+
+.inputGroupTypeDrug label {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    color: #aaa;
+    font-size: 16px;
+    background-color: white;
+    padding: 0 5px;
+    transition: 0.2s ease all;
+    pointer-events: none;
+}
+
+.inputGroupTypeDrug input:focus + label,
+.inputGroupTypeDrug input:not(:placeholder-shown) + label {
+    top: -10px;
+    left: 8px;
+    font-size: 12px;
+    color: #3498db;
+}

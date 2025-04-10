@@ -19,6 +19,8 @@ const MedExamServicePage = () => {
     const [isOpenDialog, setIsOpenDialog] = useState(false);
     const [idMedExamServiceDelete, setIdMedExamServiceDelete] = useState('');
     const [searchTerm, setSearchTerm] = useState('');
+    const [currentPage, setCurrentPage] = useState(1);
+    const [itemsPerPage, setItemsPerPage] = useState(10); // Số lượng dịch vụ hiển thị trên mỗi trang
 
     useEffect(() => {
         MedExamServiceAPI.getMedExamServices()
@@ -157,6 +159,38 @@ const MedExamServicePage = () => {
         setIsOpenDialog(true);
     }
 
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
+    };
+    
+    const handleItemsPerPageChange = (e) => {
+        setItemsPerPage(Number(e.target.value));
+        setCurrentPage(1); // reset về trang 1 khi thay đổi số item/trang
+    };
+    
+    const paginatedData = filteredServices.slice(
+        (currentPage - 1) * itemsPerPage,
+        currentPage * itemsPerPage
+    );
+    
+    const totalPages = Math.ceil(filteredServices.length / itemsPerPage);
+    
+    const generatePaginationButtons = () => {
+        let buttons = [];
+        for (let i = 1; i <= totalPages; i++) {
+            buttons.push(
+                <button
+                    key={i}
+                    className={i === currentPage ? 'active' : ''}
+                    onClick={() => handlePageChange(i)}
+                >
+                    {i}
+                </button>
+            );
+        }
+        return buttons;
+    };
+
     return (
         <SidebarProvider>
             <DefaultLayoutAdmin>
@@ -261,7 +295,7 @@ const MedExamServicePage = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {filteredServices.length > 0 ? filteredServices.map((service, index) => (
+                            {paginatedData.length > 0 ? paginatedData.map((service, index) => (
                                 <tr key={service._id}>
                                     <td>{index + 1}</td>
                                     <td>{service.name}</td>
@@ -279,6 +313,26 @@ const MedExamServicePage = () => {
 
                         </tbody>
                     </table>
+                    <div className="pagination">
+                        <span>Hiển thị</span>
+                        <select value={itemsPerPage} onChange={handleItemsPerPageChange}>
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                            <option value="50">50</option>
+                        </select>
+                        <span>
+                            {(currentPage - 1) * itemsPerPage + 1}-{Math.min(currentPage * itemsPerPage, filteredServices.length)} của {totalPages}
+                        </span>
+                        <div className="page-controls">
+                            <button disabled={currentPage === 1} onClick={() => handlePageChange(currentPage - 1)}>
+                                &lt;
+                            </button>
+                            {generatePaginationButtons()}
+                            <button disabled={currentPage === totalPages} onClick={() => handlePageChange(currentPage + 1)}>
+                                &gt;
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </DefaultLayoutAdmin>
         </SidebarProvider>

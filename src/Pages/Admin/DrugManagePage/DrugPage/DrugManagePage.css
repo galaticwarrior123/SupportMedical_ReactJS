@@ -1,0 +1,224 @@
+.drug-manage-page {
+    padding: 20px;
+    background-color: #f9f9f9;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.add-btn {
+    padding: 8px 16px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.add-btn:hover {
+    background-color: #218838;
+}
+
+.med-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.med-table th,
+.med-table td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+}
+
+.med-table th {
+    background-color: #f2f2f2;
+}
+
+.edit-btn,
+.delete-btn {
+    padding: 5px 10px;
+    margin-right: 5px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.edit-btn {
+    background-color: #ffc107;
+    color: white;
+}
+
+.edit-btn:hover {
+    background-color: #e0a800;
+}
+
+.delete-btn {
+    background-color: #dc3545;
+    color: white;
+}
+
+.delete-btn:hover {
+    background-color: #c82333;
+}
+
+/* Modal styles */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    width: 400px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.modal h3 {
+    margin: 0;
+    margin-bottom: 20px;
+    font-size: 24px;
+
+}
+
+.modal form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.modal-actions button {
+    padding: 8px 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.modal-actions button:first-child {
+    background-color: #007bff;
+    color: white;
+}
+
+.modal-actions button:first-child:hover {
+    background-color: #0056b3;
+}
+
+.modal-actions button:last-child {
+    background-color: #6c757d;
+    color: white;
+}
+
+.modal-actions button:last-child:hover {
+    background-color: #5a6268;
+}
+
+
+.modal textarea {
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    height: 100px;
+    resize: none;
+}
+.modal textarea:focus {
+    outline: none;
+}
+
+
+.inputGroupDrugModal {
+    position: relative;
+    margin-bottom: 20px;
+    display: flex;
+}
+
+
+.inputGroupDrugModal input,
+.inputGroupDrugModal textarea {
+    width: 100%;
+    padding: 12px 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background: none;
+    outline: none;
+}
+
+.inputGroupDrugModal label {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    color: #aaa;
+    font-size: 16px;
+    background-color: white;
+    padding: 0 5px;
+    transition: 0.2s ease all;
+    pointer-events: none;
+}
+
+.inputGroupDrugModal input:focus + label,
+.inputGroupDrugModal input:not(:placeholder-shown) + label,
+.inputGroupDrugModal textarea:focus + label,
+.inputGroupDrugModal textarea:not(:placeholder-shown) + label {
+    top: -10px;
+    left: 8px;
+    font-size: 12px;
+    color: #3498db;
+}
+
+
+.modal select {
+    padding: 12px 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background: none;
+    outline: none;
+    width: 100%;
+    margin-bottom: 20px;
+}
+.modal select:focus {
+    outline: none;
+    border-color: #c7c7c7;
+}
+
+.drug-manage-page-search {
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.drug-manage-page-search input{
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    width: 350px;
+}
+
+.drug-manage-page-search select {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    margin-left: 10px;
+}

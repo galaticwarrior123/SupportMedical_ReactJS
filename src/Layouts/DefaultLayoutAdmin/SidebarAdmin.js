@@ -1,5 +1,9 @@
 import './SidebarAdmin.css';
-import { faList, faChartBar, faArrowLeft, faArrowRight, faUserDoctor, faShare, faChevronUp, faChevronDown, faMedkit } from '@fortawesome/free-solid-svg-icons';
+import {
+    faList, faChartBar, faArrowLeft, faArrowRight,
+    faUserDoctor, faShare, faChevronUp, faChevronDown, faMedkit,
+    faPills
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useContext, useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
@@ -8,20 +12,21 @@ import { SidebarContext } from './SidebarContext';
 const SidebarAdmin = ({ onMenuClick, activeMenu }) => {
     const { isCollapsed, toggleSidebar } = useContext(SidebarContext);
     const [isShiftMenuOpen, setShiftMenuOpen] = useState(false);
+    const [isMedicationMenuOpen, setMedicationMenuOpen] = useState(false);
     const location = useLocation();
 
     const handleShiftMenuClick = () => {
         setShiftMenuOpen(prev => !prev);
-        // onMenuClick('Lịch làm việc');
-    }
+    };
+
+    const handleMedicationMenuClick = () => {
+        setMedicationMenuOpen(prev => !prev);
+    };
 
     useEffect(() => {
-        const currentPath = location.pathname;
-        if (currentPath === '/admin/manage-schedule' || currentPath === '/admin/assign-shifts' || currentPath === '/admin/shift-segment' || currentPath === '/admin/shift-change') {
-            setShiftMenuOpen(true);
-        } else {
-            setShiftMenuOpen(false);
-        }
+        const path = location.pathname;
+        setShiftMenuOpen(['/admin/manage-schedule', '/admin/assign-shifts', '/admin/shift-change', '/admin/shift-segment'].includes(path));
+        setMedicationMenuOpen(['/admin/type-medication', '/admin/medication'].includes(path));
     }, [location.pathname]);
 
     return (
@@ -65,16 +70,17 @@ const SidebarAdmin = ({ onMenuClick, activeMenu }) => {
                             <span>Quản lý dịch vụ khám</span>
                         </Link>
                     </li>
+                    {/* Lịch làm việc */}
                     <li>
                         <div
-                            className={`menuItemAdmin ${isShiftMenuOpen || location.pathname.includes('/admin/manage-schedule') || location.pathname.includes('/admin/assign-shifts') ? 'active' : ''}` || location.pathname.includes('/admin/time-slot')}
+                            className={`menuItemAdmin ${isShiftMenuOpen ? 'active' : ''}`}
                             onClick={handleShiftMenuClick}>
                             <FontAwesomeIcon icon={faShare} />
                             <span>Lịch làm việc</span>
                             <FontAwesomeIcon icon={isShiftMenuOpen ? faChevronUp : faChevronDown} className="arrowIcon" />
                         </div>
                         {isShiftMenuOpen && (
-                            <ul className= {`submenuAdmin ${isShiftMenuOpen ? 'show' : ''}`}>
+                            <ul className="submenuAdmin show">
                                 <li>
                                     <Link
                                         to='/admin/manage-schedule'
@@ -88,7 +94,7 @@ const SidebarAdmin = ({ onMenuClick, activeMenu }) => {
                                         to='/admin/assign-shifts'
                                         className={`submenuItemAdmin ${location.pathname === '/admin/assign-shifts' ? 'active' : ''}`}
                                         onClick={() => onMenuClick('Phân công ca trực')}>
-                                        <span>Phân công ca trực </span>
+                                        <span>Phân công ca trực</span>
                                     </Link>
                                 </li>
                                 <li>
@@ -110,7 +116,36 @@ const SidebarAdmin = ({ onMenuClick, activeMenu }) => {
                             </ul>
                         )}
                     </li>
-
+                    {/* Quản lý thuốc */}
+                    <li>
+                        <div
+                            className={`menuItemAdmin ${isMedicationMenuOpen ? 'active' : ''}`}
+                            onClick={handleMedicationMenuClick}>
+                            <FontAwesomeIcon icon={faPills} />
+                            <span>Quản lý thuốc</span>
+                            <FontAwesomeIcon icon={isMedicationMenuOpen ? faChevronUp : faChevronDown} className="arrowIcon" />
+                        </div>
+                        {isMedicationMenuOpen && (
+                            <ul className="submenuAdmin show">
+                                <li>
+                                    <Link
+                                        to='/admin/type-medication'
+                                        className={`submenuItemAdmin ${location.pathname === '/admin/type-medication' ? 'active' : ''}`}
+                                        onClick={() => onMenuClick('Quản lý danh mục thuốc')}>
+                                        <span>Quản lý danh mục thuốc</span>
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link
+                                        to='/admin/medication'
+                                        className={`submenuItemAdmin ${location.pathname === '/admin/medication' ? 'active' : ''}`}
+                                        onClick={() => onMenuClick('Quản lý thuốc')}>
+                                        <span>Quản lý thuốc</span>
+                                    </Link>
+                                </li>
+                            </ul>
+                        )}
+                    </li>
                     <li>
                         <Link
                             to='/admin/dashboard'
@@ -124,6 +159,6 @@ const SidebarAdmin = ({ onMenuClick, activeMenu }) => {
             </nav>
         </aside>
     );
-}
+};
 
 export default SidebarAdmin;

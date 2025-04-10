@@ -55,7 +55,7 @@ const Shift = () => {
 
 
     }
-
+    const filteredShifts = shifts.filter(shift => shift.name.toLowerCase().includes(searchName.toLowerCase()));
     const [shiftNameUpdate, setShiftNameUpdate] = useState('');
     const [startTimeUpdate, setStartTimeUpdate] = useState('');
     const [endTimeUpdate, setEndTimeUpdate] = useState('');
@@ -111,6 +111,46 @@ const Shift = () => {
         setIdShiftDelete(id);
 
     }
+
+    const [currentPage, setCurrentPage] = useState(1);
+    const [itemsPerPage, setItemsPerPage] = useState(10);
+
+
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
+    };
+    
+    const handleItemsPerPageChange = (e) => {
+        setItemsPerPage(Number(e.target.value));
+        setCurrentPage(1); // reset về trang 1 khi thay đổi số item/trang
+    };
+    
+    const paginatedData = filteredShifts.slice(
+        (currentPage - 1) * itemsPerPage,
+        currentPage * itemsPerPage
+    );
+    
+    const totalPages = Math.ceil(filteredShifts.length / itemsPerPage);
+    
+    const generatePaginationButtons = () => {
+        let buttons = [];
+        for (let i = 1; i <= totalPages; i++) {
+            buttons.push(
+                <button
+                    key={i}
+                    className={i === currentPage ? 'active' : ''}
+                    onClick={() => handlePageChange(i)}
+                >
+                    {i}
+                </button>
+            );
+        }
+        return buttons;
+    };
+
+    
+
+
 
     return (
         <SidebarProvider>
@@ -215,8 +255,7 @@ const Shift = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {shifts.filter(shift => shift.name.toLowerCase().includes(searchName.toLowerCase()))
-                                .map((shift, index) => (
+                            {paginatedData.map((shift, index) => (
                                     <tr key={shift._id}>
                                         <td>{index + 1 < 10 ? `0${index + 1}` : index + 1}</td>
                                         <td>{shift.name}</td>
@@ -233,6 +272,31 @@ const Shift = () => {
                                 ))}
                         </tbody>
                     </table>
+
+                    <div className="pagination">
+                        <span>Hiển thị</span>
+                        <select value={itemsPerPage} onChange={handleItemsPerPageChange}>
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                            <option value="50">50</option>
+                        </select>
+                        <span>{(currentPage - 1) * itemsPerPage + 1}-{Math.min(currentPage * itemsPerPage, filteredShifts.length)} của {totalPages} </span>
+                        <div className="page-controls">
+                            <button
+                                disabled={currentPage === 1}
+                                onClick={() => handlePageChange(currentPage - 1)}
+                            >
+                                &lt;
+                            </button>
+                            {generatePaginationButtons()}
+                            <button
+                                disabled={currentPage === Math.ceil(shifts.length / itemsPerPage)}
+                                onClick={() => handlePageChange(currentPage + 1)}
+                            >
+                                &gt;
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </DefaultLayoutAdmin>
         </SidebarProvider>
