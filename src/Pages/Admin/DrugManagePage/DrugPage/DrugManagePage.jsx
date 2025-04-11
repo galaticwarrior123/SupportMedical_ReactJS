@@ -216,7 +216,7 @@ const DrugManagePage = () => {
                                     <td>{med.name}</td>
                                     <td>{med.dosage}</td>
                                     <td>{med.brand}</td>
-                                    <td>{typeDrug.find(type => type._id === med.type)?.name}</td>
+                                    <td>{med.type.name}</td>
                                     <td>{med.description || 'Không có'}</td>
                                     <td>
                                         <button className="edit-btn" onClick={() => openModal(med)}>
