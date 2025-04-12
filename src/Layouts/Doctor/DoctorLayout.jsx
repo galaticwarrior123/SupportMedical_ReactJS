@@ -25,6 +25,7 @@ const DoctorLayout = ({ children }) => {
         '/doctor/schedule': 'Lịch làm việc',
         '/doctor/shift-change': 'Thay đổi ca',
         '/doctor/update-profile': 'Cập nhật hồ sơ',
+        '/doctor/drug': 'Tra cứu thuốc',
         // Add more paths and their corresponding names as needed
     };
 

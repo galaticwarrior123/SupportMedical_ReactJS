@@ -15,7 +15,7 @@
     background-color: #FFF7E1;
     padding: 20px;
     border-radius: 8px;
-    width: 600px;
+    width: 1000px;
 }
 
 .modal__title {
@@ -70,4 +70,26 @@
             cursor: not-allowed;
         }
     }
+}
+
+.modal__body {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+}
+
+.modal__body__left {
+    flex: 1.2;
+    padding-right: 20px;
+    border-right: 1px solid #ccc;
+}
+
+.modal__body__right {
+    flex: 1;
+    padding-left: 20px;
+}
+
+.modal__body__right__list {
+    overflow-y: auto;
+    max-height: 400px;
 }

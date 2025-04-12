@@ -48,6 +48,7 @@ import UpdateProfileDoctor from './Pages/Doctor/UpdateProfileDoctor/UpdateProfil
 import ResultExaminationPage from './Pages/User/RegisterExaminationPage/LayoutManageRecordsPage/ResultExaminationPage/ResultExaminationPage';
 import DrugManagePage from './Pages/Admin/DrugManagePage/DrugPage/DrugManagePage';
 import TypeMedicationPage from './Pages/Admin/DrugManagePage/TypeDrugPage/TypeDrugPage';
+import Drug from './Pages/Doctor/Drug/Drug';
 const ROLES = {
   'CLIENT': 'CLIENT',
   'DOCTOR': 'DOCTOR',
@@ -89,6 +90,7 @@ function App() {
               <Route path='schedule' element={<Schedule />} />
               <Route path='shift-change' element={<RequestShiftChange />} />
               <Route path='update-profile' element={<UpdateProfileDoctor />} />
+              <Route path='drug' element={<Drug />} />
             </Route>
           </Route>
 

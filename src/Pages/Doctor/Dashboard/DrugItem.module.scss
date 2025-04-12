@@ -1,0 +1,24 @@
+.drugItem {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border-bottom: 1px solid #eee;
+
+    &:last-child {
+        border-bottom: none;
+    }
+}
+
+.drugItem__details {
+    padding: 10px 15px;
+    
+    p {
+        margin: 0;
+        font-size: 14px;
+        color: #333;
+
+        &:first-child {
+            font-weight: bold;
+        }
+    }
+}
