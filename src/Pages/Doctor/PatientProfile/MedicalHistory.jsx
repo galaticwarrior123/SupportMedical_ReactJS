@@ -38,39 +38,52 @@ const MedicalHistory = () => {
     return (
         <div className="patient-profile-card patient-profile-medical-history">
             <h2>Lịch sử khám bệnh</h2>
-            {medicalHistory.map((record, index) => (
-                <div className="record" key={index}>
-                    <div className="record-header" onClick={() => toggleExpand(index)}>
-                        <span className="record-header-date">{record.date}</span>
-                        <span className="record-header-icon">
-                            {expandedIndex === index ?
-                                <FontAwesomeIcon icon={faChevronDown} />
-                                : <FontAwesomeIcon icon={faChevronLeft} />}
-                        </span>
-                    </div>
-                    {expandedIndex === index && (
-                        <div className="record-details">
-                            <div className="record-details-item">
-                                <strong>Bác sĩ khám: </strong>
-                                {
-                                    record.doctor._id === user._id
-                                        ? "bạn"
-                                        : <Link to={`/forum/profile/${record.doctor._id}`}>{record.doctor.firstName} {record.doctor.lastName}</Link>
-                                }
-                            </div>
-                            <div className="record-details-item">
-                                <strong>Triệu chứng:</strong> {record.symptoms}
-                            </div>
-                            <div className="record-details-item">
-                                <strong>Kết quả khám:</strong> {record.result}
-                            </div>
-                            <div className="record-details-item">
-                                <strong>Kê đơn:</strong> {record.prescription}
-                            </div>
+            <div className="patient-profile-medical-history-container">
+                {medicalHistory.map((record, index) => (
+                    <div className="record" key={index}>
+                        <div className="record-header" onClick={() => toggleExpand(index)}>
+                            <span className="record-header-date">{record.date}</span>
+                            <span className="record-header-icon">
+                                {expandedIndex === index ?
+                                    <FontAwesomeIcon icon={faChevronDown} />
+                                    : <FontAwesomeIcon icon={faChevronLeft} />}
+                            </span>
                         </div>
-                    )}
-                </div>
-            ))}
+                        {expandedIndex === index && (
+                            <div className="record-details">
+                                <div className="record-details-item">
+                                    <strong>Bác sĩ khám: </strong>
+                                    {
+                                        record.doctor._id === user._id
+                                            ? "bạn"
+                                            : <Link to={`/forum/profile/${record.doctor._id}`}>{record.doctor.firstName} {record.doctor.lastName}</Link>
+                                    }
+                                </div>
+                                <div className="record-details-item">
+                                    <strong>Triệu chứng:</strong> {record.symptoms}
+                                </div>
+                                <div className="record-details-item">
+                                    <strong>Kết quả khám:</strong> {record.result}
+                                </div>
+                                <div className="record-details-item">
+                                    <strong>Kê đơn:</strong>
+                                    <ul>
+                                        {record.drugAssign.length > 0 ? (
+                                            record.drugAssign.map((drug, index) => (
+                                                <li key={index}>
+                                                    {drug.quantity}x {drug.drug.name}
+                                                </li>
+                                            ))
+                                        ) : (
+                                            <p>(trống)</p>
+                                        )}
+                                    </ul>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                ))}
+            </div>
         </div>
     );
 }

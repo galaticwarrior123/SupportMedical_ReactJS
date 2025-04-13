@@ -93,3 +93,29 @@
     overflow-y: auto;
     max-height: 400px;
 }
+
+.modal__field__drugs {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.modal__field__drugs__item {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    padding: 10px;
+    max-width: 200px;
+}
+
+.modal__field__drugs__item__remove {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 24px;
+}

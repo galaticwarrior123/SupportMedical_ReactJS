@@ -122,6 +122,10 @@
     animation: slideIn 0.5s forwards;
 }
 
+.patient-card p {
+    margin: 2px;
+}
+
 @keyframes slideIn {
     from {
         transform: translateX(-50%);
@@ -157,6 +161,8 @@
 
 .previous-visit {
     margin-bottom: 15px;
+    height: 220px;
+    overflow-y: auto;
 }
 
 .previous-visit a {

@@ -6,7 +6,7 @@ import { MedExamHistoryAPI } from '../../../API/MedExamHistoryAPI';
 import { toast } from 'react-toastify';
 import { ResultRegistrationAPI } from '../../../API/ResultRegistrationAPI';
 import { ResultRegistrationStatus } from '../../../Common/Constants';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faCircleXmark, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { DrugAPI } from '../../../API/DrugAPI';
 import DrugItem from './DrugItem';
@@ -15,7 +15,8 @@ const INIT_HISTORY = {
     recordPatient: '',
     symptoms: '',
     result: '',
-    prescription: ''
+    _drugAssign: [],
+    drugAssign: []
 }
 
 let _listDrug = [];
@@ -56,12 +57,34 @@ function RecordResultModal() {
         setListDrug(filteredDrugs);
     }
 
+    const handleAddDrug = (drugId, quantity) => {
+        const drug = _listDrug.find(d => d._id === drugId);
+        if (!drug) return;
+
+        const existingDrug = history.drugAssign.find(d => d.drug._id === drugId);
+        if (existingDrug) {
+            existingDrug.quantity += quantity;
+        } else {
+            history._drugAssign.push({
+                drug: drug,
+                quantity: quantity
+            });
+        }
+        setHistory({ ...history });
+    }
+
     const onSave = async () => {
         // Save the history to the database
         history.recordPatient = selectedPatient.recordPatient._id;
         try {
             const [_, __] = await Promise.all([
-                MedExamHistoryAPI.createMedExamHistory(history),
+                MedExamHistoryAPI.createMedExamHistory({
+                    ...history,
+                    drugAssign: history._drugAssign.map(drug => ({
+                        drug: drug.drug._id,
+                        quantity: drug.quantity
+                    }))
+                }),
                 ResultRegistrationAPI.updateResultRegistration(
                     selectedPatient._id,
                     {
@@ -90,7 +113,7 @@ function RecordResultModal() {
                 <div className={styles.modal__body}>
                     <div className={styles.modal__body__left}>
                         <div className={styles.modal__field}>
-                            <label htmlFor="symptoms">Triệu chứng:</label>
+                            <label htmlFor="symptoms">Triệu chứng*:</label>
                             <textarea
                                 value={history.symptoms}
                                 onChange={(e) => setHistory({ ...history, symptoms: e.target.value })}
@@ -99,7 +122,7 @@ function RecordResultModal() {
                         </div>
 
                         <div className={styles.modal__field}>
-                            <label htmlFor="result">Kết luận:</label>
+                            <label htmlFor="result">Kết luận*:</label>
                             <textarea
                                 value={history.result}
                                 onChange={(e) => setHistory({ ...history, result: e.target.value })}
@@ -108,10 +131,31 @@ function RecordResultModal() {
 
                         <div className={styles.modal__field}>
                             <label htmlFor="prescription">Kê đơn:</label>
-                            <textarea
-                                value={history.prescription}
-                                onChange={(e) => setHistory({ ...history, prescription: e.target.value })}
-                                id="prescription" className={styles.modal__input} />
+                            {
+                                history._drugAssign.length > 0 ? (
+                                    <div className={styles.modal__field__drugs}>
+                                        {
+                                            history._drugAssign.map((drug, index) => (
+                                                <div key={index} className={styles.modal__field__drugs__item}>
+                                                    <span><span style={{color:"#1976d2", fontWeight:"bold"}}>{drug.quantity}</span>x {drug.drug.name}</span>
+                                                    <button
+                                                        className={styles.modal__field__drugs__item__remove}
+                                                        onClick={() => {
+                                                            history._drugAssign.splice(index, 1);
+                                                            setHistory({ ...history });
+                                                        }
+                                                        }
+                                                    >
+                                                        <FontAwesomeIcon icon={faCircleXmark} />
+                                                    </button>
+                                                </div>
+                                            ))
+                                        }
+                                    </div>
+                                ) : (
+                                    <p className={styles.modal__field__drugs__empty}>Chưa có thuốc nào được kê đơn</p>
+                                )
+                            }
                         </div>
                     </div>
                     <div className={styles.modal__body__right}>
@@ -135,7 +179,7 @@ function RecordResultModal() {
                         <div className={styles.modal__body__right__list}>
                             {
                                 listDrug.map((drug) => (
-                                    <DrugItem drug={drug} key={drug._id} />
+                                    <DrugItem drug={drug} key={drug._id} onAdd={handleAddDrug} />
                                 ))
                             }
                             {
@@ -153,7 +197,7 @@ function RecordResultModal() {
                     </button>
                     <button
                         onClick={onSave}
-                        disabled={!history.result || !history.symptoms || !history.prescription}
+                        disabled={!history.result || !history.symptoms}
                         className={`${styles.modal__button} ${styles.modal__button_save}`}>Lưu</button>
                 </div>
             </div>

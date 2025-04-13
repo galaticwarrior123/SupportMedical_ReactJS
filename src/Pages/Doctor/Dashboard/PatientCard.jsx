@@ -74,7 +74,7 @@ function PatientCard() {
         </div>
         <div className="patient-notes">
           <p>Ghi chú của bệnh nhân:</p>
-          <ul>
+          <ul style={{margin:0}}>
             <li>{selectedPatient.description ?? "(trống)"}</li>
           </ul>
         </div>
@@ -91,7 +91,19 @@ function PatientCard() {
                 </p>
                 <p>Triệu chứng: {selectedPatient?.latestVisit.symptoms}</p>
                 <p>Kết luận: {selectedPatient?.latestVisit.result}</p>
-                <p>Kê đơn: {selectedPatient?.latestVisit.prescription}</p>
+                <p>Kê đơn:
+                  <ul style={{margin:0}}>
+                    {selectedPatient?.latestVisit.drugAssign.length > 0 ? (
+                      selectedPatient?.latestVisit.drugAssign.map((drug, index) => (
+                        <li key={index}>
+                          {drug.quantity}x {drug.drug.name}
+                        </li>
+                      ))
+                    ) : (
+                      <p>(trống)</p>
+                    )}
+                  </ul>
+                </p>
               </>
             )
           }
