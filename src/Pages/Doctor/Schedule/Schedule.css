@@ -15,6 +15,10 @@
     font-weight: normal; /* override the original css */
 }
 
+.doctor-schedule-container .day-selection td.has-appointment {
+    background-color: #f7dcdc;
+}
+
 .doctor-schedule-day {
     display: flex;
     justify-content: flex-start;

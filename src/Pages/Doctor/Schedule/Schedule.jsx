@@ -5,7 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { openAppointmentListModal } from "../../../redux/slices/doctorScheduleSlice";
 import AppointmentListModal from "./AppointmentListModal";
 import { ShiftAssignmentAPI } from "../../../API/ShiftAssignmentAPI";
-import { use } from "react";
+import { ResultRegistrationAPI } from "../../../API/ResultRegistrationAPI";
+import { ResultRegistrationStatus } from "../../../Common/Constants";
 
 const daysOfWeek = ['CN', 'Hai', 'Ba', 'Tư', 'Năm', 'Sáu', 'Bảy'];
 const getDaysInMonth = (year, month) => {
@@ -36,6 +37,7 @@ const Schedule = () => {
     const daysInMonth = getDaysInMonth(year, month);
 
     const [listShift, setListShift] = useState([]);
+    const [listApptOfMonth, setListApptOfMonth] = useState([]);
 
     const changeMonth = (delta) => {
         let newMonth = month + delta;
@@ -62,10 +64,23 @@ const Schedule = () => {
     useEffect(() => {
         const getListShift = async () => {
             const response = await ShiftAssignmentAPI.getMyShifts({ month: month + 1, year });
-            console.log(response);
             setListShift(response.data);
         }
         getListShift();
+
+        const fetchAppointments = async () => {
+            try {
+                const response = await ResultRegistrationAPI.doctorGetByFilter({
+                    startDate: new Date(year, month, 1).toISOString().split('T')[0],
+                    endDate: new Date(year, month + 1, 0).toISOString().split('T')[0],
+                    status: ResultRegistrationStatus.PENDING,
+                });
+                setListApptOfMonth(response.data);
+            } catch (error) {
+                console.error('Error fetching appointments:', error);
+            }
+        };
+        fetchAppointments();
     }, [month, year]);
 
     const checkShift = useCallback((day, shift) => {
@@ -97,12 +112,16 @@ const Schedule = () => {
                                     {week.map((day, j) => (
                                         <td
                                             key={j}
-                                            className={day === selectedDay ? 'selected' : day ? 'available' : 'empty'}
+                                            className={
+                                                (day === selectedDay ? 'selected' : day ? 'available' : 'empty')
+                                                + ' '
+                                                + (listApptOfMonth.some(item => item.shiftSegment.date.split('-')[2] == day) ? 'has-appointment' : '')
+                                            }
                                             onClick={() => handleSelectDay(day)}
                                         >
-                                            {day && 
+                                            {day &&
                                                 <div className="doctor-schedule-day">
-                                                    {day} 
+                                                    {day}
                                                     {checkShift(day, 'sáng') && <div className="doctor-schedule-shift day-shift"></div>}
                                                     {checkShift(day, 'chiều') && <div className="doctor-schedule-shift afternoon-shift"></div>}
                                                     {checkShift(day, 'tối') && <div className="doctor-schedule-shift night-shift"></div>}

@@ -36,13 +36,13 @@ function AppointmentListModal() {
             <div className={styles.modal}>
                 <div className={styles.header}>
                     <span className={styles.date}>{selectedDate}</span>
-                    <div className={styles.shift}>
+                    {/* <div className={styles.shift}>
                         <span className={styles.shiftLabel}>Ca:</span>
                         <select className={styles.shiftSelect}>
                             <option value="morning">Sáng</option>
                             <option value="afternoon">Chiều</option>
                         </select>
-                    </div>
+                    </div> */}
                 </div>
 
                 {<div className={styles.content}>
@@ -83,7 +83,19 @@ function AppointmentListModal() {
                                                         </p>
                                                         <p className={styles.visitDetails}>Triệu chứng: {selectedPatient?.latestVisit.symptoms}</p>
                                                         <p className={styles.visitDetails}>Kết luận: {selectedPatient?.latestVisit.result}</p>
-                                                        <p className={styles.visitDetails}>Kê đơn: {selectedPatient?.latestVisit.prescription}</p>
+                                                        <p className={styles.visitDetails}>Kê đơn:
+                                                            <ul style={{ margin: 0 }}>
+                                                                {selectedPatient?.latestVisit.drugAssign.length > 0 ? (
+                                                                    selectedPatient?.latestVisit.drugAssign.map((drug, index) => (
+                                                                        <li key={index}>
+                                                                            {drug.quantity}x {drug.drug.name}
+                                                                        </li>
+                                                                    ))
+                                                                ) : (
+                                                                    <p>(trống)</p>
+                                                                )}
+                                                            </ul>
+                                                        </p>
                                                     </>
                                                 )
                                             }
