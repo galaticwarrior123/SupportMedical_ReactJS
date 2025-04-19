@@ -49,6 +49,7 @@ import ResultExaminationPage from './Pages/User/RegisterExaminationPage/LayoutMa
 import DrugManagePage from './Pages/Admin/DrugManagePage/DrugPage/DrugManagePage';
 import TypeMedicationPage from './Pages/Admin/DrugManagePage/TypeDrugPage/TypeDrugPage';
 import Drug from './Pages/Doctor/Drug/Drug';
+import SpeechRecognize from './Pages/User/RegisterExaminationPage/SpeechRecognize/SpeechRecognize';
 const ROLES = {
   'CLIENT': 'CLIENT',
   'DOCTOR': 'DOCTOR',
@@ -81,6 +82,7 @@ function App() {
             <Route path="select-payment" element={<SelectPaymentPage />} />
             <Route path="select-bank" element={<SelectBankPage />} />
             <Route path="paymentSuccess" element={<PaymentSuccess />} />
+            <Route path="speech-bot" element={<SpeechRecognize />} />
           </Route>
 
           <Route element={<RequireAuth allowedRoles={[ROLES.DOCTOR]} />}>

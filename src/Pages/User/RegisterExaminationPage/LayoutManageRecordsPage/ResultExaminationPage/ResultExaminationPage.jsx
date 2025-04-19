@@ -28,11 +28,13 @@ const ResultExaminationPage = () => {
     const [isOpenModal, setIsOpenModal] = useState(false);
     const [medItemExamHistory, setMedItemExamHistory] = useState({});
     const [currentPage, setCurrentPage] = useState(1);
+    const [listDrug, setListDrug] = useState([]);
 
     useEffect(() => {
         const fetchMedExamHistory = async () => {
             try {
                 const response = await MedExamHistoryAPI.getMedExamHistoryByUser();
+                setListDrug(response.data.drugAssign);
                 setListMedExamHistory(response.data);
             } catch (error) {
                 console.error("Error fetching medical examination history:", error);
@@ -73,7 +75,43 @@ const ResultExaminationPage = () => {
                             </button>
                         </div>
                         <div className="modal-body">
-                            <pre>{medItemExamHistory.prescription}</pre>
+                            <div className="modal-drug-list">
+                                <div className="modal-drug-list">
+                                    {medItemExamHistory.drugAssign && medItemExamHistory.drugAssign.length > 0 ? (
+                                        <table className="drug-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Tên thuốc</th>
+                                                    <th>Liều lượng</th>
+                                                    <th>Số lương</th>
+                                                    <th>Chống chỉ định</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {medItemExamHistory.drugAssign.map((drug, index) => (
+                                                    <tr key={index}>
+                                                        <td>{drug.drug.name}</td>
+                                                        <td>{drug.drug.dosage}</td>
+                                                        <td>{drug.quantity} {'hộp'}</td>
+                                                        <td>{drug.drug.description}</td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    ) : (
+                                        <p className="modal-drug-empty">Không có thông tin kê đơn thuốc.</p>
+                                    )}
+
+                                    <div className="modal-info-prescriber">
+                                        <p><FontAwesomeIcon icon={faUserMd} /> <span className="label">Bác sĩ kê đơn:</span> {medItemExamHistory.doctor?.firstName} {medItemExamHistory.doctor?.lastName}</p>
+                                        <p><FontAwesomeIcon icon={faCalendarAlt} /> <span className="label">Ngày kê đơn:</span> {medItemExamHistory.createdAt?.split('T')[0].split('-').reverse().join('/')}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="modal-footer">
+                                <button className="modal-close-button" onClick={() => setIsOpenModal(false)}>Đóng</button>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -107,9 +145,9 @@ const ResultExaminationPage = () => {
                                         <p><FontAwesomeIcon icon={faNotesMedical} /> <span className="label">Triệu chứng:</span> {item.symptoms}</p>
                                         <p><FontAwesomeIcon icon={faPrescriptionBottleAlt} /> <span className="label">Kết luận:</span> {item.result}</p>
                                         <p><FontAwesomeIcon icon={faPills} /> <span className="label">Kê đơn thuốc:</span>
-                                            <p className="med-history-prescription" onClick={() => handleOpenModal(item)}>
+                                            <span className="med-history-prescription" onClick={() => handleOpenModal(item)}>
                                                 Xem chi tiết
-                                            </p>
+                                            </span>
                                         </p>
                                     </div>
                                 </div>
