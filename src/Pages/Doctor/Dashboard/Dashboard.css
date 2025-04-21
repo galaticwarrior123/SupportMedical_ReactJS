@@ -49,7 +49,7 @@
 .dashboard-doctor-container {
     flex-grow: 1;
     display: flex;
-    gap: 10px;
+    justify-content: space-around;
 }
 
 .doctor-dashboard-card {
@@ -89,6 +89,7 @@
 .appointment-item:hover {
     border-radius: 5px;
     background-color: #fceeca;
+    cursor: pointer;
 }
 
 .appointment-item img {
@@ -221,4 +222,51 @@
 
 .btn-profile:hover {
     background-color: #fceeca;
+}
+
+.doctor-statistics-card {
+    min-width: 600px;
+    
+}
+
+.doctor-statistics-card h2 {
+    margin-top: 6px;
+}
+
+.doctor-statistics-items {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    flex-direction: row;
+}
+
+.doctor-statistics-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 5px;
+}
+
+.doctor-statistics-item-number {
+    font-size: 2.2rem;
+    color: #1976d2;
+    margin-right: 10px;
+}
+
+.doctor-statistics-item-label {
+    font-size: 1.2rem;
+    color: #666;
+}
+
+.doctor-statistics-item.patient-visited {
+    background-color: #e3fdf0;
+}
+
+.doctor-statistics-item.patient-absent {
+    background-color: #ffebee;
 }

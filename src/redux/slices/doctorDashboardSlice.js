@@ -14,8 +14,18 @@ export const fetchResultRegistrations = createAsyncThunk(
     async () => {
         const response = await ResultRegistrationAPI.doctorGetByFilter({
             status: ResultRegistrationStatus.PENDING,
+            // startDate: new Date().toISOString().split("T")[0],
+            // endDate: new Date().toISOString().split("T")[0],
         });
-        return response.data;
+        const data = response.data;
+        // sort by data.shiftSegment.startTime
+        // time format: mm:ss
+        data.sort((a, b) => {
+            const aTime = a.shiftSegment.startTime.split(":").map(Number);
+            const bTime = b.shiftSegment.startTime.split(":").map(Number);
+            return aTime[0] - bTime[0] || aTime[1] - bTime[1];
+        });
+        return data;
     }
 );
 
