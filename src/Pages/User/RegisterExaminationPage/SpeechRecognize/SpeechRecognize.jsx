@@ -84,7 +84,7 @@ const SpeechRecognize = () => {
                 setStep(2);
                 saveBotReplyToLocal(response.answer);
                 // speakWithFPT(response.answer);
-                setTimeout(async() => {
+                setTimeout(async () => {
                     const followUp = "Bạn chọn thời gian phù hợp để tôi tìm kiếm bác sĩ phù hợp.";
                     speakWithFPT(followUp);
                     await typeBotMessage(followUp);
@@ -111,16 +111,16 @@ const SpeechRecognize = () => {
 
             const response = await getBotReplyForResutl(inputText);
             console.log("Response from server:", response);
-            if (response.doctors) {
+            if (Array.isArray(response.doctors) && response.doctors.length > 0) {
                 const result = `Dưới đây là danh sách bác sĩ phù hợp với yêu cầu của bạn. Bạn có thể chọn bác sĩ mà bạn muốn khám.`;
                 await typeBotMessage(result);
                 speakWithFPT(result);
                 addMessage('bot', '', 'doctor-list', response.doctors);
             } else {
-                const errorMsg = "Tôi chưa tìm thấy bác sĩ phù hợp, bạn có thể chọn thời gian khác không?";
+                const errorMsg = "Khung giờ này không có bác sĩ khám cho bạn, bạn vui lòng chọn thời gian khác.";
                 localStorage.removeItem('botReplies');
                 speakWithFPT(errorMsg);
-                typeBotMessage(errorMsg);
+                await typeBotMessage(errorMsg);
                 setStep(2);
             }
         }
@@ -329,7 +329,7 @@ const SpeechRecognize = () => {
                                                                         const confirmData = {
                                                                             doctorName: `${selectedDoctor.doctor.firstName} ${selectedDoctor.doctor.lastName}`,
                                                                             department: `${selectedDoctor.doctor.doctorInfo?.specialities[0]?.name || ''}`,
-                                                                            timeSlot: timeSlot,
+                                                                            timeSlot: `${selectedDoctor.shiftSegments[0].startTime} - ${selectedDoctor.shiftSegments[0].endTime}`,
                                                                             serviceName: conversation.find(msg => msg.type === 'service-list')?.data?.find(s => s._id === bookingDataRef.current.medExamService)?.name || '',
                                                                             fee: bookingDataRef.current.fee,
                                                                             fullName: record.name,
@@ -339,7 +339,7 @@ const SpeechRecognize = () => {
                                                                             address: `${record.address}, ${record.ward}, ${record.district}, ${record.province}`
                                                                         };
 
-                                                                        
+
 
                                                                         const confirmMsg = `Bạn đã chọn hồ sơ thành công. Vui lòng kiểm tra lại thông tin trước khi xác nhận và tiến hành thanh toán.`;
                                                                         speakWithFPT(confirmMsg);
