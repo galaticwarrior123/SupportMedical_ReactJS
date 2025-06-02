@@ -39,10 +39,7 @@ const Shift = () => {
         ShiftAPI.createShift({ name: shiftName, startTime: startTime, endTime: endTime })
             .then(res => {
                 toast.success("Thêm ca làm việc thành công!");
-                setShifts(prev => [
-                    ...prev,
-                    { id: prev.length + 1, name: shiftName, startTime: startTime, endTime: endTime }
-                ]);
+                setShifts(prev => [...prev, res.data]); 
 
                 setShiftName('');
                 setStartTime('');
@@ -50,8 +47,7 @@ const Shift = () => {
             })
             .catch(err => {
                 toast.error("Thêm ca làm việc thất bại!");
-            }
-            );
+            });
 
 
     }
@@ -119,19 +115,19 @@ const Shift = () => {
     const handlePageChange = (page) => {
         setCurrentPage(page);
     };
-    
+
     const handleItemsPerPageChange = (e) => {
         setItemsPerPage(Number(e.target.value));
         setCurrentPage(1); // reset về trang 1 khi thay đổi số item/trang
     };
-    
+
     const paginatedData = filteredShifts.slice(
         (currentPage - 1) * itemsPerPage,
         currentPage * itemsPerPage
     );
-    
+
     const totalPages = Math.ceil(filteredShifts.length / itemsPerPage);
-    
+
     const generatePaginationButtons = () => {
         let buttons = [];
         for (let i = 1; i <= totalPages; i++) {
@@ -148,7 +144,7 @@ const Shift = () => {
         return buttons;
     };
 
-    
+
 
 
 
@@ -256,20 +252,20 @@ const Shift = () => {
                         </thead>
                         <tbody>
                             {paginatedData.map((shift, index) => (
-                                    <tr key={shift._id}>
-                                        <td>{index + 1 < 10 ? `0${index + 1}` : index + 1}</td>
-                                        <td>{shift.name}</td>
-                                        <td>{shift.startTime} - {shift.endTime}</td>
-                                        <td>
-                                            <button className="edit-btn" onClick={() => handleEditShift(shift)}>
-                                                <FontAwesomeIcon icon={faPen} /> Sửa
-                                            </button>
-                                            <button className="delete-btn" onClick={() => handleOpenDialogDelete(shift._id)}>
-                                                <FontAwesomeIcon icon={faTrash} /> Xóa
-                                            </button>
-                                        </td>
-                                    </tr>
-                                ))}
+                                <tr key={shift._id}>
+                                    <td>{index + 1 < 10 ? `0${index + 1}` : index + 1}</td>
+                                    <td>{shift.name}</td>
+                                    <td>{shift.startTime} - {shift.endTime}</td>
+                                    <td>
+                                        <button className="edit-btn" onClick={() => handleEditShift(shift)}>
+                                            <FontAwesomeIcon icon={faPen} /> Sửa
+                                        </button>
+                                        <button className="delete-btn" onClick={() => handleOpenDialogDelete(shift._id)}>
+                                            <FontAwesomeIcon icon={faTrash} /> Xóa
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
                         </tbody>
                     </table>
 
