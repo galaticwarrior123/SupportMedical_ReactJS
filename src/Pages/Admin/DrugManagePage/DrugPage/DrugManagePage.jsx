@@ -45,7 +45,7 @@ const DrugManagePage = () => {
 
     const filteredDrugs = drug.filter((med) => {
         const matchName = med.name.toLowerCase().includes(searchTerm.toLowerCase());
-        const matchType = searchType === '' || med.type === searchType;
+        const matchType = searchType === '' || med.type._id === searchType;
         return matchName && matchType;
     });
 

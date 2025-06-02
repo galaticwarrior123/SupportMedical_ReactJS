@@ -8,6 +8,7 @@ import { TypeDrugAPI } from '../../../../API/TypeDrugAPI';
 import { toast } from 'react-toastify';
 import YesNoDialog from '../../../../Components/YesNoDialog/YesNoDialog';
 import { motion, AnimatePresence } from 'framer-motion';
+import { set } from 'date-fns';
 const TypeDrugPage = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [drugTypes, setDrugTypes] = useState([]);
@@ -19,6 +20,9 @@ const TypeDrugPage = () => {
 
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(10);
+
+    const [isOpenDialog, setIsOpenDialog] = useState(false);
+    const [idTypeDelete, setIdTypeDelete] = useState(null);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -60,6 +64,7 @@ const TypeDrugPage = () => {
         TypeDrugAPI.delete(id).then(() => {
             setDrugTypes(prev => prev.filter(item => item._id !== id));
             toast.success('Xóa danh mục thuốc thành công!');
+            setIsOpenDialog(false);
         }).catch((error) => {
             toast.error('Lỗi khi xóa danh mục thuốc!');
         });
@@ -129,8 +134,7 @@ const TypeDrugPage = () => {
         return buttons;
     };
 
-    const [isOpenDialog, setIsOpenDialog] = useState(false);
-    const [idTypeDelete, setIdTypeDelete] = useState(null);
+    
 
     const handleClickDelete = (id) => {
         setIdTypeDelete(id);

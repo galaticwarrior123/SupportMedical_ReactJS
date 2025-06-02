@@ -277,14 +277,14 @@ const RegisterMedicalExaminationPage = () => {
                         </div>
 
 
-                        <div className="box-banner">
+                        {/* <div className="box-banner">
                             <h3> Trợ lý đặt lịch khám </h3>
                             <div className='box-banner-content'>
                                 <img src="/images/botChat.jpg" alt="Banner" />
                                 <p>Đặt lịch khám dễ dàng hơn với trợ lý ảo</p>
                                 <button className="forum-button" onClick={() => handleNavigate('/speech-bot')}>Trợ lý ảo</button>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
 
 

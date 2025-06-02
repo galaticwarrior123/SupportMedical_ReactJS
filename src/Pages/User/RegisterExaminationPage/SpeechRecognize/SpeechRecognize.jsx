@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMicrophone, faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import { MedExamServiceAPI } from '../../../../API/MedExamServiceAPI';
 import { RecordPatientAPI } from '../../../../API/RecordPatientAPI';
+import { toast } from 'react-toastify';
 
 const SpeechRecognize = () => {
     const user = JSON.parse(localStorage.getItem('user'));
@@ -362,42 +363,71 @@ const SpeechRecognize = () => {
                                             </>
                                         ) : (
                                             <>
-                                                <h3>Tạo hồ sơ mới</h3>
-                                                <label>Họ và tên:</label>
-                                                <input
-                                                    type="text"
-                                                    value={personalInfo.fullName}
-                                                    onChange={(e) => setPersonalInfo({ ...personalInfo, fullName: e.target.value })}
-                                                />
-                                                <label>Số điện thoại:</label>
-                                                <input
-                                                    type="tel"
-                                                    value={personalInfo.phone}
-                                                    onChange={(e) => setPersonalInfo({ ...personalInfo, phone: e.target.value })}
-                                                />
-                                                <label>Ngày sinh:</label>
-                                                <input
-                                                    type="date"
-                                                    value={personalInfo.dob}
-                                                    onChange={(e) => setPersonalInfo({ ...personalInfo, dob: e.target.value })}
-                                                />
-                                                <label>Giới tính:</label>
-                                                <select
-                                                    value={personalInfo.gender}
-                                                    onChange={(e) => setPersonalInfo({ ...personalInfo, gender: e.target.value })}
-                                                >
-                                                    <option value="">Chọn</option>
-                                                    <option value="Nam">Nam</option>
-                                                    <option value="Nữ">Nữ</option>
-                                                    <option value="Khác">Khác</option>
-                                                </select>
-                                                <label>Địa chỉ:</label>
-                                                <input
-                                                    type="text"
-                                                    value={personalInfo.address}
-                                                    onChange={(e) => setPersonalInfo({ ...personalInfo, address: e.target.value })}
-                                                />
-                                                <div className="modal-buttons">
+                                                <div style={{ display: 'flex', gap: '20px' }}>
+                                                    {/* Cột bên trái */}
+                                                    <div style={{ flex: 1 }}>
+                                                        <h3>Tạo hồ sơ mới</h3>
+
+                                                        <label>Họ và tên:</label>
+                                                        <input
+                                                            type="text"
+                                                            value={personalInfo.fullName}
+                                                            onChange={(e) => setPersonalInfo({ ...personalInfo, fullName: e.target.value })}
+                                                        />
+
+                                                        <label>Ngày sinh:</label>
+                                                        <input
+                                                            type="date"
+                                                            value={personalInfo.dob}
+                                                            onChange={(e) => setPersonalInfo({ ...personalInfo, dob: e.target.value })}
+                                                        />
+
+                                                        <label>Tỉnh:</label>
+                                                        <select>
+                                                            <option>Chọn</option>
+                                                        </select>
+
+                                                        <label>Chọn xã/phường</label>
+                                                        <select>
+                                                            <option>Chọn</option>
+                                                        </select>
+                                                    </div>
+
+                                                    {/* Cột bên phải */}
+                                                    <div style={{ flex: 1 }}>
+                                                        <label>Số điện thoại:</label>
+                                                        <input
+                                                            type="tel"
+                                                            value={personalInfo.phone}
+                                                            onChange={(e) => setPersonalInfo({ ...personalInfo, phone: e.target.value })}
+                                                        />
+
+                                                        <label>Giới tính:</label>
+                                                        <select
+                                                            value={personalInfo.gender}
+                                                            onChange={(e) => setPersonalInfo({ ...personalInfo, gender: e.target.value })}
+                                                        >
+                                                            <option value="">Chọn</option>
+                                                            <option value="Nam">Nam</option>
+                                                            <option value="Nữ">Nữ</option>
+                                                            <option value="Khác">Khác</option>
+                                                        </select>
+
+                                                        <label>Chọn quận/huyện:</label>
+                                                        <select>
+                                                            <option>Chọn</option>
+                                                        </select>
+
+                                                        <label>Địa chỉ:</label>
+                                                        <input
+                                                            type="text"
+                                                            value={personalInfo.address}
+                                                            onChange={(e) => setPersonalInfo({ ...personalInfo, address: e.target.value })}
+                                                        />
+                                                    </div>
+                                                </div>
+
+                                                <div className="modal-buttons" style={{ marginTop: '20px', textAlign: 'center' }}>
                                                     <button onClick={async () => {
                                                         try {
                                                             await RecordPatientAPI.createRecord(personalInfo);
@@ -405,9 +435,8 @@ const SpeechRecognize = () => {
                                                             speakWithFPT("Đã tạo hồ sơ mới.");
                                                             typeBotMessage("Đã tạo hồ sơ mới.");
                                                             setShowInfoModal(false);
-                                                            // Optionally update recordList nếu bạn muốn hiện ngay hồ sơ mới
                                                         } catch (err) {
-                                                            console.error("Tạo hồ sơ lỗi:", err);
+                                                            toast.error("Có lỗi xảy ra khi tạo hồ sơ mới.");
                                                         }
                                                     }}>Tạo hồ sơ</button>
                                                     <button onClick={() => setShowCreateForm(false)}>Quay lại</button>
@@ -474,7 +503,7 @@ const SpeechRecognize = () => {
                     </button>
                 </div>
             </div>
-        </div>
+        </div >
     );
 };
 
