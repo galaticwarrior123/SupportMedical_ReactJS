@@ -89,6 +89,15 @@ const DoctorStatiscsCard = () => {
                                     text: 'Thống kê số lượng bệnh nhân theo loại dịch vụ',
                                 },
                             },
+                            // y ticks is integer
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    ticks: {
+                                        stepSize: 1,
+                                    },
+                                },
+                            },
                         }}
                     />
                 </div>

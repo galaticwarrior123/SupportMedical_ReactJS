@@ -24,6 +24,7 @@ function AppointmentListModal() {
                     endDate: selectedDate,
                     status: ResultRegistrationStatus.PENDING,
                 });
+                console.log(selectedDate);
                 setAppointments(response.data);
             } catch (error) {
                 console.error('Error fetching appointments:', error);
