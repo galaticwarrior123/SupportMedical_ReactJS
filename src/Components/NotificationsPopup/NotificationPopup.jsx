@@ -23,6 +23,17 @@ const NotificationPopup = () => {
         };
     }, []);
 
+    const getNotificationUrl = (notification) => {
+        if (notification.actionUrl) {
+            let url = notification.actionUrl;
+            if (!url.includes('detail-appointment')) {
+                url = '/forum' + url;
+            }
+            return url;
+        }
+        return '';
+    }
+
     return (
         <div className="notification-popup">
             <h3>Thông báo</h3>
@@ -30,7 +41,7 @@ const NotificationPopup = () => {
                 <Link 
                     key={notification._id} 
                     className={`notification-item ${notification.isRead ? '' : 'unread'}`} 
-                    to={notification.actionUrl} style={{ textDecoration: 'none' }}
+                    to={getNotificationUrl(notification)} style={{ textDecoration: 'none' }}
                 >
                     <img src={notification.imageUrl || bellIcon} alt="image" className="avatar" />
                     <div>

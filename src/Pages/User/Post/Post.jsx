@@ -7,7 +7,7 @@ import { useLocation } from 'react-router-dom';
 const Post = () => {
     const [post, setPost] = useState(null);
     const location = useLocation();
-    const postId = location.pathname.split('/')[2];
+    const postId = location.pathname.split('/')[3];
     const user = JSON.parse(localStorage.getItem('user'));
 
     useEffect(() => {

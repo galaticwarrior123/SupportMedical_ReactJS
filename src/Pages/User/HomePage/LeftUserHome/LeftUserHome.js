@@ -31,7 +31,7 @@ const LeftUserHome = () => {
                         {allDepartment && allDepartment.length > 0 ? allDepartment.map((department) => (
                             <li key={department._id}>
                                 <button onClick={
-                                    () => navigate(`/search?tagId=${department._id}&tab=posts`)
+                                    () => navigate(`/forum/search?tagId=${department._id}&tab=posts`)
                                 }>
                                     {department.name}
                                 </button>

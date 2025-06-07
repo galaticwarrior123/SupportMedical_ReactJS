@@ -50,7 +50,6 @@ const HeaderRegisterMedicalExaminationPage = () => {
     }
 
     const handleMaskAsRead = (notification) => {
-        navigate(notification.actionUrl);
         NotificationAPI.markAsRead([notification._id]).then(() => {
             setNotifications(prev => prev.map(notification => {
                 if (notification._id === notification._id) {
@@ -59,6 +58,14 @@ const HeaderRegisterMedicalExaminationPage = () => {
                 return notification;
             }));
         });
+
+        if (notification.actionUrl) {
+            let url = notification.actionUrl;
+            if (!url.includes('detail-appointment')) {
+                url = '/forum' + url;
+            }
+            navigate(url);
+        }
     }
 
     const handleLogout = () => {
