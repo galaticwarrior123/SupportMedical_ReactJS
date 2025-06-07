@@ -186,9 +186,10 @@ const RegisterMedicalExaminationPage = () => {
                                         <button className="doctor-info-medical-image-button" onClick={() => handleOpenModal(doctorItem.doctor)}>Xem thông tin</button>
                                     </div>
                                     <div className="doctor-details-medical">
-                                        <h3>BS. {doctorItem.doctor.firstName} {doctorItem.doctor.lastName}  | {doctorItem.doctor.doctorInfo.specialities[0].name}</h3>
+                                        {/* | {doctorItem.doctor.doctorInfo.specialities[0].name} */}
+                                        <h3>BS. {doctorItem.doctor.firstName} {doctorItem.doctor.lastName}  </h3> 
                                         <p><strong>Chuyên trị:</strong> {doctorItem.doctor.doctorInfo.treatment || 'Chưa cập nhật'}</p>
-                                        <p><strong>Lịch khám: </strong> Thứ 2,3,4,5,6,7,CN</p>
+                                        <p><strong>Chuyên khoa: </strong> {doctorItem.doctor.doctorInfo.specialities[0].name}</p>
                                     </div>
                                 </div>
                                 <div className="doctor-actions-medical">

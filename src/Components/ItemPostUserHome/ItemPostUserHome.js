@@ -755,7 +755,7 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
 
                     )}
                 </div>
-            ) : (location.pathname === '/permission') && (
+            ) : (location.pathname === '/forum/permission') && (
                 <div className="center-user-home-post-footer-browser">
                     <div className="center-user-home-post-footer-browser-body">
                         <table>
