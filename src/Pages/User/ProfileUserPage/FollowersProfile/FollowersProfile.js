@@ -5,7 +5,7 @@ const FollowersProfile = ({ user, currentUser }) => {
     const navigate = useNavigate();
 
     const handleRedirectProfile = (id) => {
-        navigate(`/profile/${id}`);
+        navigate(`/forum/profile/${id}`);
         window.location.reload();
     }   
 

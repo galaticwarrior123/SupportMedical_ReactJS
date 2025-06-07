@@ -494,13 +494,13 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
                 <div className="center-user-home-post-user-info">
                     <div className="center-user-home-post-user-info-top">
                         <div className="center-user-home-post-user-info-top-name">
-                            <Link to={`/profile/${itemPost.author?._id}`}>
+                            <Link to={`/forum/profile/${itemPost.author?._id}`}>
                                 <span>{itemPost.author?.firstName} {itemPost.author?.lastName}</span>
                             </Link>
                             {renderBadge()}
                         </div>
                         <div>
-                            {location.pathname === '/profile/' + user._id && (
+                            {location.pathname === '/forum/profile/' + user._id && (
                                 <>
                                     <div className="center-user-home-post-user-info-top-action">
                                         <button onClick={handleShowMore}><FontAwesomeIcon icon={faEllipsis} style={{ color: 'gray' }} /></button>

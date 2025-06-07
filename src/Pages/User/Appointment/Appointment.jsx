@@ -151,7 +151,7 @@ const Appointment = () => {
                                             )
                                         }
                                         <ApptItem 
-                                            onClick={() => navigate(`/appointment/${appt._id}`)} 
+                                            onClick={() => navigate(`/forum/appointment/${appt._id}`)} 
                                             key={index} appt={appt} 
                                             selected={id === appt._id}
                                             other={other}
@@ -184,7 +184,7 @@ const Appointment = () => {
                                         <span>Thời gian: <strong>{formatDate(selectedAppt?.date, "HH:mm dd/MM/yyyy")}</strong> </span>
                                     </div>
                                     <div className="appt-with">
-                                        <span>Với: <Link to={`/profile/${selectedApptOther?._id}`}>{selectedApptOther?.firstName + ' ' + selectedApptOther?.lastName}</Link></span>
+                                        <span>Với: <Link to={`/forum/profile/${selectedApptOther?._id}`}>{selectedApptOther?.firstName + ' ' + selectedApptOther?.lastName}</Link></span>
                                     </div>
                                     <div className="appt-title">
                                         <span>Tiêu đề: <strong>{selectedAppt?.title}</strong></span>

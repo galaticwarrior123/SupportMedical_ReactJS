@@ -68,7 +68,7 @@ const RightUserHome = ({ onOpenDetailDay }) => {
                     {allFollowUser && allFollowUser.length > 0 ? allFollowUser.map((user) => (
                         <div key={user._id} className="right-user-home-follow-item">
                             <img src={user.avatar} alt="" />
-                            <Link to={`/profile/${user._id}`}>
+                            <Link to={`/forum/profile/${user._id}`}>
                                 <span>{user.firstName} {user.lastName}</span>
                             </Link>
                         </div>

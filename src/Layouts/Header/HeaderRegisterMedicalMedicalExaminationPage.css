@@ -21,14 +21,14 @@
 }
 
 /* Thông tin người dùng */
-.user-info {
+.header-register-medical-examination-page .user-info {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: end;
 }
 
-.user-info svg {
+.header-register-medical-examination-page .user-info svg {
   font-size: 20px;
   color: #333;
   margin-right: 20px;

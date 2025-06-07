@@ -11,7 +11,7 @@ const UserSearchItem = ({ user, followUser }) => {
         followUser(user._id);
     }
     return (
-        <div onClick={() => navigate(`/profile/${user._id}`)} className="user-search-item">
+        <div onClick={() => navigate(`/forum/profile/${user._id}`)} className="user-search-item">
             <img src={user.avatar} alt="Avatar" className="user-avatar" />
             <div className="user-info">
                 <div className="user-details">
