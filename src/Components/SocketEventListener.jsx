@@ -133,7 +133,7 @@ const SocketEventListener = () => {
                 await peerConnection.setLocalDescription(new RTCSessionDescription(answer));
                 console.log(peerConnection.localDescription);
                 socket.emit('answer', { to: caller._id, answer: peerConnection.localDescription });
-                window.open(`/call/${caller._id}?answer=true`, 'VideoCallWindow', 'width=800,height=600');
+                window.open(`/forum/call/${caller._id}?answer=true`, 'VideoCallWindow', 'width=800,height=600');
             }}
             yesText='Bắt máy'
             noText='Từ chối'

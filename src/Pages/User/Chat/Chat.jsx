@@ -352,7 +352,7 @@ const Chat = () => {
                         <div className="chat-header-right">
                             <button
                                 onClick={() => {
-                                    const callWindow = window.open(`/call/${otherUser._id}`, 'VideoCallWindow', 'width=800,height=600');
+                                    const callWindow = window.open(`/forum/call/${otherUser._id}`, 'VideoCallWindow', 'width=800,height=600');
                                 }}
                                 className="btn-attachment">
                                 <FontAwesomeIcon icon={faVideo} />

@@ -1,6 +1,6 @@
 // SpeechRecognize.jsx
 import { useEffect, useRef, useState } from 'react';
-import './SpeechRecognize.css';
+// import './SpeechRecognize.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMicrophone, faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import { MedExamServiceAPI } from '../../../../API/MedExamServiceAPI';
