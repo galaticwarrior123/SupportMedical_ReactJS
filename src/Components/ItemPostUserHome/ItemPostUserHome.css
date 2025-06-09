@@ -317,6 +317,7 @@
     color: #333;
     border: none;
     font-size: 16px;
+    margin-top: 10px;
 }
 .center-user-home-post-comment-avatar {
     width: 55px;
@@ -449,7 +450,7 @@
 }
 .center-user-home-post-comment-list-item {
     display: flex;
-    margin-bottom: 10px;
+    /* margin-bottom: 10px; */
     
 }
 .center-user-home-post-comment-list-item-avatar {
