@@ -31,6 +31,10 @@
     border-radius: 50%;
 }
 
+.center-user-home-post-comment-list-item-avatar:hover {
+    cursor: pointer;
+}
+
 .center-user-home-post-comment-list-item-content {
     margin-left: 10px;
     flex: 1;
@@ -42,9 +46,11 @@
     margin-bottom: 5px;
 }
 
-.center-user-home-post-comment-item-content-text pr {
+.center-user-home-post-comment-item-content-text pre {
     display: block;
     margin-bottom: 10px;
+    margin-top: 5px;
+    font-family: inherit;
 }
 .center-user-home-post-comment-item-content-action{
     display: flex;
@@ -140,7 +146,7 @@
 /* Child comments (replies) styling */
 .center-user-home-post-comment-list-item-child {
     margin-left: 20px; /* Indent to indicate a reply */
-    padding: 10px 0;
+    /* padding: 10px 0; */
     border-left: 2px solid #eaeaea;
     margin-top: -10px;
 
@@ -158,6 +164,10 @@
     border-radius: 50%;
 }
 
+.center-user-home-post-comment-list-item-child-item-avatar:hover {
+    cursor: pointer;
+}
+
 .center-user-home-post-comment-list-item-child-item-content {
     margin-left: 10px;
     flex: 1;
@@ -166,11 +176,12 @@
     display: flex;
     justify-content: space-between;
     margin-bottom: 5px;
+    font-weight: bold;
 }
 .center-user-home-post-comment-item-content-text{
     background-color: #f9f9f9;
 }
-.center-user-home-post-comment-item-content-text pr {
+.center-user-home-post-comment-item-content-text pre {
     display: block;
     margin-bottom: 5px;
     color: black;

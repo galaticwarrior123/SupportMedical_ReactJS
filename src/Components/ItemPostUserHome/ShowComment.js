@@ -7,7 +7,10 @@ import { useState, useEffect } from 'react';
 import CommentAPI from '../../API/CommentAPI';
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';
+
 const ShowComment = ({ listComment, countComment, onClickShowListLikeComment }) => {
+    const navigate = useNavigate();
     const [showReplyInputOfMainComment, setShowReplyInputOfMainComment] = useState(null);
     const [expandedReplies, setExpandedReplies] = useState([]);
     const [commentValue, setCommentValue] = useState('');
@@ -177,7 +180,9 @@ const ShowComment = ({ listComment, countComment, onClickShowListLikeComment }) 
             return (
                 <>
                     <div className="center-user-home-post-comment-list-item-child-item" key={reply._id}>
-                        <div className="center-user-home-post-comment-list-item-child-item-avatar">
+                        <div onClick={() => {
+                            navigate(`/forum/profile/${reply.author._id}`)
+                        }} className="center-user-home-post-comment-list-item-child-item-avatar">
                             <img src={reply.author.avatar} alt="avatar" />
                         </div>
                         <div className="center-user-home-post-comment-list-item-child-item-content">
@@ -186,7 +191,7 @@ const ShowComment = ({ listComment, countComment, onClickShowListLikeComment }) 
                                 <span>{formatDistanceToNow(new Date(reply.createdAt), { addSuffix: true, locale: vi })}</span>
                             </div>
                             <div className="center-user-home-post-comment-item-content-text">
-                                {reply.content === '' ? '' : <pr>{reply.content}</pr>}
+                                {reply.content === '' ? '' : <pre>{reply.content}</pre>}
                             </div>
                             {reply.image && <div className="center-user-home-post-comment-item-content-image">
                                 <img src={reply.image} alt="comment" />
@@ -289,7 +294,9 @@ const ShowComment = ({ listComment, countComment, onClickShowListLikeComment }) 
                 <>
                     <div className="center-user-home-post-comment-list-item" key={comment._id}>
 
-                        <div className="center-user-home-post-comment-list-item-avatar">
+                        <div onClick={() => {
+                            navigate(`/forum/profile/${comment.author._id}`)
+                        }} className="center-user-home-post-comment-list-item-avatar">
                             <img src={comment.author.avatar} alt="avatar" />
                         </div>
                         <div className="center-user-home-post-comment-list-item-content">
@@ -298,7 +305,7 @@ const ShowComment = ({ listComment, countComment, onClickShowListLikeComment }) 
                                 <span>{formatDistanceToNow(new Date(comment.createdAt), { addSuffix: true, locale: vi })}</span>
                             </div>
                             {comment.content === '' ? '' : <div className="center-user-home-post-comment-item-content-text">
-                                <pr>{comment.content}</pr>
+                                <pre>{comment.content}</pre>
                             </div>}
                             
                             {comment.image && <div className="center-user-home-post-comment-item-content-image">
