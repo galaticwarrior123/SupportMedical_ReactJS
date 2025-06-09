@@ -4,12 +4,15 @@ import { useState, useEffect } from 'react';
 import PostAPI from '../../../../API/PostAPI';
 import DefaultLayout from '../../../../Layouts/DefaultLayout/DefaultLayout';
 import RejectedPost from '../RejectedPost/RejectedPost';
+import PostDetail from '../../HomePage/CenterUserHome/PostDetail/PostDetail';
+
 
 const BrowsePost = () => {
     const [posts, setPosts] = useState([]);
     const user = JSON.parse(localStorage.getItem("user"));
     const [isShowFormRejected, setIsShowFormRejected] = useState(false);
     const [rejectedPostId, setRejectedPostId] = useState('');
+    const [selectedPostDetail, setSelectedPostDetail] = useState(null);
     useEffect(() => {
         fetchPosts();
     }, []);
@@ -30,31 +33,46 @@ const BrowsePost = () => {
         fetchPosts();
     }
 
+    const handleDeletePost = (postId) => {
+        setPosts(prev => prev.filter(item => item._id !== postId));
+        setSelectedPostDetail(null); // ✅ đóng detail khi post bị duyệt/xoá
+    };
+
+
     return (
         <>
             {isShowFormRejected && (
                 <RejectedPost handleCloseFormRejectedPost={handleCloseFormRejectedPost} postId={rejectedPostId} />
             )}
+            {selectedPostDetail && (
+                <PostDetail
+                    itemPost={selectedPostDetail}
+                    handleCloseFullScreen={() => setSelectedPostDetail(null)}
+                />
+            )}
+
             <DefaultLayout>
                 <div className="browsePost">
                     <div className="browsePost_list">
-                        {
-                            posts.length > 0 ? (
-                                posts.map((post, index) => (
-                                    <ItemPostUserHome key={index} itemPost={post} onDelete={() => {
-                                        setPosts(posts.filter(item => item._id !== post._id));
-                                    }} onClickShowFormRejected={() => {
+                        {posts.length > 0 ? (
+                            posts.map((post, index) => (
+                                <ItemPostUserHome
+                                    key={index}
+                                    itemPost={post}
+                                    currentUser={user}
+                                    onDelete={handleDeletePost}
+                                    onClickShowFormRejected={() => {
                                         setRejectedPostId(post._id);
                                         setIsShowFormRejected(true);
-                                    }} />
-                                ))
-                            ) : (
-                                <div className='no-post-permission'>
-                                    <span>Không có bài viết nào</span>
-                                </div>
-                            )
-                            
-                        }
+                                    }}
+                                    onClickSeeDetail={() => setSelectedPostDetail(post)} // ✅ mở detail
+                                />
+                            ))
+                        ) : (
+                            <div className='no-post-permission'>
+                                <span>Không có bài viết nào</span>
+                            </div>
+                        )}
                     </div>
                 </div>
             </DefaultLayout>

@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faThumbsUp, faComment, faPaperPlane, faArrowRight, faArrowLeft, faEarth, faEllipsis, faHeart, faSurprise, faImage, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { formatDistanceToNow, set } from 'date-fns';
 import ShowPostDetailLike from './ShowPostDetailLike';
-import { se, vi } from 'date-fns/locale';
+import { is, se, vi } from 'date-fns/locale';
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 import PostAPI from '../../API/PostAPI';
@@ -17,7 +17,7 @@ import ReactionMenu from './ReactionMenu';
 import { DepartmentAPI } from '../../API/DepartmentAPI';
 import ShowMoreListLikeComment from './ShowMoreListLikeComment';
 
-const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelete, onClickShowFormRejected }) => {
+const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelete, onClickShowFormRejected, onClickSeeDetail, }) => {
     const user = JSON.parse(localStorage.getItem('user'));
     const [post, setPost] = useState({});
     const [liked, setLiked] = useState(false);
@@ -142,16 +142,16 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
         }
         try {
             const newComment = await CommentAPI.createComment(data);
-    
+
             // cập nhật ngay bình luận mới vào danh sách bình luận
             setListComment((prevListComment) => [newComment.data, ...prevListComment]);
 
             fetchListComment();
 
-    
+
             // Cập nhật số lượng bình luận
             setNumberOfComments((prevCount) => prevCount + 1);
-    
+
             // Hiển thị thông báo thành công
             toast.success('Bình luận thành công');
         } catch (error) {
@@ -339,7 +339,7 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
         setLiked(false);
         setLoved(false);
         setSurprised(false);
-        
+
     }
 
     const handleSeeDetailLike = () => {
@@ -459,26 +459,25 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
 
 
     const handlePublishPost = async (postId, status) => {
-        if(user.doctorInfo.isPermission === false){ 
+        if (user.doctorInfo.isPermission === false) {
             toast.error('Bạn không có quyền thực hiện chức năng này');
             return;
         }
+
         try {
-            await PostAPI.updateStatusPost(postId, { status: status })
-                .then(() => {
-                    if (status === 'PUBLISHED') {
-                        toast.success('Phê duyệt bài viết thành công');
-                        onDelete(postId);
-                    } else {
-                        toast.success('Từ chối bài viết thành công');
-                        onDelete(postId);
-                    }
-                    fetchPost();
-                });
+            await PostAPI.updateStatusPost(postId, { status });
+            if (status === 'PUBLISHED') {
+                setShowPostDetail(false);
+                toast.success('Phê duyệt bài viết thành công');
+            } else {
+                toast.success('Từ chối bài viết thành công');
+            }
+            onDelete(postId); // Gọi hàm onDelete để xóa bài viết khỏi danh sách
         } catch (error) {
             toast.error('Cấp quyền bài viết thất bại');
         }
     };
+
     const [commentDetailId, setCommentDetailId] = useState(null);
     const handleShowMoreLikeComment = (id) => {
         setShowListLikeComment(!showListLikeComment);
@@ -575,8 +574,11 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
 
                         ) : (
                             <>
+
                                 {itemPost.title}
-                                <span onClick={() => handleClickSeeDetail()}>Xem chi tiết...</span>
+                                {isPostDetail === false && (
+                                    <span onClick={onClickSeeDetail}>Xem chi tiết...</span>
+                                )}
                             </>
                         )}
                     </div>

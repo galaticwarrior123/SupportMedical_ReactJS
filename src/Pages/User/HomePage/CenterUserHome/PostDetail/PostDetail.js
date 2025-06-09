@@ -2,7 +2,7 @@ import './PostDetail.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faThumbsUp, faComment, faPaperPlane, faArrowRight, faArrowLeft, faClose } from '@fortawesome/free-solid-svg-icons';
 import ItemPostUserHome from '../../../../../Components/ItemPostUserHome/ItemPostUserHome';
-const PostDetail = ({ handleCloseFullScreen, itemPost}) => {
+const PostDetail = ({ handleCloseFullScreen, itemPost }) => {
     
    const currentUser = JSON.parse(localStorage.getItem('user'));
 
@@ -16,7 +16,7 @@ const PostDetail = ({ handleCloseFullScreen, itemPost}) => {
                     </button>
                 </div>
                 <div className="post-detail-body">
-                    <ItemPostUserHome itemPost={itemPost} currentUser={currentUser} isPostDetail={true} />
+                    <ItemPostUserHome itemPost={itemPost} currentUser={currentUser} isPostDetail={true}  />
                 </div>
 
             </div>

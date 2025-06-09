@@ -99,7 +99,13 @@ const DrugManagePage = () => {
                 ...formData,
             };
             DrugAPI.create(newMed).then((response) => {
-                setDrug(prev => [...prev, response.data]);
+                // Tìm object type tương ứng từ danh sách typeDrug
+                const typeObj = typeDrug.find(t => t._id === response.data.type);
+
+                // Gắn object type vào dữ liệu thuốc mới
+                const newDrugWithType = { ...response.data, type: typeObj };
+
+                setDrug(prev => [...prev, newDrugWithType]);
                 setFormData({ name: '', dosage: '', type: '', brand: '', description: '' });
                 toast.success('Thêm thuốc thành công!');
             }).catch(() => {
@@ -117,6 +123,7 @@ const DrugManagePage = () => {
     const handleDelete = (id) => {
         DrugAPI.delete(id).then(() => {
             setDrug(prev => prev.filter(med => med._id !== id));
+            setIsOpenDialog(false);
             toast.success('Xóa thuốc thành công!');
         }).catch(() => {
             toast.error('Lỗi khi xóa thuốc!');
