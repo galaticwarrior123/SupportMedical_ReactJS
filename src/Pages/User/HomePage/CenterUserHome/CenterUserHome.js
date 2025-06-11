@@ -1,16 +1,17 @@
 import ItemPostUserHome from '../../../../Components/ItemPostUserHome/ItemPostUserHome';
 import './CenterUserHome.css';
-import { useState,useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import CreatePost from './CreatePost/CreatePost';
 import PostAPI from '../../../../API/PostAPI';
 import 'react-toastify/dist/ReactToastify.css';
 import { toast } from 'react-toastify';
+import PostDetail from './PostDetail/PostDetail';
 
 const CenterUserHome = ({ isDetailDayOpen }) => {
     const [isCreatePost, setIsCreatePost] = useState(false);
     const [listPost, setListPost] = useState([]);
     const user = JSON.parse(localStorage.getItem('user'));
-  
+    const [selectedPostDetail, setSelectedPostDetail] = useState(null);
 
     const fetchListPost = async () => {
         try {
@@ -41,7 +42,7 @@ const CenterUserHome = ({ isDetailDayOpen }) => {
         });
     };
 
-   
+
 
     return (
         <div className="center-user-home" style={{ zIndex: isDetailDayOpen ? 0 : 2 }}>
@@ -55,11 +56,18 @@ const CenterUserHome = ({ isDetailDayOpen }) => {
                 <CreatePost handleCloseFullScreen={handleCloseCreatePost} />
             )}
 
+            {selectedPostDetail && (
+                <PostDetail
+                    itemPost={selectedPostDetail}
+                    handleCloseFullScreen={() => setSelectedPostDetail(null)}
+                />
+            )}
+
             <div className="center-user-home-listPost">
                 {listPost.length > 0 ? (
                     listPost.map((post) => (
-                        post.status=="PUBLISHED" && (
-                            <ItemPostUserHome key={post._id} itemPost={post} currentUser={user}  />
+                        post.status == "PUBLISHED" && (
+                            <ItemPostUserHome key={post._id} itemPost={post} currentUser={user} onClickSeeDetail={() => setSelectedPostDetail(post)} />
                         )
                     ))
                 ) : (

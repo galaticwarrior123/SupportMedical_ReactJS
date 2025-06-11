@@ -58,7 +58,7 @@ const DrugManagePage = () => {
 
     const openModal = (med = null) => {
         setEditingMed(med);
-        setFormData(med ? { name: med.name, dosage: med.dosage, type: med.type, brand: med.brand, description: med.description } : { name: '', dosage: '', type: '', brand: '', description: '' });
+        setFormData(med ? { name: med.name, dosage: med.dosage, type: med.type._id, brand: med.brand, description: med.description } : { name: '', dosage: '', type: '', brand: '', description: '' });
         setModalOpen(true);
     };
 
@@ -88,7 +88,11 @@ const DrugManagePage = () => {
                 ...formData,
             };
             DrugAPI.update(editingMed._id, updatedMed).then((response) => {
-                setDrug(prev => prev.map(med => (med._id === editingMed._id ? response.data : med)));
+                const typeObj = typeDrug.find(t => t._id === response.data.type);
+                // Gắn object type vào dữ liệu thuốc đã cập nhật
+                response.data.type = typeObj;
+                setDrug(prev => prev.map(med => med._id === response.data._id ? response.data : med));
+                setEditingMed(null);
                 setFormData({ name: '', dosage: '', type: '', brand: '', description: '' });
                 toast.success('Cập nhật thuốc thành công!');
             }).catch(() => {

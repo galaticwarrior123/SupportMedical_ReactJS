@@ -30,12 +30,13 @@ const BrowsePost = () => {
 
     const handleCloseFormRejectedPost = () => {
         setIsShowFormRejected(false);
+        setRejectedPostId('');
+        setSelectedPostDetail(null);
         fetchPosts();
     }
 
     const handleDeletePost = (postId) => {
         setPosts(prev => prev.filter(item => item._id !== postId));
-        setSelectedPostDetail(null); // ✅ đóng detail khi post bị duyệt/xoá
     };
 
 
@@ -48,6 +49,11 @@ const BrowsePost = () => {
                 <PostDetail
                     itemPost={selectedPostDetail}
                     handleCloseFullScreen={() => setSelectedPostDetail(null)}
+                    onDeletePost={handleDeletePost}
+                    onClickShowFormRejected={() => {
+                        setRejectedPostId(selectedPostDetail._id);
+                        setIsShowFormRejected(true);
+                    } }
                 />
             )}
 
@@ -65,7 +71,8 @@ const BrowsePost = () => {
                                         setRejectedPostId(post._id);
                                         setIsShowFormRejected(true);
                                     }}
-                                    onClickSeeDetail={() => setSelectedPostDetail(post)} // ✅ mở detail
+                                    onClickSeeDetail={() => setSelectedPostDetail(post)} 
+                                    onCloseDetail={() => setSelectedPostDetail(null)}
                                 />
                             ))
                         ) : (

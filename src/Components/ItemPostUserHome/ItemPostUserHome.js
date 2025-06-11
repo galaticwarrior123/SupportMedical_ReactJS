@@ -17,7 +17,7 @@ import ReactionMenu from './ReactionMenu';
 import { DepartmentAPI } from '../../API/DepartmentAPI';
 import ShowMoreListLikeComment from './ShowMoreListLikeComment';
 
-const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelete, onClickShowFormRejected, onClickSeeDetail, }) => {
+const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelete, onClickShowFormRejected, onClickSeeDetail, onCloseDetail }) => {
     const user = JSON.parse(localStorage.getItem('user'));
     const [post, setPost] = useState({});
     const [liked, setLiked] = useState(false);
@@ -465,15 +465,22 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
         }
 
         try {
-            await PostAPI.updateStatusPost(postId, { status });
-            if (status === 'PUBLISHED') {
-                setShowPostDetail(false);
-                toast.success('Phê duyệt bài viết thành công');
-            } else {
-                toast.success('Từ chối bài viết thành công');
+            //await PostAPI.updateStatusPost(postId, { status });
+
+            if (isPostDetail && status === 'PUBLISHED') {
+                onCloseDetail();
             }
+
             onDelete(postId); // Gọi hàm onDelete để xóa bài viết khỏi danh sách
+
+            // Hiển thị thông báo sau khi toàn bộ thao tác thành công
+            toast.success(
+                status === 'PUBLISHED'
+                    ? 'Phê duyệt bài viết thành công'
+                    : 'Từ chối bài viết thành công'
+            );
         } catch (error) {
+            console.error(error);
             toast.error('Cấp quyền bài viết thất bại');
         }
     };
@@ -483,6 +490,8 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
         setShowListLikeComment(!showListLikeComment);
         setCommentDetailId(id);
     }
+
+
 
     return (
         <div className="center-user-home-post">
@@ -519,7 +528,10 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
                 </div>
 
             </div>
-            {showPostDetail && <PostDetail handleCloseFullScreen={handleCloseFullScreen} itemPost={post} />}
+            {/* {showPostDetail && 
+                <PostDetail 
+                    handleCloseFullScreen={handleCloseFullScreen} 
+                    itemPost={post}  />} */}
             <div className="center-user-home-post-categories">
                 {tags.length === listDepartment.length ? (
                     <span className="center-user-home-post-category cate1">Tất cả</span>

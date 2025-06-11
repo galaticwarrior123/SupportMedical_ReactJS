@@ -84,6 +84,7 @@ const ResultExaminationPage = () => {
                                                     <th>Tên thuốc</th>
                                                     <th>Liều lượng</th>
                                                     <th>Số lương</th>
+                                                    <th>Nhà sản xuất</th>
                                                     <th>Chống chỉ định</th>
                                                 </tr>
                                             </thead>
@@ -93,6 +94,7 @@ const ResultExaminationPage = () => {
                                                         <td>{drug.drug.name}</td>
                                                         <td>{drug.drug.dosage}</td>
                                                         <td>{drug.quantity} {'hộp'}</td>
+                                                        <td>{drug.drug.brand}</td>
                                                         <td>{drug.drug.description}</td>
                                                     </tr>
                                                 ))}

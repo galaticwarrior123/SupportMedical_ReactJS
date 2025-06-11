@@ -27,7 +27,7 @@ const RejectedPost = ({handleCloseFormRejectedPost , postId}) => {
             handleCloseFormRejectedPost();
             toast.success('Từ chối bài viết thành công');
         } catch (error) {
-            console.error(error);
+            toast.error('Lỗi khi từ chối bài viết');
         }
     }
     return (
