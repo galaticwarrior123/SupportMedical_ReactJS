@@ -121,7 +121,7 @@ const CreatePost = ({ handleCloseFullScreen }) => {
                         <input type="text" placeholder="Tiêu đề" onChange={(e) => setTitle(e.target.value)} />
                         <textarea placeholder="Nội dung" onChange={(e) => setContent(e.target.value)} />
 
-                        {(
+                        {!user.roles.includes('DOCTOR') && (
                             <div className="create-post-body-content-checkbox">
                                 <p>Chọn chủ đề:</p>
                                 <div className="create-post-body-content-checkbox-list">
