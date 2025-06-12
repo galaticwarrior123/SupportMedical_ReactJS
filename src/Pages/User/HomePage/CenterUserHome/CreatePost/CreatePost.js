@@ -121,12 +121,12 @@ const CreatePost = ({ handleCloseFullScreen }) => {
                         <input type="text" placeholder="Tiêu đề" onChange={(e) => setTitle(e.target.value)} />
                         <textarea placeholder="Nội dung" onChange={(e) => setContent(e.target.value)} />
 
-                        {!user.roles.includes('DOCTOR') && (
+                        {(
                             <div className="create-post-body-content-checkbox">
                                 <p>Chọn chủ đề:</p>
                                 <div className="create-post-body-content-checkbox-list">
                                     <select className="create-post-body-content-checkbox-list-select" onChange={(e) => setSelectedDepartment(e.target.value)}>
-                                        <option value={"all"}>Tất cả</option>
+                                        {/* <option value={"all"}>Tất cả</option> */}
                                         {departments.map((department) => (
                                             <option key={department._id} value={department._id}>{department.name}</option>
                                         ))}
