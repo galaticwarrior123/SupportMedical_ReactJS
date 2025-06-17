@@ -85,8 +85,8 @@ const ResultExaminationPage = () => {
                                                     <th>Liều lượng</th>
                                                     <th>Số lương</th>
                                                     <th>Nhà sản xuất</th>
-                                                    <th>Hướng dẫn sử dụng</th>
-                                                    <th>Chống chỉ định</th>
+                                                    {/* <th>Hướng dẫn sử dụng</th> */}
+                                                    <th>Mô tả thuốc</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -96,8 +96,8 @@ const ResultExaminationPage = () => {
                                                         <td>{drug.drug.dosage}</td>
                                                         <td>{drug.quantity} {'hộp'}</td>
                                                         <td>{drug.drug.brand}</td>
-                                                        <td>{drug.drug.usage}</td>
-                                                        <td>{drug.drug.description}</td>
+                                                        {/* <td>{drug.drug.usage}</td> */}
+                                                        <td><pre>{drug.drug.description}</pre></td>
                                                     </tr>
                                                 ))}
                                             </tbody>

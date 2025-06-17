@@ -98,7 +98,17 @@
     cursor: pointer;
 }
 
-
+.modal-close-button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+    margin-bottom: 10px;
+}
 
 
 

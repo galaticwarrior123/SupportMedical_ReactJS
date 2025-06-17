@@ -35,6 +35,13 @@
     text-align: left;
 }
 
+.med-table td pre {
+    margin: 0;
+    white-space: pre-wrap; /* Allows text to wrap */
+    word-break: break-word; /* Breaks long words */
+    font-family: inherit;
+}
+
 .med-table th {
     background-color: #f2f2f2;
 }
