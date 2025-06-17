@@ -465,7 +465,7 @@ const ItemPostUserHome = ({ itemPost, currentUser, isPostDetail = false, onDelet
         }
 
         try {
-            //await PostAPI.updateStatusPost(postId, { status });
+            await PostAPI.updateStatusPost(postId, { status });
 
             if (isPostDetail && status === 'PUBLISHED') {
                 onCloseDetail();

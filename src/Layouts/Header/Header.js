@@ -129,7 +129,7 @@ const Header = () => {
                         <li onClick={() => handleNavigate('/forum/appointment')} className={isActive('/forum/appointment', false) ? 'active-button' : ''}><img src="/images/calendar-alt.png" alt="calendar-alt" /></li>
                         <li onClick={() => handleNavigate('/forum/search')} className={isActive('/forum/search') ? 'active-button' : ''}><img src="/images/search.png" alt="search" /></li>
                         {
-                            user.roles.includes('DOCTOR') && (
+                            user.roles.includes('DOCTOR') && user.doctorInfo.isPermission && (
                                 //<li onClick={() => handleNavigate('/permission')} className={isActive('/permission') ? 'active-button' : ''}><img src="/images/permission.png" alt="permission" style={{width:30, height:30}} /></li>
                                 <li onClick={() => handleNavigate('/forum/permission')} className={isActive('/forum/permission') ? 'active-button' : ''}><img src="/images/permission.png" alt="search" style={{padding:5,width:30, height:30}} /></li>
                             )

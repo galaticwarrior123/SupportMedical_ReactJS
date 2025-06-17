@@ -126,7 +126,7 @@ const CreatePost = ({ handleCloseFullScreen }) => {
                                 <p>Chọn chủ đề:</p>
                                 <div className="create-post-body-content-checkbox-list">
                                     <select className="create-post-body-content-checkbox-list-select" onChange={(e) => setSelectedDepartment(e.target.value)}>
-                                        <option value={"all"}>Tất cả</option>
+                                        {/* <option value={"all"}>Tất cả</option> */}
                                         {departments.map((department) => (
                                             <option key={department._id} value={department._id}>{department.name}</option>
                                         ))}
