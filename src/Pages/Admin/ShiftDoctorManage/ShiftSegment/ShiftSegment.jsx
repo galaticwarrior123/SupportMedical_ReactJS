@@ -8,8 +8,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClose } from '@fortawesome/free-solid-svg-icons';
 import { motion, AnimatePresence } from 'framer-motion';
 import YesNoDialog from '../../../../Components/YesNoDialog/YesNoDialog';
+import { useLoading } from '../../../../context/LoadingProvider';
+
 
 const ShiftSegment = () => {
+    const { setLoading } = useLoading();
     const [timeSlots, setTimeSlots] = useState([]);
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
@@ -41,6 +44,7 @@ const ShiftSegment = () => {
 
 
     const generateTimeSlots = () => {
+        setLoading(true);
 
         if (!startDate || !endDate) {
             toast.error('Vui lòng nhập đầy đủ thông tin');
@@ -116,6 +120,7 @@ const ShiftSegment = () => {
             .catch(err => {
                 toast.error('Có lỗi xảy ra khi tạo ca làm việc');
             });
+        setLoading(false);
     };
 
 
