@@ -14,8 +14,8 @@ export const fetchResultRegistrations = createAsyncThunk(
     async () => {
         const response = await ResultRegistrationAPI.doctorGetByFilter({
             status: ResultRegistrationStatus.PENDING,
-            // startDate: new Date().toISOString().split("T")[0],
-            // endDate: new Date().toISOString().split("T")[0],
+            startDate: new Date().toISOString().split("T")[0],
+            endDate: new Date().toISOString().split("T")[0],
         });
         const data = response.data;
         // sort by data.shiftSegment.startTime

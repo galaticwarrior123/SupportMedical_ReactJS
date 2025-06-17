@@ -43,7 +43,7 @@ const ShiftSegment = () => {
     }, []);
 
 
-    const generateTimeSlots = () => {
+    const generateTimeSlots = async () => {
         setLoading(true);
 
         if (!startDate || !endDate) {
@@ -107,7 +107,7 @@ const ShiftSegment = () => {
             maxRegistrations: slot.maxRegistrations
         }));
 
-        ShiftSegmentAPI.createShiftSegment(data)
+        await ShiftSegmentAPI.createShiftSegment(data)
             .then(res => {
                 setTimeSlots(prevSlots => [...prevSlots, ...res.data]);
                 setStartDate('');
