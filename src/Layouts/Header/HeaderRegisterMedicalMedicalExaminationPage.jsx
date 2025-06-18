@@ -140,12 +140,12 @@ const HeaderRegisterMedicalExaminationPage = () => {
 
                 {user ? (
                     <button className="user-button" onClick={() => setShowDropdown(!showDropdown)}>
-                        <img src="/images/Account.png" alt="user" />
+                        <img src={user?.avatar} alt="user" />
                         <span>{user.firstName} {user.lastName}</span>
                     </button>
                 ) : (
                     <button className="user-button" onClick={() => handleNavigate('/login')}>
-                        <img src="/images/Account.png" alt="user" />
+                        <img src="/images/account.png" alt="user" />
                         Tài khoản
                     </button>
                 )}
@@ -155,7 +155,7 @@ const HeaderRegisterMedicalExaminationPage = () => {
                 {showDropdown && (
                     <div className="dropdown-menu " >
                         <div className="dropdown-header">
-                            <img src="/images/Account.png" alt="user" />
+                            <img src={user?.avatar} alt="user" />
                             <p>Xin chào, <b>{user?.firstName} {user?.lastName}</b></p>
 
                         </div>

@@ -101,12 +101,11 @@ const Drug = () => {
 
                 <table className="med-table">
                     <colgroup>
-                        <col style={{ width: '20%' }} />
-                        <col style={{ width: '15%' }} />
-                        <col style={{ width: '20%' }} />
-                        <col style={{ width: '15%' }} />
-                        <col style={{ width: '20%' }} />
                         <col style={{ width: '10%' }} />
+                        <col style={{ width: '10%' }} />
+                        <col style={{ width: '15%' }} />
+                        <col style={{ width: '10%' }} />
+                        <col style={{ width: '55%' }} />
                     </colgroup>
                     <thead>
                         <tr>
@@ -124,7 +123,7 @@ const Drug = () => {
                                 <td>{med.dosage}</td>
                                 <td>{med.brand}</td>
                                 <td>{med.type.name}</td>
-                                <td>{med.description || 'Không có'}</td>
+                                <td><pre>{med.description || 'Không có'}</pre></td>
                             </tr>
                         ))}
                     </tbody>
